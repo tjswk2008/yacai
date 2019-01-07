@@ -85,7 +85,7 @@ class JobListItem extends StatelessWidget {
                             right: 5.0,
                             bottom: 15.0,
                           ),
-                          child: new Text(" 发布于 " + job.pub_time)
+                          child: new Text(" 发布于 " + job.pubTime)
                         )
                       ],
                     ),

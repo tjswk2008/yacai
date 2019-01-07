@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/app/item/joblist_item.dart';
 import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/app/model/company.dart';
-import 'package:flutter_app/app/view/company/company_detail.dart';
+import 'package:flutter_app/app/view/job/job_detail.dart';
 
 class JobsTab extends StatefulWidget {
   final List<Job> _jobs;
@@ -50,7 +50,7 @@ class JobList extends State<JobsTab> {
     );
 
     var jobItem = new InkWell(
-        onTap: () => navCompanyDetail(company, index),
+        onTap: () => navCompanyDetail(company, job),
         child: new JobListItem(job));
 
     return jobItem;
@@ -62,11 +62,11 @@ class JobList extends State<JobsTab> {
     });
   }
 
-  navCompanyDetail(Company company, int index) {
+  navCompanyDetail(Company company, Job job) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          return new CompanyDetail(company);
+          return new JobDetail(job, company);
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(
