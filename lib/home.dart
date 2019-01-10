@@ -21,6 +21,7 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
   TabController _controller;
   VoidCallback onChanged;
+  Widget mine = new MineTab();
   static String jobJson = """
       {
         "list": [
@@ -147,10 +148,10 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
     return new Scaffold(
       body: new TabBarView(
         children: <Widget>[
-          new JobsTab(fullTime),
-          new JobsTab(partTime),
+          new JobsTab(fullTime, '全职'),
+          new JobsTab(partTime, '兼职/实习'),
           new MessageTab(),
-          new MineTab()
+          mine
         ],
         controller: _controller,
       ),
@@ -209,5 +210,6 @@ void main() {
         primaryColor: _kPrimaryColor,
         accentColor: Colors.cyan[300],
       ),
-      home: new BossApp()));
+      home: new BossApp()
+  ));
 }

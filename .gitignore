@@ -3,3 +3,4 @@ build/
 pubspec.lock
 .history
 .idea
+.flutter-plugins

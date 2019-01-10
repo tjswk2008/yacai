@@ -29,17 +29,9 @@ class NewLoginPageState extends State<NewLoginPage> {
   final usernameCtrl = new TextEditingController(text: '');
   final passwordCtrl = new TextEditingController(text: '');
 
-  // URL变化监听器
-  StreamSubscription<String> _onUrlChanged;
-
   @override
   void initState() {
     super.initState();
-  }
-
-  // 跳转到输入界面
-  redirectToInputPage() {
-    curState = stateLoadedInputPage;
   }
 
   // 自动登录
@@ -47,6 +39,7 @@ class NewLoginPageState extends State<NewLoginPage> {
     setState(() {
       isOnLogin = true;
     });
+    Navigator.pop(context, "refresh");
   }
 
   @override
@@ -93,7 +86,7 @@ class NewLoginPageState extends State<NewLoginPage> {
         padding: const EdgeInsets.all(10.0),
         child: new Column(
           children: <Widget>[
-            new Center(child: new Text("请使用OSC帐号密码登录")),
+            new Center(child: new Text("请使用帐号密码登录")),
             new Container(height: 20.0),
             new Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,7 +95,7 @@ class NewLoginPageState extends State<NewLoginPage> {
                 new Expanded(child: new TextField(
                   controller: usernameCtrl,
                   decoration: new InputDecoration(
-                    hintText: "OSC帐号/注册邮箱",
+                    hintText: "帐号/注册邮箱",
                     hintStyle: new TextStyle(
                         color: const Color(0xFF808080)
                     ),
@@ -150,14 +143,5 @@ class NewLoginPageState extends State<NewLoginPage> {
         ),
       )
     );
-  }
-
-  @override
-  void dispose() {
-    // 回收相关资源
-    // Every listener should be canceled, the same should be done with this stream.
-    _onUrlChanged.cancel();
-
-    super.dispose();
   }
 }

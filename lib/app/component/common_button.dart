@@ -23,7 +23,7 @@ class CommonButtonState extends State<CommonButton> {
       child: new Container(
         height: 45,
         decoration: new BoxDecoration(
-          color: new Color.fromARGB(255, 242, 242, 245),
+          color: new Color.fromARGB(255, 0, 215, 198),
           border: new Border.all(color: const Color(0xffcccccc)),
           borderRadius: new BorderRadius.all(new Radius.circular(30))
         ),
@@ -33,5 +33,4 @@ class CommonButtonState extends State<CommonButton> {
       ),
     );
   }
-
 }

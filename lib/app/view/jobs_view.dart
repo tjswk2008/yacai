@@ -3,11 +3,13 @@ import 'package:flutter_app/app/item/joblist_item.dart';
 import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/app/model/company.dart';
 import 'package:flutter_app/app/view/job/job_detail.dart';
+// import 'dart:developer';
 
 class JobsTab extends StatefulWidget {
   final List<Job> _jobs;
+  final String _title;
 
-  JobsTab(this._jobs);
+  JobsTab(this._jobs, this._title);
   @override
   JobList createState() => new JobList();
 }
@@ -27,7 +29,7 @@ class JobList extends State<JobsTab> {
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
         elevation: 0.0,
-        title: new Text('兼职/实习',
+        title: new Text(widget._title,
             style: new TextStyle(fontSize: 20.0, color: Colors.white)),
       ),
       body: new ListView.builder(
