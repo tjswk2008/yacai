@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/view/login_view.dart';
+import 'package:flutter_app/app/view/resume/resume_detail.dart';
+import 'package:flutter_app/app/model/resume.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -14,28 +16,17 @@ class MineTabState extends State<MineTab> {
   String userName;
   String jobStatus;
 
-  onTap() {
+  @override
+  void initState() {
+    super.initState();
     SharedPreferences.getInstance().then((prefs) {
       Set keys = prefs.getKeys();
-      if (keys.length == 0) {
-        Navigator
-          .of(context)
-          .push(new MaterialPageRoute(builder: (context) {
-            return new NewLoginPage();
-          }))
-          .then((result) {
-            // result为"refresh"代表登录成功
-            if (result != null && result == "refresh") {
-              setState(() {
-                userAvatar = 'https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg';
-                userName = 'Kimi He';
-                jobStatus = '在职-考虑机会';
-                // 更新用户信息
-              });
-            }
-          });
-      } else {
-        // 显示登陆信息
+      if (keys.length != 0) {
+        setState(() {
+          userAvatar = 'https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg';
+          userName = 'Kimi He';
+          jobStatus = '在职-考虑机会';
+        });
       }
     });
   }
@@ -64,7 +55,7 @@ class MineTabState extends State<MineTab> {
                   ),
 
                   new GestureDetector(
-                    onTap: onTap,
+                    onTap: _login,
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -119,6 +110,40 @@ class MineTabState extends State<MineTab> {
 
           new SliverList(
               delegate: new SliverChildListDelegate(<Widget>[
+                new InkWell(
+                  onTap: _navToResumeDetail,
+                  child: new Container(
+                    height: 45.0,
+                    margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    decoration: new BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        new Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: new Row(
+                            children: <Widget>[
+                              new Icon(
+                                IconData(0xe24d, fontFamily: 'MaterialIcons', matchTextDirection: true)
+                              ),
+                              new Padding(
+                                padding: const EdgeInsets.only(right: 5.0),
+                              ),
+                              new Text('我的简历'),
+                            ],
+                          ),
+                        ),
+                        new Icon(
+                          IconData(0xe5cc, fontFamily: 'MaterialIcons', matchTextDirection: true)
+                        ),
+                      ],
+                    ),
+                  )
+                ),
+
                 new Container(
                   color: Colors.white,
                   child: new Padding(
@@ -171,6 +196,97 @@ class MineTabState extends State<MineTab> {
         ],
       ),
     );
+  }
+
+  _login() {
+    SharedPreferences.getInstance().then((prefs) {
+      Set keys = prefs.getKeys();
+      if (keys.length == 0) {
+        Navigator
+          .of(context)
+          .push(new MaterialPageRoute(builder: (context) {
+            return new NewLoginPage();
+          }))
+          .then((result) {
+            // result为"refresh"代表登录成功
+            if (result != null) {
+              prefs.setString('account', result.account);
+              prefs.setString('pwd', result.pwd);
+              setState(() {
+                userAvatar = 'https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg';
+                userName = 'Kimi He';
+                jobStatus = '在职-考虑机会';
+              });
+            }
+          });
+      }
+    });
+  }
+
+  _navToResumeDetail() {
+    List<CompanyExperience> companyExperiences = new List<CompanyExperience>();
+    companyExperiences.add(new CompanyExperience(
+      cname: '阿里巴巴', // 公司名称
+      industry: '电商', // 行业
+      startTime: '2014-07', // 该单位的工作开始时间
+      endTime: '至今', // 该单位的工作结束时间
+      jobTitle: '会计', // 职位名称
+      detail: '各项活动财务核算', // 工作内容
+      performance: '使用excel函数加快核算流程', // 业绩
+    ));
+
+    List<Project> projects = new List<Project>();
+    projects.add(new Project(
+      name: '聚划算账务处理', // 项目名称
+      role: '会计', // 角色
+      startTime: '2014-07', // 该项目的开始时间
+      endTime: '至今', // 该项目的结束时间
+      detail: '聚划算账务处理', // 项目描述
+      performance: '使用excel函数加快核算流程', // 业绩
+    ));
+
+    List<Education> educations = new List<Education>();
+    educations.add(new Education(
+      name: '上海财大', // 学校名称
+      academic: '大学本科', // 学历
+      major: '会计', // 专业
+      endTime: '2014-07', // 就读该学校的结束时间
+      startTime: '2010-09', // 就读该学校的开始时间
+      detail: '曾任学生会主席，品学兼优',
+    ));
+
+    List<Certification> certificates = new List<Certification>();
+    certificates.add(new Certification(
+      name: '注册会计师', // 证书名
+      industry: '国家财务局', // 颁发单位
+      qualifiedTime: '2015-10', // 取得时间
+      code: 'A156861315348743135X', // 证书编号
+    ));
+
+    Resume resume = new Resume(
+      personalInfo: new PersonalInfo(), // 个人信息
+      jobStatus: '在职-考虑机会',
+      jobExpect: new JobExpect(),
+      companyExperiences: new List(),
+      projects: projects, // 发布人
+      educations: educations, // 发布人
+      certificates: certificates, // 证书列表
+    );
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ResumeDetail(resume);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
   }
 }
 

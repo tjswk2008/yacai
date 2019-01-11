@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/component/common_button.dart';
+import 'package:flutter_app/app/model/userInfo.dart';
 
 // 新的登录界面
 class NewLoginPage extends StatefulWidget {
@@ -39,7 +40,10 @@ class NewLoginPageState extends State<NewLoginPage> {
     setState(() {
       isOnLogin = true;
     });
-    Navigator.pop(context, "refresh");
+    Navigator.pop(context, new UserInfo(
+      account: account,
+      pwd: pwd
+    ));
   }
 
   @override
