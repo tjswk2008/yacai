@@ -264,10 +264,24 @@ class MineTabState extends State<MineTab> {
     ));
 
     Resume resume = new Resume(
-      personalInfo: new PersonalInfo(), // 个人信息
+      personalInfo: new PersonalInfo(
+        name: 'Andy', // 姓名
+        gender: '男', // 性别
+        firstJobTime: '2007.07', // 首次参加工作时间
+        avatar: 'https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg', // 头像
+        wechatId: 'tjswk2008', // 微信号
+        birthDay: '1986.01', // 出生年月
+        academic: '本科', // 学历
+        summarize: '超强的学习力，有规划，为人nice', // 优势
+      ), // 个人信息
       jobStatus: '在职-考虑机会',
-      jobExpect: new JobExpect(),
-      companyExperiences: new List(),
+      jobExpect: new JobExpect(
+        jobTitle: '架构师', // 职位
+        industry: '电子商务, 新零售, 互联网', // 行业
+        city: '上海', // 工作城市
+        salary: '35k-40k', // 薪资待遇
+      ),
+      companyExperiences: companyExperiences,
       projects: projects, // 发布人
       educations: educations, // 发布人
       certificates: certificates, // 证书列表

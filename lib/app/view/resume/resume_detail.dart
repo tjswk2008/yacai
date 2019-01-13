@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:flutter_app/app/model/resume.dart';
+import 'package:flutter_app/app/view/resume/personal_info.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -17,6 +19,7 @@ class ResumeDetailState extends State<ResumeDetail>
     with TickerProviderStateMixin {
 
   VoidCallback onChanged;
+  double width;
 
   @override
   void initState() {
@@ -30,8 +33,9 @@ class ResumeDetailState extends State<ResumeDetail>
 
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width * 0.3;
     return new Scaffold(
-        backgroundColor: new Color.fromARGB(255, 242, 242, 245),
+        backgroundColor: Colors.white,
         body: new Stack(
           children: <Widget>[
             new SingleChildScrollView(
@@ -39,13 +43,30 @@ class ResumeDetailState extends State<ResumeDetail>
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     new Padding(
-                      padding: const EdgeInsets.only(top: 70.0),
+                      padding: const EdgeInsets.all(25.0),
                     ),
                     new Container(
                       color: Colors.white,
                       child: new Column(
                         children: <Widget>[
-                          new Text(widget._resume.jobStatus)
+                          new PersonalInfoView(widget._resume.personalInfo),
+                          new Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                new Text(
+                                  "求职状态",
+                                  style: new TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20.0
+                                  )
+                                ),
+                                new Text(widget._resume.jobStatus)
+                              ],
+                            ),
+                          ),
+                          new Divider(),
                         ],
                       ),
                     )
@@ -56,10 +77,17 @@ class ResumeDetailState extends State<ResumeDetail>
             new Positioned(
               top: 10.0,
               left: -10.0,
-              child: new Container(
-                  padding: const EdgeInsets.all(15.0),
-                  child: new BackButton(color: Colors.grey)
-              ),
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new BackButton(color: Colors.grey),
+                  new Padding(
+                    padding: EdgeInsets.only(left: width, right: width),
+                    child:  new Text('我的简历'),
+                  ),
+                  new Text('预览')
+                ]
+              )
             ),
           ],
         )

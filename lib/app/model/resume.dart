@@ -112,6 +112,7 @@ class PersonalInfo {
   String wechatId; // 微信号
   String birthDay; // 出生年月
   String summarize; // 优势
+  String academic; // 学历
 
   PersonalInfo({
     this.name,
@@ -120,6 +121,7 @@ class PersonalInfo {
     this.avatar,
     this.wechatId,
     this.birthDay,
-    this.summarize
+    this.summarize,
+    this.academic,
   });
 }
