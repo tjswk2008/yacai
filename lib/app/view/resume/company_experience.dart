@@ -3,17 +3,17 @@ import 'package:flutter_app/app/model/resume.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
-class ResumeDetail extends StatefulWidget {
+class CompanyExperienceView extends StatefulWidget {
 
-  final Resume _resume;
+  final CompanyExperience _companyExperience;
 
-  ResumeDetail(this._resume);
+  CompanyExperienceView(this._companyExperience);
 
   @override
-  ResumeDetailState createState() => new ResumeDetailState();
+  CompanyExperienceViewState createState() => new CompanyExperienceViewState();
 }
 
-class ResumeDetailState extends State<ResumeDetail>
+class CompanyExperienceViewState extends State<CompanyExperienceView>
     with TickerProviderStateMixin {
 
   VoidCallback onChanged;
@@ -45,7 +45,7 @@ class ResumeDetailState extends State<ResumeDetail>
                       color: Colors.white,
                       child: new Column(
                         children: <Widget>[
-                          new Text(widget._resume.jobStatus)
+                          new Text(widget._companyExperience.cname)
                         ],
                       ),
                     )

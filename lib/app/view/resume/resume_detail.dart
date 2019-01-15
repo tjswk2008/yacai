@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_app/app/view/resume/personal_info.dart';
 import 'package:flutter_app/app/view/resume/job_expectation.dart';
+import 'package:flutter_app/app/view/resume/company_experience.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -158,6 +159,36 @@ class ResumeDetailState extends State<ResumeDetail>
                             ),
                           ),
                           new Divider(),
+                          new Padding(
+                            padding: const EdgeInsets.only(
+                              top: 5.0,
+                              bottom: 5.0
+                            ),
+                            child: new Column(
+                              children: <Widget>[
+                                new Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    new Text(
+                                      "工作经历",
+                                      style: new TextStyle(
+                                        fontSize: 16.0
+                                      )
+                                    ),
+                                  ],
+                                ),
+                                new Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                ),
+                                // new ListView.builder(
+                                //   itemCount: widget._resume.companyExperiences.length,
+                                //   itemBuilder: (context, int index) {
+                                //     return new CompanyExperienceView(widget._resume.companyExperiences[index]);
+                                //   }
+                                // ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     )
