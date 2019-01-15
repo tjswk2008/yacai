@@ -3,17 +3,17 @@ import 'package:flutter_app/app/model/resume.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
-class ResumeDetail extends StatefulWidget {
+class JobExpectation extends StatefulWidget {
 
-  final Resume _resume;
+  final JobExpect _jobExpect;
 
-  ResumeDetail(this._resume);
+  JobExpectation(this._jobExpect);
 
   @override
-  ResumeDetailState createState() => new ResumeDetailState();
+  JobExpectationState createState() => new JobExpectationState();
 }
 
-class ResumeDetailState extends State<ResumeDetail>
+class JobExpectationState extends State<JobExpectation>
     with TickerProviderStateMixin {
 
   VoidCallback onChanged;
@@ -30,39 +30,28 @@ class ResumeDetailState extends State<ResumeDetail>
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-        body: new Stack(
+    return new Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        new Row(
           children: <Widget>[
-            new SingleChildScrollView(
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    new Padding(
-                      padding: const EdgeInsets.only(top: 70.0),
-                    ),
-                    new Container(
-                      color: Colors.white,
-                      child: new Column(
-                        children: <Widget>[
-                          new Text(widget._resume.jobStatus)
-                        ],
-                      ),
-                    )
-                  ],
-                )
+            new Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: new Text(widget._jobExpect.jobTitle, style: new TextStyle(fontSize: 12.0),),
             ),
-
-            new Positioned(
-              top: 10.0,
-              left: -10.0,
-              child: new Container(
-                  padding: const EdgeInsets.all(15.0),
-                  child: new BackButton(color: Colors.grey)
-              ),
-            ),
+            new Text(widget._jobExpect.salary, style: new TextStyle(fontSize: 12.0),)
           ],
-        )
+        ),
+        new Row(
+          children: <Widget>[
+            new Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: new Text(widget._jobExpect.city, style: new TextStyle(fontSize: 10.0, color: Colors.grey),),
+            ),
+            new Text(widget._jobExpect.industry, style: new TextStyle(fontSize: 10.0, color: Colors.grey),),
+          ],
+        ),
+      ],
     );
   }
 }

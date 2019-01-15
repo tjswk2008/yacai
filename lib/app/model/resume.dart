@@ -1,13 +1,13 @@
 // import 'package:meta/meta.dart';
 
 class Resume {
-  final PersonalInfo personalInfo; // 个人信息
-  final String jobStatus; // 求职状态
-  final JobExpect jobExpect; // 求职期望
-  final List<CompanyExperience> companyExperiences; // 工作经历
-  final List<Project> projects; // 项目经历
-  final List<Education> educations; // 教育经历
-  final List<Certification> certificates; // 证书列表
+  PersonalInfo personalInfo; // 个人信息
+  String jobStatus; // 求职状态
+  JobExpect jobExpect; // 求职期望
+  List<CompanyExperience> companyExperiences; // 工作经历
+  List<Project> projects; // 项目经历
+  List<Education> educations; // 教育经历
+  List<Certification> certificates; // 证书列表
 
   Resume({
     this.personalInfo,

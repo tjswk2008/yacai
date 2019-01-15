@@ -11,7 +11,7 @@ class PersonalInfoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+      padding: const EdgeInsets.only(top: 10.0),
       child: new SizedBox(
         child: new Card(
           elevation: 0.0,
@@ -76,7 +76,6 @@ class PersonalInfoView extends StatelessWidget {
                   new Padding(
                     padding: const EdgeInsets.only(
                       top: 5.0,
-                      right: 15.0,
                       bottom: 5.0,
                     ),
                     child: new Text(personalInfo.summarize, style: new TextStyle(
