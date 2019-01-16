@@ -3,17 +3,17 @@ import 'package:flutter_app/app/model/resume.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
-class ResumeDetail extends StatefulWidget {
+class CertificationView extends StatefulWidget {
 
-  final Resume _resume;
+  final Certification _certification;
 
-  ResumeDetail(this._resume);
+  CertificationView(this._certification);
 
   @override
-  ResumeDetailState createState() => new ResumeDetailState();
+  CertificationViewState createState() => new CertificationViewState();
 }
 
-class ResumeDetailState extends State<ResumeDetail>
+class CertificationViewState extends State<CertificationView>
     with TickerProviderStateMixin {
 
   VoidCallback onChanged;
@@ -30,39 +30,32 @@ class ResumeDetailState extends State<ResumeDetail>
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-        body: new Stack(
-          children: <Widget>[
-            new SingleChildScrollView(
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    new Padding(
-                      padding: const EdgeInsets.only(top: 70.0),
-                    ),
-                    new Container(
-                      color: Colors.white,
-                      child: new Column(
-                        children: <Widget>[
-                          new Text(widget._resume.jobStatus)
-                        ],
-                      ),
-                    )
-                  ],
-                )
-            ),
-
-            new Positioned(
-              top: 10.0,
-              left: -10.0,
-              child: new Container(
-                  padding: const EdgeInsets.all(15.0),
-                  child: new BackButton(color: Colors.grey)
+    TextStyle detailStyle = new TextStyle(fontSize: 10.0, color: Colors.grey);
+    return new Container(
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              new Row(
+                children: <Widget>[
+                  new Text(widget._certification.name, style: new TextStyle(fontSize: 12.0) ),
+                  new Text("(${widget._certification.code})", style: detailStyle),
+                ],
               ),
-            ),
-          ],
-        )
+              new Text(
+                widget._certification.qualifiedTime,
+                style: detailStyle
+              ),
+            ]
+          ),
+          new Text(widget._certification.industry, style: detailStyle),
+          new Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+          ),
+        ],
+      ),
     );
   }
 }

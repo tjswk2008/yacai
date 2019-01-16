@@ -16,8 +16,6 @@ class CompanyExperienceView extends StatefulWidget {
 class CompanyExperienceViewState extends State<CompanyExperienceView>
     with TickerProviderStateMixin {
 
-  VoidCallback onChanged;
-
   @override
   void initState() {
     super.initState();
@@ -30,39 +28,28 @@ class CompanyExperienceViewState extends State<CompanyExperienceView>
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-        body: new Stack(
-          children: <Widget>[
-            new SingleChildScrollView(
-                child: new Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    new Padding(
-                      padding: const EdgeInsets.only(top: 70.0),
-                    ),
-                    new Container(
-                      color: Colors.white,
-                      child: new Column(
-                        children: <Widget>[
-                          new Text(widget._companyExperience.cname)
-                        ],
-                      ),
-                    )
-                  ],
-                )
-            ),
-
-            new Positioned(
-              top: 10.0,
-              left: -10.0,
-              child: new Container(
-                  padding: const EdgeInsets.all(15.0),
-                  child: new BackButton(color: Colors.grey)
+    TextStyle detailStyle = new TextStyle(fontSize: 10.0, color: Colors.grey);
+    return new Container(
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              new Text(widget._companyExperience.cname, style: new TextStyle(fontSize: 12.0) ),
+              new Text(
+                "${widget._companyExperience.startTime}-${widget._companyExperience.endTime}",
+                style: detailStyle
               ),
-            ),
-          ],
-        )
+            ]
+          ),
+          new Text(widget._companyExperience.jobTitle, style: detailStyle),
+          new Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+          ),
+          new Text(widget._companyExperience.detail, style: new TextStyle(fontSize: 12.0)),
+        ],
+      ),
     );
   }
 }

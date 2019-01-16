@@ -49,20 +49,24 @@ class NewLoginPageState extends State<NewLoginPage> {
   @override
   Widget build(BuildContext context) {
     var loginBtn = new Builder(builder: (ctx) {
-      return new CommonButton(text: "登录", onTap: () {
-        if (isOnLogin) return;
-        // 拿到用户输入的账号密码
-        String username = usernameCtrl.text.trim();
-        String password = passwordCtrl.text.trim();
-        if (username.isEmpty || password.isEmpty) {
-          Scaffold.of(ctx).showSnackBar(new SnackBar(
-            content: new Text("账号和密码不能为空！"),
-          ));
-          return;
+      return new CommonButton(
+        text: "登录",
+        color: new Color.fromARGB(255, 0, 215, 198),
+        onTap: () {
+          if (isOnLogin) return;
+          // 拿到用户输入的账号密码
+          String username = usernameCtrl.text.trim();
+          String password = passwordCtrl.text.trim();
+          if (username.isEmpty || password.isEmpty) {
+            Scaffold.of(ctx).showSnackBar(new SnackBar(
+              content: new Text("账号和密码不能为空！"),
+            ));
+            return;
+          }
+          // 发送给webview，让webview登录后再取回token
+          autoLogin(username, password);
         }
-        // 发送给webview，让webview登录后再取回token
-        autoLogin(username, password);
-      });
+      );
     });
     var loadingView;
     if (isOnLogin) {
