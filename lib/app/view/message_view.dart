@@ -37,11 +37,16 @@ class MessageList extends State<MessageTab> {
 
     var messageItem = new GestureDetector(
         onTap: () {
-          showDialog(context: context, child: new AlertDialog(
-              content: new Text(
-                "尽情期待!",
-                style: new TextStyle(fontSize: 20.0),
-              )));
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return new AlertDialog(
+                content: new Text(
+                  "尽情期待!",
+                  style: new TextStyle(fontSize: 20.0),
+                ));
+            }
+          );
         },
         child: new MessageListItem(message)
     );

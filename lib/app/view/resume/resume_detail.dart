@@ -207,6 +207,7 @@ class ResumeDetailState extends State<ResumeDetail>
                                 ],
                               ),
                               new ListView.builder(
+                                physics: new NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: widget._resume.companyExperiences.length,
                                 itemBuilder: (context, int index) {
@@ -239,6 +240,7 @@ class ResumeDetailState extends State<ResumeDetail>
                                 ],
                               ),
                               new ListView.builder(
+                                physics: new NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: widget._resume.companyExperiences.length,
                                 itemBuilder: (context, int index) {
@@ -271,6 +273,7 @@ class ResumeDetailState extends State<ResumeDetail>
                                 ],
                               ),
                               new ListView.builder(
+                                physics: new NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: widget._resume.educations.length,
                                 itemBuilder: (context, int index) {
@@ -304,6 +307,7 @@ class ResumeDetailState extends State<ResumeDetail>
                               ),
                               new ListView.builder(
                                 shrinkWrap: true,
+                                physics: new NeverScrollableScrollPhysics(),
                                 itemCount: widget._resume.educations.length,
                                 itemBuilder: (context, int index) {
                                   return new CertificationView(widget._resume.certificates[index]);
@@ -327,18 +331,24 @@ class ResumeDetailState extends State<ResumeDetail>
             ),
 
             new Positioned(
-              top: 10.0,
+              top: 0.0,
               left: -10.0,
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  new BackButton(color: Colors.grey),
-                  new Padding(
-                    padding: EdgeInsets.only(left: width, right: width),
-                    child:  new Text('我的简历'),
-                  ),
-                  new Text('预览')
-                ]
+              child: new Container(
+                height: 45,
+                decoration: new BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    new BackButton(color: Colors.grey),
+                    new Padding(
+                      padding: EdgeInsets.only(left: width, right: width),
+                      child:  new Text('我的简历'),
+                    ),
+                    new Text('预览')
+                  ]
+                ),
               )
             ),
           ],
