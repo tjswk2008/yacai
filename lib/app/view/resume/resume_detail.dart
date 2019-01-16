@@ -78,6 +78,39 @@ class ResumeDetailState extends State<ResumeDetail>
       jobStatus = status;
     });
   }
+
+  Widget addExperience(String title, String btnName, List list, IndexedWidgetBuilder itemBuilder) {
+    return new Padding(
+      padding: const EdgeInsets.only(
+        top: 5.0
+      ),
+      child: new Column(
+        children: <Widget>[
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              new Text(
+                title,
+                style: new TextStyle(
+                  fontSize: 16.0
+                )
+              ),
+            ],
+          ),
+          new ListView.builder(
+            physics: new NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: list.length,
+            itemBuilder: itemBuilder
+          ),
+          new Padding(
+            padding: const EdgeInsets.only(bottom: 15.0),
+          ),
+          addButton(btnName),
+        ],
+      ),
+    );
+  }
   
   Widget jobStatusOption(BuildContext context, int index) {
     return new InkWell(
@@ -189,136 +222,40 @@ class ResumeDetailState extends State<ResumeDetail>
                           ),
                         ),
                         new Divider(),
-                        new Padding(
-                          padding: const EdgeInsets.only(
-                            top: 5.0
-                          ),
-                          child: new Column(
-                            children: <Widget>[
-                              new Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  new Text(
-                                    "工作经历",
-                                    style: new TextStyle(
-                                      fontSize: 16.0
-                                    )
-                                  ),
-                                ],
-                              ),
-                              new ListView.builder(
-                                physics: new NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: widget._resume.companyExperiences.length,
-                                itemBuilder: (context, int index) {
-                                  return new CompanyExperienceView(widget._resume.companyExperiences[index]);
-                                }
-                              ),
-                              new Padding(
-                                padding: const EdgeInsets.only(bottom: 15.0),
-                              ),
-                              addButton("添加工作经历"),
-                            ],
-                          ),
+                        addExperience(
+                          "工作经历",
+                          "添加工作经历",
+                          widget._resume.companyExperiences,
+                          (context, int index) {
+                            return new CompanyExperienceView(widget._resume.companyExperiences[index]);
+                          }
                         ),
                         new Divider(),
-                        new Padding(
-                          padding: const EdgeInsets.only(
-                            top: 5.0
-                          ),
-                          child: new Column(
-                            children: <Widget>[
-                              new Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  new Text(
-                                    "项目经历",
-                                    style: new TextStyle(
-                                      fontSize: 16.0
-                                    )
-                                  ),
-                                ],
-                              ),
-                              new ListView.builder(
-                                physics: new NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: widget._resume.companyExperiences.length,
-                                itemBuilder: (context, int index) {
-                                  return new ProjectView(widget._resume.projects[index]);
-                                }
-                              ),
-                              new Padding(
-                                padding: const EdgeInsets.only(bottom: 15.0),
-                              ),
-                              addButton("添加项目经历"),
-                            ],
-                          ),
+                        addExperience(
+                          "项目经历",
+                          "添加项目经历",
+                          widget._resume.projects,
+                          (context, int index) {
+                            return new ProjectView(widget._resume.projects[index]);
+                          }
                         ),
                         new Divider(),
-                        new Padding(
-                          padding: const EdgeInsets.only(
-                            top: 5.0
-                          ),
-                          child: new Column(
-                            children: <Widget>[
-                              new Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  new Text(
-                                    "教育经历",
-                                    style: new TextStyle(
-                                      fontSize: 16.0
-                                    )
-                                  ),
-                                ],
-                              ),
-                              new ListView.builder(
-                                physics: new NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: widget._resume.educations.length,
-                                itemBuilder: (context, int index) {
-                                  return new EducationView(widget._resume.educations[index]);
-                                }
-                              ),
-                              new Padding(
-                                padding: const EdgeInsets.only(bottom: 15.0),
-                              ),
-                              addButton("添加教育经历"),
-                            ],
-                          ),
+                        addExperience(
+                          "教育经历",
+                          "添加教育经历",
+                          widget._resume.educations,
+                          (context, int index) {
+                            return new EducationView(widget._resume.educations[index]);
+                          }
                         ),
                         new Divider(),
-                        new Padding(
-                          padding: const EdgeInsets.only(
-                            top: 5.0
-                          ),
-                          child: new Column(
-                            children: <Widget>[
-                              new Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  new Text(
-                                    "证书",
-                                    style: new TextStyle(
-                                      fontSize: 16.0
-                                    )
-                                  ),
-                                ],
-                              ),
-                              new ListView.builder(
-                                shrinkWrap: true,
-                                physics: new NeverScrollableScrollPhysics(),
-                                itemCount: widget._resume.educations.length,
-                                itemBuilder: (context, int index) {
-                                  return new CertificationView(widget._resume.certificates[index]);
-                                }
-                              ),
-                              new Padding(
-                                padding: const EdgeInsets.only(bottom: 15.0),
-                              ),
-                              addButton("添加证书"),
-                            ],
-                          ),
+                        addExperience(
+                          "证书",
+                          "添加证书",
+                          widget._resume.certificates,
+                          (context, int index) {
+                            return new CertificationView(widget._resume.certificates[index]);
+                          }
                         ),
                       ],
                     ),
