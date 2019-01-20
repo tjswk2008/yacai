@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/splash.dart';
-import 'package:flutter_app/app/view/login_view.dart';
-import 'package:flutter_app/home.dart';
 // import 'package:flutter/rendering.dart';
 
 void main() {

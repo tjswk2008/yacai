@@ -33,6 +33,7 @@ class AnswerListState extends State<AnswerList>
   Widget build(BuildContext context) {
     return new ListView.builder(
       shrinkWrap: true,
+      physics: new NeverScrollableScrollPhysics(),
       itemCount: widget._answers.length,
       itemBuilder: (BuildContext context, int index) {
         Answer answer = widget._answers[index];
@@ -54,61 +55,83 @@ class AnswerListState extends State<AnswerList>
                 ],
               ),
             ),
-            new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new RichText(
-                  text: new TextSpan(
-                    text: answer.answer,
-                    style: new TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.black
+            new Container(
+              width: 210.0,
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new RichText(
+                    text: new TextSpan(
+                      text: answer.answer,
+                      style: new TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black
+                      ),
                     ),
                   ),
-                ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    new Padding(
-                      padding: const EdgeInsets.only(
-                        right: 10.0
+                  new Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                  ),
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new Padding(
+                        padding: const EdgeInsets.only(
+                          right: 10.0
+                        ),
+                        child: new Text(answer.answerBy),
                       ),
-                      child: new Text(answer.answerBy),
-                    ),
-                    new Text(answer.answerAt),
-                  ],
-                ),
-                
-                // new Column(
-                //   children: <Widget>[
-                //     new ListView.builder(
-                //       shrinkWrap: true,
-                //       itemCount: answer.commets.length,
-                //       itemBuilder: (BuildContext context, int commetIndex) {
-                //         Commet commet = answer.commets[commetIndex];
-                //         return new Row(
-                //           children: <Widget>[
-                //             new Column(
-                //               children: <Widget>[
-                //                 new RichText(
-                //                   text: new TextSpan(
-                //                     text: "${commet.answer} - ${commet.answerBy},${commet.answerAt}",
-                //                     style: new TextStyle(
-                //                         fontSize: 20.0,
-                //                         color: Colors.black
-                //                     ),
-                //                   ),
-                //                 ),
-                //                 new Divider()
-                //               ],
-                //             )
-                //           ],
-                //         );
-                //       },
-                //     )
-                //   ],
-                // )
-              ],
+                      new Text(answer.answerAt),
+                    ],
+                  ),
+                  new Divider(),
+                  // 追加的评论
+                  new Container(
+                    width: 210.0,
+                    child: new ListView.builder(
+                      shrinkWrap: true,
+                      physics: new NeverScrollableScrollPhysics(),
+                      itemCount: answer.commets.length,
+                      itemBuilder: (BuildContext context, int commetIndex) {
+                        Commet commet = answer.commets[commetIndex];
+                        return new Container(
+                          width: 210.0,
+                          child: new Column(
+                            children: <Widget>[
+                              new RichText(
+                                text: new TextSpan(
+                                  text: commet.answer,
+                                  style: new TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black
+                                  ),
+                                ),
+                              ),
+                              new Padding(
+                                padding: const EdgeInsets.only(bottom: 5.0),
+                              ),
+                              new Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 10.0
+                                    ),
+                                    child: new Text(commet.answerBy),
+                                  ),
+                                  new Text(commet.answerAt),
+                                ],
+                              ),
+                              new Divider()
+                            ],
+                          )
+                        );
+                      },
+                    )
+                  )
+                ],
+              ),
             )
           ],
         );

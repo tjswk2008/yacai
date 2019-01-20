@@ -29,170 +29,7 @@ class PostDetailState extends State<PostDetail>
   void dispose() {
     super.dispose();
   }
-
-  Widget _buildAnswers() {
-    List<Answer> answers = widget._post.answers;
-    List<Widget> rows = new List<Widget>(answers.length);
-    for (int i=0; i < answers.length; i++){
-      Answer answer = answers[i];
-      List<Widget> cols = new List<Widget>(answer.commets.length);
-      for(int j=0; j < answer.commets.length; j++){
-        Commet commet = answer.commets[j];
-        cols[j] = new Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new RichText(
-                  text: new TextSpan(
-                    text: "${commet.answer} - ${commet.answerBy},${commet.answerAt}",
-                    style: new TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.black
-                    ),
-                  ),
-                ),
-                new Divider()
-              ],
-            )
-          ],
-        );
-      }
-      rows[i] = new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  new Padding(
-                    padding: const EdgeInsets.only(right: 15.0),
-                    child: new Column(
-                      children: <Widget>[
-                        new Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            new Icon(Icons.favorite),
-                            new Text(answer.votes),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new RichText(
-                        text: new TextSpan(
-                          text: answer.answer,
-                          style: new TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.black
-                          ),
-                        ),
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Padding(
-                            padding: const EdgeInsets.only(
-                              right: 10.0
-                            ),
-                            child: new Text(answer.answerBy),
-                          ),
-                          new Text(answer.answerAt),
-                        ],
-                      ),
-                      new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: cols,
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ],
-          );
-    }
-
-    return new Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: rows,
-    );
-
-    // return new Column(
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: new ListView.builder(
-    //     shrinkWrap: true,
-    //     itemCount: widget._post.answers.length,
-    //     itemBuilder: (BuildContext context, int index) {
-    //       Answer answer = widget._post.answers[index];
-    //       return new Column(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: <Widget>[
-    //           new Row(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             mainAxisSize: MainAxisSize.max,
-    //             children: <Widget>[
-    //               new Icon(Icons.favorite),
-    //               new Text(answer.votes),
-    //               new Column(
-    //                 crossAxisAlignment: CrossAxisAlignment.start,
-    //                 children: <Widget>[
-    //                   new RichText(
-    //                     text: new TextSpan(
-    //                       text: answer.answer,
-    //                       style: new TextStyle(
-    //                           fontSize: 20.0,
-    //                           color: Colors.black
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   new Row(
-    //                     children: <Widget>[
-    //                       new Padding(
-    //                         padding: const EdgeInsets.only(
-    //                           right: 10.0
-    //                         ),
-    //                         child: new Text(answer.answerBy),
-    //                       ),
-    //                       new Text(answer.answerAt),
-    //                     ],
-    //                   ),
-    //                   new SizedBox.shrink(
-    //                     child: new ListView.builder(
-    //                       itemCount: answer.commets.length,
-    //                       itemBuilder: (BuildContext context, int commetIndex) {
-    //                         Commet commet = answer.commets[commetIndex];
-    //                         return new Column(
-    //                           crossAxisAlignment: CrossAxisAlignment.start,
-    //                           children: <Widget>[
-    //                             new RichText(
-    //                               text: new TextSpan(
-    //                                 text: "${commet.answer} - ${commet.answerBy},${commet.answerAt}",
-    //                                 style: new TextStyle(
-    //                                     fontSize: 20.0,
-    //                                     color: Colors.black
-    //                                 ),
-    //                               ),
-    //                             ),
-    //                             new Divider()
-    //                           ],
-    //                         );
-    //                       },
-    //                     )
-    //                   )
-    //                 ],
-    //               )
-    //             ],
-    //           ),
-    //         ],
-    //       );
-    //     },
-    //   )
-    // );
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -252,13 +89,16 @@ class PostDetailState extends State<PostDetail>
                                 text: new TextSpan(
                                   text: widget._post.detail,
                                   style: new TextStyle(
-                                      fontSize: 20.0,
+                                      fontSize: 16.0,
                                       color: Colors.black
                                   ),
                                 ),
                               ),
+                              new Padding(
+                                padding: const EdgeInsets.only(bottom: 5.0),
+                              ),
                               new Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.end,
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   new Padding(

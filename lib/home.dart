@@ -128,7 +128,7 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
         "list": [
           {
             "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
-            "detail": "detail1",
+            "detail": "请教一下大家新的个税政策出台后，工资该如何计算呢？detail1",
             "viewers": "155",
             "votes": "234",
             "latestStatus": "Sandy于3分钟前回答",
@@ -136,14 +136,29 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
             "askedAt": "2019-01-01",
             "answers": [
               {
-                "answer": "answer1",
+                "answer": "请教一下大家新的个税政策出台后，工资该如何计算呢？answer1",
                 "answerBy": "answerBy1",
                 "answerAt": "2018-12-12",
                 "votes": "55",
                 "commets": [
                   {
-                    "answer": "commet1",
-                    "answerBy": "answerByCommet1",
+                    "answer": "请教一下大家新的个税政策出台后，工资该如何计算呢？commet1",
+                    "answerBy": "byCommet1",
+                    "answerAt": "2018-12-12"
+                  },
+                  {
+                    "answer": "请教一下大家新的个税政策出台后，工资该如何计算呢？commet2",
+                    "answerBy": "andy Liao",
+                    "answerAt": "2018-12-12"
+                  },
+                  {
+                    "answer": "请教一下大家新的个税政策出台后，工资该如何计算呢？commet1",
+                    "answerBy": "byCommet1",
+                    "answerAt": "2018-12-12"
+                  },
+                  {
+                    "answer": "请教一下大家新的个税政策出台后，工资该如何计算呢？commet2",
+                    "answerBy": "andy Liao",
                     "answerAt": "2018-12-12"
                   }
                 ]

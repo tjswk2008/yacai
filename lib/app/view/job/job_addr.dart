@@ -19,21 +19,13 @@ class JobAddr extends StatelessWidget {
             children: <Widget>[
               new Padding(
                 padding: const EdgeInsets.only(
-                  top: 10.0,
                   left: 15.0,
                   right: 15.0,
-                  bottom: 0.0,
                 ),
                 child: new Text('工作地点', style: new TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold))
               ),
 
-              new Padding(
-                padding: const EdgeInsets.only(
-                  top: 10.0,
-                  left: 15.0,
-                  right: 15.0,
-                  bottom: 0.0,
-                ),
+              new Expanded(
                 child: new Text(job.addrDetail, style: new TextStyle(fontSize: 15.0))
               ),
             ],
