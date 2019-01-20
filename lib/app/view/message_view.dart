@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/item/messagelist_item.dart';
-import 'package:flutter_app/app/model/message.dart';
+import 'package:flutter_app/app/item/postlist_item.dart';
+import 'package:flutter_app/app/model/post.dart';
+import 'package:flutter_app/app/view/post/post_detail.dart';
 
 class MessageTab extends StatefulWidget {
+  final List<Post> _posts;
+  final String _title;
+
+  MessageTab(this._posts, this._title);
   @override
-  MessageList createState() => new MessageList();
+  PostList createState() => new PostList();
 }
 
-class MessageList extends State<MessageTab> {
-
-  List<Message> _messages = [];
+class PostList extends State<MessageTab> {
+  List<Post> _posts = [];
 
   @override
   void initState() {
     super.initState();
-    getMessageList();
+    getPostList();
   }
 
   @override
@@ -23,52 +27,43 @@ class MessageList extends State<MessageTab> {
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
         elevation: 0.0,
-        centerTitle: true,
-        title: new Text(
-            '交流', style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+        title: new Text(widget._title,
+            style: new TextStyle(fontSize: 20.0, color: Colors.white)),
       ),
       body: new ListView.builder(
-          itemCount: _messages.length, itemBuilder: buildCompanyItem),
+          itemCount: _posts.length, itemBuilder: buildJobItem),
     );
   }
 
-  Widget buildCompanyItem(BuildContext context, int index) {
-    Message message = _messages[index];
+  Widget buildJobItem(BuildContext context, int index) {
+    Post post = _posts[index];
 
-    var messageItem = new GestureDetector(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return new AlertDialog(
-                content: new Text(
-                  "尽情期待!",
-                  style: new TextStyle(fontSize: 20.0),
-                ));
-            }
-          );
-        },
-        child: new MessageListItem(message)
-    );
-
-    return messageItem;
+    return new InkWell(
+        onTap: () => navPostDetail(post),
+        child: new PostListItem(post));
   }
 
-  void getMessageList() {
+  void getPostList() {
     setState(() {
-      _messages = Message.fromJson("""
-          {
-            "list": [
-              {
-                "avatar": "https://img.bosszhipin.com/beijin/mcs/useravatar/20180301/17aefca1b3d0dd6c5f94409e4c1e42a2cfcd208495d565ef66e7dff9f98764da_s.jpg",
-                "name": "小可爱",
-                "company": "百度",
-                "position": "HR",
-                "msg": "你好"
-              }
-            ]
-          }
-      """);
+      _posts = widget._posts;
     });
+  }
+
+  navPostDetail(Post post) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new PostDetail(post);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
   }
 }

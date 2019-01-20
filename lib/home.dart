@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/component/icon_tab.dart';
 import 'package:flutter_app/app/model/job.dart';
+import 'package:flutter_app/app/model/post.dart';
 import 'package:flutter_app/app/view/jobs_view.dart';
 import 'package:flutter_app/app/view/message_view.dart';
 import 'package:flutter_app/app/view/mine_view.dart';
@@ -121,6 +122,158 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
   """;
   List<Job> fullTime = Job.fromJson(jobJson);
   List<Job> partTime = Job.fromJson(jobJson);
+  
+  static String postsJson = """
+      {
+        "list": [
+          {
+            "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
+            "detail": "detail1",
+            "viewers": "155",
+            "votes": "234",
+            "latestStatus": "Sandy于3分钟前回答",
+            "askedBy": "sandyHe",
+            "askedAt": "2019-01-01",
+            "answers": [
+              {
+                "answer": "answer1",
+                "answerBy": "answerBy1",
+                "answerAt": "2018-12-12",
+                "votes": "55",
+                "commets": [
+                  {
+                    "answer": "commet1",
+                    "answerBy": "answerByCommet1",
+                    "answerAt": "2018-12-12"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "请教一下大家该怎么写兼职简历呢",
+            "detail": "detail1",
+            "viewers": "155",
+            "votes": "234",
+            "latestStatus": "Sandy He在3分钟前回答",
+            "askedBy": "sandyHe1",
+            "askedAt": "2019-01-01",
+            "answers": [
+              {
+                "answer": "answer1",
+                "answerBy": "answerBy1",
+                "answerAt": "2018-12-12",
+                "votes": "55",
+                "commets": [
+                  {
+                    "answer": "commet1",
+                    "answerBy": "answerByCommet1",
+                    "answerAt": "2018-12-12"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
+            "detail": "detail1",
+            "viewers": "155",
+            "votes": "234",
+            "latestStatus": "Sandy于3分钟前回答",
+            "askedBy": "sandyHe2",
+            "askedAt": "2019-01-01",
+            "answers": [
+              {
+                "answer": "answer1",
+                "answerBy": "answerBy1",
+                "answerAt": "2018-12-12",
+                "votes": "55",
+                "commets": [
+                  {
+                    "answer": "commet1",
+                    "answerBy": "answerByCommet1",
+                    "answerAt": "2018-12-12"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
+            "detail": "detail1",
+            "viewers": "155",
+            "votes": "234",
+            "latestStatus": "Sandy于3分钟前回答",
+            "askedBy": "sandyHe3",
+            "askedAt": "2019-01-01",
+            "answers": [
+              {
+                "answer": "answer1",
+                "answerBy": "answerBy1",
+                "answerAt": "2018-12-12",
+                "votes": "55",
+                "commets": [
+                  {
+                    "answer": "commet1",
+                    "answerBy": "answerByCommet1",
+                    "answerAt": "2018-12-12"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
+            "detail": "detail1",
+            "viewers": "155",
+            "votes": "234",
+            "latestStatus": "Sandy于3分钟前回答",
+            "askedBy": "sandyHe4",
+            "askedAt": "2019-01-01",
+            "answers": [
+              {
+                "answer": "answer1",
+                "answerBy": "answerBy1",
+                "answerAt": "2018-12-12",
+                "votes": "55",
+                "commets": [
+                  {
+                    "answer": "commet1",
+                    "answerBy": "answerByCommet1",
+                    "answerAt": "2018-12-12"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
+            "detail": "detail1",
+            "viewers": "155",
+            "votes": "234",
+            "latestStatus": "Sandy于3分钟前回答",
+            "askedBy": "sandyHe5",
+            "askedAt": "2019-01-01",
+            "answers": [
+              {
+                "answer": "answer1",
+                "answerBy": "answerBy1",
+                "answerAt": "2018-12-12",
+                "votes": "55",
+                "commets": [
+                  {
+                    "answer": "commet1",
+                    "answerBy": "answerByCommet1",
+                    "answerAt": "2018-12-12"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+  """;
+  List<Post> posts = Post.fromJson(postsJson);
 
   @override
   void initState() {
@@ -150,7 +303,7 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
         children: <Widget>[
           new JobsTab(fullTime, '全职'),
           new JobsTab(partTime, '兼职/实习'),
-          new MessageTab(),
+          new MessageTab(posts, '交流'),
           mine
         ],
         controller: _controller,
