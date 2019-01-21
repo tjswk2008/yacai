@@ -271,7 +271,8 @@ class ResumeDetailState extends State<ResumeDetail>
               top: 0.0,
               left: -10.0,
               child: new Container(
-                height: 45,
+                height: 60,
+                padding: const EdgeInsets.only(top: 15.0),
                 decoration: new BoxDecoration(
                   color: Colors.white,
                 ),
