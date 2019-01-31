@@ -5,6 +5,7 @@ import 'package:flutter_app/app/model/post.dart';
 import 'package:flutter_app/app/view/jobs_view.dart';
 import 'package:flutter_app/app/view/message_view.dart';
 import 'package:flutter_app/app/view/mine_view.dart';
+import 'package:dio/dio.dart';
 
 const double _kTabTextSize = 11.0;
 const int INDEX_JOB = 0;
@@ -23,105 +24,6 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
   TabController _controller;
   VoidCallback onChanged;
   Widget mine = new MineTab();
-  static String jobJson = """
-      {
-        "list": [
-          {
-            "name": "CFO",
-            "cname": "木间旅游",
-            "salary": "25k-50k",
-            "username": "代铮",
-            "title": "CEO",
-            "pubTime": "2019-01-01",
-            "addrSummarize": "上海·五角场",
-            "addrDetail": "上海市 杨浦区 沪东金融大厦",
-            "timereq": "5-10年",
-            "academic": "本科",
-            "detail": "百度（纳斯达克：BIDU），全球最大的中文搜索引擎、最大的中文网站。1999年底,身在美国硅谷的李彦宏看到了中国互联网及中文搜索引擎服务的巨大发展潜力，抱着技术改变世界的梦想，他毅然辞掉硅谷的高薪工作，携搜索引擎专利技术，于 2000年1月1日在中关村创建了百度公司。“百度”二字,来自于八百年前南宋词人辛弃疾的一句词：众里寻他千百度。这句话描述了词人对理想的执着追求。"
-          },
-          {
-            "name": "财务总监",
-            "cname": "安心记加班",
-            "salary": "25k-50k",
-            "username": "姚笛",
-            "title": "创始人 & CEO",
-            "pubTime": "2019-01-01",
-            "addrSummarize": "上海·五角场",
-            "addrDetail": "上海市 杨浦区 沪东金融大厦",
-            "timereq": "5-10年",
-            "academic": "本科",
-            "detail": "百度（纳斯达克：BIDU），全球最大的中文搜索引擎、最大的中文网站。1999年底,身在美国硅谷的李彦宏看到了中国互联网及中文搜索引擎服务的巨大发展潜力，抱着技术改变世界的梦想，他毅然辞掉硅谷的高薪工作，携搜索引擎专利技术，于 2000年1月1日在中关村创建了百度公司。“百度”二字,来自于八百年前南宋词人辛弃疾的一句词：众里寻他千百度。这句话描述了词人对理想的执着追求。"
-          },
-          {
-            "name": "财务经理",
-            "cname": "绿谷泰坤堂",
-            "salary": "20k-40k",
-            "username": "Cici",
-            "title": "人事",
-            "pubTime": "2019-01-01",
-            "addrSummarize": "上海·五角场",
-            "addrDetail": "上海市 杨浦区 沪东金融大厦",
-            "timereq": "5-10年",
-            "academic": "本科",
-            "detail": "百度（纳斯达克：BIDU），全球最大的中文搜索引擎、最大的中文网站。1999年底,身在美国硅谷的李彦宏看到了中国互联网及中文搜索引擎服务的巨大发展潜力，抱着技术改变世界的梦想，他毅然辞掉硅谷的高薪工作，携搜索引擎专利技术，于 2000年1月1日在中关村创建了百度公司。“百度”二字,来自于八百年前南宋词人辛弃疾的一句词：众里寻他千百度。这句话描述了词人对理想的执着追求。"
-          },
-          {
-            "name": "财务经理",
-            "cname": "智慧芽",
-            "salary": "25k-30k",
-            "username": "樊燕",
-            "title": "招聘者",
-            "pubTime": "2019-01-01",
-            "addrSummarize": "上海·五角场",
-            "addrDetail": "上海市 杨浦区 沪东金融大厦",
-            "timereq": "5-10年",
-            "academic": "本科",
-            "detail": "百度（纳斯达克：BIDU），全球最大的中文搜索引擎、最大的中文网站。1999年底,身在美国硅谷的李彦宏看到了中国互联网及中文搜索引擎服务的巨大发展潜力，抱着技术改变世界的梦想，他毅然辞掉硅谷的高薪工作，携搜索引擎专利技术，于 2000年1月1日在中关村创建了百度公司。“百度”二字,来自于八百年前南宋词人辛弃疾的一句词：众里寻他千百度。这句话描述了词人对理想的执着追求。"
-          },
-          {
-            "name": "品牌财务经理",
-            "cname": "京正投资",
-            "salary": "20k-25k",
-            "username": "李超",
-            "title": "招聘者",
-            "pubTime": "2019-01-01",
-            "addrSummarize": "上海·五角场",
-            "addrDetail": "上海市 杨浦区 沪东金融大厦",
-            "timereq": "5-10年",
-            "academic": "本科",
-            "detail": "百度（纳斯达克：BIDU），全球最大的中文搜索引擎、最大的中文网站。1999年底,身在美国硅谷的李彦宏看到了中国互联网及中文搜索引擎服务的巨大发展潜力，抱着技术改变世界的梦想，他毅然辞掉硅谷的高薪工作，携搜索引擎专利技术，于 2000年1月1日在中关村创建了百度公司。“百度”二字,来自于八百年前南宋词人辛弃疾的一句词：众里寻他千百度。这句话描述了词人对理想的执着追求。"
-          },
-          {
-            "name": "架构师（Android）",
-            "cname": "蚂蚁金服",
-            "salary": "25k-45k",
-            "username": "Claire",
-            "title": "HR",
-            "pubTime": "2019-01-01",
-            "addrSummarize": "上海·五角场",
-            "addrDetail": "上海市 杨浦区 沪东金融大厦",
-            "timereq": "5-10年",
-            "academic": "本科",
-            "detail": "百度（纳斯达克：BIDU），全球最大的中文搜索引擎、最大的中文网站。1999年底,身在美国硅谷的李彦宏看到了中国互联网及中文搜索引擎服务的巨大发展潜力，抱着技术改变世界的梦想，他毅然辞掉硅谷的高薪工作，携搜索引擎专利技术，于 2000年1月1日在中关村创建了百度公司。“百度”二字,来自于八百年前南宋词人辛弃疾的一句词：众里寻他千百度。这句话描述了词人对理想的执着追求。"
-          },
-          {
-            "name": "资深Android架构师",
-            "cname": "今日头条",
-            "salary": "40k-60k",
-            "username": "Kimi",
-            "title": "HRBP",
-            "pubTime": "2019-01-01",
-            "addrSummarize": "上海·五角场",
-            "addrDetail": "上海市 杨浦区 沪东金融大厦",
-            "timereq": "5-10年",
-            "academic": "本科",
-            "detail": "百度（纳斯达克：BIDU），全球最大的中文搜索引擎、最大的中文网站。1999年底,身在美国硅谷的李彦宏看到了中国互联网及中文搜索引擎服务的巨大发展潜力，抱着技术改变世界的梦想，他毅然辞掉硅谷的高薪工作，携搜索引擎专利技术，于 2000年1月1日在中关村创建了百度公司。“百度”二字,来自于八百年前南宋词人辛弃疾的一句词：众里寻他千百度。这句话描述了词人对理想的执着追求。"
-          }
-        ]
-      }
-  """;
-  List<Job> fullTime = Job.fromJson(jobJson);
-  List<Job> partTime = Job.fromJson(jobJson);
   
   static String postsJson = """
       {
@@ -289,6 +191,8 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
       }
   """;
   List<Post> posts = Post.fromJson(postsJson);
+  List<Job> fullTime = [];
+  List<Job> partTime = [];
 
   @override
   void initState() {
@@ -302,6 +206,15 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
     };
 
     _controller.addListener(onChanged);
+
+    Dio().get("http://192.168.140.56:3000/api/jobs/jobsList")
+      .then((Response response) {
+        setState(() {
+          fullTime = Job.fromJson(response.data['list']);
+          partTime = Job.fromJson(response.data['list']);
+        });
+      })
+     .catchError((e) => 499);
   }
 
   @override

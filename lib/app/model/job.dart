@@ -29,9 +29,9 @@ class Job {
     @required this.detail
   });
 
-  static List<Job> fromJson(String json) {
+  static List<Job> fromJson(List list) {
     List<Job> _jobs = [];
-    for (var value in new JsonDecoder().convert(json)['list']) {
+    for (var value in list) {
       _jobs.add(Job.fromMap(value));
     }
     return _jobs;
