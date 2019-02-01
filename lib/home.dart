@@ -5,7 +5,6 @@ import 'package:flutter_app/app/model/post.dart';
 import 'package:flutter_app/app/view/jobs_view.dart';
 import 'package:flutter_app/app/view/message_view.dart';
 import 'package:flutter_app/app/view/mine_view.dart';
-import 'package:dio/dio.dart';
 
 const double _kTabTextSize = 11.0;
 const int INDEX_JOB = 0;
@@ -24,175 +23,6 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
   TabController _controller;
   VoidCallback onChanged;
   Widget mine = new MineTab();
-  
-  static String postsJson = """
-      {
-        "list": [
-          {
-            "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
-            "detail": "请教一下大家新的个税政策出台后，工资该如何计算呢？detail1",
-            "viewers": "155",
-            "votes": "234",
-            "latestStatus": "Sandy于3分钟前回答",
-            "askedBy": "sandyHe",
-            "askedAt": "2019-01-01",
-            "answers": [
-              {
-                "answer": "请教一下大家新的个税政策出台后，工资该如何计算呢？answer1",
-                "answerBy": "answerBy1",
-                "answerAt": "2018-12-12",
-                "votes": "55",
-                "commets": [
-                  {
-                    "answer": "请教一下大家新的个税政策出台后，工资该如何计算呢？commet1",
-                    "answerBy": "byCommet1",
-                    "answerAt": "2018-12-12"
-                  },
-                  {
-                    "answer": "请教一下大家新的个税政策出台后，工资该如何计算呢？commet2",
-                    "answerBy": "andy Liao",
-                    "answerAt": "2018-12-12"
-                  },
-                  {
-                    "answer": "请教一下大家新的个税政策出台后，工资该如何计算呢？commet1",
-                    "answerBy": "byCommet1",
-                    "answerAt": "2018-12-12"
-                  },
-                  {
-                    "answer": "请教一下大家新的个税政策出台后，工资该如何计算呢？commet2",
-                    "answerBy": "andy Liao",
-                    "answerAt": "2018-12-12"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "title": "请教一下大家该怎么写兼职简历呢",
-            "detail": "detail1",
-            "viewers": "155",
-            "votes": "234",
-            "latestStatus": "Sandy He在3分钟前回答",
-            "askedBy": "sandyHe1",
-            "askedAt": "2019-01-01",
-            "answers": [
-              {
-                "answer": "answer1",
-                "answerBy": "answerBy1",
-                "answerAt": "2018-12-12",
-                "votes": "55",
-                "commets": [
-                  {
-                    "answer": "commet1",
-                    "answerBy": "answerByCommet1",
-                    "answerAt": "2018-12-12"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
-            "detail": "detail1",
-            "viewers": "155",
-            "votes": "234",
-            "latestStatus": "Sandy于3分钟前回答",
-            "askedBy": "sandyHe2",
-            "askedAt": "2019-01-01",
-            "answers": [
-              {
-                "answer": "answer1",
-                "answerBy": "answerBy1",
-                "answerAt": "2018-12-12",
-                "votes": "55",
-                "commets": [
-                  {
-                    "answer": "commet1",
-                    "answerBy": "answerByCommet1",
-                    "answerAt": "2018-12-12"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
-            "detail": "detail1",
-            "viewers": "155",
-            "votes": "234",
-            "latestStatus": "Sandy于3分钟前回答",
-            "askedBy": "sandyHe3",
-            "askedAt": "2019-01-01",
-            "answers": [
-              {
-                "answer": "answer1",
-                "answerBy": "answerBy1",
-                "answerAt": "2018-12-12",
-                "votes": "55",
-                "commets": [
-                  {
-                    "answer": "commet1",
-                    "answerBy": "answerByCommet1",
-                    "answerAt": "2018-12-12"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
-            "detail": "detail1",
-            "viewers": "155",
-            "votes": "234",
-            "latestStatus": "Sandy于3分钟前回答",
-            "askedBy": "sandyHe4",
-            "askedAt": "2019-01-01",
-            "answers": [
-              {
-                "answer": "answer1",
-                "answerBy": "answerBy1",
-                "answerAt": "2018-12-12",
-                "votes": "55",
-                "commets": [
-                  {
-                    "answer": "commet1",
-                    "answerBy": "answerByCommet1",
-                    "answerAt": "2018-12-12"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "title": "请教一下大家新的个税政策出台后，工资该如何计算呢？",
-            "detail": "detail1",
-            "viewers": "155",
-            "votes": "234",
-            "latestStatus": "Sandy于3分钟前回答",
-            "askedBy": "sandyHe5",
-            "askedAt": "2019-01-01",
-            "answers": [
-              {
-                "answer": "answer1",
-                "answerBy": "answerBy1",
-                "answerAt": "2018-12-12",
-                "votes": "55",
-                "commets": [
-                  {
-                    "answer": "commet1",
-                    "answerBy": "answerByCommet1",
-                    "answerAt": "2018-12-12"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-  """;
-  List<Post> posts = Post.fromJson(postsJson);
-  List<Job> fullTime = [];
-  List<Job> partTime = [];
 
   @override
   void initState() {
@@ -206,15 +36,6 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
     };
 
     _controller.addListener(onChanged);
-
-    Dio().get("http://192.168.140.56:3000/api/jobs/jobsList")
-      .then((Response response) {
-        setState(() {
-          fullTime = Job.fromJson(response.data['list']);
-          partTime = Job.fromJson(response.data['list']);
-        });
-      })
-     .catchError((e) => 499);
   }
 
   @override
@@ -229,9 +50,9 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
     return new Scaffold(
       body: new TabBarView(
         children: <Widget>[
-          new JobsTab(fullTime, '全职'),
-          new JobsTab(partTime, '兼职/实习'),
-          new MessageTab(posts, '交流'),
+          new JobsTab(1, '全职'),
+          new JobsTab(2, '兼职/实习'),
+          new MessageTab('交流'),
           mine
         ],
         controller: _controller,

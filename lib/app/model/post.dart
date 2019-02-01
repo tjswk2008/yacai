@@ -4,8 +4,8 @@ import 'dart:convert';
 class Post {
   String title; // 标题
   String detail; // 详情
-  String viewers; // 已读人数
-  String votes; // 点赞人数
+  int viewers; // 已读人数
+  int votes; // 点赞人数
   String latestStatus; // 最新状态
   String askedBy; // 提问者
   String askedAt; // 提问时间
@@ -22,9 +22,9 @@ class Post {
     @required this.answers,
   });
 
-  static List<Post> fromJson(String json) {
+  static List<Post> fromJson(List list) {
     List<Post> _posts = [];
-    for (var value in new JsonDecoder().convert(json)['list']) {
+    for (var value in list) {
       _posts.add(Post.fromMap(value));
     }
     return _posts;
@@ -105,5 +105,3 @@ class Commet{
     );
   }
 }
-
-

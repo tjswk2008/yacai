@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/app/item/postlist_item.dart';
 import 'package:flutter_app/app/model/post.dart';
 import 'package:flutter_app/app/view/post/post_detail.dart';
+import 'package:flutter_app/app/api/api.dart';
+import 'package:dio/dio.dart';
 
 class MessageTab extends StatefulWidget {
-  final List<Post> _posts;
   final String _title;
 
-  MessageTab(this._posts, this._title);
+  MessageTab(this._title);
   @override
   PostList createState() => new PostList();
 }
@@ -44,9 +45,15 @@ class PostList extends State<MessageTab> {
   }
 
   void getPostList() {
-    setState(() {
-      _posts = widget._posts;
-    });
+    Api().getPostList()
+      .then((Response response) {
+        setState(() {
+          _posts = Post.fromJson(response.data['list']);
+        });
+      })
+     .catchError((e) {
+       print(e);
+     });
   }
 
   navPostDetail(Post post) {

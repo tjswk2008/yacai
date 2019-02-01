@@ -3,13 +3,15 @@ import 'package:flutter_app/app/item/joblist_item.dart';
 import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/app/model/company.dart';
 import 'package:flutter_app/app/view/job/job_detail.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_app/app/api/api.dart';
 // import 'dart:developer';
 
 class JobsTab extends StatefulWidget {
-  final List<Job> _jobs;
+  final int _type;
   final String _title;
 
-  JobsTab(this._jobs, this._title);
+  JobsTab(this._type, this._title);
   @override
   JobList createState() => new JobList();
 }
@@ -52,23 +54,29 @@ class JobList extends State<JobsTab> {
     );
 
     var jobItem = new InkWell(
-        onTap: () => navCompanyDetail(company, job),
+        onTap: () => navJobDetail(company, job),
         child: new JobListItem(job));
 
     return jobItem;
   }
 
   void getJobList() {
-    setState(() {
-      _jobs = widget._jobs;
-    });
+    Api().getJobList(widget._type)
+      .then((Response response) {
+        setState(() {
+          _jobs = Job.fromJson(response.data['list']);
+        });
+      })
+     .catchError((e) {
+       print(e);
+     });
   }
 
-  navCompanyDetail(Company company, Job job) {
+  navJobDetail(Company company, Job job) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          return new JobDetail(job, company);
+          return new JobDetail(job);
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(

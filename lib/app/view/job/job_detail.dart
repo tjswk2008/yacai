@@ -6,15 +6,15 @@ import 'package:flutter_app/app/view/job/job_base.dart';
 import 'package:flutter_app/app/view/job/job_desc.dart';
 import 'package:flutter_app/app/view/job/job_addr.dart';
 import 'package:flutter_app/app/view/company/company_detail.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_app/app/api/api.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
 class JobDetail extends StatefulWidget {
-
   final Job _job;
-  final Company _company;
 
-  JobDetail(this._job, this._company);
+  JobDetail(this._job);
 
   @override
   JobDetailState createState() => new JobDetailState();
@@ -24,10 +24,20 @@ class JobDetailState extends State<JobDetail>
     with TickerProviderStateMixin {
 
   VoidCallback onChanged;
+  Company _company;
 
   @override
   void initState() {
     super.initState();
+    Api().getCompanyDetail(widget._job.companyId)
+      .then((Response response) {
+        setState(() {
+          _company = Company.fromMap(response.data['data']);
+        });
+      })
+     .catchError((e) {
+       print(e);
+     });
   }
 
   @override
@@ -55,8 +65,8 @@ class JobDetailState extends State<JobDetail>
                           new JobAddr(widget._job),
                           new Divider(),
                           new InkWell(
-                              onTap: () => navCompanyDetail(widget._company),
-                              child: new CompanyInfo(widget._company)
+                              onTap: () => navCompanyDetail(_company),
+                              child: _company == null ? new Container() : new CompanyInfo(_company)
                           )
                         ],
                       ),

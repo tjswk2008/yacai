@@ -14,6 +14,7 @@ class Job {
   final String timereq; // 需要的工作年限
   final String academic; // 需要的学历
   final String detail; // 职位详情
+  final int companyId; // 公司Id
 
   Job({
     @required this.name,
@@ -26,7 +27,8 @@ class Job {
     @required this.addrDetail,
     @required this.timereq,
     @required this.academic,
-    @required this.detail
+    @required this.detail,
+    @required this.companyId
   });
 
   static List<Job> fromJson(List list) {
@@ -50,6 +52,7 @@ class Job {
         timereq: map['timereq'],
         academic: map['academic'],
         detail: map['detail'],
+        companyId: map['companyId']
     );
   }
 }

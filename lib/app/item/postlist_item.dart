@@ -53,7 +53,7 @@ class PostListItem extends StatelessWidget {
                       right: 10.0
                     ),
                     child: new Text(
-                        post.votes,
+                        post.votes.toString(),
                         style: new TextStyle(
                             color: Colors.grey)),
                   ),
@@ -64,7 +64,7 @@ class PostListItem extends StatelessWidget {
                     ),
                     child: new Icon(Icons.face),
                   ),
-                  new Text(post.viewers,
+                  new Text(post.viewers.toString(),
                         style: new TextStyle(color: Colors.grey)),
                 ],
               ),

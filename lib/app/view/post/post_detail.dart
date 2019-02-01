@@ -75,7 +75,7 @@ class PostDetailState extends State<PostDetail>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   new Icon(Icons.favorite),
-                                  new Text(widget._post.votes),
+                                  new Text(widget._post.votes.toString()),
                                 ],
                               )
                             ],
