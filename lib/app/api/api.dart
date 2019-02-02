@@ -16,7 +16,7 @@ class Api {
   }
 
   Future<Response<T>> login<T>(String account, String pwd) {
-    return Dio().post(serverAddr + "user/login", data: {account: account, pwd: pwd});
+    return Dio().post(serverAddr + "user/login", data: {"account": account, "pwd": pwd});
   }
 
   Future<Response<T>> getUserInfo<T>(int id) {

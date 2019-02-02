@@ -3,6 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/component/common_button.dart';
 import 'package:flutter_app/app/model/userInfo.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_app/actions/actions.dart';
+import 'package:flutter_app/app/model/app.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_app/app/api/api.dart';
 
 // 新的登录界面
 class NewLoginPage extends StatefulWidget {
@@ -35,39 +41,8 @@ class NewLoginPageState extends State<NewLoginPage> {
     super.initState();
   }
 
-  // 自动登录
-  void autoLogin(String account, String pwd) {
-    setState(() {
-      isOnLogin = true;
-    });
-    Navigator.pop(context, new UserInfo(
-      account: account,
-      pwd: pwd
-    ));
-  }
-
   @override
   Widget build(BuildContext context) {
-    var loginBtn = new Builder(builder: (ctx) {
-      return new CommonButton(
-        text: "登录",
-        color: new Color.fromARGB(255, 0, 215, 198),
-        onTap: () {
-          if (isOnLogin) return;
-          // 拿到用户输入的账号密码
-          String username = usernameCtrl.text.trim();
-          String password = passwordCtrl.text.trim();
-          if (username.isEmpty || password.isEmpty) {
-            Scaffold.of(ctx).showSnackBar(new SnackBar(
-              content: new Text("账号和密码不能为空！"),
-            ));
-            return;
-          }
-          // 发送给webview，让webview登录后再取回token
-          autoLogin(username, password);
-        }
-      );
-    });
     var loadingView;
     if (isOnLogin) {
       loadingView = new Center(
@@ -85,71 +60,116 @@ class NewLoginPageState extends State<NewLoginPage> {
     } else {
       loadingView = new Center();
     }
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("登录", style: new TextStyle(color: Colors.white)),
-        iconTheme: new IconThemeData(color: Colors.white),
-      ),
-      body: new Container(
-        padding: const EdgeInsets.all(10.0),
-        child: new Column(
-          children: <Widget>[
-            new Center(child: new Text("请使用帐号密码登录")),
-            new Container(height: 20.0),
-            new Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+    return StoreConnector<AppState, Function(String userName)>(
+      converter: (Store<AppState> store) {
+        return (String userName) => store.dispatch(AddUserNameAction(userName));
+      },
+      builder: (context, callback) {
+        return new Scaffold(
+          appBar: new AppBar(
+            title: new Text("登录", style: new TextStyle(color: Colors.white)),
+            iconTheme: new IconThemeData(color: Colors.white),
+          ),
+          body: new Container(
+            padding: const EdgeInsets.all(10.0),
+            child: new Column(
               children: <Widget>[
-                new Text("用户名："),
-                new Expanded(child: new TextField(
-                  controller: usernameCtrl,
-                  decoration: new InputDecoration(
-                    hintText: "帐号/注册邮箱",
-                    hintStyle: new TextStyle(
-                        color: const Color(0xFF808080)
-                    ),
-                    border: new OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(const Radius.circular(6.0))
-                    ),
-                    contentPadding: const EdgeInsets.all(10.0)
-                  ),
-                ))
-              ],
-            ),
-            new Container(height: 20.0),
-            new Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                new Text("密　码："),
-                new Expanded(child: new TextField(
-                  controller: passwordCtrl,
-                  obscureText: true,
-                  decoration: new InputDecoration(
-                    hintText: "登录密码",
-                    hintStyle: new TextStyle(
-                        color: const Color(0xFF808080)
-                    ),
-                    border: new OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(const Radius.circular(6.0))
-                    ),
-                    contentPadding: const EdgeInsets.all(10.0)
-                  ),
-                ))
-              ],
-            ),
-            new Container(height: 20.0),
-            loginBtn,
-            new Expanded(
-              child: new Column(
-                children: <Widget>[
-                  new Expanded(
-                    child: loadingView
+                new Center(child: new Text("请使用帐号密码登录")),
+                new Container(height: 20.0),
+                new Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    new Text("用户名："),
+                    new Expanded(child: new TextField(
+                      controller: usernameCtrl,
+                      decoration: new InputDecoration(
+                        hintText: "帐号/注册邮箱",
+                        hintStyle: new TextStyle(
+                            color: const Color(0xFF808080)
+                        ),
+                        border: new OutlineInputBorder(
+                            borderRadius: const BorderRadius.all(const Radius.circular(6.0))
+                        ),
+                        contentPadding: const EdgeInsets.all(10.0)
+                      ),
+                    ))
+                  ],
+                ),
+                new Container(height: 20.0),
+                new Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    new Text("密　码："),
+                    new Expanded(child: new TextField(
+                      controller: passwordCtrl,
+                      obscureText: true,
+                      decoration: new InputDecoration(
+                        hintText: "登录密码",
+                        hintStyle: new TextStyle(
+                            color: const Color(0xFF808080)
+                        ),
+                        border: new OutlineInputBorder(
+                            borderRadius: const BorderRadius.all(const Radius.circular(6.0))
+                        ),
+                        contentPadding: const EdgeInsets.all(10.0)
+                      ),
+                    ))
+                  ],
+                ),
+                new Container(height: 20.0),
+                new Builder(builder: (ctx) {
+                  return new CommonButton(
+                    text: "登录",
+                    color: new Color.fromARGB(255, 0, 215, 198),
+                    onTap: () {
+                      if (isOnLogin) return;
+                      // 拿到用户输入的账号密码
+                      String username = usernameCtrl.text.trim();
+                      String password = passwordCtrl.text.trim();
+                      if (username.isEmpty || password.isEmpty) {
+                        Scaffold.of(ctx).showSnackBar(new SnackBar(
+                          content: new Text("账号和密码不能为空！"),
+                        ));
+                        return;
+                      }
+                      // 发送给webview，让webview登录后再取回token
+                      Api().login(username, password)
+                        .then((Response response) {
+                          if(response.data['code'] != 1) {
+                            Scaffold.of(ctx).showSnackBar(new SnackBar(
+                              content: new Text("账号或密码不正确！"),
+                            ));
+                            return;
+                          }
+                          setState(() {
+                            isOnLogin = true;
+                          });
+                          callback(username);
+                          Navigator.pop(context, new UserInfo(
+                            account: username,
+                            pwd: password
+                          ));
+                        })
+                        .catchError((e) {
+                          print(e);
+                        });
+                    }
+                  );
+                }),
+                new Expanded(
+                  child: new Column(
+                    children: <Widget>[
+                      new Expanded(
+                        child: loadingView
+                      )
+                    ],
                   )
-                ],
-              )
-            )
-          ],
-        ),
-      )
+                )
+              ],
+            ),
+          )
+        );
+      }
     );
   }
 }
