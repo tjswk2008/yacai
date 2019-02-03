@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class Api {
-  final String serverAddr = "http://192.168.140.56:3000/api/";
+  final String serverAddr = "http://localhost:3000/api/";
 
   Future<Response<T>> getJobList<T>(int type) {
     return Dio().get(serverAddr + "jobs/jobsList?type=" + type.toString());
@@ -16,7 +16,7 @@ class Api {
   }
 
   Future<Response<T>> login<T>(String account, String pwd) {
-    return Dio().post(serverAddr + "user/login", data: {"account": account, "pwd": pwd});
+    return Dio().get(serverAddr + "user/login?account=" + account + "&pwd=" + pwd);
   }
 
   Future<Response<T>> getUserInfo<T>(int id) {
