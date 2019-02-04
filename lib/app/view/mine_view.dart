@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/view/login_view.dart';
 import 'package:flutter_app/app/view/resume/resume_detail.dart';
 import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
-import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/model/app.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_app/app/api/api.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -16,23 +15,13 @@ class MineTab extends StatefulWidget {
 class MineTabState extends State<MineTab> {
 
   final double _appBarHeight = 150.0;
-  String userAvatar;
-  String userName;
-  String jobStatus;
+  String userAvatar = '';
+  String jobStatus = '';
+  Resume resume;
 
   @override
   void initState() {
     super.initState();
-    SharedPreferences.getInstance().then((prefs) {
-      Set keys = prefs.getKeys();
-      if (keys.length != 0) {
-        setState(() {
-          userAvatar = 'https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg';
-          userName = 'Kimi He';
-          jobStatus = '在职-考虑机会';
-        });
-      }
-    });
   }
 
   @override
@@ -75,7 +64,7 @@ class MineTabState extends State<MineTab> {
                                 left: 30.0,
                                 right: 20.0,
                               ),
-                              child: userName == ''
+                              child: userAvatar == ''
                                 ? new Image.asset(
                                     "assets/images/ic_avatar_default.png",
                                     width: 60.0,
@@ -102,7 +91,7 @@ class MineTabState extends State<MineTab> {
                                                 color: Colors.white, fontSize: 18.0))
                                     ),
                                     new Text(
-                                        userName == '' ? "" : jobStatus,
+                                        jobStatus == '' ? "" : jobStatus,
                                         style: new TextStyle(
                                             color: Colors.white, fontSize: 12.0)
                                     ),
@@ -217,80 +206,22 @@ class MineTabState extends State<MineTab> {
         return new NewLoginPage();
       }))
       .then((result) {
-        // result为"refresh"代表登录成功
-        if (result != null) {
-          setState(() {
-            userAvatar = 'https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg';
-            userName = 'Kimi He';
-            jobStatus = '在职-考虑机会';
+        if(result == null) return;
+        Api().getUserInfo(result)
+          .then((Response response) {
+            resume = Resume.fromMap(response.data['info']);
+            setState(() {
+              userAvatar = response.data['info']['avatar'];
+              jobStatus = response.data['info']['jobStatus'];
+            });
+          })
+          .catchError((e) {
+            print(e);
           });
-        }
       });
   }
 
   _navToResumeDetail() {
-    List<CompanyExperience> companyExperiences = new List<CompanyExperience>();
-    companyExperiences.add(new CompanyExperience(
-      cname: '阿里巴巴', // 公司名称
-      industry: '电商', // 行业
-      startTime: '2014-07', // 该单位的工作开始时间
-      endTime: '至今', // 该单位的工作结束时间
-      jobTitle: '会计', // 职位名称
-      detail: '各项活动财务核算', // 工作内容
-      performance: '使用excel函数加快核算流程', // 业绩
-    ));
-
-    List<Project> projects = new List<Project>();
-    projects.add(new Project(
-      name: '聚划算账务处理', // 项目名称
-      role: '会计', // 角色
-      startTime: '2014-07', // 该项目的开始时间
-      endTime: '至今', // 该项目的结束时间
-      detail: '聚划算账务处理', // 项目描述
-      performance: '使用excel函数加快核算流程', // 业绩
-    ));
-
-    List<Education> educations = new List<Education>();
-    educations.add(new Education(
-      name: '上海财大', // 学校名称
-      academic: '大学本科', // 学历
-      major: '会计', // 专业
-      endTime: '2014-07', // 就读该学校的结束时间
-      startTime: '2010-09', // 就读该学校的开始时间
-      detail: '曾任学生会主席，品学兼优',
-    ));
-
-    List<Certification> certificates = new List<Certification>();
-    certificates.add(new Certification(
-      name: '注册会计师', // 证书名
-      industry: '国家财务局', // 颁发单位
-      qualifiedTime: '2015-10', // 取得时间
-      code: 'A156861315348743135X', // 证书编号
-    ));
-
-    Resume resume = new Resume(
-      personalInfo: new PersonalInfo(
-        name: 'Andy', // 姓名
-        gender: '男', // 性别
-        firstJobTime: '2007.07', // 首次参加工作时间
-        avatar: 'https://img.bosszhipin.com/beijin/mcs/useravatar/20171211/4d147d8bb3e2a3478e20b50ad614f4d02062e3aec7ce2519b427d24a3f300d68_s.jpg', // 头像
-        wechatId: 'tjswk2008', // 微信号
-        birthDay: '1986.01', // 出生年月
-        academic: '本科', // 学历
-        summarize: '超强的学习力，有规划，为人nice', // 优势
-      ), // 个人信息
-      jobStatus: '在职-考虑机会',
-      jobExpect: new JobExpect(
-        jobTitle: '架构师', // 职位
-        industry: '电子商务, 新零售, 互联网', // 行业
-        city: '上海', // 工作城市
-        salary: '35k-40k', // 薪资待遇
-      ),
-      companyExperiences: companyExperiences,
-      projects: projects, // 发布人
-      educations: educations, // 发布人
-      certificates: certificates, // 证书列表
-    );
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {

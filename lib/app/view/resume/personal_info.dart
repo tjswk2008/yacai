@@ -61,7 +61,7 @@ class PersonalInfoView extends StatelessWidget {
                   ),
 
                   new CircleAvatar(
-                    radius: 35.0,
+                    radius: 25.0,
                     backgroundImage: new NetworkImage(personalInfo.avatar)
                   )
                 ],

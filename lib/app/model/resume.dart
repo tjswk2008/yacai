@@ -18,6 +18,18 @@ class Resume {
     this.educations,
     this.certificates
   });
+
+  static Resume fromMap(Map map) {
+    return new Resume(
+        personalInfo: PersonalInfo.fromMap(map),
+        jobStatus: map['jobStatus'],
+        jobExpect: JobExpect.fromMap(map),
+        companyExperiences: CompanyExperience.fromList(map['companyExperience']),
+        projects: Project.fromList(map['project']),
+        educations: Education.fromList(map['education']),
+        certificates: Certification.fromList(map['certification']),
+    );
+  }
 }
 
 class Education{
@@ -36,6 +48,25 @@ class Education{
     this.major,
     this.detail
   });
+
+  static List<Education> fromList(List list) {
+    List<Education> _educations = [];
+    for (var value in list) {
+      _educations.add(Education.fromMap(value));
+    }
+    return _educations;
+  }
+
+  static Education fromMap(Map map) {
+    return new Education(
+        name: map['name'],
+        academic: map['academic'],
+        startTime: map['startTime'],
+        endTime: map['endTime'],
+        major: map['major'],
+        detail: map['detail']
+    );
+  }
 }
 
 class Certification{
@@ -50,6 +81,23 @@ class Certification{
     this.qualifiedTime,
     this.code
   });
+
+  static List<Certification> fromList(List list) {
+    List<Certification> _certifications = [];
+    for (var value in list) {
+      _certifications.add(Certification.fromMap(value));
+    }
+    return _certifications;
+  }
+
+  static Certification fromMap(Map map) {
+    return new Certification(
+        name: map['name'],
+        industry: map['industry'],
+        qualifiedTime: map['qualifiedTime'],
+        code: map['code']
+    );
+  }
 }
 
 class Project{
@@ -68,6 +116,25 @@ class Project{
     this.detail,
     this.performance
   });
+
+  static List<Project> fromList(List list) {
+    List<Project> _projects = [];
+    for (var value in list) {
+      _projects.add(Project.fromMap(value));
+    }
+    return _projects;
+  }
+
+  static Project fromMap(Map map) {
+    return new Project(
+        name: map['name'],
+        role: map['role'],
+        startTime: map['startTime'],
+        endTime: map['endTime'],
+        detail: map['detail'],
+        performance: map['performance']
+    );
+  }
 }
 
 class CompanyExperience{
@@ -88,6 +155,26 @@ class CompanyExperience{
     this.detail,
     this.performance
   });
+
+  static List<CompanyExperience> fromList(List list) {
+    List<CompanyExperience> _companyExperiences = [];
+    for (var value in list) {
+      _companyExperiences.add(CompanyExperience.fromMap(value));
+    }
+    return _companyExperiences;
+  }
+
+  static CompanyExperience fromMap(Map map) {
+    return new CompanyExperience(
+        cname: map['cname'],
+        industry: map['industry'],
+        startTime: map['startTime'],
+        endTime: map['endTime'],
+        jobTitle: map['jobTitle'],
+        detail: map['detail'],
+        performance: map['performance']
+    );
+  }
 }
 
 class JobExpect{
@@ -102,6 +189,15 @@ class JobExpect{
     this.city,
     this.salary
   });
+
+  static JobExpect fromMap(Map map) {
+    return new JobExpect(
+        jobTitle: map['expectJobTitle'],
+        industry: map['expectIndustry'],
+        city: map['expectCity'],
+        salary: map['expectSalary']
+    );
+  }
 }
 
 class PersonalInfo {
@@ -124,4 +220,17 @@ class PersonalInfo {
     this.summarize,
     this.academic,
   });
+
+  static PersonalInfo fromMap(Map map) {
+    return new PersonalInfo(
+        name: map['name'],
+        gender: map['gender'],
+        firstJobTime: map['firstJobTime'],
+        avatar: map['avatar'],
+        wechatId: map['wechatId'],
+        birthDay: map['birthDay'],
+        summarize: map['summarize'],
+        academic: map['academic']
+    );
+  }
 }

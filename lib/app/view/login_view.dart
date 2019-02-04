@@ -145,10 +145,7 @@ class NewLoginPageState extends State<NewLoginPage> {
                             isOnLogin = true;
                           });
                           callback(username);
-                          Navigator.pop(context, new UserInfo(
-                            account: username,
-                            pwd: password
-                          ));
+                          Navigator.pop(context, response.data['id']);
                         })
                         .catchError((e) {
                           print(e);
