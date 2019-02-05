@@ -6,6 +6,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
+import 'package:flutter_app/actions/actions.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -17,7 +18,6 @@ class MineTabState extends State<MineTab> {
   final double _appBarHeight = 150.0;
   String userAvatar = '';
   String jobStatus = '';
-  Resume resume;
 
   @override
   void initState() {
@@ -26,9 +26,9 @@ class MineTabState extends State<MineTab> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, String>(
-      converter: (store) => store.state.userName,
-      builder: (context, userName) {
+    return StoreConnector<AppState, AppState>(
+      converter: (store) => store.state,
+      builder: (context, appState) {
         return new Scaffold(
           backgroundColor: new Color.fromARGB(255, 242, 242, 245),
           body: new CustomScrollView(
@@ -52,7 +52,7 @@ class MineTabState extends State<MineTab> {
 
                       new GestureDetector(
                         onTap: () {
-                          if(userName != '') return;
+                          if(appState.userName != '') return;
                           _login();
                         },
                         child: new Row(
@@ -64,14 +64,14 @@ class MineTabState extends State<MineTab> {
                                 left: 30.0,
                                 right: 20.0,
                               ),
-                              child: userAvatar == ''
+                              child: appState.resume == null || appState.resume.personalInfo.avatar == ''
                                 ? new Image.asset(
                                     "assets/images/ic_avatar_default.png",
                                     width: 60.0,
                                   )
                                 : new CircleAvatar(
                                   radius: 35.0,
-                                  backgroundImage: new NetworkImage(userAvatar)
+                                  backgroundImage: new NetworkImage(appState.resume.personalInfo.avatar)
                                 )
                             ),
 
@@ -86,12 +86,12 @@ class MineTabState extends State<MineTab> {
                                           bottom: 10.0,
                                         ),
                                         child: new Text(
-                                            userName == '' ? "点击头像登录" : userName,
+                                            appState.userName == '' ? "点击头像登录" : appState.userName,
                                             style: new TextStyle(
                                                 color: Colors.white, fontSize: 18.0))
                                     ),
                                     new Text(
-                                        jobStatus == '' ? "" : jobStatus,
+                                        appState.resume == null || appState.resume.jobStatus == '' ? "" : appState.resume.jobStatus,
                                         style: new TextStyle(
                                             color: Colors.white, fontSize: 12.0)
                                     ),
@@ -110,7 +110,9 @@ class MineTabState extends State<MineTab> {
               new SliverList(
                   delegate: new SliverChildListDelegate(<Widget>[
                     new InkWell(
-                      onTap: _navToResumeDetail,
+                      onTap: () {
+                        _navToResumeDetail(appState.resume);
+                      },
                       child: new Container(
                         height: 45.0,
                         margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -209,11 +211,8 @@ class MineTabState extends State<MineTab> {
         if(result == null) return;
         Api().getUserInfo(result)
           .then((Response response) {
-            resume = Resume.fromMap(response.data['info']);
-            setState(() {
-              userAvatar = response.data['info']['avatar'];
-              jobStatus = response.data['info']['jobStatus'];
-            });
+            Resume resume = Resume.fromMap(response.data['info']);
+            StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
           })
           .catchError((e) {
             print(e);
@@ -221,7 +220,7 @@ class MineTabState extends State<MineTab> {
       });
   }
 
-  _navToResumeDetail() {
+  _navToResumeDetail(Resume resume) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {

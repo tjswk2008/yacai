@@ -1,6 +1,7 @@
 // Copyright 2018 The Flutter Architecture Sample Authors. All rights reserved.
 // Use of this source code is governed by the MIT license that can be found
 // in the LICENSE file.
+import 'package:flutter_app/app/model/resume.dart';
 
 class DeleteUserNameAction {
   DeleteUserNameAction();
@@ -20,4 +21,10 @@ class AddUserNameAction {
   String toString() {
     return 'AddUserNameAction{todo: $userName}';
   }
+}
+
+class SetResumeAction {
+  final Resume resume;
+
+  SetResumeAction(this.resume);
 }
