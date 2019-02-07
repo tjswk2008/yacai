@@ -26,4 +26,8 @@ class Api {
   Future<Response<T>> addPost<T>(String askedBy, String title, String detail) {
     return Dio().get(serverAddr + "post/addPost?askedBy=" + askedBy + "&title=" + title + "&detail=" + detail);
   }
+
+  Future<Response<T>> addAnswer<T>(String detail, String answerBy, int postId, ) {
+    return Dio().get(serverAddr + "post/addAnswer?answerBy=" + answerBy + "&postId=" + postId.toString() + "&answer=" + detail);
+  }
 }

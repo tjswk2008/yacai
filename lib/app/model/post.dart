@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Post {
+  int id; // post id
   String title; // 标题
   String detail; // 详情
   int viewers; // 已读人数
@@ -12,6 +13,7 @@ class Post {
   List<Answer> answers; // 回复
 
   Post({
+    this.id,
     @required this.title,
     @required this.detail,
     @required this.viewers,
@@ -32,6 +34,7 @@ class Post {
 
   static Post fromMap(Map map) {
     return new Post(
+        id: map["id"],
         title: map['title'],
         detail: map['detail'],
         viewers: map['viewers'],

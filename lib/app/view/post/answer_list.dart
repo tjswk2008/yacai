@@ -85,51 +85,51 @@ class AnswerListState extends State<AnswerList>
                     ],
                   ),
                   new Divider(),
-                  // 追加的评论
-                  new Container(
-                    width: 210.0,
-                    child: new ListView.builder(
-                      shrinkWrap: true,
-                      physics: new NeverScrollableScrollPhysics(),
-                      itemCount: answer.commets.length,
-                      itemBuilder: (BuildContext context, int commetIndex) {
-                        Commet commet = answer.commets[commetIndex];
-                        return new Container(
-                          width: 210.0,
-                          child: new Column(
-                            children: <Widget>[
-                              new RichText(
-                                text: new TextSpan(
-                                  text: commet.answer,
-                                  style: new TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.black
-                                  ),
-                                ),
-                              ),
-                              new Padding(
-                                padding: const EdgeInsets.only(bottom: 5.0),
-                              ),
-                              new Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  new Padding(
-                                    padding: const EdgeInsets.only(
-                                      right: 10.0
-                                    ),
-                                    child: new Text(commet.answerBy),
-                                  ),
-                                  new Text(commet.answerAt),
-                                ],
-                              ),
-                              new Divider()
-                            ],
-                          )
-                        );
-                      },
-                    )
-                  )
+                  // // 追加的评论
+                  // answer.commets != null && answer.commets.length != 0 ? new Container(
+                  //   width: 210.0,
+                  //   child: new ListView.builder(
+                  //     shrinkWrap: true,
+                  //     physics: new NeverScrollableScrollPhysics(),
+                  //     itemCount: answer.commets.length,
+                  //     itemBuilder: (BuildContext context, int commetIndex) {
+                  //       Commet commet = answer.commets[commetIndex];
+                  //       return new Container(
+                  //         width: 210.0,
+                  //         child: new Column(
+                  //           children: <Widget>[
+                  //             new RichText(
+                  //               text: new TextSpan(
+                  //                 text: commet.answer,
+                  //                 style: new TextStyle(
+                  //                     fontSize: 14.0,
+                  //                     color: Colors.black
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             new Padding(
+                  //               padding: const EdgeInsets.only(bottom: 5.0),
+                  //             ),
+                  //             new Row(
+                  //               mainAxisAlignment: MainAxisAlignment.end,
+                  //               mainAxisSize: MainAxisSize.max,
+                  //               children: <Widget>[
+                  //                 new Padding(
+                  //                   padding: const EdgeInsets.only(
+                  //                     right: 10.0
+                  //                   ),
+                  //                   child: new Text(commet.answerBy),
+                  //                 ),
+                  //                 new Text(commet.answerAt),
+                  //               ],
+                  //             ),
+                  //             new Divider()
+                  //           ],
+                  //         )
+                  //       );
+                  //     },
+                  //   )
+                  // ) : new Container()
                 ],
               ),
             )
