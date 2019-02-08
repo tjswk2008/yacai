@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/resume.dart';
+import 'package:flutter_app/app/view/resume/personal_info_edit.dart';
+import 'package:date_format/date_format.dart';
 
 class PersonalInfoView extends StatelessWidget {
 
@@ -12,7 +14,24 @@ class PersonalInfoView extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Padding(
       padding: const EdgeInsets.only(top: 10.0),
-      child: new SizedBox(
+      child: new InkWell(
+        onTap: () {
+          Navigator.of(context).push(new PageRouteBuilder(
+            opaque: false,
+            pageBuilder: (BuildContext context, _, __) {
+              return new PersonalInfoEditView(personalInfo);
+            },
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return new FadeTransition(
+                opacity: animation,
+                child: new SlideTransition(position: new Tween<Offset>(
+                  begin: const Offset(0.0, 1.0),
+                  end: Offset.zero,
+                ).animate(animation), child: child),
+              );
+            }
+          ));
+        },
         child: new Card(
           elevation: 0.0,
           child: new Column(
@@ -45,7 +64,7 @@ class PersonalInfoView extends StatelessWidget {
                           new Padding(
                             padding: const EdgeInsets.only(right: 15.0),
                             child: new Text(
-                              personalInfo.birthDay,
+                              formatDate(DateTime.parse(personalInfo.birthDay), [yyyy, '-', mm]),
                               textAlign: TextAlign.left,
                               style: new TextStyle(fontSize: 15.0),
                             ),
@@ -61,7 +80,7 @@ class PersonalInfoView extends StatelessWidget {
                   ),
 
                   new CircleAvatar(
-                    radius: 25.0,
+                    radius: 35.0,
                     backgroundImage: new NetworkImage(personalInfo.avatar)
                   )
                 ],

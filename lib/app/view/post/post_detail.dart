@@ -140,6 +140,7 @@ class PostDetailState extends State<PostDetail>
                       ),
                       new AnswerList(_post.answers),
                       new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           new Text("您的回答："),
@@ -201,7 +202,7 @@ class PostDetailState extends State<PostDetail>
                                 );
                                 setState(() {
                                   isRequesting = false;
-                                  _post = _post;
+                                  // _post = _post;
                                 });
                               })
                               .catchError((e) {
