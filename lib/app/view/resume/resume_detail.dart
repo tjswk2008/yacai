@@ -7,6 +7,11 @@ import 'package:flutter_app/app/view/resume/company_experience.dart';
 import 'package:flutter_app/app/view/resume/project.dart';
 import 'package:flutter_app/app/view/resume/education.dart';
 import 'package:flutter_app/app/view/resume/certification.dart';
+import 'package:flutter_app/app/view/resume/certification_edit.dart';
+import 'package:flutter_app/app/view/resume/company_experience_edit.dart';
+import 'package:flutter_app/app/view/resume/project_edit.dart';
+import 'package:flutter_app/app/view/resume/education_edit.dart';
+import 'package:date_format/date_format.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -131,9 +136,46 @@ class ResumeDetailState extends State<ResumeDetail>
   }
 
   Widget addButton(String text) {
+    Widget widget;
+    switch (text) {
+      case '添加工作经历':
+        widget = new CompanyExperienceEditView(new CompanyExperience(
+          cname: '',
+          jobTitle: '',
+          detail: '',
+          performance: '',
+          startTime: formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]),
+          endTime: formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd])
+        ));
+        break;
+      case '添加项目经历':
+        widget = new ProjectEditView(new Project());
+        break;
+      case '添加教育经历':
+        widget = new EducationEditView(new Education());
+        break;
+      case '添加证书':
+        widget = new CertificationEditView(new Certification());
+        break;
+      default:
+    }
     return new InkWell(
       onTap: () {
-        print(text);
+        Navigator.of(context).push(new PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (BuildContext context, _, __) {
+            return widget;
+          },
+          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+            return new FadeTransition(
+              opacity: animation,
+              child: new SlideTransition(position: new Tween<Offset>(
+                begin: const Offset(0.0, 1.0),
+                end: Offset.zero,
+              ).animate(animation), child: child),
+            );
+          }
+        ));
       },
       child: new Container(
         height: 30.0,

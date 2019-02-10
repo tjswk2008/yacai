@@ -33,6 +33,7 @@ class Resume {
 }
 
 class Education{
+  int id;
   String name; // 学校名称
   String academic; // 学历
   String major; // 专业
@@ -41,6 +42,7 @@ class Education{
   String detail; // 在校经历
 
   Education({
+    this.id,
     this.name,
     this.academic,
     this.startTime,
@@ -59,6 +61,7 @@ class Education{
 
   static Education fromMap(Map map) {
     return new Education(
+        id: map['id'],
         name: map['name'],
         academic: map['academic'],
         startTime: map['startTime'],
@@ -70,12 +73,14 @@ class Education{
 }
 
 class Certification{
+  int id;
   String name; // 证书名
   String industry; // 颁发单位
   String qualifiedTime; // 取得时间
   String code; // 证书编号
 
   Certification({
+    this.id,
     this.name,
     this.industry,
     this.qualifiedTime,
@@ -92,6 +97,7 @@ class Certification{
 
   static Certification fromMap(Map map) {
     return new Certification(
+        id: map['id'],
         name: map['name'],
         industry: map['industry'],
         qualifiedTime: map['qualifiedTime'],
@@ -101,6 +107,7 @@ class Certification{
 }
 
 class Project{
+  int id;
   String name; // 项目名称
   String role; // 角色
   String startTime; // 该项目的开始时间
@@ -109,6 +116,7 @@ class Project{
   String performance; // 业绩
 
   Project({
+    this.id,
     this.name,
     this.role,
     this.startTime,
@@ -127,6 +135,7 @@ class Project{
 
   static Project fromMap(Map map) {
     return new Project(
+        id: map['id'],
         name: map['name'],
         role: map['role'],
         startTime: map['startTime'],
@@ -138,6 +147,7 @@ class Project{
 }
 
 class CompanyExperience{
+  int id;
   String cname; // 公司名称
   String industry; // 行业
   String startTime; // 该单位的工作开始时间
@@ -147,6 +157,7 @@ class CompanyExperience{
   String performance; // 业绩
 
   CompanyExperience({
+    this.id,
     this.cname,
     this.industry,
     this.startTime,
@@ -166,6 +177,7 @@ class CompanyExperience{
 
   static CompanyExperience fromMap(Map map) {
     return new CompanyExperience(
+        id: map['id'],
         cname: map['cname'],
         industry: map['industry'],
         startTime: map['startTime'],
