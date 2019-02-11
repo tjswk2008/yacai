@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/resume.dart';
+import 'package:flutter_app/app/view/resume/job_expectation_edit.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -30,28 +31,47 @@ class JobExpectationState extends State<JobExpectation>
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        new Row(
-          children: <Widget>[
-            new Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: new Text(widget._jobExpect.jobTitle, style: new TextStyle(fontSize: 12.0),),
-            ),
-            new Text(widget._jobExpect.salary, style: new TextStyle(fontSize: 12.0),)
-          ],
-        ),
-        new Row(
-          children: <Widget>[
-            new Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: new Text(widget._jobExpect.city, style: new TextStyle(fontSize: 10.0, color: Colors.grey),),
-            ),
-            new Text(widget._jobExpect.industry, style: new TextStyle(fontSize: 10.0, color: Colors.grey),),
-          ],
-        ),
-      ],
+    return new InkWell(
+      onTap: () {
+        Navigator.of(context).push(new PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (BuildContext context, _, __) {
+            return new JobExpectationEdit(widget._jobExpect);
+          },
+          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+            return new FadeTransition(
+              opacity: animation,
+              child: new SlideTransition(position: new Tween<Offset>(
+                begin: const Offset(0.0, 1.0),
+                end: Offset.zero,
+              ).animate(animation), child: child),
+            );
+          }
+        ));
+      },
+      child: new Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          new Row(
+            children: <Widget>[
+              new Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: new Text(widget._jobExpect.jobTitle, style: new TextStyle(fontSize: 12.0),),
+              ),
+              new Text(widget._jobExpect.salary, style: new TextStyle(fontSize: 12.0),)
+            ],
+          ),
+          new Row(
+            children: <Widget>[
+              new Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: new Text(widget._jobExpect.city, style: new TextStyle(fontSize: 10.0, color: Colors.grey),),
+              ),
+              new Text(widget._jobExpect.industry, style: new TextStyle(fontSize: 10.0, color: Colors.grey),),
+            ],
+          ),
+        ],
+      )
     );
   }
 }

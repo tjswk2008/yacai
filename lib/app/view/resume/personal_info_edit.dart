@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
+import 'package:flutter_app/actions/actions.dart';
 
 class PersonalInfoEditView extends StatefulWidget {
 
@@ -37,9 +38,9 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, String>(
-      converter: (store) => store.state.userName,
-      builder: (context, userName) {
+    return StoreConnector<AppState, AppState>(
+      converter: (store) => store.state,
+      builder: (context, state) {
         return new Scaffold(
           backgroundColor: Colors.white,
           appBar: new AppBar(
@@ -111,6 +112,11 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                           )
                         )
                       ),
+                      onChanged: (val) {
+                        setState(() {
+                          personalInfo.name = val;
+                        });
+                      },
                       decoration: new InputDecoration(
                         hintText: "请输入您的姓名",
                         hintStyle: new TextStyle(
@@ -212,11 +218,16 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                           selection: TextSelection.fromPosition(
                             TextPosition(
                               affinity: TextAffinity.downstream,
-                              offset: personalInfo.name.length
+                              offset: personalInfo.wechatId.length
                             )
                           )
                         )
                       ),
+                      onChanged: (val) {
+                        setState(() {
+                          personalInfo.wechatId = val;
+                        });
+                      },
                       decoration: new InputDecoration(
                         hintText: "请输入您的微信号",
                         hintStyle: new TextStyle(
@@ -274,11 +285,16 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         selection: TextSelection.fromPosition(
                           TextPosition(
                             affinity: TextAffinity.downstream,
-                            offset: personalInfo.name.length
+                            offset: personalInfo.summarize.length
                           )
                         )
                       )
                     ),
+                    onChanged: (val) {
+                      setState(() {
+                        personalInfo.summarize = val;
+                      });
+                    },
                     keyboardType: TextInputType.multiline,
                     maxLines: 5,
                     decoration: new InputDecoration(
@@ -310,7 +326,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                           personalInfo.wechatId,
                           personalInfo.birthDay,
                           personalInfo.summarize,
-                          userName
+                          state.userName
                         )
                           .then((Response response) {
                             setState(() {
@@ -322,6 +338,9 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                               ));
                               return;
                             }
+                            Resume resume = state.resume;
+                            resume.personalInfo = personalInfo;
+                            StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
                             Navigator.pop(context);
                           })
                           .catchError((e) {

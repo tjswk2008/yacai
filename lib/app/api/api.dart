@@ -43,6 +43,16 @@ class Api {
     return Dio().get('${serverAddr}user/addUser?name=${name}&gender=${gender}&firstJobTime=${firstJobTime}&wechatId=${wechatId}&birthDay=${birthDay}&summarize=${summarize}&userName=${userName}');
   }
 
+  Future<Response<T>> saveJobExpectation<T>(
+    String jobTitle,
+    String industry,
+    String city,
+    String salary,
+    String userName
+  ) {
+    return Dio().get('${serverAddr}user/addUser?jobTitle=${jobTitle}&industry=${industry}&city=${city}&salary=${salary}&userName=${userName}');
+  }
+
   Future<Response<T>> saveCompanyExperience<T>(
     String cname,
     String jobTitle,
