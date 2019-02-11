@@ -41,7 +41,6 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
 
   @override
   Widget build(BuildContext context) {
-    TextStyle detailStyle = new TextStyle(fontSize: 10.0, color: Colors.grey);
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
@@ -66,28 +65,35 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       style: new TextStyle(fontSize: 18.0),
                     ),
                   ),
-                  new TextField(
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: _companyExperience.cname,
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: _companyExperience.cname.length
+                  new Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: new TextField(
+                      controller: TextEditingController.fromValue(
+                        TextEditingValue(
+                          text: _companyExperience.cname,
+                          selection: TextSelection.fromPosition(
+                            TextPosition(
+                              affinity: TextAffinity.downstream,
+                              offset: _companyExperience.cname.length
+                            )
                           )
                         )
-                      )
-                    ),
-                    decoration: new InputDecoration(
-                      hintText: "请输入公司名",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
                       ),
-                      border: new UnderlineInputBorder(),
-                      contentPadding: const EdgeInsets.all(10.0)
+                      onChanged: (val) {
+                        setState(() {
+                          _companyExperience.cname = val;
+                        });
+                      },
+                      decoration: new InputDecoration(
+                        hintText: "请输入公司名",
+                        hintStyle: new TextStyle(
+                            color: const Color(0xFF808080)
+                        ),
+                        border: new UnderlineInputBorder(),
+                        contentPadding: const EdgeInsets.all(10.0)
+                      ),
                     ),
                   ),
-                  new Divider(),
                   new Padding(
                     padding: const EdgeInsets.only(bottom: 10.0),
                     child: new Text(
@@ -96,28 +102,35 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       style: new TextStyle(fontSize: 18.0),
                     ),
                   ),
-                  new TextField(
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: _companyExperience.jobTitle,
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: _companyExperience.jobTitle.length
+                  new Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: new TextField(
+                      controller: TextEditingController.fromValue(
+                        TextEditingValue(
+                          text: _companyExperience.jobTitle,
+                          selection: TextSelection.fromPosition(
+                            TextPosition(
+                              affinity: TextAffinity.downstream,
+                              offset: _companyExperience.jobTitle.length
+                            )
                           )
                         )
-                      )
-                    ),
-                    decoration: new InputDecoration(
-                      hintText: "请输入职位名称",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
                       ),
-                      border: new UnderlineInputBorder(),
-                      contentPadding: const EdgeInsets.all(10.0)
+                      onChanged: (val) {
+                        setState(() {
+                          _companyExperience.jobTitle = val;
+                        });
+                      },
+                      decoration: new InputDecoration(
+                        hintText: "请输入职位名称",
+                        hintStyle: new TextStyle(
+                            color: const Color(0xFF808080)
+                        ),
+                        border: new UnderlineInputBorder(),
+                        contentPadding: const EdgeInsets.all(10.0)
+                      ),
                     ),
                   ),
-                  new Divider(),
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
@@ -134,7 +147,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                             context: context,
                             initialDate: DateTime.parse(_companyExperience.startTime),
                             firstDate: DateTime.parse('1900-01-01'), // 减 30 天
-                            lastDate: new DateTime.now().add(new Duration(days: 30)),       // 加 30 天
+                            lastDate: new DateTime.now(),       // 加 30 天
                           ).then((DateTime val) {
                             setState(() {
                               _companyExperience.startTime = formatDate(val, [yyyy, '-', mm, '-', dd]);
@@ -162,18 +175,25 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                         onTap: () {
                           showDatePicker(
                             context: context,
-                            initialDate: DateTime.parse(_companyExperience.endTime),
+                            initialDate: DateTime.parse(
+                              _companyExperience.endTime == null ? formatDate(new DateTime.now(), [yyyy, '-', mm, '-', dd]) : _companyExperience.endTime
+                            ),
                             firstDate: DateTime.parse('1900-01-01'), // 减 30 天
-                            lastDate: new DateTime.now().add(new Duration(days: 30)),       // 加 30 天
+                            lastDate: new DateTime.now(),       // 加 30 天
                           ).then((DateTime val) {
                             setState(() {
-                              _companyExperience.endTime = formatDate(val, [yyyy, '-', mm, '-', dd]);
+                              String currentDate = formatDate(new DateTime.now(), [yyyy, '-', mm, '-', dd]);
+                              if (formatDate(val, [yyyy, '-', mm, '-', dd]) == currentDate) {
+                                _companyExperience.endTime = null;
+                              } else {
+                                _companyExperience.endTime = formatDate(val, [yyyy, '-', mm, '-', dd]);
+                              }
                             });
                           }).catchError((err) {
                             print(err);
                           });
                         },
-                        child: new Text(_companyExperience.endTime),
+                        child: new Text(_companyExperience.endTime == null ? '至今' : _companyExperience.endTime),
                       )
                     ],
                   ),
@@ -191,7 +211,6 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                     maxLines: 5,
                     controller: TextEditingController.fromValue(
                       TextEditingValue(
-                        // 设置内容
                         text: _companyExperience.detail,
                         selection: TextSelection.fromPosition(
                           TextPosition(
@@ -201,6 +220,11 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                         )
                       )
                     ),
+                    onChanged: (val) {
+                      setState(() {
+                        _companyExperience.detail = val;
+                      });
+                    },
                     decoration: new InputDecoration(
                       hintText: "请输入您的工作内容",
                       hintStyle: new TextStyle(
@@ -213,7 +237,6 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                     ),
                   ),
                   new Divider(),
-                  
                   new Padding(
                     padding: const EdgeInsets.only(bottom: 10.0),
                     child: new Text(
@@ -227,8 +250,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                     maxLines: 5,
                     controller: TextEditingController.fromValue(
                       TextEditingValue(
-                        // 设置内容
-                        text: _companyExperience.performance,
+                        text: _companyExperience.performance == null ? '' : _companyExperience.performance,
                         selection: TextSelection.fromPosition(
                           TextPosition(
                             affinity: TextAffinity.downstream,
@@ -237,6 +259,11 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                         )
                       )
                     ),
+                    onChanged: (val) {
+                      setState(() {
+                        _companyExperience.performance = val;
+                      });
+                    },
                     decoration: new InputDecoration(
                       hintText: "请输入您的工作业绩",
                       hintStyle: new TextStyle(
@@ -266,7 +293,8 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                           _companyExperience.endTime,
                           _companyExperience.detail,
                           _companyExperience.performance,
-                          state.userName
+                          state.userName,
+                          _companyExperience.id,
                         )
                           .then((Response response) {
                             setState(() {
@@ -279,8 +307,18 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                               return;
                             }
                             Resume resume = state.resume;
-                            resume.companyExperiences.add(CompanyExperience.fromMap(response.data['info']));
-                            StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                            if(_companyExperience.id == null) {
+                              resume.companyExperiences.add(CompanyExperience.fromMap(response.data['info']));
+                              StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                            } else {
+                              for (var i = 0; i < resume.companyExperiences.length; i++) {
+                                if(resume.companyExperiences[i].id == _companyExperience.id) {
+                                  resume.companyExperiences[i] = _companyExperience;
+                                  break;
+                                }
+                              }
+                              StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                            }
                             Navigator.pop(context, response.data['info']);
                           })
                           .catchError((e) {

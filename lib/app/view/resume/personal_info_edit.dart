@@ -95,30 +95,32 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       style: new TextStyle(fontSize: 18.0),
                     ),
                   ),
-                  new TextField(
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        // 设置内容
-                        text: personalInfo.name,
-                        // 保持光标在最后
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: personalInfo.name.length
+                  new Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: new TextField(
+                      controller: TextEditingController.fromValue(
+                        TextEditingValue(
+                          // 设置内容
+                          text: personalInfo.name,
+                          // 保持光标在最后
+                          selection: TextSelection.fromPosition(
+                            TextPosition(
+                              affinity: TextAffinity.downstream,
+                              offset: personalInfo.name.length
+                            )
                           )
                         )
-                      )
-                    ),
-                    decoration: new InputDecoration(
-                      hintText: "请输入您的姓名",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
                       ),
-                      border: new UnderlineInputBorder(),
-                      contentPadding: const EdgeInsets.all(10.0)
+                      decoration: new InputDecoration(
+                        hintText: "请输入您的姓名",
+                        hintStyle: new TextStyle(
+                            color: const Color(0xFF808080)
+                        ),
+                        border: new UnderlineInputBorder(),
+                        contentPadding: const EdgeInsets.all(10.0)
+                      ),
                     ),
                   ),
-                  new Divider(),
                   new Padding(
                     padding: const EdgeInsets.only(bottom: 10.0),
                     child: new Text(
@@ -177,7 +179,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             context: context,
                             initialDate: DateTime.parse(personalInfo.firstJobTime),
                             firstDate: DateTime.parse(personalInfo.firstJobTime).subtract(new Duration(days: 30)), // 减 30 天
-                            lastDate: new DateTime.now().add(new Duration(days: 30)),       // 加 30 天
+                            lastDate: new DateTime.now(),       // 加 30 天
                           ).then((DateTime val) {
                             setState(() {
                               personalInfo.firstJobTime = formatDate(val, [yyyy, '-', mm, '-', dd]);
@@ -199,30 +201,32 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       style: new TextStyle(fontSize: 18.0),
                     ),
                   ),
-                  new TextField(
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        // 设置内容
-                        text: personalInfo.wechatId,
-                        // 保持光标在最后
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: personalInfo.name.length
+                  new Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: new TextField(
+                      controller: TextEditingController.fromValue(
+                        TextEditingValue(
+                          // 设置内容
+                          text: personalInfo.wechatId,
+                          // 保持光标在最后
+                          selection: TextSelection.fromPosition(
+                            TextPosition(
+                              affinity: TextAffinity.downstream,
+                              offset: personalInfo.name.length
+                            )
                           )
                         )
-                      )
-                    ),
-                    decoration: new InputDecoration(
-                      hintText: "请输入您的微信号",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
                       ),
-                      border: new UnderlineInputBorder(),
-                      contentPadding: const EdgeInsets.all(10.0)
+                      decoration: new InputDecoration(
+                        hintText: "请输入您的微信号",
+                        hintStyle: new TextStyle(
+                            color: const Color(0xFF808080)
+                        ),
+                        border: new UnderlineInputBorder(),
+                        contentPadding: const EdgeInsets.all(10.0)
+                      ),
                     ),
                   ),
-                  new Divider(),
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
@@ -239,7 +243,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             context: context,
                             initialDate: DateTime.parse(personalInfo.birthDay),
                             firstDate: DateTime.parse(personalInfo.birthDay).subtract(new Duration(days: 30)), // 减 30 天
-                            lastDate: new DateTime.now().add(new Duration(days: 30)),       // 加 30 天
+                            lastDate: new DateTime.now(),       // 加 30 天
                           ).then((DateTime val) {
                             setState(() {
                               personalInfo.birthDay = formatDate(val, [yyyy, '-', mm, '-', dd]);

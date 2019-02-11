@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'dart:io';
 class Api {
-  final String serverAddr = "http://localhost:3000/api/";
+  final String serverAddr = "http://192.168.140.56:3000/api/";
 
   Future<Response<T>> getJobList<T>(int type) {
     return Dio().get(serverAddr + "jobs/jobsList?type=" + type.toString());
@@ -50,9 +50,72 @@ class Api {
     String endTime,
     String detail,
     String performance,
-    String userName
+    String userName,
+    int id
   ) {
-    return Dio().get('${serverAddr}user/saveCompanyExperience?cname=${cname}&jobTitle=${jobTitle}&startTime=${startTime}&endTime=${endTime}&detail=${detail}&performance=${performance}&userName=${userName}');
+    String url = '${serverAddr}user/saveCompanyExperience?cname=${cname}&jobTitle=${jobTitle}&startTime=${startTime}&detail=${detail}&performance=${performance}&userName=${userName}';
+    if(endTime != null) {
+      url += '&endTime=${endTime}';
+    }
+    if(id != null) {
+      url += '&id=${id}';
+    }
+    return Dio().get(url);
+  }
+
+  Future<Response<T>> saveProject<T>(
+    String name,
+    String role,
+    String startTime,
+    String endTime,
+    String detail,
+    String performance,
+    String userName,
+    int id
+  ) {
+    String url = '${serverAddr}user/saveProject?name=${name}&role=${role}&startTime=${startTime}&detail=${detail}&performance=${performance}&userName=${userName}';
+    if(endTime != null) {
+      url += '&endTime=${endTime}';
+    }
+    if(id != null) {
+      url += '&id=${id}';
+    }
+    return Dio().get(url);
+  }
+
+  Future<Response<T>> saveEducation<T>(
+    String name,
+    String academic,
+    String major,
+    String startTime,
+    String endTime,
+    String detail,
+    String userName,
+    int id
+  ) {
+    String url = '${serverAddr}user/saveEducation?name=${name}&academic=${academic}&startTime=${startTime}&detail=${detail}&major=${major}&userName=${userName}';
+    if(endTime != null) {
+      url += '&endTime=${endTime}';
+    }
+    if(id != null) {
+      url += '&id=${id}';
+    }
+    return Dio().get(url);
+  }
+
+  Future<Response<T>> saveCertification<T>(
+    String name,
+    String industry,
+    String code,
+    String qualifiedTime,
+    String userName,
+    int id
+  ) {
+    String url = '${serverAddr}user/saveCertification?name=${name}&industry=${industry}&qualifiedTime=${qualifiedTime}&code=${code}&userName=${userName}';
+    if(id != null) {
+      url += '&id=${id}';
+    }
+    return Dio().get(url);
   }
 
   Future<Response<T>> upload<T>(File file, String fileName) {

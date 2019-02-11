@@ -108,91 +108,95 @@ class MineTabState extends State<MineTab> {
               ),
 
               new SliverList(
-                  delegate: new SliverChildListDelegate(<Widget>[
-                    new InkWell(
-                      onTap: () {
-                        _navToResumeDetail(appState.resume);
-                      },
-                      child: new Container(
-                        height: 45.0,
-                        margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            new Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: new Row(
-                                children: <Widget>[
-                                  new Icon(
-                                    IconData(0xe24d, fontFamily: 'MaterialIcons', matchTextDirection: true)
-                                  ),
-                                  new Padding(
-                                    padding: const EdgeInsets.only(right: 5.0),
-                                  ),
-                                  new Text('我的简历'),
-                                ],
-                              ),
+                delegate: new SliverChildListDelegate(<Widget>[
+                  new InkWell(
+                    onTap: () {
+                      if(appState.userName == '') {
+                        _login();
+                      } else {
+                        _navToResumeDetail();
+                      }
+                    },
+                    child: new Container(
+                      height: 45.0,
+                      margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          new Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: new Row(
+                              children: <Widget>[
+                                new Icon(
+                                  IconData(0xe24d, fontFamily: 'MaterialIcons', matchTextDirection: true)
+                                ),
+                                new Padding(
+                                  padding: const EdgeInsets.only(right: 5.0),
+                                ),
+                                new Text('我的简历'),
+                              ],
                             ),
-                            new Icon(
-                              IconData(0xe5cc, fontFamily: 'MaterialIcons', matchTextDirection: true)
-                            ),
-                          ],
-                        ),
-                      )
-                    ),
+                          ),
+                          new Icon(
+                            IconData(0xe5cc, fontFamily: 'MaterialIcons', matchTextDirection: true)
+                          ),
+                        ],
+                      ),
+                    )
+                  ),
 
-                    new Container(
-                      color: Colors.white,
-                      child: new Padding(
-                        padding: const EdgeInsets.only(
-                          top: 10.0,
-                          bottom: 10.0,
-                        ),
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            new _ContactItem(
-                              onPressed: () {
-                                showDialog(context: context, child: new AlertDialog(
-                                    content: new Text(
-                                      "沟通过",
-                                      style: new TextStyle(fontSize: 20.0),
-                                    )));
-                              },
-                              count: '590',
-                              title: '沟通过',
-                            ),
-                            new _ContactItem(
-                              onPressed: () {
-                                showDialog(context: context, child: new AlertDialog(
-                                    content: new Text(
-                                      "已沟通",
-                                      style: new TextStyle(fontSize: 20.0),
-                                    )));
-                              },
-                              count: '71',
-                              title: '已沟通',
-                            ),
-                            new _ContactItem(
-                              onPressed: () {
-                                showDialog(context: context, child: new AlertDialog(
-                                    content: new Text(
-                                      "已沟通",
-                                      style: new TextStyle(fontSize: 20.0),
-                                    )));
-                              },
-                              count: '0',
-                              title: '待面试',
-                            ),
-                          ],
-                        ),
+                  new Container(
+                    color: Colors.white,
+                    child: new Padding(
+                      padding: const EdgeInsets.only(
+                        top: 10.0,
+                        bottom: 10.0,
+                      ),
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          new _ContactItem(
+                            onPressed: () {
+                              showDialog(context: context, child: new AlertDialog(
+                                  content: new Text(
+                                    "沟通过",
+                                    style: new TextStyle(fontSize: 20.0),
+                                  )));
+                            },
+                            count: '590',
+                            title: '沟通过',
+                          ),
+                          new _ContactItem(
+                            onPressed: () {
+                              showDialog(context: context, child: new AlertDialog(
+                                  content: new Text(
+                                    "已沟通",
+                                    style: new TextStyle(fontSize: 20.0),
+                                  )));
+                            },
+                            count: '71',
+                            title: '已沟通',
+                          ),
+                          new _ContactItem(
+                            onPressed: () {
+                              showDialog(context: context, child: new AlertDialog(
+                                  content: new Text(
+                                    "已沟通",
+                                    style: new TextStyle(fontSize: 20.0),
+                                  )));
+                            },
+                            count: '0',
+                            title: '待面试',
+                          ),
+                        ],
                       ),
                     ),
-                  ])
+                  ),
+                ])
               )
             ],
           ),
@@ -220,11 +224,11 @@ class MineTabState extends State<MineTab> {
       });
   }
 
-  _navToResumeDetail(Resume resume) {
+  _navToResumeDetail() {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          return new ResumeDetail(resume);
+          return new ResumeDetail();
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(
