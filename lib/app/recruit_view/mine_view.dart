@@ -131,11 +131,11 @@ class MineTabState extends State<MineTab> {
                             padding: const EdgeInsets.all(10.0),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.insert_drive_file),
+                                new Icon(Icons.near_me),
                                 new Padding(
                                   padding: const EdgeInsets.only(right: 5.0),
                                 ),
-                                new Text('我的简历'),
+                                new Text('投递记录'),
                               ],
                             ),
                           ),

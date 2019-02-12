@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/component/icon_tab.dart';
-import 'package:flutter_app/app/model/job.dart';
-import 'package:flutter_app/app/model/post.dart';
 import 'package:flutter_app/app/view/jobs_view.dart';
 import 'package:flutter_app/app/view/message_view.dart';
 import 'package:flutter_app/app/view/mine_view.dart';
@@ -65,33 +63,25 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
           labelStyle: new TextStyle(fontSize: _kTabTextSize),
           tabs: <IconTab>[
             new IconTab(
-                icon: _currentIndex == INDEX_JOB
-                    ? "assets/images/ic_main_tab_company_pre.png"
-                    : "assets/images/ic_main_tab_company_nor.png",
+                iconData: Icons.business,
                 text: "全职",
                 color: _currentIndex == INDEX_JOB
                     ? _kPrimaryColor
                     : Colors.grey[900]),
             new IconTab(
-                icon: _currentIndex == INDEX_COMPANY
-                    ? "assets/images/ic_main_tab_contacts_pre.png"
-                    : "assets/images/ic_main_tab_contacts_nor.png",
+                iconData: Icons.business_center,
                 text: "兼职/实习",
                 color: _currentIndex == INDEX_COMPANY
                     ? _kPrimaryColor
                     : Colors.grey[900]),
             new IconTab(
-                icon: _currentIndex == INDEX_MESSAGE
-                    ? "assets/images/ic_main_tab_find_pre.png"
-                    : "assets/images/ic_main_tab_find_nor.png",
+                iconData: Icons.content_paste,
                 text: "交流",
                 color: _currentIndex == INDEX_MESSAGE
                     ? _kPrimaryColor
                     : Colors.grey[900]),
             new IconTab(
-                icon: _currentIndex == INDEX_MINE
-                    ? "assets/images/ic_main_tab_my_pre.png"
-                    : "assets/images/ic_main_tab_my_nor.png",
+                iconData: Icons.person_outline,
                 text: "我的",
                 color: (_currentIndex == INDEX_MINE)
                     ? _kPrimaryColor

@@ -238,6 +238,14 @@ class PersonalInfo {
     this.academic,
   });
 
+  static List<PersonalInfo> fromList(List list) {
+    List<PersonalInfo> _personalInfos = [];
+    for (var value in list) {
+      _personalInfos.add(PersonalInfo.fromMap(value));
+    }
+    return _personalInfos;
+  }
+
   static PersonalInfo fromMap(Map map) {
     return new PersonalInfo(
         id: map['id'],

@@ -10,12 +10,14 @@ class IconTab extends StatefulWidget {
     this.text,
     this.icon,
     this.color,
+    this.iconData,
   })
-    : assert(text != null || icon != null || color != null),
+    : assert(text != null || !(icon == null && iconData == null) || color != null),
       super(key: key);
 
   final String text;
   final String icon;
+  final IconData iconData;
   final Color color;
 
   @override
@@ -44,10 +46,13 @@ class IconTabState extends State<IconTab> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         new Container(
-          child: new Image(
+          child: widget.icon != null ? new Image(
             image: new AssetImage(widget.icon),
             height: 30.0,
             width: 30.0,
+          ) : new Container(
+            height: 30.0,
+            child: new Icon(widget.iconData, color: widget.color),
           ),
           margin: const EdgeInsets.only(bottom: _kMarginBottom),
         ),

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/component/icon_tab.dart';
+import 'package:flutter_app/app/recruit_view/pub_list.dart';
+import 'package:flutter_app/app/recruit_view/resume_list.dart';
+import 'package:flutter_app/app/recruit_view/mine_view.dart';
 import 'package:flutter_app/app/view/jobs_view.dart';
-import 'package:flutter_app/app/view/message_view.dart';
-import 'package:flutter_app/app/view/mine_view.dart';
 
 const double _kTabTextSize = 11.0;
-const int INDEX_JOB = 0;
-const int INDEX_COMPANY = 1;
-const int INDEX_MESSAGE = 2;
-const int INDEX_MINE = 3;
+const int INDEX_RESUME = 0;
+const int INDEX_PUB = 1;
+const int INDEX_MINE = 2;
+const int INDEX_JOB = 3;
 Color _kPrimaryColor = new Color.fromARGB(255, 0, 215, 198);
 
 class Recruit extends StatefulWidget {
@@ -20,7 +21,6 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
   TabController _controller;
   VoidCallback onChanged;
-  Widget mine = new MineTab();
 
   @override
   void initState() {
@@ -48,10 +48,10 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
     return new Scaffold(
       body: new TabBarView(
         children: <Widget>[
-          new JobsTab(1, '全职'),
-          new JobsTab(2, '兼职/实习'),
-          new MessageTab('交流'),
-          mine
+          new ResumeTab('精英简历'),
+          new PubTab('职位'),
+          new MineTab(),
+          // new JobsTab(1, '全职'),
         ],
         controller: _controller,
       ),
@@ -63,37 +63,29 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
           labelStyle: new TextStyle(fontSize: _kTabTextSize),
           tabs: <IconTab>[
             new IconTab(
-                icon: _currentIndex == INDEX_JOB
-                    ? "assets/images/ic_main_tab_company_pre.png"
-                    : "assets/images/ic_main_tab_company_nor.png",
-                text: "全职",
-                color: _currentIndex == INDEX_JOB
+                iconData: Icons.school,
+                text: "简历大厅",
+                color: _currentIndex == INDEX_RESUME
                     ? _kPrimaryColor
                     : Colors.grey[900]),
             new IconTab(
-                icon: _currentIndex == INDEX_COMPANY
-                    ? "assets/images/ic_main_tab_contacts_pre.png"
-                    : "assets/images/ic_main_tab_contacts_nor.png",
-                text: "兼职/实习",
-                color: _currentIndex == INDEX_COMPANY
+                iconData: Icons.work,
+                text: "职位",
+                color: _currentIndex == INDEX_PUB
                     ? _kPrimaryColor
                     : Colors.grey[900]),
             new IconTab(
-                icon: _currentIndex == INDEX_MESSAGE
-                    ? "assets/images/ic_main_tab_find_pre.png"
-                    : "assets/images/ic_main_tab_find_nor.png",
-                text: "交流",
-                color: _currentIndex == INDEX_MESSAGE
-                    ? _kPrimaryColor
-                    : Colors.grey[900]),
-            new IconTab(
-                icon: _currentIndex == INDEX_MINE
-                    ? "assets/images/ic_main_tab_my_pre.png"
-                    : "assets/images/ic_main_tab_my_nor.png",
+                iconData: Icons.person_outline,
                 text: "我的",
-                color: (_currentIndex == INDEX_MINE)
+                color: _currentIndex == INDEX_MINE
                     ? _kPrimaryColor
                     : Colors.grey[900]),
+            // new IconTab(
+            //     iconData: Icons.shop,
+            //     text: "全职",
+            //     color: _currentIndex == INDEX_JOB
+            //         ? _kPrimaryColor
+            //         : Colors.grey[900]),
           ],
         ),
       ),
