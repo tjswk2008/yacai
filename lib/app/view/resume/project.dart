@@ -8,8 +8,9 @@ enum AppBarBehavior { normal, pinned, floating, snapping }
 class ProjectView extends StatefulWidget {
 
   final Project _project;
+  final bool _editable;
 
-  ProjectView(this._project);
+  ProjectView(this._project, this._editable);
 
   @override
   ProjectViewState createState() => new ProjectViewState();
@@ -35,6 +36,7 @@ class ProjectViewState extends State<ProjectView>
     TextStyle detailStyle = new TextStyle(fontSize: 10.0, color: Colors.grey);
     return new InkWell(
       onTap: () {
+        if(!widget._editable) return;
         Navigator.of(context).push(new PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __) {
@@ -69,7 +71,6 @@ class ProjectViewState extends State<ProjectView>
             padding: const EdgeInsets.only(bottom: 5.0),
           ),
           new Text(widget._project.detail, style: new TextStyle(fontSize: 12.0)),
-          new Divider()
         ],
       ),
     );

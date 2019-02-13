@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/item/postlist_item.dart';
-import 'package:flutter_app/app/model/post.dart';
-import 'package:flutter_app/app/view/post/post_detail.dart';
-import 'package:flutter_app/app/view/post/question_view.dart';
 import 'package:flutter_app/app/view/login_view.dart';
-import 'package:flutter_app/app/model/resume.dart';
+import 'package:flutter_app/app/recruit_view/job/job_pub.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
+import 'package:flutter_app/app/item/joblist_item.dart';
+import 'package:flutter_app/app/model/job.dart';
+import 'package:flutter_app/app/view/job/job_detail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/actions/actions.dart';
+// import 'dart:developer';
 
 class PubTab extends StatefulWidget {
   final String _title;
 
   PubTab(this._title);
+
   @override
-  PostList createState() => new PostList();
+  PubTabState createState() => new PubTabState();
 }
 
-class PostList extends State<PubTab> {
-  List<Post> _posts = [];
+class PubTabState extends State<PubTab> {
+  List<Job> _jobs = [];
 
   @override
   void initState() {
     super.initState();
-    getPostList();
+    getJobList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, String>(
-      converter: (store) => store.state.userName,
-      builder: (context, userName) {
+    return StoreConnector<AppState, AppState>(
+      converter: (store) => store.state,
+      builder: (context, state) {
         return new Scaffold(
           backgroundColor: new Color.fromARGB(255, 242, 242, 245),
           appBar: new AppBar(
@@ -40,7 +42,27 @@ class PostList extends State<PubTab> {
             title: new Text(widget._title,
                 style: new TextStyle(fontSize: 20.0, color: Colors.white)),
           ),
-          body: new SingleChildScrollView(
+          body: state.userName == '' ? new Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Text("您还未登陆，请先前往登陆查看"),
+              new InkWell(
+                onTap: _login,
+                child: new Container(
+                  margin: const EdgeInsets.all(50.0),
+                  height: 45.0,
+                  decoration: new BoxDecoration(
+                    border: new Border.all(color: const Color(0xffcccccc)),
+                    borderRadius: new BorderRadius.all(new Radius.circular(3.0))
+                  ),
+                  child: new Center(
+                    child: new Text("前往登陆", style: new TextStyle(color: Colors.black, fontSize: 14.0),),
+                  ),
+                ),
+              )
+            ],
+          ) : new SingleChildScrollView(
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -49,17 +71,15 @@ class PostList extends State<PubTab> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     new Padding(
-                      padding: const EdgeInsets.only(top: 5.0, right: 5.0),
-                      child: new InkWell(
-                        onTap: () {
-                          if(userName == '') {
-                            _login();
-                            return;
-                          }
+                      padding: const EdgeInsets.only(top: 5.0, right: 10.0),
+                      child: RaisedButton(
+                        color: Colors.orange[400],
+                        child: Text("发布职位", style: new TextStyle(fontSize: 16.0, color: Colors.white),),
+                        onPressed: () {
                           Navigator.of(context).push(new PageRouteBuilder(
                             opaque: false,
                             pageBuilder: (BuildContext context, _, __) {
-                              return new AskQuestion();
+                              return new PubJob();
                             },
                             transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
                               return new FadeTransition(
@@ -72,21 +92,9 @@ class PostList extends State<PubTab> {
                             }
                           )).then((result) {
                             if(result == null) return;
-                            getPostList();
+                            getJobList();
                           });
                         },
-                        child: new Container(
-                          height: 30,
-                          padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-                          decoration: new BoxDecoration(
-                            color: Colors.cyan[300],
-                            border: new Border.all(color: const Color(0xffcccccc)),
-                            borderRadius: new BorderRadius.all(new Radius.circular(5.0))
-                          ),
-                          child: new Center(
-                            child: new Text("我要发布职位", style: new TextStyle(fontSize: 16.0, color: Colors.white),),
-                          ),
-                        ),
                       ),
                     )
                   ],
@@ -94,7 +102,7 @@ class PostList extends State<PubTab> {
                 new ListView.builder(
                   shrinkWrap: true,
                   physics: new NeverScrollableScrollPhysics(),
-                  itemCount: _posts.length,
+                  itemCount: state.jobs.length,
                   itemBuilder: buildJobItem
                 ),
               ],
@@ -106,49 +114,34 @@ class PostList extends State<PubTab> {
   }
 
   Widget buildJobItem(BuildContext context, int index) {
-    Post post = _posts[index];
+    Job job = StoreProvider.of<AppState>(context).state.jobs[index];
 
-    return new InkWell(
-        onTap: () => navPostDetail(post),
-        child: new PostListItem(post));
+    var jobItem = new InkWell(
+        onTap: () => navJobDetail(job),
+        child: new JobListItem(job));
+
+    return jobItem;
   }
 
-  void getPostList() {
-    Api().getPostList()
+  void getJobList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String userName = prefs.getString('userName');
+    if (userName == null) return;
+    Api().getRecruitJobList(userName)
       .then((Response response) {
-        setState(() {
-          _posts = Post.fromJson(response.data['list']);
-        });
+        _jobs = Job.fromJson(response.data['list']);
+        StoreProvider.of<AppState>(context).dispatch(SetJobsAction(_jobs));
       })
      .catchError((e) {
        print(e);
      });
   }
 
-  _login() {
-    Navigator
-      .of(context)
-      .push(new MaterialPageRoute(builder: (context) {
-        return new NewLoginPage();
-      }))
-      .then((result) {
-        if(result == null) return;
-        Api().getUserInfo(result)
-          .then((Response response) {
-            Resume resume = Resume.fromMap(response.data['info']);
-            StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-          })
-          .catchError((e) {
-            print(e);
-          });
-      });
-  }
-
-  navPostDetail(Post post) {
+  navJobDetail(Job job) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          return new PostDetail(post);
+          return new JobDetail(job);
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(
@@ -160,5 +153,17 @@ class PostList extends State<PubTab> {
           );
         }
     ));
+  }
+
+  _login() {
+    Navigator
+      .of(context)
+      .push(new MaterialPageRoute(builder: (context) {
+        return new NewLoginPage();
+      }))
+      .then((result) {
+        if(result == null) return;
+        getJobList();
+      });
   }
 }

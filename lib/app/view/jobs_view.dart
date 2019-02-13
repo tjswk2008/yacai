@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/item/joblist_item.dart';
 import 'package:flutter_app/app/model/job.dart';
-import 'package:flutter_app/app/model/company.dart';
 import 'package:flutter_app/app/view/job/job_detail.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';

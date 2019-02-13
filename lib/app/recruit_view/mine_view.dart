@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/view/login_view.dart';
-import 'package:flutter_app/app/view/resume/resume_detail.dart';
-import 'package:flutter_app/app/model/resume.dart';
+import 'package:flutter_app/app/recruit_view/job/job_list.dart';
+import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:dio/dio.dart';
@@ -114,7 +114,7 @@ class MineTabState extends State<MineTab> {
                       if(appState.userName == '') {
                         _login();
                       } else {
-                        _navToResumeDetail();
+                        _navToPubJobList();
                       }
                     },
                     child: new Container(
@@ -209,10 +209,10 @@ class MineTabState extends State<MineTab> {
       }))
       .then((result) {
         if(result == null) return;
-        Api().getUserInfo(result)
+        final store = StoreProvider.of<AppState>(context);
+        Api().getRecruitJobList(store.state.userName)
           .then((Response response) {
-            Resume resume = Resume.fromMap(response.data['info']);
-            StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+            store.dispatch(SetJobsAction(Job.fromJson(response.data['list'])));
           })
           .catchError((e) {
             print(e);
@@ -220,11 +220,11 @@ class MineTabState extends State<MineTab> {
       });
   }
 
-  _navToResumeDetail() {
+  _navToPubJobList() {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          return new ResumeDetail();
+          return new PubJobList();
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(

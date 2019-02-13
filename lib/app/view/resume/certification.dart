@@ -9,7 +9,9 @@ class CertificationView extends StatefulWidget {
 
   final Certification _certification;
 
-  CertificationView(this._certification);
+  final bool _editable;
+
+  CertificationView(this._certification, this._editable);
 
   @override
   CertificationViewState createState() => new CertificationViewState();
@@ -35,6 +37,7 @@ class CertificationViewState extends State<CertificationView>
     TextStyle detailStyle = new TextStyle(fontSize: 10.0, color: Colors.grey);
     return new InkWell(
       onTap: () {
+        if(!widget._editable) return;
         Navigator.of(context).push(new PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __) {
@@ -73,7 +76,6 @@ class CertificationViewState extends State<CertificationView>
           new Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
           ),
-          new Divider()
         ],
       ),
     );

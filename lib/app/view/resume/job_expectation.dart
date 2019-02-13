@@ -7,8 +7,9 @@ enum AppBarBehavior { normal, pinned, floating, snapping }
 class JobExpectation extends StatefulWidget {
 
   final JobExpect _jobExpect;
+  final bool _editable;
 
-  JobExpectation(this._jobExpect);
+  JobExpectation(this._jobExpect, this._editable);
 
   @override
   JobExpectationState createState() => new JobExpectationState();
@@ -33,6 +34,7 @@ class JobExpectationState extends State<JobExpectation>
   Widget build(BuildContext context) {
     return new InkWell(
       onTap: () {
+        if(!widget._editable) return;
         Navigator.of(context).push(new PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __) {

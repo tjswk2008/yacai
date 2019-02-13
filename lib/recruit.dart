@@ -3,7 +3,6 @@ import 'package:flutter_app/app/component/icon_tab.dart';
 import 'package:flutter_app/app/recruit_view/pub_list.dart';
 import 'package:flutter_app/app/recruit_view/resume_list.dart';
 import 'package:flutter_app/app/recruit_view/mine_view.dart';
-import 'package:flutter_app/app/view/jobs_view.dart';
 
 const double _kTabTextSize = 11.0;
 const int INDEX_RESUME = 0;
@@ -26,7 +25,7 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller =
-        new TabController(initialIndex: _currentIndex, length: 4, vsync: this);
+        new TabController(initialIndex: _currentIndex, length: 3, vsync: this);
     onChanged = () {
       setState(() {
         _currentIndex = this._controller.index;

@@ -8,8 +8,9 @@ enum AppBarBehavior { normal, pinned, floating, snapping }
 class CompanyExperienceView extends StatefulWidget {
 
   final CompanyExperience _companyExperience;
+  final bool _editable;
 
-  CompanyExperienceView(this._companyExperience);
+  CompanyExperienceView(this._companyExperience, this._editable);
 
   @override
   CompanyExperienceViewState createState() => new CompanyExperienceViewState();
@@ -33,6 +34,7 @@ class CompanyExperienceViewState extends State<CompanyExperienceView>
     TextStyle detailStyle = new TextStyle(fontSize: 10.0, color: Colors.grey);
     return new InkWell(
       onTap: () {
+        if(!widget._editable) return;
         Navigator.of(context).push(new PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __) {
@@ -67,7 +69,6 @@ class CompanyExperienceViewState extends State<CompanyExperienceView>
             padding: const EdgeInsets.only(bottom: 5.0),
           ),
           new Text(widget._companyExperience.detail, style: new TextStyle(fontSize: 12.0)),
-          new Divider()
         ],
       ),
     );

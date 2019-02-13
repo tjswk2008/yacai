@@ -7,6 +7,7 @@ import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // 新的登录界面
 class NewLoginPage extends StatefulWidget {
@@ -146,7 +147,10 @@ class NewLoginPageState extends State<NewLoginPage> {
                             return;
                           }
                           callback(username);
-                          Navigator.pop(context, response.data['id']);
+                          SharedPreferences.getInstance().then((SharedPreferences prefs) {
+                            prefs.setString('userName', username);
+                            Navigator.pop(context, response.data['id']);
+                          });
                         })
                         .catchError((e) {
                           setState(() {

@@ -51,7 +51,11 @@ class SplashState extends State<SplashPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.only(
+                  left: 65.0,
+                  right: 65.0,
+                  bottom: 40.0,
+                ),
                 child: new InkWell(
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
@@ -59,19 +63,22 @@ class SplashState extends State<SplashPage> {
                       Route route) => route == null);
                   },
                   child: new Container(
-                    height: 30.0,
+                    height: 45.0,
                     decoration: new BoxDecoration(
-                      border: new Border.all(color: Colors.orange[100]),
-                      borderRadius: new BorderRadius.all(new Radius.circular(5.0))
+                      border: new Border.all(color: Colors.orange[50], width: 2.0),
+                      borderRadius: new BorderRadius.all(new Radius.circular(6.0))
                     ),
                     child: new Center(
-                      child: new Text('我是招聘者', style: new TextStyle(color: Colors.white, fontSize: 14.0),),
+                      child: new Text('我是招聘者', style: new TextStyle(color: Colors.white, fontSize: 18.0),),
                     ),
                   ),
                 ),
               ),
               new Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.only(
+                  left: 65.0,
+                  right: 65.0,
+                ),
                 child: new InkWell(
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
@@ -79,13 +86,13 @@ class SplashState extends State<SplashPage> {
                       Route route) => route == null);
                   },
                   child: new Container(
-                    height: 30.0,
+                    height: 45.0,
                     decoration: new BoxDecoration(
-                      border: new Border.all(color: Colors.orange[200]),
-                      borderRadius: new BorderRadius.all(new Radius.circular(5.0))
+                      border: new Border.all(color: Colors.orange[50], width: 2.0),
+                      borderRadius: new BorderRadius.all(new Radius.circular(6.0))
                     ),
                     child: new Center(
-                      child: new Text('我是求职者', style: new TextStyle(color: Colors.white, fontSize: 14.0),),
+                      child: new Text('我是求职者', style: new TextStyle(color: Colors.white, fontSize: 18.0),),
                     ),
                   ),
                 ),

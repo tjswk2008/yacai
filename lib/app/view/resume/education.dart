@@ -8,8 +8,9 @@ enum AppBarBehavior { normal, pinned, floating, snapping }
 class EducationView extends StatefulWidget {
 
   final Education _education;
+  final bool _editable;
 
-  EducationView(this._education);
+  EducationView(this._education, this._editable);
 
   @override
   EducationViewState createState() => new EducationViewState();
@@ -35,6 +36,7 @@ class EducationViewState extends State<EducationView>
     TextStyle detailStyle = new TextStyle(fontSize: 10.0, color: Colors.grey);
     return new InkWell(
       onTap: () {
+        if(!widget._editable) return;
         Navigator.of(context).push(new PageRouteBuilder(
           opaque: false,
           pageBuilder: (BuildContext context, _, __) {
@@ -69,7 +71,6 @@ class EducationViewState extends State<EducationView>
             padding: const EdgeInsets.only(bottom: 5.0),
           ),
           new Text(widget._education.detail, style: new TextStyle(fontSize: 12.0)),
-          new Divider()
         ],
       ),
     );

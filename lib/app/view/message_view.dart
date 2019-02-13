@@ -49,9 +49,11 @@ class PostList extends State<MessageTab> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     new Padding(
-                      padding: const EdgeInsets.only(top: 5.0, right: 5.0),
-                      child: new InkWell(
-                        onTap: () {
+                      padding: const EdgeInsets.only(top: 5.0, right: 10.0),
+                      child: RaisedButton(
+                        color: Colors.orange[400],
+                        child: Text("我要提问", style: new TextStyle(fontSize: 16.0, color: Colors.white),),
+                        onPressed: () {
                           if(userName == '') {
                             _login();
                             return;
@@ -75,18 +77,6 @@ class PostList extends State<MessageTab> {
                             getPostList();
                           });
                         },
-                        child: new Container(
-                          height: 30,
-                          padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-                          decoration: new BoxDecoration(
-                            color: Colors.cyan[300],
-                            border: new Border.all(color: const Color(0xffcccccc)),
-                            borderRadius: new BorderRadius.all(new Radius.circular(5.0))
-                          ),
-                          child: new Center(
-                            child: new Text("我要提问", style: new TextStyle(fontSize: 16.0, color: Colors.white),),
-                          ),
-                        ),
                       ),
                     )
                   ],

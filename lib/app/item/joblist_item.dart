@@ -18,7 +18,6 @@ class JobListItem extends StatelessWidget {
 
       child: new SizedBox(
         child: new Card(
-          elevation: 0.0,
           child: new Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

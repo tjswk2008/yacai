@@ -11,6 +11,10 @@ class Api {
     return Dio().get(serverAddr + "jobs/jobsList?type=" + type.toString());
   }
 
+  Future<Response<T>> getRecruitJobList<T>(String userName) {
+    return Dio().get(serverAddr + "jobs/getRecruitJobList?userName=${userName}");
+  }
+
   Future<Response<T>> getPostList<T>() {
     return Dio().get(serverAddr + "post/query");
   }

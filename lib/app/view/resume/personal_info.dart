@@ -7,8 +7,9 @@ import 'package:date_format/date_format.dart';
 class PersonalInfoView extends StatelessWidget {
 
   final PersonalInfo personalInfo;
+  final bool _editable;
 
-  PersonalInfoView(this.personalInfo);
+  PersonalInfoView(this.personalInfo, this._editable);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class PersonalInfoView extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10.0),
       child: new InkWell(
         onTap: () {
+          if(!_editable) return;
           Navigator.of(context).push(new PageRouteBuilder(
             opaque: false,
             pageBuilder: (BuildContext context, _, __) {
