@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 
 class Job {
+  final int id;
   final String name; // 职位名称
   final String cname; // 公司名字
   final String salary; // 工资
@@ -17,6 +18,7 @@ class Job {
   final int companyId; // 公司Id
 
   Job({
+    this.id,
     @required this.name,
     @required this.cname,
     @required this.salary,
@@ -41,6 +43,7 @@ class Job {
 
   static Job fromMap(Map map) {
     return new Job(
+        id: map['id'],
         name: map['name'],
         cname: map['cname'],
         salary: map['salary'],

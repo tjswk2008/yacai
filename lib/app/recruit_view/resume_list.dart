@@ -8,8 +8,9 @@ import 'package:flutter_app/app/api/api.dart';
 
 class ResumeTab extends StatefulWidget {
   final String _title;
+  final int jobId;
 
-  ResumeTab(this._title);
+  ResumeTab(this._title, this.jobId);
   @override
   ResumeTabState createState() => new ResumeTabState();
 }
@@ -47,7 +48,7 @@ class ResumeTabState extends State<ResumeTab> {
   }
 
   void getResumeList() {
-    Api().getResumeList()
+    Api().getResumeList(widget.jobId)
       .then((Response response) {
         setState(() {
           _personalInfos = PersonalInfo.fromList(response.data['list']);

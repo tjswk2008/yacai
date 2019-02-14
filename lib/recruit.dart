@@ -47,8 +47,8 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
     return new Scaffold(
       body: new TabBarView(
         children: <Widget>[
-          new ResumeTab('精英简历'),
-          new PubTab('职位'),
+          new ResumeTab('精英简历', null),
+          new PubTab('我的职位'),
           new MineTab(),
           // new JobsTab(1, '全职'),
         ],
