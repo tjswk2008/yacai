@@ -124,7 +124,7 @@ class PubJobState extends State<PubJob>
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     new Text(
-                      '颁发时间：',
+                      '工作年限：',
                       textAlign: TextAlign.left,
                       style: new TextStyle(fontSize: 18.0),
                     ),

@@ -46,7 +46,7 @@ class PostListItem extends StatelessWidget {
                       left: 10.0,
                       right: 3.0
                     ),
-                    child: new Icon(Icons.favorite)
+                    child: new Icon(Icons.favorite, color: Colors.red,)
                   ),
                   new Padding(
                     padding: const EdgeInsets.only(
@@ -62,7 +62,7 @@ class PostListItem extends StatelessWidget {
                       left: 10.0,
                       right: 3.0
                     ),
-                    child: new Icon(Icons.face),
+                    child: new Icon(Icons.face, color: Colors.lightBlue[300],),
                   ),
                   new Text(post.viewers.toString(),
                         style: new TextStyle(color: Colors.grey)),

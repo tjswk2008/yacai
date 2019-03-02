@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'dart:io';
 class Api {
-  final String serverAddr = "http://192.168.140.56:3000/api/";
+  final String serverAddr = "http://localhost:3000/api/";
 
   Future<Response<T>> getResumeList<T>(int jobId) {
     String url = '${serverAddr}user/getResumeList';

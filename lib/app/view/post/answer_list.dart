@@ -43,12 +43,13 @@ class AnswerListState extends State<AnswerList>
           children: <Widget>[
             new Container(
               width: 70.0,
+              margin: const EdgeInsets.only(left: 4.0),
               padding: const EdgeInsets.only(right: 15.0),
               child: new Column(
                 children: <Widget>[
                   new Row(
                     children: <Widget>[
-                      new Icon(Icons.favorite),
+                      new Icon(Icons.favorite, color: Colors.red,),
                       new Text(answer.votes),
                     ],
                   )
@@ -56,7 +57,7 @@ class AnswerListState extends State<AnswerList>
               ),
             ),
             new Container(
-              width: 210.0,
+              width: 300.0,
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

@@ -37,10 +37,10 @@ class PubJobListState extends State<PubJobList> {
               style: TextStyle(fontSize: 20.0, color: Colors.white)
             )
           ),
-          body:new ListView.builder(
+          body: state.jobs != null ? new ListView.builder(
             itemCount: state.jobs.length,
             itemBuilder: buildJobItem
-          )
+          ) : new Container()
         );
       }
     );

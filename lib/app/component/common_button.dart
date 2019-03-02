@@ -26,7 +26,7 @@ class CommonButtonState extends State<CommonButton> {
         decoration: new BoxDecoration(
           color: this.widget.color,
           border: new Border.all(color: const Color(0xffcccccc)),
-          borderRadius: new BorderRadius.all(new Radius.circular(30))
+          // borderRadius: new BorderRadius.all(new Radius.circular(30))
         ),
         child: new Center(
           child: new Text(this.widget.text, style: textStyle,),

@@ -92,7 +92,7 @@ class PostDetailState extends State<PostDetail>
                                 new Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    new Icon(Icons.favorite),
+                                    new Icon(Icons.favorite, color: Colors.red,),
                                     new Text(_post.votes.toString()),
                                   ],
                                 )
