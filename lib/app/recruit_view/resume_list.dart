@@ -31,14 +31,6 @@ class ResumeTabState extends State<ResumeTab> {
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
         elevation: 0.0,
-        leading: IconButton(
-          icon: const BackButtonIcon(),
-          iconSize: 40*factor,
-          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-          onPressed: () {
-            Navigator.maybePop(context);
-          }
-        ),
         title: new Text(widget._title,
             style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
       ),

@@ -82,55 +82,53 @@ class NewLoginPageState extends State<NewLoginPage> {
             padding: EdgeInsets.all(10.0*factor),
             child: new Column(
               children: <Widget>[
-                new Center(child: new Text("请使用帐号密码登录", style: new TextStyle(color: Colors.white, fontSize: 20.0*factor))),
-                new Container(height: 20.0*factor),
+                new Center(child: new Text("请使用帐号密码登录", style: new TextStyle(color: Colors.white, fontSize: 22.0*factor))),
+                new Container(height: 30.0*factor),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    new Text("用户名：", style: TextStyle(fontSize: 22.0*factor)),
+                    new Text("用户名：", style: TextStyle(fontSize: 26.0*factor)),
                     new Expanded(child: new TextField(
                       controller: usernameCtrl,
-                      style: TextStyle(fontSize: 22.0*factor),
+                      style: TextStyle(fontSize: 26.0*factor),
                       decoration: new InputDecoration(
                         hintText: "帐号/注册邮箱",
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080),
-                            fontSize: 22.0*factor
                         ),
                         border: new OutlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor),
                           borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                         ),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        contentPadding: EdgeInsets.all(20.0*factor)
                       ),
                     ))
                   ],
                 ),
-                new Container(height: 20.0*factor),
+                new Container(height: 30.0*factor),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    new Text("密　码：", style: TextStyle(fontSize: 22.0*factor),),
+                    new Text("密　码：", style: TextStyle(fontSize: 26.0*factor),),
                     new Expanded(child: new TextField(
                       controller: passwordCtrl,
-                      style: TextStyle(fontSize: 22.0*factor),
+                      style: TextStyle(fontSize: 26.0*factor),
                       obscureText: true,
                       decoration: new InputDecoration(
                         hintText: "登录密码",
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080),
-                            fontSize: 22.0*factor
                         ),
                         border: new OutlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor),
                           borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                         ),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        contentPadding: EdgeInsets.all(20.0*factor)
                       ),
                     ))
                   ],
                 ),
-                new Container(height: 20.0*factor),
+                new Container(height: 30.0*factor),
                 new Builder(builder: (ctx) {
                   return new CommonButton(
                     text: "登录",

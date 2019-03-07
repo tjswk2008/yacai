@@ -105,7 +105,7 @@ class CompanyDetailState extends State<CompanyDetail>
                           new TabBar(
                             indicatorWeight: 3.0*screenWidthInPt/750,
                             indicatorSize: TabBarIndicatorSize.tab,
-                            labelStyle: new TextStyle(fontSize: 22.0*screenWidthInPt/750),
+                            labelStyle: new TextStyle(fontSize: 26.0*screenWidthInPt/750),
                             labelColor: Colors.black,
                             controller: _controller,
                             tabs: _tabs,
@@ -122,8 +122,8 @@ class CompanyDetailState extends State<CompanyDetail>
             ),
 
             new Positioned(
-              top: 10.0*screenWidthInPt/750,
-              left: -10.0*screenWidthInPt/750,
+              top: 30.0*screenWidthInPt/750,
+              left: 10.0*screenWidthInPt/750,
               child: IconButton(
                 icon: const BackButtonIcon(),
                 tooltip: MaterialLocalizations.of(context).backButtonTooltip,

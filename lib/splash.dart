@@ -45,7 +45,7 @@ class SplashState extends State<SplashPage> {
           new Text("丫财",
             style: new TextStyle(
               color: Colors.white,
-              fontSize: 50.0*screenWidthInPt/750,
+              fontSize: 60.0*screenWidthInPt/750,
               fontWeight: FontWeight.bold
             ),
           ),
@@ -65,13 +65,13 @@ class SplashState extends State<SplashPage> {
                       Route route) => route == null);
                   },
                   child: new Container(
-                    height: 60.0*screenWidthInPt/750,
+                    height: 70.0*screenWidthInPt/750,
                     decoration: new BoxDecoration(
                       border: new Border.all(color: Colors.orange[50], width: 2.0*screenWidthInPt/750),
                       borderRadius: new BorderRadius.all(new Radius.circular(6.0*screenWidthInPt/750))
                     ),
                     child: new Center(
-                      child: new Text('我是招聘者', style: new TextStyle(color: Colors.white, fontSize: 22.0*screenWidthInPt/750),),
+                      child: new Text('我是招聘者', style: new TextStyle(color: Colors.white, fontSize: 26.0*screenWidthInPt/750),),
                     ),
                   ),
                 ),
@@ -88,13 +88,13 @@ class SplashState extends State<SplashPage> {
                       Route route) => route == null);
                   },
                   child: new Container(
-                    height: 60.0*screenWidthInPt/750,
+                    height: 70.0*screenWidthInPt/750,
                     decoration: new BoxDecoration(
                       border: new Border.all(color: Colors.orange[50], width: 2.0*screenWidthInPt/750),
                       borderRadius: new BorderRadius.all(new Radius.circular(6.0*screenWidthInPt/750))
                     ),
                     child: new Center(
-                      child: new Text('我是求职者', style: new TextStyle(color: Colors.white, fontSize: 22.0*screenWidthInPt/750),),
+                      child: new Text('我是求职者', style: new TextStyle(color: Colors.white, fontSize: 26.0*screenWidthInPt/750),),
                     ),
                   ),
                 ),

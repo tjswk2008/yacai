@@ -8,10 +8,10 @@ class CompanyHotJob extends StatelessWidget {
     double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Padding(
         padding: EdgeInsets.only(
-          top: 10.0*screenWidthInPt/750,
-          left: 10.0*screenWidthInPt/750,
-          right: 10.0*screenWidthInPt/750,
-          bottom: 10.0*screenWidthInPt/750,
+          top: 20.0*screenWidthInPt/750,
+          left: 20.0*screenWidthInPt/750,
+          right: 20.0*screenWidthInPt/750,
+          bottom: 20.0*screenWidthInPt/750,
         ),
         child: new Row(
           children: <Widget>[
@@ -19,7 +19,7 @@ class CompanyHotJob extends StatelessWidget {
               text: new TextSpan(
                 text: '敬请期待',
                 style: new TextStyle(
-                    fontSize: 20.0*screenWidthInPt/750,
+                    fontSize: 26.0*screenWidthInPt/750,
                     color: Colors.black
                 ),
               ),

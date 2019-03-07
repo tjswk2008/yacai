@@ -23,7 +23,7 @@ class JobBase extends StatelessWidget {
           child: new Column(
             children: <Widget>[
               new Padding(
-                padding: EdgeInsets.only(top: 5.0*screenWidthInPt/750),
+                padding: EdgeInsets.only(top: 10.0*screenWidthInPt/750),
               ),
 
               new Row(
@@ -35,13 +35,13 @@ class JobBase extends StatelessWidget {
                     child: new Text(
                       job.name,
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 22.0*screenWidthInPt/750),
+                      style: new TextStyle(fontSize: 26.0*screenWidthInPt/750),
                     ),
                   ),
 
                   new Container(
                     child: new Text(job.salary, style: new TextStyle(
-                        fontSize: 18.0*screenWidthInPt/750, color: new Color.fromARGB(255, 0, 215, 198))),
+                        fontSize: 26.0*screenWidthInPt/750, color: new Color.fromARGB(255, 0, 215, 198))),
                   ),
                 ],
               ),
@@ -54,7 +54,7 @@ class JobBase extends StatelessWidget {
                     child: new Text(
                       job.addrSummarize,
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0*screenWidthInPt/750, color: Colors.grey),
+                      style: new TextStyle(fontSize: 22.0*screenWidthInPt/750, color: Colors.grey),
                     ),
                   ),
 
@@ -64,13 +64,13 @@ class JobBase extends StatelessWidget {
                       right: 15.0*screenWidthInPt/750,
                     ),
                     child: new Text(job.timereq, style: new TextStyle(
-                        fontSize: 18.0*screenWidthInPt/750, color: Colors.grey)),
+                        fontSize: 22.0*screenWidthInPt/750, color: Colors.grey)),
                   ),
 
                   new Container(
                     child: new Text(
                         job.academic, style: new TextStyle(
-                        fontSize: 18.0*screenWidthInPt/750, color: Colors.grey)),
+                        fontSize: 22.0*screenWidthInPt/750, color: Colors.grey)),
                   ),
                 ],
               ),

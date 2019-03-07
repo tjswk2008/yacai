@@ -12,10 +12,10 @@ class UserListItem extends StatelessWidget {
     double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
       padding: EdgeInsets.only(
-        top: 3.0*factor,
-        left: 5.0*factor,
-        right: 5.0*factor,
-        bottom: 3.0*factor,
+        top: 10.0*factor,
+        left: 10.0*factor,
+        right: 10.0*factor,
+        bottom: 10.0*factor,
       ),
 
       child: new Card(
@@ -27,11 +27,11 @@ class UserListItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 new Container(
-                  height: 70.0*factor,
+                  height: 90.0*factor,
                   padding: EdgeInsets.all(20.0*factor),
                   child: new Text(
                     personalInfo.name,
-                    style: new TextStyle(fontSize: 20.0*factor)
+                    style: new TextStyle(fontSize: 26.0*factor)
                   ),
                 ),
                 new Row(
@@ -40,13 +40,13 @@ class UserListItem extends StatelessWidget {
                     new Padding(
                       padding: EdgeInsets.only(
                         top: 45.0*factor,
-                        right: 5.0*factor,
+                        right: 10.0*factor,
                       ),
                       child: new Text(
                         personalInfo.gender,
                         textAlign: TextAlign.left,
                         style: new TextStyle(
-                            fontSize: 18.0*factor, color: Colors.grey),
+                            fontSize: 22.0*factor, color: Colors.grey),
                       )
                     ),
                     new Padding(
@@ -55,7 +55,7 @@ class UserListItem extends StatelessWidget {
                       ),
                       child: new Text(
                         yearsOffset(personalInfo.birthDay).toString() + "岁",
-                        style: new TextStyle(fontSize: 18.0*factor, color: Colors.red)
+                        style: new TextStyle(fontSize: 22.0*factor, color: Colors.red)
                       ),
                     ),
                   ],
@@ -67,22 +67,22 @@ class UserListItem extends StatelessWidget {
               children: <Widget>[
                 new Padding(
                   padding: EdgeInsets.only(
-                    top: 5.0*factor,
-                    left: 20.0*factor*factor,
-                    right: 5.0*factor,
+                    top: 10.0*factor,
+                    left: 20.0*factor,
+                    right: 10.0*factor,
                     bottom: 15.0*factor,
                   ),
                   child: new Text(yearsOffset(personalInfo.firstJobTime).toString() + "年经验",
-                      style: new TextStyle(fontSize: 18*factor, color: new Color.fromARGB(
+                      style: new TextStyle(fontSize: 22*factor, color: new Color.fromARGB(
                           255, 0, 215, 198))),
                 ),
                 new Padding(
                   padding: EdgeInsets.only(
-                    top: 5.0*factor,
-                    right: 5.0*factor,
+                    top: 10.0*factor,
+                    right: 10.0*factor,
                     bottom: 15.0*factor,
                   ),
-                  child: new Text(personalInfo.academic, style: new TextStyle(fontSize: 18*factor))
+                  child: new Text(personalInfo.academic, style: new TextStyle(fontSize: 22*factor))
                 )
               ],
             ),

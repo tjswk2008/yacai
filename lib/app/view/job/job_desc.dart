@@ -18,7 +18,7 @@ class JobDesc extends StatelessWidget {
       ),
       child: new Container(
           color: Colors.white,
-          height: 260.0*screenWidthInPt/750,
+          height: 320.0*screenWidthInPt/750,
           child: new Padding(
               padding: EdgeInsets.all(15.0*screenWidthInPt/750),
               child: new Column(
@@ -28,7 +28,7 @@ class JobDesc extends StatelessWidget {
                       new Container(
                         margin: EdgeInsets.only(bottom: 10.0*screenWidthInPt/750),
                         child: new Text(
-                            '职位详情', style: new TextStyle(fontSize: 20.0*screenWidthInPt/750, fontWeight: FontWeight.bold)),
+                            '职位详情', style: new TextStyle(fontSize: 26.0*screenWidthInPt/750, fontWeight: FontWeight.bold)),
                       )
                     ],
                   ),
@@ -37,7 +37,7 @@ class JobDesc extends StatelessWidget {
                     text: new TextSpan(
                       text: job.detail,
                       style: new TextStyle(
-                          fontSize: 18.0*screenWidthInPt/750,
+                          fontSize: 24.0*screenWidthInPt/750,
                           color: Colors.black
                       ),
                     ),

@@ -58,7 +58,7 @@ class PubJobState extends State<PubJob>
         ),
         body: new SingleChildScrollView(
           child: new Padding(
-            padding: EdgeInsets.all(10.0*factor),
+            padding: EdgeInsets.all(30.0*factor),
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -67,14 +67,14 @@ class PubJobState extends State<PubJob>
                   child: new Text(
                     '职位名称：',
                     textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 24.0*factor),
+                    style: new TextStyle(fontSize: 26.0*factor),
                   ),
                 ),
                 new Padding(
-                  padding: EdgeInsets.only(bottom: 16.0*factor),
+                  padding: EdgeInsets.only(bottom: 36.0*factor),
                   child: new TextField(
                     controller: nameCtrl,
-                    style: TextStyle(fontSize: 20*factor),
+                    style: TextStyle(fontSize: 22*factor),
                     decoration: new InputDecoration(
                       hintText: "请输入职位名称",
                       hintStyle: new TextStyle(
@@ -92,14 +92,14 @@ class PubJobState extends State<PubJob>
                   child: new Text(
                     '薪资待遇：',
                     textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 24.0*factor),
+                    style: new TextStyle(fontSize: 26.0*factor),
                   ),
                 ),
                 new Padding(
-                  padding: EdgeInsets.only(bottom: 16.0*factor),
+                  padding: EdgeInsets.only(bottom: 36.0*factor),
                   child: new TextField(
                     controller: salaryCtrl,
-                    style: TextStyle(fontSize: 20*factor),
+                    style: TextStyle(fontSize: 22*factor),
                     decoration: new InputDecoration(
                       hintText: "请输入薪资待遇",
                       hintStyle: new TextStyle(
@@ -117,14 +117,14 @@ class PubJobState extends State<PubJob>
                   child: new Text(
                     '工作地点：',
                     textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 24.0*factor),
+                    style: new TextStyle(fontSize: 26.0*factor),
                   ),
                 ),
                 new Padding(
-                  padding: EdgeInsets.only(bottom: 16.0*factor),
+                  padding: EdgeInsets.only(bottom: 36.0*factor),
                   child: new TextField(
                     controller: addrCtrl,
-                    style: TextStyle(fontSize: 20*factor),
+                    style: TextStyle(fontSize: 22*factor),
                     decoration: new InputDecoration(
                       hintText: "请输入工作地点",
                       hintStyle: new TextStyle(
@@ -144,7 +144,7 @@ class PubJobState extends State<PubJob>
                     new Text(
                       '工作年限：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 26.0*factor),
                     ),
 
                     new InkWell(
@@ -162,11 +162,14 @@ class PubJobState extends State<PubJob>
                           print(err);
                         });
                       },
-                      child: new Text(date, style: new TextStyle(fontSize: 24.0*factor),),
+                      child: new Text(date, style: new TextStyle(fontSize: 26.0*factor),),
                     )
                   ],
                 ),
                 new Divider(),
+                new Container(
+                  height: 200*factor,
+                ),
                 new Builder(builder: (ctx) {
                   return new CommonButton(
                     text: "保存",

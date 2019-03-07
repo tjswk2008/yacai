@@ -47,7 +47,7 @@ class PubTabState extends State<PubTab> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text("您还未登陆，请先前往登陆查看", style: TextStyle(fontSize: 20*factor),),
+              new Text("您还未登陆，请先前往登陆查看", style: TextStyle(fontSize: 24*factor),),
               new InkWell(
                 onTap: _login,
                 child: new Container(
@@ -58,7 +58,7 @@ class PubTabState extends State<PubTab> {
                     borderRadius: new BorderRadius.all(new Radius.circular(6.0*factor))
                   ),
                   child: new Center(
-                    child: new Text("前往登陆", style: new TextStyle(color: Colors.black, fontSize: 18.0*factor),),
+                    child: new Text("前往登陆", style: new TextStyle(color: Colors.black, fontSize: 22.0*factor),),
                   ),
                 ),
               )
@@ -72,13 +72,13 @@ class PubTabState extends State<PubTab> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     new Padding(
-                      padding: EdgeInsets.only(top: 5.0*factor, right: 15.0*factor),
+                      padding: EdgeInsets.only(top: 5.0*factor, right: 20.0*factor),
                       child: Container(
-                        height: 45*factor,
-                        width: 160*factor,
+                        height: 60*factor,
+                        width: 170*factor,
                         child: RaisedButton(
                           color: Colors.orange[400],
-                          child: Text("发布职位", style: new TextStyle(fontSize: 22.0*factor, color: Colors.white),),
+                          child: Text("发布职位", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
                           onPressed: () {
                             Navigator.of(context).push(new PageRouteBuilder(
                               opaque: false,

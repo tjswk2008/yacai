@@ -22,13 +22,13 @@ class CompanyInfo extends StatelessWidget {
             children: <Widget>[
               new Padding(
                 padding: EdgeInsets.only(
-                  left: 5.0*screenWidthInPt/750,
+                  left: 10.0*screenWidthInPt/750,
                   right: 15.0*screenWidthInPt/750,
                 ),
                 child: new Image.network(
                   company.logo,
-                  width: 60.0*screenWidthInPt/750,
-                  height: 60.0*screenWidthInPt/750,),
+                  width: 100.0*screenWidthInPt/750,
+                  height: 100.0*screenWidthInPt/750,),
               ),
 
               new Expanded(
@@ -40,31 +40,31 @@ class CompanyInfo extends StatelessWidget {
                       child: new Text(
                         company.name,
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 20.0*screenWidthInPt/750),
+                        style: new TextStyle(fontSize: 24.0*screenWidthInPt/750),
                       ),
-                      margin: EdgeInsets.only(top: 10.0*screenWidthInPt/750, bottom: 5.0*screenWidthInPt/750),
+                      margin: EdgeInsets.only(top: 10.0*screenWidthInPt/750, bottom: 10.0*screenWidthInPt/750),
                     ),
 
                     new Padding(
                       padding: EdgeInsets.only(
-                        top: 5.0*screenWidthInPt/750,
-                        right: 5.0*screenWidthInPt/750,
-                        bottom: 5.0*screenWidthInPt/750,
+                        top: 10.0*screenWidthInPt/750,
+                        right: 10.0*screenWidthInPt/750,
+                        bottom: 10.0*screenWidthInPt/750,
                       ),
                       child: new Text(company.location, style: new TextStyle(
-                          fontSize: 18.0*screenWidthInPt/750, color: Colors.grey)),
+                          fontSize: 24.0*screenWidthInPt/750, color: Colors.grey)),
                     ),
 
                     new Padding(
                       padding: EdgeInsets.only(
-                        top: 5.0*screenWidthInPt/750,
-                        right: 5.0*screenWidthInPt/750,
-                        bottom: 5.0*screenWidthInPt/750,
+                        top: 10.0*screenWidthInPt/750,
+                        right: 10.0*screenWidthInPt/750,
+                        bottom: 10.0*screenWidthInPt/750,
                       ),
                       child: new Text(
                           company.type + " | " + company.size + " | " +
                               company.employee, style: new TextStyle(
-                          fontSize: 18.0*screenWidthInPt/750, color: Colors.grey)),
+                          fontSize: 22.0*screenWidthInPt/750, color: Colors.grey)),
                     ),
                   ],
                 ),

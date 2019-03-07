@@ -11,10 +11,10 @@ class JobListItem extends StatelessWidget {
     double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Padding(
       padding: EdgeInsets.only(
-        top: 3.0*screenWidthInPt/750,
-        left: 5.0*screenWidthInPt/750,
-        right: 5.0*screenWidthInPt/750,
-        bottom: 3.0*screenWidthInPt/750,
+        top: 10.0*screenWidthInPt/750,
+        left: 10.0*screenWidthInPt/7100,
+        right: 10.0*screenWidthInPt/750,
+        bottom: 10.0*screenWidthInPt/750,
       ),
 
       child: new SizedBox(
@@ -32,20 +32,20 @@ class JobListItem extends StatelessWidget {
                         new Padding(
                           padding: EdgeInsets.only(
                             top: 10.0*screenWidthInPt/750,
-                            left: 10.0*screenWidthInPt/750,
+                            left: 20.0*screenWidthInPt/750,
                           ),
-                          child: new Text(job.name, style: new TextStyle(fontSize: 22.0*screenWidthInPt/750)),
+                          child: new Text(job.name, style: new TextStyle(fontSize: 26.0*screenWidthInPt/750)),
                         ),
                         new Expanded(child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             new Padding(
                               padding: EdgeInsets.only(
-                                right: 10.0*screenWidthInPt/750,
+                                right: 20.0*screenWidthInPt/750,
                               ),
                               child: new Text(
                                   job.salary,
-                                  style: new TextStyle(color: Colors.red, fontSize: 20.0*screenWidthInPt/750)),
+                                  style: new TextStyle(color: Colors.red, fontSize: 26.0*screenWidthInPt/750)),
                             ),
                           ],
                         ))
@@ -57,11 +57,11 @@ class JobListItem extends StatelessWidget {
                         job.cname,
                         textAlign: TextAlign.left,
                         style: new TextStyle(
-                            fontSize: 18.0*screenWidthInPt/750, color: Colors.grey),
+                            fontSize: 24.0*screenWidthInPt/750, color: Colors.grey),
                       ),
                       margin: EdgeInsets.only(
-                          top: 5.0*screenWidthInPt/750,
-                          left: 10.0*screenWidthInPt/750,
+                          top: 10.0*screenWidthInPt/750,
+                          left: 20.0*screenWidthInPt/750,
                         ),
                     ),
 
@@ -70,19 +70,19 @@ class JobListItem extends StatelessWidget {
                       children: <Widget>[
                         new Padding(
                           padding: EdgeInsets.only(
-                            left: 10.0*screenWidthInPt/750,
+                            left: 20.0*screenWidthInPt/750,
                             right: 5.0*screenWidthInPt/750,
                             bottom: 15.0*screenWidthInPt/750,
                           ),
                           child: new Text(job.username + " | " + job.title,
-                              style: new TextStyle(color: new Color.fromARGB(255, 0, 215, 198), fontSize: 18.0*screenWidthInPt/750)),
+                              style: new TextStyle(color: new Color.fromARGB(255, 0, 215, 198), fontSize: 24.0*screenWidthInPt/750)),
                         ),
                         new Padding(
                           padding: EdgeInsets.only(
-                            right: 5.0*screenWidthInPt/750,
+                            right: 10.0*screenWidthInPt/750,
                             bottom: 15.0*screenWidthInPt/750,
                           ),
-                          child: new Text(" 发布于 " + job.pubTime, style: new TextStyle(fontSize: 18.0*screenWidthInPt/750))
+                          child: new Text(" 发布于 " + job.pubTime, style: new TextStyle(fontSize: 24.0*screenWidthInPt/750))
                         )
                       ],
                     ),

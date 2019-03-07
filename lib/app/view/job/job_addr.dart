@@ -24,11 +24,11 @@ class JobAddr extends StatelessWidget {
                 padding: EdgeInsets.only(
                   right: 15.0*screenWidthInPt/750,
                 ),
-                child: new Text('工作地点', style: new TextStyle(fontSize: 20.0*screenWidthInPt/750, fontWeight: FontWeight.bold))
+                child: new Text('工作地点', style: new TextStyle(fontSize: 26.0*screenWidthInPt/750, fontWeight: FontWeight.bold))
               ),
 
               new Expanded(
-                child: new Text(job.addrDetail, style: new TextStyle(fontSize: 20.0*screenWidthInPt/750))
+                child: new Text(job.addrDetail, style: new TextStyle(fontSize: 24.0*screenWidthInPt/750))
               ),
             ],
           ),

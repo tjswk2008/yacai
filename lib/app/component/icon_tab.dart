@@ -36,24 +36,24 @@ class IconTabState extends State<IconTab> {
         new Container(
           child: widget.icon != null ? new Image(
             image: new AssetImage(widget.icon),
-            height: 30.0*factor,
-            width: 30.0*factor,
+            height: 50.0*factor,
+            width: 50.0*factor,
           ) : new Container(
-            height: 30.0*factor,
-            child: new Icon(widget.iconData, color: widget.color, size: 30.0*factor,),
+            height: 50.0*factor,
+            child: new Icon(widget.iconData, color: widget.color, size: 50.0*factor,),
           ),
           margin: EdgeInsets.only(bottom: 3.0*factor),
         ),
         Text(widget.text,
           softWrap: false,
           overflow: TextOverflow.fade,
-          style: new TextStyle(color: widget.color, fontSize: 18.0*factor),
+          style: new TextStyle(color: widget.color, fontSize: 22.0*factor),
         )
       ]
     );
 
     return new SizedBox(
-      height: 70*factor,
+      height: 100*factor,
       child: new Center(
         child: label,
         widthFactor: 1.0,
