@@ -34,7 +34,8 @@ class CertificationViewState extends State<CertificationView>
 
   @override
   Widget build(BuildContext context) {
-    TextStyle detailStyle = new TextStyle(fontSize: 10.0, color: Colors.grey);
+    double factor = MediaQuery.of(context).size.width/750;
+    TextStyle detailStyle = new TextStyle(fontSize: 16.0*factor, color: Colors.grey);
     return new InkWell(
       onTap: () {
         if(!widget._editable) return;
@@ -62,7 +63,7 @@ class CertificationViewState extends State<CertificationView>
             children: <Widget>[
               new Row(
                 children: <Widget>[
-                  new Text(widget._certification.name, style: new TextStyle(fontSize: 12.0) ),
+                  new Text(widget._certification.name, style: new TextStyle(fontSize: 18.0*factor) ),
                   new Text("(${widget._certification.code})", style: detailStyle),
                 ],
               ),
@@ -74,7 +75,7 @@ class CertificationViewState extends State<CertificationView>
           ),
           new Text(widget._certification.industry, style: detailStyle),
           new Padding(
-            padding: const EdgeInsets.only(bottom: 5.0),
+            padding: EdgeInsets.only(bottom: 5.0*factor),
           ),
         ],
       ),

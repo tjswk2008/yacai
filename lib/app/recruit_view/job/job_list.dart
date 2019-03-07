@@ -25,6 +25,7 @@ class PubJobListState extends State<PubJobList> {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
@@ -32,9 +33,17 @@ class PubJobListState extends State<PubJobList> {
           backgroundColor: new Color.fromARGB(255, 242, 242, 245),
           appBar: new AppBar(
             elevation: 0.0,
+            leading: IconButton(
+              icon: const BackButtonIcon(),
+              iconSize: 40*factor,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                Navigator.maybePop(context);
+              }
+            ),
             title: Text(
               '投递记录',
-              style: TextStyle(fontSize: 20.0, color: Colors.white)
+              style: TextStyle(fontSize: 30.0*factor, color: Colors.white)
             )
           ),
           body: state.jobs != null ? new ListView.builder(

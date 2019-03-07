@@ -41,6 +41,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
@@ -48,25 +49,33 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
           backgroundColor: Colors.white,
           appBar: new AppBar(
             elevation: 0.0,
+            leading: IconButton(
+              icon: const BackButtonIcon(),
+              iconSize: 40*factor,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                Navigator.maybePop(context);
+              }
+            ),
             title: new Text('工作经历',
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
           ),
           body: new SingleChildScrollView(
             child: new Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '公司名：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: new TextField(
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
@@ -84,27 +93,32 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                           _companyExperience.cname = val;
                         });
                       },
+                      style: TextStyle(fontSize: 20*factor),
                       decoration: new InputDecoration(
                         hintText: "请输入公司名",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
+                            color: const Color(0xFF808080),
+                            fontSize: 20.0*factor
                         ),
-                        border: new UnderlineInputBorder(),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        border: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1.0*factor)
+                        ),
+                        contentPadding: EdgeInsets.all(10.0*factor)
                       ),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '职位名称：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: new TextField(
+                      style: TextStyle(fontSize: 20.0*factor),
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
                           text: _companyExperience.jobTitle,
@@ -124,10 +138,13 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       decoration: new InputDecoration(
                         hintText: "请输入职位名称",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
+                            color: const Color(0xFF808080),
+                            fontSize: 20.0*factor
                         ),
-                        border: new UnderlineInputBorder(),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        border: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1.0*factor)
+                        ),
+                        contentPadding: EdgeInsets.all(10.0*factor)
                       ),
                     ),
                   ),
@@ -138,7 +155,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       new Text(
                         '开始时间：',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 18.0),
+                        style: new TextStyle(fontSize: 24.0*factor),
                       ),
 
                       new InkWell(
@@ -156,7 +173,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                             print(err);
                           });
                         },
-                        child: new Text(_companyExperience.startTime),
+                        child: new Text(_companyExperience.startTime, style: TextStyle(fontSize: 24*factor),),
                       )
                     ],
                   ),
@@ -168,7 +185,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       new Text(
                         '结束时间：',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 18.0),
+                        style: new TextStyle(fontSize: 24.0*factor),
                       ),
 
                       new InkWell(
@@ -193,17 +210,17 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                             print(err);
                           });
                         },
-                        child: new Text(_companyExperience.endTime == null ? '至今' : _companyExperience.endTime),
+                        child: new Text(_companyExperience.endTime == null ? '至今' : _companyExperience.endTime, style: TextStyle(fontSize: 24*factor),),
                       )
                     ],
                   ),
                   new Divider(),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '工作内容：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new TextField(
@@ -225,29 +242,32 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                         _companyExperience.detail = val;
                       });
                     },
+                    style: TextStyle(fontSize: 20.0*factor),
                     decoration: new InputDecoration(
                       hintText: "请输入您的工作内容",
                       hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
+                          color: const Color(0xFF808080),
+                          fontSize: 20.0*factor
                       ),
                       border: new OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(const Radius.circular(6.0))
+                          borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                       ),
-                      contentPadding: const EdgeInsets.all(10.0)
+                      contentPadding: EdgeInsets.all(10.0*factor)
                     ),
                   ),
                   new Divider(),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '工作业绩：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new TextField(
                     keyboardType: TextInputType.multiline,
                     maxLines: 5,
+                    style: TextStyle(fontSize: 20.0*factor),
                     controller: TextEditingController.fromValue(
                       TextEditingValue(
                         text: _companyExperience.performance == null ? '' : _companyExperience.performance,
@@ -267,12 +287,13 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                     decoration: new InputDecoration(
                       hintText: "请输入您的工作业绩",
                       hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
+                          color: const Color(0xFF808080),
+                          fontSize: 20.0*factor
                       ),
                       border: new OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(const Radius.circular(6.0))
+                          borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                       ),
-                      contentPadding: const EdgeInsets.all(10.0)
+                      contentPadding: EdgeInsets.all(10.0*factor)
                     ),
                   ),
                   new Divider(),

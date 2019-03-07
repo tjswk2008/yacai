@@ -47,8 +47,22 @@ class JobDetailState extends State<JobDetail>
 
   @override
   Widget build(BuildContext context) {
+    double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Scaffold(
-        backgroundColor: new Color.fromARGB(255, 242, 242, 245),
+        backgroundColor: Colors.white,
+        appBar: new AppBar(
+          elevation: 0.0,
+          leading: IconButton(
+            icon: const BackButtonIcon(),
+            iconSize: 40*screenWidthInPt/750,
+            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+            onPressed: () {
+              Navigator.maybePop(context);
+            }
+          ),
+          title: new Text("职位详情",
+              style: new TextStyle(fontSize: 30.0*screenWidthInPt/750, color: Colors.white)),
+        ),
         body: new Stack(
           children: <Widget>[
             new SingleChildScrollView(
@@ -75,14 +89,6 @@ class JobDetailState extends State<JobDetail>
                 )
             ),
 
-            new Positioned(
-              top: 10.0,
-              left: -10.0,
-              child: new Container(
-                  padding: const EdgeInsets.all(15.0),
-                  child: new BackButton(color: Colors.grey)
-              ),
-            ),
           ],
         )
     );

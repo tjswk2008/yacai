@@ -42,6 +42,7 @@ class CertificationEditViewState extends State<CertificationEditView>
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
@@ -49,26 +50,35 @@ class CertificationEditViewState extends State<CertificationEditView>
           backgroundColor: Colors.white,
           appBar: new AppBar(
             elevation: 0.0,
+            leading: IconButton(
+              icon: const BackButtonIcon(),
+              iconSize: 40*factor,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                Navigator.maybePop(context);
+              }
+            ),
             title: new Text('证书',
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
           ),
           body: new SingleChildScrollView(
             child: new Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '证书名称：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: new TextField(
+                      style: TextStyle(fontSize: 20.0*factor),
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
                           text: _certification.name,
@@ -90,22 +100,25 @@ class CertificationEditViewState extends State<CertificationEditView>
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080)
                         ),
-                        border: new UnderlineInputBorder(),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        border: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: factor)
+                        ),
+                        contentPadding: EdgeInsets.all(10.0*factor)
                       ),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '颁发单位：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: new TextField(
+                      style: TextStyle(fontSize: 20.0*factor),
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
                           text: _certification.industry,
@@ -127,22 +140,25 @@ class CertificationEditViewState extends State<CertificationEditView>
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080)
                         ),
-                        border: new UnderlineInputBorder(),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        border: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1.0*factor)
+                        ),
+                        contentPadding: EdgeInsets.all(10.0*factor)
                       ),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '证书编号：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: new TextField(
+                      style: TextStyle(fontSize: 20*factor),
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
                           text: _certification.code,
@@ -165,7 +181,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                             color: const Color(0xFF808080)
                         ),
                         border: new UnderlineInputBorder(),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        contentPadding: EdgeInsets.all(10.0*factor)
                       ),
                     ),
                   ),
@@ -176,7 +192,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                       new Text(
                         '颁发时间：',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 18.0),
+                        style: new TextStyle(fontSize: 24.0*factor),
                       ),
 
                       new InkWell(
@@ -194,7 +210,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                             print(err);
                           });
                         },
-                        child: new Text(_certification.qualifiedTime),
+                        child: new Text(_certification.qualifiedTime, style: new TextStyle(fontSize: 24.0*factor),),
                       )
                     ],
                   ),

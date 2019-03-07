@@ -13,8 +13,9 @@ class PersonalInfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: EdgeInsets.only(top: 10.0*factor),
       child: new InkWell(
         onTap: () {
           if(!_editable) return;
@@ -46,35 +47,35 @@ class PersonalInfoView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       new Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
+                        padding: EdgeInsets.only(bottom: 10.0*factor),
                         child: new Text(
                           personalInfo.name,
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 30.0),
+                          style: new TextStyle(fontSize: 30.0*factor),
                         ),
                       ),
                       new Row(
                         children: <Widget>[
                           new Padding(
-                            padding: const EdgeInsets.only(right: 15.0),
+                            padding: EdgeInsets.only(right: 15.0*factor),
                             child: new Text(
                               personalInfo.firstJobTime,
                               textAlign: TextAlign.left,
-                              style: new TextStyle(fontSize: 15.0),
+                              style: new TextStyle(fontSize: 20.0*factor),
                             ),
                           ),
                           new Padding(
-                            padding: const EdgeInsets.only(right: 15.0),
+                            padding: EdgeInsets.only(right: 15.0*factor),
                             child: new Text(
                               formatDate(DateTime.parse(personalInfo.birthDay), [yyyy, '-', mm]),
                               textAlign: TextAlign.left,
-                              style: new TextStyle(fontSize: 15.0),
+                              style: new TextStyle(fontSize: 20.0*factor),
                             ),
                           ),
                           new Text(
                             personalInfo.academic,
                             textAlign: TextAlign.left,
-                            style: new TextStyle(fontSize: 15.0),
+                            style: new TextStyle(fontSize: 20.0*factor),
                           ),
                         ],
                       )
@@ -82,7 +83,7 @@ class PersonalInfoView extends StatelessWidget {
                   ),
 
                   new CircleAvatar(
-                    radius: 35.0,
+                    radius: 45.0*factor,
                     backgroundImage: new NetworkImage(personalInfo.avatar)
                   )
                 ],
@@ -95,12 +96,12 @@ class PersonalInfoView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   new Padding(
-                    padding: const EdgeInsets.only(
-                      top: 5.0,
-                      bottom: 5.0,
+                    padding: EdgeInsets.only(
+                      top: 5.0*factor,
+                      bottom: 5.0*factor,
                     ),
                     child: new Text(personalInfo.summarize, style: new TextStyle(
-                        fontSize: 15.0, color: Colors.grey)),
+                        fontSize: 20.0*factor, color: Colors.grey)),
                   ),
                 ],
               ),

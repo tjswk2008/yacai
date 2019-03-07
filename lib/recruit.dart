@@ -44,6 +44,7 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
       body: new TabBarView(
         children: <Widget>[
@@ -59,7 +60,7 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
         child: new TabBar(
           controller: _controller,
           indicatorSize: TabBarIndicatorSize.label,
-          labelStyle: new TextStyle(fontSize: _kTabTextSize),
+          labelStyle: new TextStyle(fontSize: _kTabTextSize*factor),
           tabs: <IconTab>[
             new IconTab(
                 iconData: Icons.school,

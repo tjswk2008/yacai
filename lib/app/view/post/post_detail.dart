@@ -47,6 +47,7 @@ class PostDetailState extends State<PostDetail>
   
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return StoreConnector<AppState, String>(
       converter: (store) => store.state.userName,
       builder: (context, userName) {
@@ -54,18 +55,26 @@ class PostDetailState extends State<PostDetail>
           backgroundColor: Colors.white,
           appBar: new AppBar(
             elevation: 0.0,
+            leading: IconButton(
+              icon: const BackButtonIcon(),
+              iconSize: 40*factor,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                Navigator.maybePop(context);
+              }
+            ),
             title: new Text("帖子详情",
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
           ),
           body: new SingleChildScrollView(
             child: new Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 new Padding(
-                  padding: const EdgeInsets.only(
-                    left: 20.0,
-                    right: 20.0,
-                    top: 10.0
+                  padding: EdgeInsets.only(
+                    left: 20.0*factor,
+                    right: 20.0*factor,
+                    top: 10.0*factor
                   ),
                   child: new Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +84,7 @@ class PostDetailState extends State<PostDetail>
                         text: new TextSpan(
                           text: _post.title,
                           style: new TextStyle(
-                              fontSize: 18.0,
+                              fontSize: 22.0*factor,
                               color: Colors.black
                           ),
                         ),
@@ -85,15 +94,15 @@ class PostDetailState extends State<PostDetail>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           new Container(
-                            width: 70.0,
-                            padding: const EdgeInsets.only(right: 15.0),
+                            width: 80.0*factor,
+                            padding: EdgeInsets.only(right: 15.0*factor),
                             child: new Column(
                               children: <Widget>[
                                 new Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    new Icon(Icons.favorite, color: Colors.red,),
-                                    new Text(_post.votes.toString()),
+                                    new Icon(Icons.favorite, color: Colors.red, size: 20*factor),
+                                    new Text(_post.votes.toString(), style: new TextStyle(fontSize: 20*factor)),
                                   ],
                                 )
                               ],
@@ -107,25 +116,25 @@ class PostDetailState extends State<PostDetail>
                                   text: new TextSpan(
                                     text: _post.detail,
                                     style: new TextStyle(
-                                        fontSize: 16.0,
+                                        fontSize: 16.0*factor,
                                         color: Colors.black
                                     ),
                                   ),
                                 ),
                                 new Padding(
-                                  padding: const EdgeInsets.only(bottom: 5.0),
+                                  padding: EdgeInsets.only(bottom: 5.0*factor),
                                 ),
                                 new Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   mainAxisSize: MainAxisSize.max,
                                   children: <Widget>[
                                     new Padding(
-                                      padding: const EdgeInsets.only(
-                                        right: 10.0
+                                      padding: EdgeInsets.only(
+                                        right: 10.0*factor
                                       ),
-                                      child: new Text(_post.askedBy),
+                                      child: new Text(_post.askedBy, style: new TextStyle(fontSize: 20*factor)),
                                     ),
-                                    new Text(_post.askedAt),
+                                    new Text(_post.askedAt, style: new TextStyle(fontSize: 20*factor)),
                                   ],
                                 )
                               ],
@@ -135,33 +144,36 @@ class PostDetailState extends State<PostDetail>
                       ),
                       new Divider(),
                       new Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
-                        child: new Text('${_post.answers.length}个回答：'),
+                        padding: EdgeInsets.only(bottom: 10.0*factor),
+                        child: new Text('${_post.answers.length}个回答：', style: new TextStyle(fontSize: 20*factor)),
                       ),
                       new AnswerList(_post.answers),
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          new Text("您的回答："),
+                          new Text("您的回答：", style: new TextStyle(fontSize: 20*factor)),
                           new Expanded(child: new TextField(
                             keyboardType: TextInputType.multiline,
                             maxLines: 5,
+                            style:TextStyle(fontSize: 20.0*factor),
                             controller: detailCtrl,
                             decoration: new InputDecoration(
                               hintText: "请输入",
                               hintStyle: new TextStyle(
-                                  color: const Color(0xFF808080)
+                                  color: const Color(0xFF808080),
+                                  fontSize: 20*factor
                               ),
                               border: new OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(const Radius.circular(6.0))
+                                borderSide: BorderSide(width: 1.0*factor),
+                                borderRadius: const BorderRadius.all(const Radius.circular(0))
                               ),
-                              contentPadding: const EdgeInsets.all(10.0)
+                              contentPadding: EdgeInsets.all(10.0*factor)
                             ),
                           ))
                         ],
                       ),
-                      new Container(height: 20.0),
+                      new Container(height: 20.0*factor),
                       new Builder(builder: (ctx) {
                         return new CommonButton(
                           text: "提交你的回复",
@@ -214,7 +226,7 @@ class PostDetailState extends State<PostDetail>
                           }
                         );
                       }),
-                      new Container(height: 20.0),
+                      new Container(height: 20.0*factor),
                     ],
                   ),
                 ),

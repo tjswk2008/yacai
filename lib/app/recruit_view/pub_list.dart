@@ -32,6 +32,7 @@ class PubTabState extends State<PubTab> {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
@@ -40,24 +41,24 @@ class PubTabState extends State<PubTab> {
           appBar: new AppBar(
             elevation: 0.0,
             title: new Text(widget._title,
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
           ),
           body: state.userName == '' ? new Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Text("您还未登陆，请先前往登陆查看"),
+              new Text("您还未登陆，请先前往登陆查看", style: TextStyle(fontSize: 20*factor),),
               new InkWell(
                 onTap: _login,
                 child: new Container(
-                  margin: const EdgeInsets.all(50.0),
-                  height: 45.0,
+                  margin: EdgeInsets.all(50.0*factor),
+                  height: 60.0*factor,
                   decoration: new BoxDecoration(
-                    border: new Border.all(color: const Color(0xffcccccc)),
-                    borderRadius: new BorderRadius.all(new Radius.circular(3.0))
+                    border: new Border.all(color: const Color(0xffcccccc), width: factor),
+                    borderRadius: new BorderRadius.all(new Radius.circular(6.0*factor))
                   ),
                   child: new Center(
-                    child: new Text("前往登陆", style: new TextStyle(color: Colors.black, fontSize: 14.0),),
+                    child: new Text("前往登陆", style: new TextStyle(color: Colors.black, fontSize: 18.0*factor),),
                   ),
                 ),
               )
@@ -71,31 +72,36 @@ class PubTabState extends State<PubTab> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     new Padding(
-                      padding: const EdgeInsets.only(top: 5.0, right: 10.0),
-                      child: RaisedButton(
-                        color: Colors.orange[400],
-                        child: Text("发布职位", style: new TextStyle(fontSize: 16.0, color: Colors.white),),
-                        onPressed: () {
-                          Navigator.of(context).push(new PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (BuildContext context, _, __) {
-                              return new PubJob();
-                            },
-                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                              return new FadeTransition(
-                                opacity: animation,
-                                child: new SlideTransition(position: new Tween<Offset>(
-                                  begin: const Offset(0.0, 1.0),
-                                  end: Offset.zero,
-                                ).animate(animation), child: child),
-                              );
-                            }
-                          )).then((result) {
-                            if(result == null) return;
-                            getJobList();
-                          });
-                        },
-                      ),
+                      padding: EdgeInsets.only(top: 5.0*factor, right: 15.0*factor),
+                      child: Container(
+                        height: 45*factor,
+                        width: 160*factor,
+                        child: RaisedButton(
+                          color: Colors.orange[400],
+                          child: Text("发布职位", style: new TextStyle(fontSize: 22.0*factor, color: Colors.white),),
+                          onPressed: () {
+                            Navigator.of(context).push(new PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (BuildContext context, _, __) {
+                                return new PubJob();
+                              },
+                              transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                return new FadeTransition(
+                                  opacity: animation,
+                                  child: new SlideTransition(position: new Tween<Offset>(
+                                    begin: const Offset(0.0, 1.0),
+                                    end: Offset.zero,
+                                  ).animate(animation), child: child),
+                                );
+                              }
+                            )).then((result) {
+                              if(result == null) return;
+                              getJobList();
+                            });
+                          },
+                        ),
+                      )
+                      
                     )
                   ],
                 ),

@@ -26,12 +26,13 @@ class JobList extends State<JobsTab> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
         elevation: 0.0,
         title: new Text(widget._title,
-            style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+            style: new TextStyle(fontSize: 32.0*screenWidthInPt/750, color: Colors.white)),
       ),
       body: new ListView.builder(
           itemCount: _jobs.length, itemBuilder: buildJobItem),

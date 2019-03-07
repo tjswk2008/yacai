@@ -13,23 +13,21 @@ class CommonButton extends StatefulWidget {
 
 class CommonButtonState extends State<CommonButton> {
 
-  TextStyle textStyle = new TextStyle(color: Colors.white, fontSize: 17);
-
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return new InkWell(
       onTap: () {
         this.widget.onTap();
       },
       child: new Container(
-        height: 45,
+        height: 60*factor,
         decoration: new BoxDecoration(
           color: this.widget.color,
-          border: new Border.all(color: const Color(0xffcccccc)),
           // borderRadius: new BorderRadius.all(new Radius.circular(30))
         ),
         child: new Center(
-          child: new Text(this.widget.text, style: textStyle,),
+          child: new Text(this.widget.text, style: TextStyle(color: Colors.white, fontSize: 22*factor),),
         ),
       ),
     );

@@ -9,25 +9,26 @@ class CompanyInc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Padding(
-      padding: const EdgeInsets.only(
-        top: 10.0,
-        left: 10.0,
-        right: 10.0,
-        bottom: 10.0,
+      padding: EdgeInsets.only(
+        top: 10.0*screenWidthInPt/750,
+        left: 10.0*screenWidthInPt/750,
+        right: 10.0*screenWidthInPt/750,
+        bottom: 10.0*screenWidthInPt/750,
       ),
       child: new Container(
           color: Colors.white,
           child: new Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: EdgeInsets.all(15.0*screenWidthInPt/750),
               child: new Column(
                 children: <Widget>[
                   new Row(
                     children: <Widget>[
                       new Container(
-                        margin: const EdgeInsets.only(bottom: 10.0),
+                        margin: EdgeInsets.only(bottom: 10.0*screenWidthInPt/750),
                         child: new Text(
-                            '公司介绍', style: new TextStyle(fontSize: 15.0)),
+                            '公司介绍', style: new TextStyle(fontSize: 20.0*screenWidthInPt/750)),
                       )
                     ],
                   ),
@@ -36,7 +37,7 @@ class CompanyInc extends StatelessWidget {
                     text: new TextSpan(
                       text: _companyInc,
                       style: new TextStyle(
-                          fontSize: 13.0,
+                          fontSize: 18.0*screenWidthInPt/750,
                           color: Colors.black
                       ),
                     ),

@@ -10,24 +10,25 @@ class CompanyInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: EdgeInsets.only(
+        left: 10.0*screenWidthInPt/750
+      ),
       child: new SizedBox(
         child: new Card(
           elevation: 0.0,
           child: new Row(
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(
-                  top: 10.0,
-                  left: 15.0,
-                  right: 15.0,
-                  bottom: 0.0,
+                padding: EdgeInsets.only(
+                  left: 5.0*screenWidthInPt/750,
+                  right: 15.0*screenWidthInPt/750,
                 ),
                 child: new Image.network(
                   company.logo,
-                  width: 50.0,
-                  height: 50.0,),
+                  width: 60.0*screenWidthInPt/750,
+                  height: 60.0*screenWidthInPt/750,),
               ),
 
               new Expanded(
@@ -39,33 +40,31 @@ class CompanyInfo extends StatelessWidget {
                       child: new Text(
                         company.name,
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 15.0),
+                        style: new TextStyle(fontSize: 20.0*screenWidthInPt/750),
                       ),
-                      margin: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+                      margin: EdgeInsets.only(top: 10.0*screenWidthInPt/750, bottom: 5.0*screenWidthInPt/750),
                     ),
 
                     new Padding(
-                      padding: const EdgeInsets.only(
-                        top: 5.0,
-                        left: 0.0,
-                        right: 5.0,
-                        bottom: 5.0,
+                      padding: EdgeInsets.only(
+                        top: 5.0*screenWidthInPt/750,
+                        right: 5.0*screenWidthInPt/750,
+                        bottom: 5.0*screenWidthInPt/750,
                       ),
                       child: new Text(company.location, style: new TextStyle(
-                          fontSize: 13.0, color: Colors.grey)),
+                          fontSize: 18.0*screenWidthInPt/750, color: Colors.grey)),
                     ),
 
                     new Padding(
-                      padding: const EdgeInsets.only(
-                        top: 5.0,
-                        left: 0.0,
-                        right: 5.0,
-                        bottom: 5.0,
+                      padding: EdgeInsets.only(
+                        top: 5.0*screenWidthInPt/750,
+                        right: 5.0*screenWidthInPt/750,
+                        bottom: 5.0*screenWidthInPt/750,
                       ),
                       child: new Text(
                           company.type + " | " + company.size + " | " +
                               company.employee, style: new TextStyle(
-                          fontSize: 13.0, color: Colors.grey)),
+                          fontSize: 18.0*screenWidthInPt/750, color: Colors.grey)),
                     ),
                   ],
                 ),

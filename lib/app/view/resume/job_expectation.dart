@@ -32,6 +32,7 @@ class JobExpectationState extends State<JobExpectation>
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return new InkWell(
       onTap: () {
         if(!widget._editable) return;
@@ -57,19 +58,19 @@ class JobExpectationState extends State<JobExpectation>
           new Row(
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: new Text(widget._jobExpect.jobTitle, style: new TextStyle(fontSize: 12.0),),
+                padding: EdgeInsets.only(right: 10.0*factor),
+                child: new Text(widget._jobExpect.jobTitle, style: new TextStyle(fontSize: 20.0*factor),),
               ),
-              new Text(widget._jobExpect.salary, style: new TextStyle(fontSize: 12.0),)
+              new Text(widget._jobExpect.salary, style: new TextStyle(fontSize: 20.0*factor),)
             ],
           ),
           new Row(
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: new Text(widget._jobExpect.city, style: new TextStyle(fontSize: 10.0, color: Colors.grey),),
+                padding: EdgeInsets.only(right: 10.0*factor),
+                child: new Text(widget._jobExpect.city, style: new TextStyle(fontSize: 18.0*factor, color: Colors.grey),),
               ),
-              new Text(widget._jobExpect.industry, style: new TextStyle(fontSize: 10.0, color: Colors.grey),),
+              new Text(widget._jobExpect.industry, style: new TextStyle(fontSize: 18.0*factor, color: Colors.grey),),
             ],
           ),
         ],

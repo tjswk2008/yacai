@@ -37,7 +37,6 @@ class ResumeDetailState extends State<ResumeDetail>
     with TickerProviderStateMixin {
 
   VoidCallback onChanged;
-  double width;
   String jobStatus;
 
   @override
@@ -51,6 +50,7 @@ class ResumeDetailState extends State<ResumeDetail>
   }
 
   void _showJobStatus(context) {
+    double factor = MediaQuery.of(context).size.width/750;
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context){
@@ -62,9 +62,9 @@ class ResumeDetailState extends State<ResumeDetail>
             new Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Icon(Icons.close),
-                new Text('求职状态', style: new TextStyle(fontSize: 20.0)),
-                new Icon(Icons.check),
+                new Icon(Icons.close, size: 28.0*factor,),
+                new Text('求职状态', style: new TextStyle(fontSize: 28.0*factor)),
+                new Icon(Icons.check, size: 28.0*factor),
               ],
             ),
             new ListView.builder(
@@ -78,10 +78,12 @@ class ResumeDetailState extends State<ResumeDetail>
     );
   }
 
-  Widget addExperience(String title, String btnName, List list, IndexedWidgetBuilder itemBuilder) {
+  Widget addExperience(double factor, String title, String btnName, List list, IndexedWidgetBuilder itemBuilder) {
     return new Padding(
-      padding: const EdgeInsets.only(
-        top: 5.0
+      padding: EdgeInsets.only(
+        top: 5.0*factor,
+        left: 10.0*factor,
+        right: 10.0*factor
       ),
       child: new Column(
         children: <Widget>[
@@ -89,18 +91,18 @@ class ResumeDetailState extends State<ResumeDetail>
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
+                padding: EdgeInsets.only(bottom: 10.0*factor),
                 child: new Text(
                   title,
                   style: new TextStyle(
-                    fontSize: 16.0
+                    fontSize: 22.0*factor
                   )
                 ),
               )
             ],
           ),
           new Padding(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: EdgeInsets.only(left: 10.0*factor),
             child: new ListView.builder(
               physics: new NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -109,15 +111,16 @@ class ResumeDetailState extends State<ResumeDetail>
             ),
           ),
           new Padding(
-            padding: const EdgeInsets.only(bottom: 15.0),
+            padding: EdgeInsets.only(bottom: 15.0*factor),
           ),
-          addButton(btnName),
+          addButton(btnName, factor),
         ],
       ),
     );
   }
   
   Widget jobStatusOption(BuildContext context, int index) {
+    double factor = MediaQuery.of(context).size.width/750;
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
@@ -129,12 +132,12 @@ class ResumeDetailState extends State<ResumeDetail>
             Navigator.pop(context);
           },
           child: new Container(
-            height: 24,
+            height: 40*factor,
             decoration: new BoxDecoration(
               border: new Border.all(color: jobStatus == jobStatusArr[index] ? const Color(0xffcccccc) : Colors.transparent),
             ),
             child: new Center(
-              child: new Text(jobStatusArr[index]),
+              child: new Text(jobStatusArr[index], style: TextStyle(fontSize: 22.0*factor),),
             ),
           ),
         );
@@ -142,7 +145,7 @@ class ResumeDetailState extends State<ResumeDetail>
     );
   }
 
-  Widget addButton(String text) {
+  Widget addButton(String text, double factor) {
     Widget widget;
     switch (text) {
       case '添加工作经历':
@@ -201,13 +204,13 @@ class ResumeDetailState extends State<ResumeDetail>
         ));
       },
       child: new Container(
-        height: 30.0,
+        height: 50.0*factor,
         decoration: new BoxDecoration(
           border: new Border.all(color: const Color(0xffcccccc)),
-          borderRadius: new BorderRadius.all(new Radius.circular(3.0))
+          borderRadius: new BorderRadius.all(new Radius.circular(3.0*factor))
         ),
         child: new Center(
-          child: new Text(text, style: new TextStyle(color: Colors.black, fontSize: 10.0),),
+          child: new Text(text, style: new TextStyle(color: Colors.black, fontSize: 18.0*factor),),
         ),
       ),
     );
@@ -215,7 +218,7 @@ class ResumeDetailState extends State<ResumeDetail>
 
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery.of(context).size.width * 0.3;
+    double factor = MediaQuery.of(context).size.width/750;
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, appState) {
@@ -223,16 +226,27 @@ class ResumeDetailState extends State<ResumeDetail>
           backgroundColor: Colors.white,
           appBar: new AppBar(
             elevation: 0.0,
+            leading: IconButton(
+              icon: const BackButtonIcon(),
+              iconSize: 40*factor,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                Navigator.maybePop(context);
+              }
+            ),
             title: Text(
               '我的简历',
-              style: TextStyle(fontSize: 20.0, color: Colors.white)
+              style: TextStyle(fontSize: 30.0*factor, color: Colors.white)
             ),
             actions: <Widget>[
               Container(
                 alignment: Alignment(1.0, 0.0),
-                padding: const EdgeInsets.only(right: 10.0),
+                padding: EdgeInsets.only(right: 30.0*factor),
                 child: new InkWell(
-                  child: Text('预览', style: TextStyle(color: Colors.white),),
+                  child: new Padding(
+                    padding: EdgeInsets.only(top: 4.0*factor),
+                    child: Text('预览', style: TextStyle(color: Colors.white, fontSize: 22.0*factor),),
+                  ),
                   onTap: () {
                     // showDialog<void>(
                     //   context: context,
@@ -263,16 +277,16 @@ class ResumeDetailState extends State<ResumeDetail>
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 new Padding(
-                  padding: const EdgeInsets.only(
-                    left: 25.0,
-                    right: 25.0,
-                    top: 5.0
+                  padding: EdgeInsets.only(
+                    left: 25.0*factor*factor,
+                    right: 25.0*factor,
+                    top: 5.0*factor
                   ),
                 ),
                 new Container(
-                  padding: const EdgeInsets.only(
-                    left: 15.0,
-                    right: 15.0,
+                  padding: EdgeInsets.only(
+                    left: 15.0*factor,
+                    right: 15.0*factor,
                   ),
                   color: Colors.white,
                   child: new Column(
@@ -281,9 +295,11 @@ class ResumeDetailState extends State<ResumeDetail>
                     children: <Widget>[
                       new PersonalInfoView(appState.resume.personalInfo, true),
                       new Padding(
-                        padding: const EdgeInsets.only(
-                          top: 5.0,
-                          bottom: 5.0
+                        padding: EdgeInsets.only(
+                          top: 5.0*factor,
+                          bottom: 5.0*factor,
+                          left: 10.0*factor,
+                          right: 10.0*factor
                         ),
                         child: new InkWell(
                           onTap: () {_showJobStatus(context);},
@@ -293,19 +309,20 @@ class ResumeDetailState extends State<ResumeDetail>
                               new Text(
                                 "求职状态",
                                 style: new TextStyle(
-                                  fontSize: 16.0
+                                  fontSize: 22.0*factor
                                 )
                               ),
-                              new Text(appState.resume.jobStatus)
+                              new Text(appState.resume.jobStatus, style: TextStyle(fontSize: 22.0*factor),)
                             ],
                           ),
                         ) 
                       ),
                       new Divider(),
                       new Padding(
-                        padding: const EdgeInsets.only(
-                          top: 5.0,
-                          bottom: 5.0
+                        padding: EdgeInsets.only(
+                          top: 5.0*factor,
+                          bottom: 5.0*factor,
+                          left: 10.0*factor
                         ),
                         child: new Column(
                           children: <Widget>[
@@ -315,16 +332,16 @@ class ResumeDetailState extends State<ResumeDetail>
                                 new Text(
                                   "求职期望",
                                   style: new TextStyle(
-                                    fontSize: 16.0
+                                    fontSize: 22.0*factor
                                   )
                                 ),
                               ],
                             ),
                             new Padding(
-                              padding: const EdgeInsets.only(top: 20.0),
+                              padding: EdgeInsets.only(top: 20.0*factor),
                             ),
                             new Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
+                              padding: EdgeInsets.only(left: 10.0*factor),
                               child: new JobExpectation(appState.resume.jobExpect, true),
                             ),
                           ],
@@ -332,6 +349,7 @@ class ResumeDetailState extends State<ResumeDetail>
                       ),
                       new Divider(),
                       addExperience(
+                        factor,
                         "工作经历：",
                         "添加工作经历",
                         appState.resume.companyExperiences,
@@ -346,6 +364,7 @@ class ResumeDetailState extends State<ResumeDetail>
                       ),
                       new Divider(),
                       addExperience(
+                        factor,
                         "项目经历：",
                         "添加项目经历",
                         appState.resume.projects,
@@ -360,6 +379,7 @@ class ResumeDetailState extends State<ResumeDetail>
                       ),
                       new Divider(),
                       addExperience(
+                        factor,
                         "教育经历：",
                         "添加教育经历",
                         appState.resume.educations,
@@ -374,6 +394,7 @@ class ResumeDetailState extends State<ResumeDetail>
                       ),
                       new Divider(),
                       addExperience(
+                        factor,
                         "证书：",
                         "添加证书",
                         appState.resume.certificates,
@@ -390,7 +411,7 @@ class ResumeDetailState extends State<ResumeDetail>
                   ),
                 ),
                 new Padding(
-                  padding: const EdgeInsets.only(bottom: 50.0),
+                  padding: EdgeInsets.only(bottom: 50.0*factor),
                 )
               ],
             )

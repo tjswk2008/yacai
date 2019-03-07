@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-const double _kTextAndIconTabHeight = 53.0; // 导航高度
-const double _kMarginBottom = 3.0; // 图标与文字的间隔
-
 class IconTab extends StatefulWidget {
 
   const IconTab({
@@ -28,19 +25,10 @@ class IconTab extends StatefulWidget {
 
 class IconTabState extends State<IconTab> {
 
-  Widget _buildLabelText() {
-    return new Text(widget.text,
-      softWrap: false,
-      overflow: TextOverflow.fade,
-      style: new TextStyle(color: widget.color),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
-
-    double height = _kTextAndIconTabHeight;
+    double factor = MediaQuery.of(context).size.width/750;
     Widget label = new Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,20 +36,24 @@ class IconTabState extends State<IconTab> {
         new Container(
           child: widget.icon != null ? new Image(
             image: new AssetImage(widget.icon),
-            height: 30.0,
-            width: 30.0,
+            height: 30.0*factor,
+            width: 30.0*factor,
           ) : new Container(
-            height: 30.0,
-            child: new Icon(widget.iconData, color: widget.color),
+            height: 30.0*factor,
+            child: new Icon(widget.iconData, color: widget.color, size: 30.0*factor,),
           ),
-          margin: const EdgeInsets.only(bottom: _kMarginBottom),
+          margin: EdgeInsets.only(bottom: 3.0*factor),
         ),
-        _buildLabelText()
+        Text(widget.text,
+          softWrap: false,
+          overflow: TextOverflow.fade,
+          style: new TextStyle(color: widget.color, fontSize: 18.0*factor),
+        )
       ]
     );
 
     return new SizedBox(
-      height: height,
+      height: 70*factor,
       child: new Center(
         child: label,
         widthFactor: 1.0,

@@ -10,26 +10,25 @@ class JobDesc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Padding(
-      padding: const EdgeInsets.only(
-        top: 10.0,
-        left: 10.0,
-        right: 10.0,
-        bottom: 10.0,
+      padding: EdgeInsets.only(
+        left: 10.0*screenWidthInPt/750,
+        right: 10.0*screenWidthInPt/750
       ),
       child: new Container(
           color: Colors.white,
-          height: 260.0,
+          height: 260.0*screenWidthInPt/750,
           child: new Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: EdgeInsets.all(15.0*screenWidthInPt/750),
               child: new Column(
                 children: <Widget>[
                   new Row(
                     children: <Widget>[
                       new Container(
-                        margin: const EdgeInsets.only(bottom: 10.0),
+                        margin: EdgeInsets.only(bottom: 10.0*screenWidthInPt/750),
                         child: new Text(
-                            '职位详情', style: new TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                            '职位详情', style: new TextStyle(fontSize: 20.0*screenWidthInPt/750, fontWeight: FontWeight.bold)),
                       )
                     ],
                   ),
@@ -38,7 +37,7 @@ class JobDesc extends StatelessWidget {
                     text: new TextSpan(
                       text: job.detail,
                       style: new TextStyle(
-                          fontSize: 13.0,
+                          fontSize: 18.0*screenWidthInPt/750,
                           color: Colors.black
                       ),
                     ),

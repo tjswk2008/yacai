@@ -42,16 +42,17 @@ class NewLoginPageState extends State<NewLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     var loadingView;
     if (isOnLogin) {
       loadingView = new Center(
         child: new Padding(
-          padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 30*factor, 0, 0),
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               CupertinoActivityIndicator(),
-              Text("登录中，请稍等...")
+              Text("登录中，请稍等...", style: TextStyle(fontSize: 20.0*factor),)
             ],
           ),
         )
@@ -66,56 +67,70 @@ class NewLoginPageState extends State<NewLoginPage> {
       builder: (context, callback) {
         return new Scaffold(
           appBar: new AppBar(
-            title: new Text("登录", style: new TextStyle(color: Colors.white)),
+            title: new Text("登录", style: new TextStyle(color: Colors.white, fontSize: 30.0*factor)),
+            leading: IconButton(
+              icon: const BackButtonIcon(),
+              iconSize: 40*factor,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                Navigator.maybePop(context);
+              }
+            ),
             iconTheme: new IconThemeData(color: Colors.white),
           ),
           body: new Container(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(10.0*factor),
             child: new Column(
               children: <Widget>[
-                new Center(child: new Text("请使用帐号密码登录")),
-                new Container(height: 20.0),
+                new Center(child: new Text("请使用帐号密码登录", style: new TextStyle(color: Colors.white, fontSize: 20.0*factor))),
+                new Container(height: 20.0*factor),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    new Text("用户名："),
+                    new Text("用户名：", style: TextStyle(fontSize: 22.0*factor)),
                     new Expanded(child: new TextField(
                       controller: usernameCtrl,
+                      style: TextStyle(fontSize: 22.0*factor),
                       decoration: new InputDecoration(
                         hintText: "帐号/注册邮箱",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
+                            color: const Color(0xFF808080),
+                            fontSize: 22.0*factor
                         ),
                         border: new OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(const Radius.circular(6.0))
+                          borderSide: BorderSide(width: 1.0*factor),
+                          borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                         ),
                         contentPadding: const EdgeInsets.all(10.0)
                       ),
                     ))
                   ],
                 ),
-                new Container(height: 20.0),
+                new Container(height: 20.0*factor),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    new Text("密　码："),
+                    new Text("密　码：", style: TextStyle(fontSize: 22.0*factor),),
                     new Expanded(child: new TextField(
                       controller: passwordCtrl,
+                      style: TextStyle(fontSize: 22.0*factor),
                       obscureText: true,
                       decoration: new InputDecoration(
                         hintText: "登录密码",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
+                            color: const Color(0xFF808080),
+                            fontSize: 22.0*factor
                         ),
                         border: new OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(const Radius.circular(6.0))
+                          borderSide: BorderSide(width: 1.0*factor),
+                          borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                         ),
                         contentPadding: const EdgeInsets.all(10.0)
                       ),
                     ))
                   ],
                 ),
-                new Container(height: 20.0),
+                new Container(height: 20.0*factor),
                 new Builder(builder: (ctx) {
                   return new CommonButton(
                     text: "登录",
@@ -127,7 +142,7 @@ class NewLoginPageState extends State<NewLoginPage> {
                       String password = passwordCtrl.text.trim();
                       if (username.isEmpty || password.isEmpty) {
                         Scaffold.of(ctx).showSnackBar(new SnackBar(
-                          content: new Text("账号和密码不能为空！"),
+                          content: new Text("账号和密码不能为空！", style: TextStyle(fontSize: 20.0*factor),),
                         ));
                         return;
                       }
@@ -142,7 +157,7 @@ class NewLoginPageState extends State<NewLoginPage> {
                           });
                           if(response.data['code'] != 1) {
                             Scaffold.of(ctx).showSnackBar(new SnackBar(
-                              content: new Text("账号或密码不正确！"),
+                              content: new Text("账号或密码不正确！", style: TextStyle(fontSize: 20.0*factor),),
                             ));
                             return;
                           }

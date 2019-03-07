@@ -33,7 +33,8 @@ class ProjectViewState extends State<ProjectView>
 
   @override
   Widget build(BuildContext context) {
-    TextStyle detailStyle = new TextStyle(fontSize: 10.0, color: Colors.grey);
+    double factor = MediaQuery.of(context).size.width/750;
+    TextStyle detailStyle = new TextStyle(fontSize: 16.0*factor, color: Colors.grey);
     return new InkWell(
       onTap: () {
         if(!widget._editable) return;
@@ -59,7 +60,7 @@ class ProjectViewState extends State<ProjectView>
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new Text(widget._project.name, style: new TextStyle(fontSize: 12.0) ),
+              new Text(widget._project.name, style: new TextStyle(fontSize: 18.0*factor) ),
               new Text(
                 "${formatDate(DateTime.parse(widget._project.startTime), [yyyy, '-', mm, '-', dd])}-${widget._project.endTime == null ? '至今' : formatDate(DateTime.parse(widget._project.endTime), [yyyy, '-', mm, '-', dd])}",
                 style: detailStyle
@@ -68,9 +69,9 @@ class ProjectViewState extends State<ProjectView>
           ),
           new Text(widget._project.role, style: detailStyle),
           new Padding(
-            padding: const EdgeInsets.only(bottom: 5.0),
+            padding: EdgeInsets.only(bottom: 5.0*factor),
           ),
-          new Text(widget._project.detail, style: new TextStyle(fontSize: 12.0)),
+          new Text(widget._project.detail, style: new TextStyle(fontSize: 18.0*factor)),
         ],
       ),
     );

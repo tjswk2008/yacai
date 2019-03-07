@@ -4,7 +4,6 @@ import 'package:flutter_app/app/view/jobs_view.dart';
 import 'package:flutter_app/app/view/message_view.dart';
 import 'package:flutter_app/app/view/mine_view.dart';
 
-const double _kTabTextSize = 11.0;
 const int INDEX_JOB = 0;
 const int INDEX_COMPANY = 1;
 const int INDEX_MESSAGE = 2;
@@ -45,6 +44,8 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidthInPt = MediaQuery.of(context).size.width;
+    double _kTabTextSize = 20.0 * screenWidthInPt/750;
     return new Scaffold(
       body: new TabBarView(
         children: <Widget>[

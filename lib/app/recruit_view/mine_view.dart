@@ -26,6 +26,7 @@ class MineTabState extends State<MineTab> {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, appState) {
@@ -59,18 +60,18 @@ class MineTabState extends State<MineTab> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             new Padding(
-                              padding: const EdgeInsets.only(
-                                top: 20.0,
-                                left: 30.0,
-                                right: 20.0,
+                              padding: EdgeInsets.only(
+                                top: 20.0*factor,
+                                left: 30.0*factor,
+                                right: 20.0*factor,
                               ),
                               child: appState.resume == null || appState.resume.personalInfo.avatar == ''
                                 ? new Image.asset(
                                     "assets/images/ic_avatar_default.png",
-                                    width: 60.0,
+                                    width: 120.0*factor,
                                   )
                                 : new CircleAvatar(
-                                  radius: 35.0,
+                                  radius: 60.0*factor,
                                   backgroundImage: new NetworkImage(appState.resume.personalInfo.avatar)
                                 )
                             ),
@@ -78,22 +79,23 @@ class MineTabState extends State<MineTab> {
                             new Row(
                               children: <Widget>[
                                 new Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     new Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 10.0,
-                                          bottom: 10.0,
+                                        padding: EdgeInsets.only(
+                                          top: 10.0*factor,
+                                          bottom: 10.0*factor,
                                         ),
                                         child: new Text(
                                             appState.userName == '' ? "点击头像登录" : appState.userName,
                                             style: new TextStyle(
-                                                color: Colors.white, fontSize: 18.0))
+                                                color: Colors.white, fontSize: 26.0*factor))
                                     ),
                                     new Text(
                                         appState.resume == null || appState.resume.jobStatus == '' ? "" : appState.resume.jobStatus,
                                         style: new TextStyle(
-                                            color: Colors.white, fontSize: 12.0)
+                                            color: Colors.white, fontSize: 18.0*factor)
                                     ),
                                   ],
                                 ),
@@ -118,8 +120,8 @@ class MineTabState extends State<MineTab> {
                       }
                     },
                     child: new Container(
-                      height: 45.0,
-                      margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      height: 60.0*factor,
+                      margin: EdgeInsets.only(top: 10.0*factor, bottom: 10.0*factor),
                       decoration: new BoxDecoration(
                         color: Colors.white,
                       ),
@@ -128,18 +130,18 @@ class MineTabState extends State<MineTab> {
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           new Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(10.0*factor),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.near_me),
+                                new Icon(Icons.near_me, size: 30.0*factor,),
                                 new Padding(
-                                  padding: const EdgeInsets.only(right: 5.0),
+                                  padding: EdgeInsets.only(right: 10.0*factor),
                                 ),
-                                new Text('投递记录'),
+                                new Text('投递记录', style: TextStyle(fontSize: 22.0*factor),),
                               ],
                             ),
                           ),
-                          new Icon(Icons.chevron_right),
+                          new Icon(Icons.chevron_right, size: 30.0*factor,),
                         ],
                       ),
                     )
@@ -148,9 +150,9 @@ class MineTabState extends State<MineTab> {
                   new Container(
                     color: Colors.white,
                     child: new Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        bottom: 10.0,
+                      padding: EdgeInsets.only(
+                        top: 10.0*factor,
+                        bottom: 10.0*factor,
                       ),
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -160,7 +162,7 @@ class MineTabState extends State<MineTab> {
                               showDialog(context: context, child: new AlertDialog(
                                   content: new Text(
                                     "沟通过",
-                                    style: new TextStyle(fontSize: 20.0),
+                                    style: new TextStyle(fontSize: 20.0*factor),
                                   )));
                             },
                             count: '590',
@@ -171,7 +173,7 @@ class MineTabState extends State<MineTab> {
                               showDialog(context: context, child: new AlertDialog(
                                   content: new Text(
                                     "已沟通",
-                                    style: new TextStyle(fontSize: 20.0),
+                                    style: new TextStyle(fontSize: 20.0*factor),
                                   )));
                             },
                             count: '71',
@@ -182,7 +184,7 @@ class MineTabState extends State<MineTab> {
                               showDialog(context: context, child: new AlertDialog(
                                   content: new Text(
                                     "已沟通",
-                                    style: new TextStyle(fontSize: 20.0),
+                                    style: new TextStyle(fontSize: 20.0*factor),
                                   )));
                             },
                             count: '0',
@@ -249,18 +251,19 @@ class _ContactItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return new GestureDetector(
         onTap: onPressed,
         child: new Column(
           children: [
             new Padding(
-              padding: const EdgeInsets.only(
-                bottom: 10.0,
+              padding: EdgeInsets.only(
+                bottom: 10.0*factor,
               ),
               child: new Text(count, style: new TextStyle(
-                  fontSize: 22.0)),
+                  fontSize: 28.0*factor)),
             ),
-            new Text(title),
+            new Text(title, style: TextStyle(fontSize: 22.0*factor),),
           ],
         )
     );

@@ -41,81 +41,99 @@ class PubJobState extends State<PubJob>
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
         appBar: new AppBar(
           elevation: 0.0,
+          leading: IconButton(
+            icon: const BackButtonIcon(),
+            iconSize: 40*factor,
+            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+            onPressed: () {
+              Navigator.maybePop(context);
+            }
+          ),
           title: new Text('发布职位',
-              style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+              style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
         ),
         body: new SingleChildScrollView(
           child: new Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(10.0*factor),
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
+                  padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
                     '职位名称：',
                     textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 18.0),
+                    style: new TextStyle(fontSize: 24.0*factor),
                   ),
                 ),
                 new Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
+                  padding: EdgeInsets.only(bottom: 16.0*factor),
                   child: new TextField(
                     controller: nameCtrl,
+                    style: TextStyle(fontSize: 20*factor),
                     decoration: new InputDecoration(
                       hintText: "请输入职位名称",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080)
                       ),
-                      border: new UnderlineInputBorder(),
-                      contentPadding: const EdgeInsets.all(10.0)
+                      border: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 1.0*factor)
+                      ),
+                      contentPadding: EdgeInsets.all(10.0*factor)
                     ),
                   ),
                 ),
                 new Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
+                  padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
                     '薪资待遇：',
                     textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 18.0),
+                    style: new TextStyle(fontSize: 24.0*factor),
                   ),
                 ),
                 new Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
+                  padding: EdgeInsets.only(bottom: 16.0*factor),
                   child: new TextField(
                     controller: salaryCtrl,
+                    style: TextStyle(fontSize: 20*factor),
                     decoration: new InputDecoration(
                       hintText: "请输入薪资待遇",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080)
                       ),
-                      border: new UnderlineInputBorder(),
-                      contentPadding: const EdgeInsets.all(10.0)
+                      border: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 1.0*factor)
+                      ),
+                      contentPadding: EdgeInsets.all(10.0*factor)
                     ),
                   ),
                 ),
                 new Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
+                  padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
                     '工作地点：',
                     textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 18.0),
+                    style: new TextStyle(fontSize: 24.0*factor),
                   ),
                 ),
                 new Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
+                  padding: EdgeInsets.only(bottom: 16.0*factor),
                   child: new TextField(
                     controller: addrCtrl,
+                    style: TextStyle(fontSize: 20*factor),
                     decoration: new InputDecoration(
                       hintText: "请输入工作地点",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080)
                       ),
-                      border: new UnderlineInputBorder(),
-                      contentPadding: const EdgeInsets.all(10.0)
+                      border: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: 1.0*factor)
+                      ),
+                      contentPadding: EdgeInsets.all(10.0*factor)
                     ),
                   ),
                 ),
@@ -126,7 +144,7 @@ class PubJobState extends State<PubJob>
                     new Text(
                       '工作年限：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
 
                     new InkWell(
@@ -144,7 +162,7 @@ class PubJobState extends State<PubJob>
                           print(err);
                         });
                       },
-                      child: new Text(date),
+                      child: new Text(date, style: new TextStyle(fontSize: 24.0*factor),),
                     )
                   ],
                 ),

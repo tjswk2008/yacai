@@ -8,12 +8,13 @@ class PostListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
-      padding: const EdgeInsets.only(
-        top: 3.0,
-        left: 5.0,
-        right: 5.0,
-        bottom: 3.0,
+      padding: EdgeInsets.only(
+        top: 3.0*factor,
+        left: 5.0*factor,
+        right: 5.0*factor,
+        bottom: 3.0*factor,
       ),
 
       child: new SizedBox(
@@ -23,17 +24,17 @@ class PostListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(
-                  top: 10.0,
-                  left: 10.0,
-                  right: 10.0,
-                  bottom: 5.0,
+                padding: EdgeInsets.only(
+                  top: 10.0*factor,
+                  left: 10.0*factor,
+                  right: 10.0*factor,
+                  bottom: 15.0*factor,
                 ),
                 child: new RichText(
                   text: new TextSpan(
                     text: post.title,
                     style: new TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 20.0*factor,
                         color: Colors.black
                     ),
                   ),
@@ -42,42 +43,42 @@ class PostListItem extends StatelessWidget {
               new Row(
                 children: <Widget>[
                   new Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10.0,
-                      right: 3.0
+                    padding: EdgeInsets.only(
+                      left: 10.0*factor,
+                      right: 3.0*factor
                     ),
-                    child: new Icon(Icons.favorite, color: Colors.red,)
+                    child: new Icon(Icons.favorite, color: Colors.red, size: 20.0*factor)
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(
-                      right: 10.0
+                    padding: EdgeInsets.only(
+                      right: 10.0*factor
                     ),
                     child: new Text(
                         post.votes.toString(),
                         style: new TextStyle(
+                            fontSize: 16.0*factor,
                             color: Colors.grey)),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(
-                      left: 10.0,
-                      right: 3.0
+                    padding: EdgeInsets.only(
+                      left: 10.0*factor,
+                      right: 3.0*factor
                     ),
-                    child: new Icon(Icons.face, color: Colors.lightBlue[300],),
+                    child: new Icon(Icons.face, color: Colors.lightBlue[300], size: 20.0*factor),
                   ),
                   new Text(post.viewers.toString(),
-                        style: new TextStyle(color: Colors.grey)),
+                        style: new TextStyle(fontSize: 16.0*factor, color: Colors.grey)),
                 ],
               ),
 
               new Divider(),
               new Padding(
-                padding: const EdgeInsets.only(
-                  top: 5.0,
-                  left: 10.0,
-                  right: 10.0,
-                  bottom: 15.0,
+                padding: EdgeInsets.only(
+                  left: 10.0*factor,
+                  right: 10.0*factor,
+                  bottom: 15.0*factor,
                 ),
-                child: new Text(post.latestStatus)
+                child: new Text(post.latestStatus, style: new TextStyle(fontSize: 16.0*factor))
               )
             ],
           ), 

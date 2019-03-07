@@ -41,11 +41,12 @@ class AskQuestionState extends State<AskQuestion> {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     var loadingView;
     if (isRequesting) {
       loadingView = new Center(
         child: new Padding(
-          padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 30*factor, 0, 0),
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -63,51 +64,65 @@ class AskQuestionState extends State<AskQuestion> {
       builder: (context, userName) {
         return new Scaffold(
           appBar: new AppBar(
-            title: new Text("新的帖子", style: new TextStyle(color: Colors.white)),
+            title: new Text("新的帖子", style: new TextStyle(color: Colors.white, fontSize: 30.0*factor)),
+            leading: IconButton(
+              icon: const BackButtonIcon(),
+              iconSize: 40*factor,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                Navigator.maybePop(context);
+              }
+            ),
             iconTheme: new IconThemeData(color: Colors.white),
           ),
           body: new Container(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(10.0*factor),
             child: new Column(
               children: <Widget>[
-                new Container(height: 20.0),
+                new Container(height: 20.0*factor),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text("标题："),
+                    new Text("标题：", style: new TextStyle(fontSize: 22.0*factor)),
                     new Expanded(child: new TextField(
                       controller: titleCtrl,
                       keyboardType: TextInputType.multiline,
                       maxLines: 2,
+                      style: new TextStyle(fontSize: 22.0*factor),
                       decoration: new InputDecoration(
                         hintText: "请输入标题",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
+                            color: const Color(0xFF808080),
+                            fontSize: 22.0*factor
                         ),
                         border: new OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(const Radius.circular(6.0))
+                          borderSide: BorderSide(width: 1.0*factor),
+                          borderRadius: const BorderRadius.all(const Radius.circular(0))
                         ),
                         contentPadding: const EdgeInsets.all(10.0)
                       ),
                     ))
                   ],
                 ),
-                new Container(height: 20.0),
+                new Container(height: 20.0*factor),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text("详情："),
+                    new Text("详情：", style: new TextStyle(fontSize: 22.0*factor)),
                     new Expanded(child: new TextField(
                       keyboardType: TextInputType.multiline,
                       maxLines: 5,
                       controller: detailCtrl,
+                      style: new TextStyle(fontSize: 22.0*factor),
                       decoration: new InputDecoration(
                         hintText: "请详细描述您的问题",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
+                            color: const Color(0xFF808080),
+                            fontSize: 22.0*factor
                         ),
                         border: new OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(const Radius.circular(6.0))
+                          borderSide: BorderSide(width: 1.0*factor),
+                          borderRadius: const BorderRadius.all(const Radius.circular(0))
                         ),
                         contentPadding: const EdgeInsets.all(10.0)
                       ),

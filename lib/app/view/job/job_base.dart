@@ -10,15 +10,20 @@ class JobBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: EdgeInsets.only(
+        top: 15.0*screenWidthInPt/750,
+        left: 15.0*screenWidthInPt/750,
+        right: 15.0*screenWidthInPt/750,
+      ),
       child: new SizedBox(
         child: new Card(
           elevation: 0.0,
           child: new Column(
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(top: 70.0),
+                padding: EdgeInsets.only(top: 5.0*screenWidthInPt/750),
               ),
 
               new Row(
@@ -26,17 +31,17 @@ class JobBase extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   new Container(
-                    margin: const EdgeInsets.only(bottom: 10.0),
+                    margin: EdgeInsets.only(bottom: 10.0*screenWidthInPt/750),
                     child: new Text(
                       job.name,
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 20.0),
+                      style: new TextStyle(fontSize: 22.0*screenWidthInPt/750),
                     ),
                   ),
 
                   new Container(
                     child: new Text(job.salary, style: new TextStyle(
-                        fontSize: 13.0, color: new Color.fromARGB(255, 0, 215, 198))),
+                        fontSize: 18.0*screenWidthInPt/750, color: new Color.fromARGB(255, 0, 215, 198))),
                   ),
                 ],
               ),
@@ -49,25 +54,23 @@ class JobBase extends StatelessWidget {
                     child: new Text(
                       job.addrSummarize,
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 15.0, color: Colors.grey),
+                      style: new TextStyle(fontSize: 18.0*screenWidthInPt/750, color: Colors.grey),
                     ),
                   ),
 
                   new Padding(
-                    padding: const EdgeInsets.only(
-                      top: 0.0,
-                      left: 15.0,
-                      right: 15.0,
-                      bottom: 0.0,
+                    padding: EdgeInsets.only(
+                      left: 15.0*screenWidthInPt/750,
+                      right: 15.0*screenWidthInPt/750,
                     ),
                     child: new Text(job.timereq, style: new TextStyle(
-                        fontSize: 15.0, color: Colors.grey)),
+                        fontSize: 18.0*screenWidthInPt/750, color: Colors.grey)),
                   ),
 
                   new Container(
                     child: new Text(
                         job.academic, style: new TextStyle(
-                        fontSize: 15.0, color: Colors.grey)),
+                        fontSize: 18.0*screenWidthInPt/750, color: Colors.grey)),
                   ),
                 ],
               ),

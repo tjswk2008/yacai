@@ -8,12 +8,13 @@ class JobListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Padding(
-      padding: const EdgeInsets.only(
-        top: 3.0,
-        left: 5.0,
-        right: 5.0,
-        bottom: 3.0,
+      padding: EdgeInsets.only(
+        top: 3.0*screenWidthInPt/750,
+        left: 5.0*screenWidthInPt/750,
+        right: 5.0*screenWidthInPt/750,
+        bottom: 3.0*screenWidthInPt/750,
       ),
 
       child: new SizedBox(
@@ -29,24 +30,22 @@ class JobListItem extends StatelessWidget {
                     new Row(
                       children: <Widget>[
                         new Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10.0,
-                            left: 10.0,
-                            bottom: 5.0,
+                          padding: EdgeInsets.only(
+                            top: 10.0*screenWidthInPt/750,
+                            left: 10.0*screenWidthInPt/750,
                           ),
-                          child: new Text(job.name),
+                          child: new Text(job.name, style: new TextStyle(fontSize: 22.0*screenWidthInPt/750)),
                         ),
                         new Expanded(child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             new Padding(
-                              padding: const EdgeInsets.only(
-                                right: 10.0,
+                              padding: EdgeInsets.only(
+                                right: 10.0*screenWidthInPt/750,
                               ),
                               child: new Text(
                                   job.salary,
-                                  style: new TextStyle(
-                                      color: Colors.red)),
+                                  style: new TextStyle(color: Colors.red, fontSize: 20.0*screenWidthInPt/750)),
                             ),
                           ],
                         ))
@@ -58,33 +57,32 @@ class JobListItem extends StatelessWidget {
                         job.cname,
                         textAlign: TextAlign.left,
                         style: new TextStyle(
-                            fontSize: 15.0, color: Colors.grey),
+                            fontSize: 18.0*screenWidthInPt/750, color: Colors.grey),
                       ),
-                      margin: const EdgeInsets.only(
-                          top: 5.0, left: 10.0, bottom: 5.0),
+                      margin: EdgeInsets.only(
+                          top: 5.0*screenWidthInPt/750,
+                          left: 10.0*screenWidthInPt/750,
+                        ),
                     ),
 
                     new Divider(),
                     new Row(
                       children: <Widget>[
                         new Padding(
-                          padding: const EdgeInsets.only(
-                            top: 5.0,
-                            left: 10.0,
-                            right: 5.0,
-                            bottom: 15.0,
+                          padding: EdgeInsets.only(
+                            left: 10.0*screenWidthInPt/750,
+                            right: 5.0*screenWidthInPt/750,
+                            bottom: 15.0*screenWidthInPt/750,
                           ),
                           child: new Text(job.username + " | " + job.title,
-                              style: new TextStyle(color: new Color.fromARGB(
-                                  255, 0, 215, 198))),
+                              style: new TextStyle(color: new Color.fromARGB(255, 0, 215, 198), fontSize: 18.0*screenWidthInPt/750)),
                         ),
                         new Padding(
-                          padding: const EdgeInsets.only(
-                            top: 5.0,
-                            right: 5.0,
-                            bottom: 15.0,
+                          padding: EdgeInsets.only(
+                            right: 5.0*screenWidthInPt/750,
+                            bottom: 15.0*screenWidthInPt/750,
                           ),
-                          child: new Text(" 发布于 " + job.pubTime)
+                          child: new Text(" 发布于 " + job.pubTime, style: new TextStyle(fontSize: 18.0*screenWidthInPt/750))
                         )
                       ],
                     ),

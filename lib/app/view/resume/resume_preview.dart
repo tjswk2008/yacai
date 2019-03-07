@@ -33,7 +33,6 @@ class ResumePreviewState extends State<ResumePreview>
     with TickerProviderStateMixin {
 
   VoidCallback onChanged;
-  double width;
   String jobStatus;
   Resume resume;
   bool isRequesting = true;
@@ -65,10 +64,10 @@ class ResumePreviewState extends State<ResumePreview>
     super.dispose();
   }
 
-  Widget addExperience(String title, String btnName, List list, IndexedWidgetBuilder itemBuilder) {
+  Widget addExperience(double factor, String title, String btnName, List list, IndexedWidgetBuilder itemBuilder) {
     return new Padding(
-      padding: const EdgeInsets.only(
-        top: 5.0
+      padding: EdgeInsets.only(
+        top: 5.0*factor
       ),
       child: new Column(
         children: <Widget>[
@@ -76,18 +75,18 @@ class ResumePreviewState extends State<ResumePreview>
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
+                padding: EdgeInsets.only(bottom: 10.0*factor),
                 child: new Text(
                   title,
                   style: new TextStyle(
-                    fontSize: 16.0
+                    fontSize: 24.0*factor
                   )
                 ),
               )
             ],
           ),
           new Padding(
-            padding: const EdgeInsets.only(left: 10.0),
+            padding: EdgeInsets.only(left: 10.0*factor),
             child: new ListView.builder(
               physics: new NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -96,7 +95,7 @@ class ResumePreviewState extends State<ResumePreview>
             ),
           ),
           new Padding(
-            padding: const EdgeInsets.only(bottom: 15.0),
+            padding: EdgeInsets.only(bottom: 15.0*factor),
           ),
         ],
       ),
@@ -105,10 +104,19 @@ class ResumePreviewState extends State<ResumePreview>
   
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery.of(context).size.width * 0.3;
+    double factor = MediaQuery.of(context).size.width/750;
+    
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("简历详情", style: new TextStyle(color: Colors.white)),
+        title: new Text("简历详情", style: new TextStyle(color: Colors.white, fontSize: 30.0*factor)),
+        leading: IconButton(
+          icon: const BackButtonIcon(),
+          iconSize: 40*factor,
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          onPressed: () {
+            Navigator.maybePop(context);
+          }
+        ),
         iconTheme: new IconThemeData(color: Colors.white),
       ),
       backgroundColor: Colors.white,
@@ -129,16 +137,16 @@ class ResumePreviewState extends State<ResumePreview>
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(
-                  left: 25.0,
-                  right: 25.0,
-                  top: 5.0
+                padding: EdgeInsets.only(
+                  left: 25.0*factor,
+                  right: 25.0*factor,
+                  top: 5.0*factor
                 ),
               ),
               new Container(
-                padding: const EdgeInsets.only(
-                  left: 15.0,
-                  right: 15.0,
+                padding: EdgeInsets.only(
+                  left: 15.0*factor,
+                  right: 15.0*factor,
                 ),
                 color: Colors.white,
                 child: new Column(
@@ -147,9 +155,9 @@ class ResumePreviewState extends State<ResumePreview>
                   children: <Widget>[
                     new PersonalInfoView(resume.personalInfo, false),
                     new Padding(
-                      padding: const EdgeInsets.only(
-                        top: 5.0,
-                        bottom: 5.0
+                      padding: EdgeInsets.only(
+                        top: 5.0*factor,
+                        bottom: 5.0*factor
                       ),
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,18 +165,20 @@ class ResumePreviewState extends State<ResumePreview>
                           new Text(
                             "求职状态",
                             style: new TextStyle(
-                              fontSize: 16.0
+                              fontSize: 24.0*factor
                             )
                           ),
-                          new Text(resume.jobStatus)
+                          new Text(resume.jobStatus, style: new TextStyle(
+                              fontSize: 24.0*factor
+                            ))
                         ],
                       ), 
                     ),
                     new Divider(),
                     new Padding(
-                      padding: const EdgeInsets.only(
-                        top: 5.0,
-                        bottom: 5.0
+                      padding: EdgeInsets.only(
+                        top: 5.0*factor,
+                        bottom: 5.0*factor
                       ),
                       child: new Column(
                         children: <Widget>[
@@ -178,16 +188,16 @@ class ResumePreviewState extends State<ResumePreview>
                               new Text(
                                 "求职期望",
                                 style: new TextStyle(
-                                  fontSize: 16.0
+                                  fontSize: 24.0*factor
                                 )
                               ),
                             ],
                           ),
                           new Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
+                            padding: EdgeInsets.only(top: 20.0*factor),
                           ),
                           new Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
+                            padding: EdgeInsets.only(left: 10.0*factor),
                             child: new JobExpectation(resume.jobExpect, false),
                           ),
                         ],
@@ -195,6 +205,7 @@ class ResumePreviewState extends State<ResumePreview>
                     ),
                     new Divider(),
                     addExperience(
+                      factor,
                       "工作经历：",
                       "添加工作经历",
                       resume.companyExperiences,
@@ -209,6 +220,7 @@ class ResumePreviewState extends State<ResumePreview>
                     ),
                     new Divider(),
                     addExperience(
+                      factor,
                       "项目经历：",
                       "添加项目经历",
                       resume.projects,
@@ -223,6 +235,7 @@ class ResumePreviewState extends State<ResumePreview>
                     ),
                     new Divider(),
                     addExperience(
+                      factor,
                       "教育经历：",
                       "添加教育经历",
                       resume.educations,
@@ -237,6 +250,7 @@ class ResumePreviewState extends State<ResumePreview>
                     ),
                     new Divider(),
                     addExperience(
+                      factor,
                       "证书：",
                       "添加证书",
                       resume.certificates,
@@ -253,7 +267,7 @@ class ResumePreviewState extends State<ResumePreview>
                 ),
               ),
               new Padding(
-                padding: const EdgeInsets.only(bottom: 50.0),
+                padding: EdgeInsets.only(bottom: 50.0*factor),
               )
             ],
           )

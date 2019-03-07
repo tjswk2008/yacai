@@ -7,8 +7,6 @@ import 'package:flutter_app/app/view/company/company_info.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
-const double _kAppBarHeight = 256.0;
-
 class CompanyDetail extends StatefulWidget {
 
   final Company _company;
@@ -37,23 +35,7 @@ class CompanyDetailState extends State<CompanyDetail>
   @override
   void initState() {
     super.initState();
-    if (_urls.isNotEmpty) {
-      _imagePages = <Widget>[];
-      _urls.forEach((String url) {
-        _imagePages.add(
-            new Container(
-                color: Colors.black.withAlpha(900),
-                child: new ConstrainedBox(
-                  constraints: const BoxConstraints.expand(),
-                  child: new Image.network(
-                    url,
-                    fit: BoxFit.cover,
-                    height: _kAppBarHeight,
-                  ),
-                ))
-        );
-      });
-    }
+    
     _tabs = [
       new Tab(text: '公司概况'),
       new Tab(text: '热招职位'),
@@ -83,6 +65,25 @@ class CompanyDetailState extends State<CompanyDetail>
 
   @override
   Widget build(BuildContext context) {
+    double screenWidthInPt = MediaQuery.of(context).size.width;
+    double _kAppBarHeight = 375.0*screenWidthInPt/750;
+    if (_urls.isNotEmpty) {
+      _imagePages = <Widget>[];
+      _urls.forEach((String url) {
+        _imagePages.add(
+            new Container(
+                color: Colors.black.withAlpha(900),
+                child: new ConstrainedBox(
+                  constraints: const BoxConstraints.expand(),
+                  child: new Image.network(
+                    url,
+                    fit: BoxFit.cover,
+                    height: _kAppBarHeight,
+                  ),
+                ))
+        );
+      });
+    }
     return new Scaffold(
         backgroundColor: new Color.fromARGB(255, 242, 242, 245),
         body: new Stack(
@@ -91,7 +92,7 @@ class CompanyDetailState extends State<CompanyDetail>
                 child: new Column(
                   children: <Widget>[
                     new SizedBox.fromSize(
-                      size: const Size.fromHeight(_kAppBarHeight),
+                      size: Size.fromHeight(_kAppBarHeight),
                       child: new IndicatorViewPager(_imagePages),
                     ),
 
@@ -102,9 +103,9 @@ class CompanyDetailState extends State<CompanyDetail>
                           new CompanyInfo(widget._company),
                           new Divider(),
                           new TabBar(
-                            indicatorWeight: 3.0,
+                            indicatorWeight: 3.0*screenWidthInPt/750,
                             indicatorSize: TabBarIndicatorSize.tab,
-                            labelStyle: new TextStyle(fontSize: 16.0),
+                            labelStyle: new TextStyle(fontSize: 22.0*screenWidthInPt/750),
                             labelColor: Colors.black,
                             controller: _controller,
                             tabs: _tabs,
@@ -121,11 +122,16 @@ class CompanyDetailState extends State<CompanyDetail>
             ),
 
             new Positioned(
-              top: 10.0,
-              left: -10.0,
-              child: new Container(
-                  padding: const EdgeInsets.all(15.0),
-                  child: new BackButton(color: Colors.white)
+              top: 10.0*screenWidthInPt/750,
+              left: -10.0*screenWidthInPt/750,
+              child: IconButton(
+                icon: const BackButtonIcon(),
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                iconSize: 40.0*screenWidthInPt/750,
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.maybePop(context);
+                }
               ),
             ),
           ],

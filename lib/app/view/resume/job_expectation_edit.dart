@@ -41,6 +41,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
@@ -48,25 +49,33 @@ class JobExpectationEditState extends State<JobExpectationEdit>
           backgroundColor: Colors.white,
           appBar: new AppBar(
             elevation: 0.0,
+            leading: IconButton(
+              icon: const BackButtonIcon(),
+              iconSize: 40*factor,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                Navigator.maybePop(context);
+              }
+            ),
             title: new Text('工作期望',
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
           ),
           body: new SingleChildScrollView(
             child: new Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '期望职位：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: new TextField(
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
@@ -81,6 +90,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                           )
                         )
                       ),
+                      style: TextStyle(fontSize: 20.0*factor),
                       onChanged: (val) {
                         setState(() {
                           _jobExpect.jobTitle = val;
@@ -89,24 +99,28 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       decoration: new InputDecoration(
                         hintText: "请输入期望职位",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
+                            color: const Color(0xFF808080),
+                            fontSize: 20.0*factor
                         ),
-                        border: new UnderlineInputBorder(),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        border: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1.0*factor)
+                        ),
+                        contentPadding: EdgeInsets.all(10.0*factor)
                       ),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '期望行业：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: new TextField(
+                      style: TextStyle(fontSize: 20.0*factor),
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
                           // 设置内容
@@ -128,23 +142,26 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       decoration: new InputDecoration(
                         hintText: "请输入您的期望行业",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
+                            color: const Color(0xFF808080),
+                            fontSize: 20.0*factor
                         ),
-                        border: new UnderlineInputBorder(),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        border: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1.0*factor)
+                        ),
+                        contentPadding: EdgeInsets.all(10.0*factor)
                       ),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '工作城市：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: new TextField(
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
@@ -164,27 +181,32 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                           _jobExpect.city = val;
                         });
                       },
+                      style: TextStyle(fontSize: 20.0*factor),
                       decoration: new InputDecoration(
                         hintText: "请输入您期望的工作城市",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
+                            color: const Color(0xFF808080),
+                            fontSize: 20.0*factor
                         ),
-                        border: new UnderlineInputBorder(),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        border: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1.0*factor)
+                        ),
+                        contentPadding: EdgeInsets.all(10.0*factor)
                       ),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '薪资要求：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 18.0),
+                      style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
                   new Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                    padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: new TextField(
+                      style: TextStyle(fontSize: 20.0*factor),
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
                           // 设置内容
@@ -206,10 +228,13 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       decoration: new InputDecoration(
                         hintText: "请输入您的薪资要求",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
+                            color: const Color(0xFF808080),
+                            fontSize: 20.0*factor
                         ),
-                        border: new UnderlineInputBorder(),
-                        contentPadding: const EdgeInsets.all(10.0)
+                        border: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: 1.0*factor)
+                        ),
+                        contentPadding: EdgeInsets.all(10.0*factor)
                       ),
                     ),
                   ),

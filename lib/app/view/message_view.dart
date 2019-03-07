@@ -30,6 +30,7 @@ class PostList extends State<MessageTab> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidthInPt = MediaQuery.of(context).size.width;
     return StoreConnector<AppState, String>(
       converter: (store) => store.state.userName,
       builder: (context, userName) {
@@ -38,7 +39,7 @@ class PostList extends State<MessageTab> {
           appBar: new AppBar(
             elevation: 0.0,
             title: new Text(widget._title,
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+                style: new TextStyle(fontSize: 20.0*screenWidthInPt/750, color: Colors.white)),
           ),
           body: new SingleChildScrollView(
             child: new Column(
@@ -49,34 +50,37 @@ class PostList extends State<MessageTab> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     new Padding(
-                      padding: const EdgeInsets.only(top: 5.0, right: 10.0),
-                      child: RaisedButton(
-                        color: Colors.orange[400],
-                        child: Text("我要提问", style: new TextStyle(fontSize: 16.0, color: Colors.white),),
-                        onPressed: () {
-                          if(userName == '') {
-                            _login();
-                            return;
-                          }
-                          Navigator.of(context).push(new PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (BuildContext context, _, __) {
-                              return new AskQuestion();
-                            },
-                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                              return new FadeTransition(
-                                opacity: animation,
-                                child: new SlideTransition(position: new Tween<Offset>(
-                                  begin: const Offset(0.0, 1.0),
-                                  end: Offset.zero,
-                                ).animate(animation), child: child),
-                              );
+                      padding: EdgeInsets.only(top: 5.0*screenWidthInPt/750, right: 15.0*screenWidthInPt/750),
+                      child: new Container(
+                        height: 60.0*screenWidthInPt/750,
+                        child: RaisedButton(
+                          color: Colors.orange[400],
+                          child: Text("我要提问", style: new TextStyle(fontSize: 20.0*screenWidthInPt/750, color: Colors.white),),
+                          onPressed: () {
+                            if(userName == '') {
+                              _login();
+                              return;
                             }
-                          )).then((result) {
-                            if(result == null) return;
-                            getPostList();
-                          });
-                        },
+                            Navigator.of(context).push(new PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (BuildContext context, _, __) {
+                                return new AskQuestion();
+                              },
+                              transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                return new FadeTransition(
+                                  opacity: animation,
+                                  child: new SlideTransition(position: new Tween<Offset>(
+                                    begin: const Offset(0.0, 1.0),
+                                    end: Offset.zero,
+                                  ).animate(animation), child: child),
+                                );
+                              }
+                            )).then((result) {
+                              if(result == null) return;
+                              getPostList();
+                            });
+                          },
+                        ),
                       ),
                     )
                   ],
