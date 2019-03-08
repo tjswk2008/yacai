@@ -15,15 +15,9 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
+import 'package:flutter_app/app/model/constants.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
-
-List<String> jobStatusArr = <String>[
-  "离职-随时到岗",
-  "在职-月内到岗",
-  "在职-考虑机会",
-  "在职-暂不考虑",
-];
 
 class ResumeDetail extends StatefulWidget {
 
@@ -248,24 +242,6 @@ class ResumeDetailState extends State<ResumeDetail>
                     child: Text('预览', style: TextStyle(color: Colors.white, fontSize: 22.0*factor),),
                   ),
                   onTap: () {
-                    // showDialog<void>(
-                    //   context: context,
-                    //   barrierDismissible: false, // user must tap button!
-                    //   builder: (BuildContext context) {
-                    //     return AlertDialog(
-                    //       title: Text('title'),
-                    //       content: Text('too long~~~'),
-                    //       actions: <Widget>[
-                    //         FlatButton(
-                    //           child: Text('关闭'),
-                    //           onPressed: () {
-                    //             Navigator.of(context).pop();
-                    //           },
-                    //         ),
-                    //       ],
-                    //     );
-                    //   }
-                    // );
                   }
                 )
               )

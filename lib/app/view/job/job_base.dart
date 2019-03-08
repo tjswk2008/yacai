@@ -50,17 +50,9 @@ class JobBase extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  new Container(
-                    child: new Text(
-                      job.addrSummarize,
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 22.0*screenWidthInPt/750, color: Colors.grey),
-                    ),
-                  ),
 
                   new Padding(
                     padding: EdgeInsets.only(
-                      left: 15.0*screenWidthInPt/750,
                       right: 15.0*screenWidthInPt/750,
                     ),
                     child: new Text(job.timereq, style: new TextStyle(

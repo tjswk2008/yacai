@@ -166,7 +166,7 @@ class PostDetailState extends State<PostDetail>
                               ),
                               border: new OutlineInputBorder(
                                 borderSide: BorderSide(width: 1.0*factor),
-                                borderRadius: const BorderRadius.all(const Radius.circular(0))
+                                borderRadius: BorderRadius.all(Radius.circular(6*factor))
                               ),
                               contentPadding: EdgeInsets.all(10.0*factor)
                             ),

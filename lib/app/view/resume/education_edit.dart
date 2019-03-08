@@ -7,6 +7,7 @@ import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:date_format/date_format.dart';
+import 'package:flutter_app/app/model/constants.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -115,41 +116,40 @@ class EducationEditViewState extends State<EducationEditView>
                       style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
-                    child: new TextField(
-                      style: TextStyle(fontSize: 20.0*factor),
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          text: _education.academic,
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: _education.academic.length
-                            )
-                          )
-                        )
-                      ),
-                      onChanged: (val) {
-                        setState(() {
-                          _education.academic = val;
-                        });
+                  new Container(
+                    height: 60*factor,
+                    child: new ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: academicArr.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return new InkWell(
+                          onTap: () {
+                            setState(() {
+                              _education.academic =  academicArr[index];
+                            });
+                          },
+                          child: new Container(
+                            height: 40*factor,
+                            width: 108*factor,
+                            decoration: BoxDecoration(
+                              border: new Border.all(
+                                color: _education.academic == academicArr[index] ? const Color(0xffaaaaaa) : const Color(0xffffffff),
+                                width: 2*factor
+                              ),
+                            ),
+                            child: new Center(
+                              child: new Text(academicArr[index], style: TextStyle(fontSize: 22.0*factor),),
+                            ),
+                          ),
+                        );
                       },
-                      decoration: new InputDecoration(
-                        hintText: "请选择学历",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 20.0*factor
-                        ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1*factor)
-                        ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
-                      ),
+                      scrollDirection: Axis.horizontal,
+                      physics: const ClampingScrollPhysics(),
                     ),
                   ),
+                  new Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(top: 20*factor, bottom: 10.0*factor),
                     child: new Text(
                       '专业：',
                       textAlign: TextAlign.left,

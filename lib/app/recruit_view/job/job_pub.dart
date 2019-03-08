@@ -7,6 +7,9 @@ import 'package:flutter_app/app/view/company/company_detail.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:date_format/date_format.dart';
+import 'package:flutter_app/app/model/constants.dart';
+import 'package:flutter_app/app/component/city.dart';
+import 'package:flutter_app/app/component/salary.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -28,6 +31,13 @@ class PubJobState extends State<PubJob>
   final addrCtrl = new TextEditingController(text: '');
   bool isRequesting = false;
   String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
+  String timereq = '不限';
+  String academic = '不限';
+  String province = '上海市';
+  String city = '上海市';
+  String area = '黄浦区';
+  int start = 1;
+  int end = 2;
 
   @override
   void initState() {
@@ -37,6 +47,54 @@ class PubJobState extends State<PubJob>
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Widget timeReqOption(BuildContext context, int index) {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new InkWell(
+      onTap: () {
+        setState(() {
+          timereq =  index == 0 ? '不限' : timeReqArr[index - 1].toString() + '年';
+        });
+      },
+      child: new Container(
+        height: 40*factor,
+        width: 108*factor,
+        decoration: BoxDecoration(
+          border: new Border.all(
+            color: (index == 0 && timereq == '不限') || (index > 0 && timereq == timeReqArr[index - 1].toString() + '年') ? const Color(0xffaaaaaa) : const Color(0xffffffff),
+            width: 2*factor
+          ),
+        ),
+        child: new Center(
+          child: new Text(index == 0 ? '不限' : timeReqArr[index - 1].toString() + '年', style: TextStyle(fontSize: 22.0*factor),),
+        ),
+      ),
+    );
+  }
+
+  Widget academicOption(BuildContext context, int index) {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new InkWell(
+      onTap: () {
+        setState(() {
+          academic =  index == 0 ? '不限' : academicArr[index - 1];
+        });
+      },
+      child: new Container(
+        height: 40*factor,
+        width: 108*factor,
+        decoration: BoxDecoration(
+          border: new Border.all(
+            color: (index == 0 && academic == '不限') || (index > 0 && academic == academicArr[index - 1]) ? const Color(0xffaaaaaa) : const Color(0xffffffff),
+            width: 2*factor
+          ),
+        ),
+        child: new Center(
+          child: new Text(index == 0 ? '不限' : academicArr[index - 1], style: TextStyle(fontSize: 22.0*factor),),
+        ),
+      ),
+    );
   }
 
   @override
@@ -87,31 +145,38 @@ class PubJobState extends State<PubJob>
                     ),
                   ),
                 ),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 10.0*factor),
-                  child: new Text(
-                    '薪资待遇：',
-                    textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 26.0*factor),
-                  ),
-                ),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 36.0*factor),
-                  child: new TextField(
-                    controller: salaryCtrl,
-                    style: TextStyle(fontSize: 22*factor),
-                    decoration: new InputDecoration(
-                      hintText: "请输入薪资待遇",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
-                      ),
-                      border: new UnderlineInputBorder(
-                        borderSide: BorderSide(width: 1.0*factor)
-                      ),
-                      contentPadding: EdgeInsets.all(10.0*factor)
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    new Text(
+                      '薪资待遇：',
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(fontSize: 26.0*factor),
                     ),
-                  ),
+                    new InkWell(
+                      onTap: () {
+                        SalaryPicker.showSalaryPicker(
+                          context,
+                          selectStart: (prov) {
+                            setState(() {
+                              start = prov; 
+                            });
+                          },
+                          selectEnd: (res) {
+                            setState(() {
+                              end = res; 
+                            });
+                          }
+                        );
+                      },
+                      child: Text('${start}K ~ ${end}K', style: TextStyle(fontSize: 24.0*factor),),
+                    ),
+                  ],
                 ),
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 16.0*factor)
+                ),
+                new Divider(),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
@@ -120,13 +185,36 @@ class PubJobState extends State<PubJob>
                     style: new TextStyle(fontSize: 26.0*factor),
                   ),
                 ),
+                new InkWell(
+                  onTap: () {
+                    CityPicker.showCityPicker(
+                      context,
+                      selectProvince: (prov) {
+                        setState(() {
+                         province = prov['name']; 
+                        });
+                      },
+                      selectCity: (res) {
+                        setState(() {
+                         city = res['name']; 
+                        });
+                      },
+                      selectArea: (res) {
+                        setState(() {
+                         area = res['name']; 
+                        });
+                      },
+                    );
+                  },
+                  child: Text('$province $city $area', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                ),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 36.0*factor),
                   child: new TextField(
                     controller: addrCtrl,
                     style: TextStyle(fontSize: 22*factor),
                     decoration: new InputDecoration(
-                      hintText: "请输入工作地点",
+                      hintText: "请输入详细地址",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080)
                       ),
@@ -137,38 +225,104 @@ class PubJobState extends State<PubJob>
                     ),
                   ),
                 ),
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 10.0*factor),
+                  child: new Text(
+                    '工作年限：',
+                    textAlign: TextAlign.left,
+                    style: new TextStyle(fontSize: 26.0*factor),
+                  ),
+                ),
+                new Container(
+                  height: 60*factor,
+                  child: new ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: timeReqArr.length + 1,
+                    itemBuilder: timeReqOption,
+                    scrollDirection: Axis.horizontal,
+                    physics: const ClampingScrollPhysics(),
+                  ),
+                ),
+                new Container(
+                  height: 10*factor,
+                ),
+                new Divider(),
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 10.0*factor),
+                  child: new Text(
+                    '学历要求：',
+                    textAlign: TextAlign.left,
+                    style: new TextStyle(fontSize: 26.0*factor),
+                  ),
+                ),
+                new Container(
+                  height: 60*factor,
+                  child: new ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: academicArr.length + 1,
+                    itemBuilder: academicOption,
+                    scrollDirection: Axis.horizontal,
+                    physics: const ClampingScrollPhysics(),
+                  ),
+                ),
+                new Container(
+                  height: 10*factor,
+                ),
+                new Divider(),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     new Text(
-                      '工作年限：',
+                      '公司：',
                       textAlign: TextAlign.left,
                       style: new TextStyle(fontSize: 26.0*factor),
                     ),
-
                     new InkWell(
                       onTap: () {
-                        showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.parse('1900-01-01'), // 减 30 天
-                          lastDate: new DateTime.now().add(new Duration(days: 30)),       // 加 30 天
-                        ).then((DateTime val) {
-                          setState(() {
-                            date = formatDate(val, [yyyy, '-', mm, '-', dd]);
-                          });
-                        }).catchError((err) {
-                          print(err);
-                        });
+                        SalaryPicker.showSalaryPicker(
+                          context,
+                          selectStart: (prov) {
+                            setState(() {
+                              start = prov; 
+                            });
+                          },
+                          selectEnd: (res) {
+                            setState(() {
+                              end = res; 
+                            });
+                          }
+                        );
                       },
-                      child: new Text(date, style: new TextStyle(fontSize: 26.0*factor),),
-                    )
-                  ],
+                      child: Text('${start}K ~ ${end}K', style: TextStyle(fontSize: 24.0*factor),),
+                    ),
+                  ]
                 ),
-                new Divider(),
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 10.0*factor),
+                  child: new Text(
+                    '详细描述：',
+                    textAlign: TextAlign.left,
+                    style: new TextStyle(fontSize: 26.0*factor),
+                  ),
+                ),
+                new TextField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 10,
+                  style:TextStyle(fontSize: 24.0*factor),
+                  decoration: new InputDecoration(
+                    hintText: "请输入",
+                    hintStyle: new TextStyle(
+                        color: const Color(0xFF808080)
+                    ),
+                    border: new OutlineInputBorder(
+                      borderSide: BorderSide(width: 1.0*factor),
+                      borderRadius: BorderRadius.all(Radius.circular(6*factor))
+                    ),
+                    contentPadding: EdgeInsets.all(15.0*factor)
+                  ),
+                ),
                 new Container(
-                  height: 200*factor,
+                  height: 36*factor,
                 ),
                 new Builder(builder: (ctx) {
                   return new CommonButton(

@@ -75,7 +75,7 @@ class PubTabState extends State<PubTab> {
                       padding: EdgeInsets.only(top: 5.0*factor, right: 20.0*factor),
                       child: Container(
                         height: 60*factor,
-                        width: 170*factor,
+                        width: 175*factor,
                         child: RaisedButton(
                           color: Colors.orange[400],
                           child: Text("发布职位", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
