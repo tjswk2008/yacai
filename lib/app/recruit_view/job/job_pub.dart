@@ -269,38 +269,31 @@ class PubJobState extends State<PubJob>
                   height: 10*factor,
                 ),
                 new Divider(),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Text(
-                      '公司：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*factor),
-                    ),
-                    new InkWell(
-                      onTap: () {
-                        SalaryPicker.showSalaryPicker(
-                          context,
-                          selectStart: (prov) {
-                            setState(() {
-                              start = prov; 
-                            });
-                          },
-                          selectEnd: (res) {
-                            setState(() {
-                              end = res; 
-                            });
-                          }
-                        );
-                      },
-                      child: Text('${start}K ~ ${end}K', style: TextStyle(fontSize: 24.0*factor),),
-                    ),
-                  ]
+                new Container(
+                  height: 50.0*factor,
+                  margin: EdgeInsets.only(bottom: 10.0*factor),
+                  decoration: new BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      new Text('公司', style: TextStyle(fontSize: 22.0*factor),),
+                      new Row(
+                        children: <Widget>[
+                          new Text('上海容易网电子商务股份有限公司', style: TextStyle(fontSize: 22.0*factor),),
+                          new Icon(Icons.chevron_right, size: 30.0*factor,),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
+                Divider(),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
-                    '详细描述：',
+                    '职位描述：',
                     textAlign: TextAlign.left,
                     style: new TextStyle(fontSize: 26.0*factor),
                   ),
