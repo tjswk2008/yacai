@@ -13,15 +13,16 @@ import 'package:flutter_app/app/component/salary.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
-class PubJob extends StatefulWidget {
+class CompanyEdit extends StatefulWidget {
 
-  PubJob();
+  final Company _company;
+  CompanyEdit(this._company);
 
   @override
-  PubJobState createState() => new PubJobState();
+  CompanyEditState createState() => new CompanyEditState();
 }
 
-class PubJobState extends State<PubJob>
+class CompanyEditState extends State<CompanyEdit>
     with TickerProviderStateMixin {
 
   VoidCallback onChanged;
@@ -38,10 +39,14 @@ class PubJobState extends State<PubJob>
   String area = '黄浦区';
   int start = 1;
   int end = 2;
+  Company company;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      company = widget._company;
+    });
   }
 
   @override
@@ -111,7 +116,7 @@ class PubJobState extends State<PubJob>
               Navigator.maybePop(context);
             }
           ),
-          title: new Text('发布职位',
+          title: new Text('公司信息',
               style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
         ),
         body: new SingleChildScrollView(
@@ -123,7 +128,7 @@ class PubJobState extends State<PubJob>
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
-                    '职位名称：',
+                    '公司名称：',
                     textAlign: TextAlign.left,
                     style: new TextStyle(fontSize: 26.0*factor),
                   ),
@@ -131,56 +136,39 @@ class PubJobState extends State<PubJob>
                 new Padding(
                   padding: EdgeInsets.only(bottom: 36.0*factor),
                   child: new TextField(
-                    controller: nameCtrl,
-                    style: TextStyle(fontSize: 22*factor),
+                    style: TextStyle(fontSize: 20.0*factor),
+                    controller: TextEditingController.fromValue(
+                      TextEditingValue(
+                        text: company.name,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(
+                            affinity: TextAffinity.downstream,
+                            offset: company.name.length
+                          )
+                        )
+                      )
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        company.name = val;
+                      });
+                    },
                     decoration: new InputDecoration(
-                      hintText: "请输入职位名称",
+                      hintText: "请输入公司名称",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080)
                       ),
                       border: new UnderlineInputBorder(
-                        borderSide: BorderSide(width: 1.0*factor)
+                        borderSide: BorderSide(width: factor)
                       ),
                       contentPadding: EdgeInsets.all(10.0*factor)
                     ),
                   ),
                 ),
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Text(
-                      '薪资待遇：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*factor),
-                    ),
-                    new InkWell(
-                      onTap: () {
-                        SalaryPicker.showSalaryPicker(
-                          context,
-                          selectStart: (prov) {
-                            setState(() {
-                              start = prov; 
-                            });
-                          },
-                          selectEnd: (res) {
-                            setState(() {
-                              end = res; 
-                            });
-                          }
-                        );
-                      },
-                      child: Text('${start}K ~ ${end}K', style: TextStyle(fontSize: 24.0*factor),),
-                    ),
-                  ],
-                ),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 16.0*factor)
-                ),
-                new Divider(),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
-                    '工作地点：',
+                    '公司位置：',
                     textAlign: TextAlign.left,
                     style: new TextStyle(fontSize: 26.0*factor),
                   ),
@@ -228,97 +216,166 @@ class PubJobState extends State<PubJob>
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
-                    '工作年限：',
+                    '公司性质：',
                     textAlign: TextAlign.left,
                     style: new TextStyle(fontSize: 26.0*factor),
                   ),
                 ),
-                new Container(
-                  height: 60*factor,
-                  child: new ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: timeReqArr.length + 1,
-                    itemBuilder: timeReqOption,
-                    scrollDirection: Axis.horizontal,
-                    physics: const ClampingScrollPhysics(),
-                  ),
-                ),
-                new Container(
-                  height: 10*factor,
-                ),
-                new Divider(),
                 new Padding(
-                  padding: EdgeInsets.only(bottom: 10.0*factor),
-                  child: new Text(
-                    '学历要求：',
-                    textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 26.0*factor),
-                  ),
-                ),
-                new Container(
-                  height: 60*factor,
-                  child: new ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: academicArr.length + 1,
-                    itemBuilder: academicOption,
-                    scrollDirection: Axis.horizontal,
-                    physics: const ClampingScrollPhysics(),
-                  ),
-                ),
-                new Container(
-                  height: 10*factor,
-                ),
-                new Divider(),
-                new Container(
-                  height: 50.0*factor,
-                  margin: EdgeInsets.only(bottom: 10.0*factor),
-                  decoration: new BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      new Text('公司', style: TextStyle(fontSize: 22.0*factor),),
-                      new InkWell(
-                        onTap: () {
-                          navCompanyEdit();
-                        },
-                        child: new Row(
-                          children: <Widget>[
-                            new Text('上海容易网电子商务股份有限公司', style: TextStyle(fontSize: 22.0*factor),),
-                            new Icon(Icons.chevron_right, size: 30.0*factor,),
-                          ],
-                        ),
+                  padding: EdgeInsets.only(bottom: 36.0*factor),
+                  child: new TextField(
+                    style: TextStyle(fontSize: 20.0*factor),
+                    controller: TextEditingController.fromValue(
+                      TextEditingValue(
+                        text: company.type,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(
+                            affinity: TextAffinity.downstream,
+                            offset: company.type.length
+                          )
+                        )
                       )
-                    ],
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        company.type = val;
+                      });
+                    },
+                    decoration: new InputDecoration(
+                      hintText: "请输入公司性质",
+                      hintStyle: new TextStyle(
+                          color: const Color(0xFF808080)
+                      ),
+                      border: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: factor)
+                      ),
+                      contentPadding: EdgeInsets.all(10.0*factor)
+                    ),
                   ),
                 ),
-                Divider(),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
-                    '职位描述：',
+                    '公司规模：',
                     textAlign: TextAlign.left,
                     style: new TextStyle(fontSize: 26.0*factor),
                   ),
                 ),
-                new TextField(
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 10,
-                  style:TextStyle(fontSize: 24.0*factor),
-                  decoration: new InputDecoration(
-                    hintText: "请输入",
-                    hintStyle: new TextStyle(
-                        color: const Color(0xFF808080)
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 36.0*factor),
+                  child: new TextField(
+                    style: TextStyle(fontSize: 20.0*factor),
+                    controller: TextEditingController.fromValue(
+                      TextEditingValue(
+                        text: company.size,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(
+                            affinity: TextAffinity.downstream,
+                            offset: company.size.length
+                          )
+                        )
+                      )
                     ),
-                    border: new OutlineInputBorder(
-                      borderSide: BorderSide(width: 1.0*factor),
-                      borderRadius: BorderRadius.all(Radius.circular(6*factor))
+                    onChanged: (val) {
+                      setState(() {
+                        company.size = val;
+                      });
+                    },
+                    decoration: new InputDecoration(
+                      hintText: "请输入公司规模",
+                      hintStyle: new TextStyle(
+                          color: const Color(0xFF808080)
+                      ),
+                      border: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: factor)
+                      ),
+                      contentPadding: EdgeInsets.all(10.0*factor)
                     ),
-                    contentPadding: EdgeInsets.all(15.0*factor)
                   ),
                 ),
+                
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 10.0*factor),
+                  child: new Text(
+                    '公司人数：',
+                    textAlign: TextAlign.left,
+                    style: new TextStyle(fontSize: 26.0*factor),
+                  ),
+                ),
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 36.0*factor),
+                  child: new TextField(
+                    style: TextStyle(fontSize: 20.0*factor),
+                    controller: TextEditingController.fromValue(
+                      TextEditingValue(
+                        text: company.employee,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(
+                            affinity: TextAffinity.downstream,
+                            offset: company.employee.length
+                          )
+                        )
+                      )
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        company.employee = val;
+                      });
+                    },
+                    decoration: new InputDecoration(
+                      hintText: "请输入公司人数",
+                      hintStyle: new TextStyle(
+                          color: const Color(0xFF808080)
+                      ),
+                      border: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: factor)
+                      ),
+                      contentPadding: EdgeInsets.all(10.0*factor)
+                    ),
+                  ),
+                ),
+                
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 10.0*factor),
+                  child: new Text(
+                    '详情描述：',
+                    textAlign: TextAlign.left,
+                    style: new TextStyle(fontSize: 26.0*factor),
+                  ),
+                ),
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 36.0*factor),
+                  child: new TextField(
+                    style: TextStyle(fontSize: 20.0*factor),
+                    controller: TextEditingController.fromValue(
+                      TextEditingValue(
+                        text: company.inc,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(
+                            affinity: TextAffinity.downstream,
+                            offset: company.inc.length
+                          )
+                        )
+                      )
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        company.inc = val;
+                      });
+                    },
+                    decoration: new InputDecoration(
+                      hintText: "请输入详情描述",
+                      hintStyle: new TextStyle(
+                          color: const Color(0xFF808080)
+                      ),
+                      border: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: factor)
+                      ),
+                      contentPadding: EdgeInsets.all(10.0*factor)
+                    ),
+                  ),
+                ),
+                
                 new Container(
                   height: 36*factor,
                 ),
@@ -345,14 +402,7 @@ class PubJobState extends State<PubJob>
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          Company company = new Company(
-            name: '', // 公司名称
-            location: '', // 公司位置
-            type: '', // 公司性质
-            size: '', // 公司规模
-            employee: '', // 公司人数
-            inc: '',
-          );
+          Company company = new Company();
           return new CompanyEdit(company);
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {

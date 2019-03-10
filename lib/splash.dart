@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/recruit.dart';
-import 'package:flutter_app/util/screen.dart';
+import 'package:flutter_app/app/view/register_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -59,9 +60,11 @@ class SplashState extends State<SplashPage> {
                   bottom: 40.0*screenWidthInPt/750
                 ),
                 child: new InkWell(
-                  onTap: () {
+                  onTap: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.setInt('role', 2);
                     Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
-                      builder: (BuildContext context) => new Recruit()), (
+                      builder: (BuildContext context) => new RegisterPage()), (
                       Route route) => route == null);
                   },
                   child: new Container(
@@ -82,9 +85,11 @@ class SplashState extends State<SplashPage> {
                   right: 65.0*screenWidthInPt/750,
                 ),
                 child: new InkWell(
-                  onTap: () {
+                  onTap: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.setInt('role', 1);
                     Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
-                      builder: (BuildContext context) => new BossApp()), (
+                      builder: (BuildContext context) => new RegisterPage()), (
                       Route route) => route == null);
                   },
                   child: new Container(

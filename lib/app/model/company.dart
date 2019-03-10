@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 
 class Company {
-  final String logo; // logo
-  final String name; // 公司名称
-  final String location; // 公司位置
-  final String type; // 公司性质
-  final String size; // 公司规模
-  final String employee; // 公司人数
-  final String hot; // 热招职位
-  final String count; // 职位总数
-  final String inc;   // 公司详情
+  String logo; // logo
+  String name; // 公司名称
+  String location; // 公司位置
+  String type; // 公司性质
+  String size; // 公司规模
+  String employee; // 公司人数
+  String hot; // 热招职位
+  String count; // 职位总数
+  String inc;   // 公司详情
 
   //构造函数
   Company({

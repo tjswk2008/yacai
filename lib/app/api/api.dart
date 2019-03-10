@@ -31,6 +31,10 @@ class Api {
     return Dio().get(serverAddr + "user/login?account=" + account + "&pwd=" + pwd);
   }
 
+  Future<Response<T>> register<T>(String account, String pwd, int role) {
+    return Dio().get(serverAddr + "user/register?account=$account&pwd=$pwd&role=$role");
+  }
+
   Future<Response<T>> getUserInfo<T>(int id) {
     return Dio().get(serverAddr + "user/query?id=" + id.toString());
   }

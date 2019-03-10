@@ -10,14 +10,15 @@ import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/recruit.dart';
+import 'package:flutter_app/app/view/login_view.dart';
 
 // 新的登录界面
-class NewLoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => new NewLoginPageState();
+  State<StatefulWidget> createState() => new RegisterPageState();
 }
 
-class NewLoginPageState extends State<NewLoginPage> {
+class RegisterPageState extends State<RegisterPage> {
   // 首次加载登录页
   static const int stateFirstLoad = 1;
   // 加载完毕登录页，且当前页面是输入账号密码的页面
@@ -54,7 +55,7 @@ class NewLoginPageState extends State<NewLoginPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               CupertinoActivityIndicator(),
-              Text("登录中，请稍等...", style: TextStyle(fontSize: 20.0*factor),)
+              Text("注册中，请稍等...", style: TextStyle(fontSize: 20.0*factor),)
             ],
           ),
         )
@@ -69,7 +70,7 @@ class NewLoginPageState extends State<NewLoginPage> {
       builder: (context, callback) {
         return new Scaffold(
           appBar: new AppBar(
-            title: new Text("登录", style: new TextStyle(color: Colors.white, fontSize: 30.0*factor)),
+            title: new Text("注册", style: new TextStyle(color: Colors.white, fontSize: 30.0*factor)),
             leading: IconButton(
               icon: const BackButtonIcon(),
               iconSize: 40*factor,
@@ -84,7 +85,7 @@ class NewLoginPageState extends State<NewLoginPage> {
             padding: EdgeInsets.all(10.0*factor),
             child: new Column(
               children: <Widget>[
-                new Center(child: new Text("请使用帐号密码登录", style: new TextStyle(color: Colors.white, fontSize: 22.0*factor))),
+                new Center(child: new Text("请使用帐号密码注册", style: new TextStyle(color: Colors.white, fontSize: 22.0*factor))),
                 new Container(height: 30.0*factor),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,7 +95,7 @@ class NewLoginPageState extends State<NewLoginPage> {
                       controller: usernameCtrl,
                       style: TextStyle(fontSize: 26.0*factor),
                       decoration: new InputDecoration(
-                        hintText: "帐号/注册邮箱",
+                        hintText: "请输入帐号",
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080),
                         ),
@@ -117,7 +118,7 @@ class NewLoginPageState extends State<NewLoginPage> {
                       style: TextStyle(fontSize: 26.0*factor),
                       obscureText: true,
                       decoration: new InputDecoration(
-                        hintText: "登录密码",
+                        hintText: "请输入密码",
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080),
                         ),
@@ -133,9 +134,9 @@ class NewLoginPageState extends State<NewLoginPage> {
                 new Container(height: 30.0*factor),
                 new Builder(builder: (ctx) {
                   return new CommonButton(
-                    text: "登录",
+                    text: "注册",
                     color: new Color.fromARGB(255, 0, 215, 198),
-                    onTap: () {
+                    onTap: () async {
                       if (isOnLogin) return;
                       // 拿到用户输入的账号密码
                       String username = usernameCtrl.text.trim();
@@ -150,36 +151,53 @@ class NewLoginPageState extends State<NewLoginPage> {
                         isOnLogin = true;
                       });
                       // 发送给webview，让webview登录后再取回token
-                      Api().login(username, password)
-                        .then((Response response) {
-                          setState(() {
-                            isOnLogin = false;
-                          });
-                          if(response.data['code'] != 1) {
-                            Scaffold.of(ctx).showSnackBar(new SnackBar(
-                              content: new Text("账号或密码不正确！", style: TextStyle(fontSize: 20.0*factor),),
-                            ));
-                            return;
-                          }
-                          callback(username);
-                          SharedPreferences.getInstance().then((SharedPreferences prefs) {
-                            prefs.setString('userName', username);
-                            int role = prefs.getInt('role');
-
-                            Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
-                              builder: (BuildContext context) => role == 1 ? new BossApp() : new Recruit()), (
-                              Route route) => route == null);
-                          });
-                        })
-                        .catchError((e) {
-                          setState(() {
-                            isOnLogin = false;
-                          });
-                          print(e);
+                      try {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        int role = prefs.getInt('role');
+                        Response response = await Api().register(username, password, role);
+                        setState(() {
+                          isOnLogin = false;
                         });
+                        if(response.data['code'] != 1) {
+                          Scaffold.of(ctx).showSnackBar(new SnackBar(
+                            content: new Text("该账号已被注册！", style: TextStyle(fontSize: 20.0*factor),),
+                          ));
+                          return;
+                        }
+                        callback(username);
+                        prefs.setString('userName', username);
+                        Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
+                          builder: (BuildContext context) => role == 1 ? new BossApp() : new Recruit()), (
+                          Route route) => route == null);
+                      } catch (e) {
+                        setState(() {
+                          isOnLogin = false;
+                        });
+                        print(e);
+                      }
                     }
                   );
                 }),
+                new InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(new PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (BuildContext context, _, __) {
+                          return new NewLoginPage();
+                        },
+                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                          return new FadeTransition(
+                            opacity: animation,
+                            child: new SlideTransition(position: new Tween<Offset>(
+                              begin: const Offset(0.0, 1.0),
+                              end: Offset.zero,
+                            ).animate(animation), child: child),
+                          );
+                        }
+                    ));
+                  },
+                  child: new Text('已有账号，前往登陆', style: TextStyle(fontSize: 24.0*factor)),
+                ),
                 new Expanded(
                   child: new Column(
                     children: <Widget>[
