@@ -10,6 +10,7 @@ import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/recruit.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // 新的登录界面
 class NewLoginPage extends StatefulWidget {
@@ -47,17 +48,10 @@ class NewLoginPageState extends State<NewLoginPage> {
     double factor = MediaQuery.of(context).size.width/750;
     var loadingView;
     if (isOnLogin) {
-      loadingView = new Center(
-        child: new Padding(
-          padding: EdgeInsets.fromLTRB(0, 30*factor, 0, 0),
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              CupertinoActivityIndicator(),
-              Text("登录中，请稍等...", style: TextStyle(fontSize: 20.0*factor),)
-            ],
-          ),
-        )
+      loadingView = SpinKitHourGlass(
+        color: Theme.of(context).primaryColor,
+        size: 50*factor,
+        duration: Duration(milliseconds: 1800),
       );
     } else {
       loadingView = new Center();
@@ -80,118 +74,138 @@ class NewLoginPageState extends State<NewLoginPage> {
             ),
             iconTheme: new IconThemeData(color: Colors.white),
           ),
-          body: new Container(
-            padding: EdgeInsets.all(10.0*factor),
-            child: new Column(
-              children: <Widget>[
-                new Center(child: new Text("请使用帐号密码登录", style: new TextStyle(color: Colors.white, fontSize: 22.0*factor))),
-                new Container(height: 30.0*factor),
-                new Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          body: new Stack(
+            children: <Widget>[
+              new Container(
+                padding: EdgeInsets.all(10.0*factor),
+                child: new Column(
                   children: <Widget>[
-                    new Text("用户名：", style: TextStyle(fontSize: 26.0*factor)),
-                    new Expanded(child: new TextField(
-                      controller: usernameCtrl,
-                      style: TextStyle(fontSize: 26.0*factor),
-                      decoration: new InputDecoration(
-                        hintText: "帐号/注册邮箱",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                        ),
-                        border: new OutlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor),
-                          borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
-                        ),
-                        contentPadding: EdgeInsets.all(20.0*factor)
-                      ),
-                    ))
-                  ],
-                ),
-                new Container(height: 30.0*factor),
-                new Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    new Text("密　码：", style: TextStyle(fontSize: 26.0*factor),),
-                    new Expanded(child: new TextField(
-                      controller: passwordCtrl,
-                      style: TextStyle(fontSize: 26.0*factor),
-                      obscureText: true,
-                      decoration: new InputDecoration(
-                        hintText: "登录密码",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                        ),
-                        border: new OutlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor),
-                          borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
-                        ),
-                        contentPadding: EdgeInsets.all(20.0*factor)
-                      ),
-                    ))
-                  ],
-                ),
-                new Container(height: 30.0*factor),
-                new Builder(builder: (ctx) {
-                  return new CommonButton(
-                    text: "登录",
-                    color: new Color.fromARGB(255, 0, 215, 198),
-                    onTap: () {
-                      if (isOnLogin) return;
-                      // 拿到用户输入的账号密码
-                      String username = usernameCtrl.text.trim();
-                      String password = passwordCtrl.text.trim();
-                      if (username.isEmpty || password.isEmpty) {
-                        Scaffold.of(ctx).showSnackBar(new SnackBar(
-                          content: new Text("账号和密码不能为空！", style: TextStyle(fontSize: 20.0*factor),),
-                        ));
-                        return;
-                      }
-                      setState(() {
-                        isOnLogin = true;
-                      });
-                      // 发送给webview，让webview登录后再取回token
-                      Api().login(username, password)
-                        .then((Response response) {
-                          setState(() {
-                            isOnLogin = false;
-                          });
-                          if(response.data['code'] != 1) {
+                    new Center(child: new Text("请使用帐号密码登录", style: new TextStyle(color: Colors.white, fontSize: 22.0*factor))),
+                    new Container(height: 30.0*factor),
+                    new Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        new Text("用户名：", style: TextStyle(fontSize: 26.0*factor)),
+                        new Expanded(child: new TextField(
+                          controller: usernameCtrl,
+                          style: TextStyle(fontSize: 26.0*factor),
+                          decoration: new InputDecoration(
+                            hintText: "帐号/注册邮箱",
+                            hintStyle: new TextStyle(
+                                color: const Color(0xFF808080),
+                            ),
+                            border: new OutlineInputBorder(
+                              borderSide: BorderSide(width: 1.0*factor),
+                              borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
+                            ),
+                            contentPadding: EdgeInsets.all(20.0*factor)
+                          ),
+                        ))
+                      ],
+                    ),
+                    new Container(height: 30.0*factor),
+                    new Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        new Text("密　码：", style: TextStyle(fontSize: 26.0*factor),),
+                        new Expanded(child: new TextField(
+                          controller: passwordCtrl,
+                          style: TextStyle(fontSize: 26.0*factor),
+                          obscureText: true,
+                          decoration: new InputDecoration(
+                            hintText: "登录密码",
+                            hintStyle: new TextStyle(
+                                color: const Color(0xFF808080),
+                            ),
+                            border: new OutlineInputBorder(
+                              borderSide: BorderSide(width: 1.0*factor),
+                              borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
+                            ),
+                            contentPadding: EdgeInsets.all(20.0*factor)
+                          ),
+                        ))
+                      ],
+                    ),
+                    new Container(height: 30.0*factor),
+                    new Builder(builder: (ctx) {
+                      return new CommonButton(
+                        text: "登录",
+                        color: new Color.fromARGB(255, 0, 215, 198),
+                        onTap: () {
+                          if (isOnLogin) return;
+                          // 拿到用户输入的账号密码
+                          String username = usernameCtrl.text.trim();
+                          String password = passwordCtrl.text.trim();
+                          if (username.isEmpty || password.isEmpty) {
                             Scaffold.of(ctx).showSnackBar(new SnackBar(
-                              content: new Text("账号或密码不正确！", style: TextStyle(fontSize: 20.0*factor),),
+                              content: new Text("账号和密码不能为空！", style: TextStyle(fontSize: 20.0*factor),),
                             ));
                             return;
                           }
-                          callback(username);
-                          SharedPreferences.getInstance().then((SharedPreferences prefs) {
-                            prefs.setString('userName', username);
-                            int role = prefs.getInt('role');
-
-                            Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
-                              builder: (BuildContext context) => role == 1 ? new BossApp() : new Recruit()), (
-                              Route route) => route == null);
-                          });
-                        })
-                        .catchError((e) {
                           setState(() {
-                            isOnLogin = false;
+                            isOnLogin = true;
                           });
-                          print(e);
-                        });
-                    }
-                  );
-                }),
-                new Expanded(
-                  child: new Column(
-                    children: <Widget>[
-                      new Expanded(
-                        child: loadingView
-                      )
-                    ],
-                  )
-                )
-              ],
-            ),
+                          // 发送给webview，让webview登录后再取回token
+                          Api().login(username, password)
+                            .then((Response response) {
+                              setState(() {
+                                isOnLogin = false;
+                              });
+                              if(response.data['code'] != 1) {
+                                Scaffold.of(ctx).showSnackBar(new SnackBar(
+                                  content: new Text("账号或密码不正确！", style: TextStyle(fontSize: 20.0*factor),),
+                                ));
+                                return;
+                              }
+                              callback(username);
+                              SharedPreferences.getInstance().then((SharedPreferences prefs) {
+                                prefs.setString('userName', username);
+                                int role = prefs.getInt('role');
+
+                                Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
+                                  builder: (BuildContext context) => role == 1 ? new BossApp() : new Recruit()), (
+                                  Route route) => route == null);
+                              });
+                            })
+                            .catchError((e) {
+                              setState(() {
+                                isOnLogin = false;
+                              });
+                              Scaffold.of(ctx).showSnackBar(new SnackBar(
+                                content: new Text(e.message, style: TextStyle(fontSize: 24.0*factor),),
+                              ));
+                            });
+                        }
+                      );
+                    }),
+                    
+                    
+                  ],
+                ),
+              ),
+              isOnLogin ? Positioned(
+                left: 0,
+                top: 0,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(190, 0, 0, 0)
+                  ),
+                ),
+              ) : Container(),
+              Positioned(
+                left: 0,
+                top: 0,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: loadingView,
+              )
+            ],
           )
+          
         );
       }
     );
