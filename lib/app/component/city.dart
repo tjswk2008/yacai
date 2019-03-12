@@ -146,7 +146,7 @@ class _CityPickerState extends State<_CityPickerWidget> {
                   color: Colors.transparent,
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 500.0*factor,
+                    height: 520.0*factor,
                     child: new Container(
                       width: MediaQuery.of(context).size.width,
                       color: Colors.white,
