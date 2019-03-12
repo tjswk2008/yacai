@@ -140,75 +140,72 @@ class _CityPickerState extends State<_CityPickerWidget> {
         builder: (BuildContext context, Widget child) {
           return new ClipRect(
             child: new CustomSingleChildLayout(
-              delegate: new _BottomPickerLayout(widget.route.animation.value),
+              delegate: new _BottomPickerLayout(widget.route.animation.value, factor),
               child: new GestureDetector(
                 child: new Material(
                   color: Colors.transparent,
                   child: new Container(
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width,
                     height: 500.0*factor,
                     child: new Container(
-                      width: double.infinity,
+                      width: MediaQuery.of(context).size.width,
                       color: Colors.white,
                       child: new Column(
                         children: <Widget>[
-                          new Expanded(
-                            child: new Row(
-                              children: <Widget>[
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: new Text(
-                                    '取消',
-                                    style: new TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 24*factor
-                                    ),
+                          new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: new Text(
+                                  '取消',
+                                  style: new TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 24*factor
                                   ),
                                 ),
-                                FlatButton(
-                                  onPressed: () {
-                                    Map<String, dynamic> provinceMap = {
-                                      "code": province[provinceIndex]['code'],
-                                      "name": province[provinceIndex]['name']
-                                    };
-                                    Map<String, dynamic> cityMap = {
-                                      "code": province[provinceIndex]['sub'][cityIndex]
-                                          ['code'],
-                                      "name": province[provinceIndex]['sub'][cityIndex]
-                                          ['name']
-                                    };
-                                    Map<String, dynamic> areaMap = {
-                                      "code": province[provinceIndex]['sub'][cityIndex]['sub']
-                                          [areaIndex]['code'],
-                                      "name": province[provinceIndex]['sub'][cityIndex]['sub']
-                                          [areaIndex]['name']
-                                    };
-                                    if (widget.selectProvince != null) {
-                                      widget.selectProvince(provinceMap);
-                                    }
-                                    if (widget.selectCity != null) {
-                                      widget.selectCity(cityMap);
-                                    }
-                                    if (widget.selectArea != null) {
-                                      widget.selectArea(areaMap);
-                                    }
-                                    Navigator.pop(context);
-                                  },
-                                  child: new Text(
-                                    '确定',
-                                    style: new TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 24*factor
-                                    ),
+                              ),
+                              FlatButton(
+                                onPressed: () {
+                                  Map<String, dynamic> provinceMap = {
+                                    "code": province[provinceIndex]['code'],
+                                    "name": province[provinceIndex]['name']
+                                  };
+                                  Map<String, dynamic> cityMap = {
+                                    "code": province[provinceIndex]['sub'][cityIndex]
+                                        ['code'],
+                                    "name": province[provinceIndex]['sub'][cityIndex]
+                                        ['name']
+                                  };
+                                  Map<String, dynamic> areaMap = {
+                                    "code": province[provinceIndex]['sub'][cityIndex]['sub']
+                                        [areaIndex]['code'],
+                                    "name": province[provinceIndex]['sub'][cityIndex]['sub']
+                                        [areaIndex]['name']
+                                  };
+                                  if (widget.selectProvince != null) {
+                                    widget.selectProvince(provinceMap);
+                                  }
+                                  if (widget.selectCity != null) {
+                                    widget.selectCity(cityMap);
+                                  }
+                                  if (widget.selectArea != null) {
+                                    widget.selectArea(areaMap);
+                                  }
+                                  Navigator.pop(context);
+                                },
+                                child: new Text(
+                                  '确定',
+                                  style: new TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 24*factor
                                   ),
                                 ),
-                              ],
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            ),
-                            flex: 1,
+                              ),
+                            ],
                           ),
                           new Row(
                             children: <Widget>[
@@ -220,7 +217,8 @@ class _CityPickerState extends State<_CityPickerWidget> {
                                     return new Align(
                                       child: new Text(
                                         v['name'],
-                                        style:TextStyle(fontSize: 24*factor)
+                                        overflow: TextOverflow.ellipsis,
+                                        style:TextStyle(fontSize: 22*factor)
                                       ),
                                       alignment: Alignment.centerLeft,
                                     );
@@ -247,7 +245,8 @@ class _CityPickerState extends State<_CityPickerWidget> {
                                     return new Align(
                                       child: new Text(
                                         v['name'],
-                                        style:TextStyle(fontSize: 24*factor)
+                                        overflow: TextOverflow.ellipsis,
+                                        style:TextStyle(fontSize: 22*factor)
                                       ),
                                       alignment: Alignment.centerLeft,
                                     );
@@ -271,7 +270,8 @@ class _CityPickerState extends State<_CityPickerWidget> {
                                     return new Align(
                                       child: new Text(
                                         v['name'],
-                                        style:TextStyle(fontSize: 24*factor)
+                                        overflow: TextOverflow.ellipsis,
+                                        style:TextStyle(fontSize: 22*factor)
                                       ),
                                       alignment: Alignment.centerLeft,
                                     );
@@ -328,7 +328,7 @@ class _MyCityPickerState extends State<_MyCityPicker> {
           bottom: 10.0*factor,
         ),
         alignment: Alignment.center,
-        height: 440.0*factor,
+        height: 430.0*factor,
         child: CupertinoPicker(
           backgroundColor: Colors.white,
           scrollController: widget.controller,
@@ -344,27 +344,27 @@ class _MyCityPickerState extends State<_MyCityPicker> {
               : [new Text('')],
         ),
       ),
-      flex: 1,
     );
   }
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, {this.itemCount, this.showTitleActions});
+  _BottomPickerLayout(this.progress, this.factor, {this.itemCount, this.showTitleActions});
 
   final double progress;
+  final double factor;
   final int itemCount;
   final bool showTitleActions;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = 300.0;
+    double maxHeight = 600.0;
 
     return new BoxConstraints(
       minWidth: constraints.maxWidth,
       maxWidth: constraints.maxWidth,
       minHeight: 0.0,
-      maxHeight: maxHeight,
+      maxHeight: maxHeight*factor,
     );
   }
 

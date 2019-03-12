@@ -3,6 +3,8 @@
 // in the LICENSE file.
 import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_app/app/model/job.dart';
+import 'package:flutter_app/app/model/company.dart';
+
 
 class DeleteUserNameAction {
   DeleteUserNameAction();
@@ -34,4 +36,10 @@ class SetJobsAction {
   final List<Job> jobs;
 
   SetJobsAction(this.jobs);
+}
+
+class SetCompanyAction {
+  final Company company;
+
+  SetCompanyAction(this.company);
 }

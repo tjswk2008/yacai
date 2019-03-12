@@ -11,6 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/recruit.dart';
 import 'package:flutter_app/app/view/login_view.dart';
+import 'package:flutter_app/app/model/resume.dart';
+import 'package:flutter_app/app/model/company.dart';
+import 'package:flutter_app/app/model/job.dart';
 
 // 新的登录界面
 class RegisterPage extends StatefulWidget {
@@ -166,6 +169,30 @@ class RegisterPageState extends State<RegisterPage> {
                         }
                         callback(username);
                         prefs.setString('userName', username);
+
+                        if (role == 1) {
+                          Response resumeResponse = await Api().getUserInfo(response.data['id']);
+                          Resume resume = Resume.fromMap(resumeResponse.data['info']);
+                          StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                        } else {
+                          List<Response> resList = await Future.wait([Api().getCompanyInfo(response.data['id']), Api().getRecruitJobList(username)]);
+                          StoreProvider.of<AppState>(context).dispatch(SetJobsAction(Job.fromJson(resList[1].data['list'])));
+                          Company company;
+                          if (resList[0].data['info'] == null) {
+                            company = new Company(
+                              name: '', // 公司名称
+                              location: '', // 公司位置
+                              type: '', // 公司性质
+                              size: '', // 公司规模
+                              employee: '', // 公司人数
+                              inc: '',
+                            );
+                          } else {
+                            company = Company.fromMap(resList[0].data['info']);
+                          }
+                          StoreProvider.of<AppState>(context).dispatch(SetCompanyAction(company));
+                        }
+
                         Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
                           builder: (BuildContext context) => role == 1 ? new BossApp() : new Recruit()), (
                           Route route) => route == null);
@@ -178,26 +205,41 @@ class RegisterPageState extends State<RegisterPage> {
                     }
                   );
                 }),
-                new InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(new PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (BuildContext context, _, __) {
-                          return new NewLoginPage();
+                new Padding(
+                  padding: EdgeInsets.only(top: 36.0*factor),
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('已有账号，前往', style: TextStyle(fontSize: 24.0*factor)),
+                      new InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(new PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (BuildContext context, _, __) {
+                                return new NewLoginPage();
+                              },
+                              transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                return new FadeTransition(
+                                  opacity: animation,
+                                  child: new SlideTransition(position: new Tween<Offset>(
+                                    begin: const Offset(0.0, 1.0),
+                                    end: Offset.zero,
+                                  ).animate(animation), child: child),
+                                );
+                              }
+                          ));
                         },
-                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                          return new FadeTransition(
-                            opacity: animation,
-                            child: new SlideTransition(position: new Tween<Offset>(
-                              begin: const Offset(0.0, 1.0),
-                              end: Offset.zero,
-                            ).animate(animation), child: child),
-                          );
-                        }
-                    ));
-                  },
-                  child: new Text('已有账号，前往登陆', style: TextStyle(fontSize: 24.0*factor)),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(bottom: BorderSide(width: factor, color: Colors.black))
+                          ),
+                          child: new Text('登陆', style: TextStyle(fontSize: 24.0*factor)),
+                        )
+                      ),
+                    ],
+                  )
                 ),
+                
                 new Expanded(
                   child: new Column(
                     children: <Widget>[

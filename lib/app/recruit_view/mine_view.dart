@@ -207,18 +207,7 @@ class MineTabState extends State<MineTab> {
       .of(context)
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
-      }))
-      .then((result) {
-        if(result == null) return;
-        final store = StoreProvider.of<AppState>(context);
-        Api().getRecruitJobList(store.state.userName)
-          .then((Response response) {
-            store.dispatch(SetJobsAction(Job.fromJson(response.data['list'])));
-          })
-          .catchError((e) {
-            print(e);
-          });
-      });
+      }));
   }
 
   _navToPubJobList() {

@@ -25,10 +25,13 @@ class CompanyInfo extends StatelessWidget {
                   left: 10.0*screenWidthInPt/750,
                   right: 15.0*screenWidthInPt/750,
                 ),
-                child: new Image.network(
+                child: company.logo != null ? new Image.network(
                   company.logo,
                   width: 100.0*screenWidthInPt/750,
-                  height: 100.0*screenWidthInPt/750,),
+                  height: 100.0*screenWidthInPt/750,) : Container(
+                    width: 100.0*screenWidthInPt/750,
+                    height: 100.0*screenWidthInPt/750,
+                  ),
               ),
 
               new Expanded(
@@ -62,8 +65,7 @@ class CompanyInfo extends StatelessWidget {
                         bottom: 10.0*screenWidthInPt/750,
                       ),
                       child: new Text(
-                          company.type + " | " + company.size + " | " +
-                              company.employee, style: new TextStyle(
+                          company.type + " | " + company.employee, style: new TextStyle(
                           fontSize: 22.0*screenWidthInPt/750, color: Colors.grey)),
                     ),
                   ],

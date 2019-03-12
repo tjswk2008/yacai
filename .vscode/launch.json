@@ -7,8 +7,7 @@
         {
             "name": "Flutter",
             "request": "launch",
-            "type": "dart",
-            "deviceId": "192.168.117.101:5555"
+            "type": "dart"
         }
     ]
 }

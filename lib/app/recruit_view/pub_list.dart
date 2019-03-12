@@ -27,7 +27,6 @@ class PubTabState extends State<PubTab> {
   @override
   void initState() {
     super.initState();
-    getJobList();
   }
 
   @override
@@ -105,12 +104,12 @@ class PubTabState extends State<PubTab> {
                     )
                   ],
                 ),
-                new ListView.builder(
+                state.jobs != null ? new ListView.builder(
                   shrinkWrap: true,
                   physics: new NeverScrollableScrollPhysics(),
                   itemCount: state.jobs.length,
                   itemBuilder: buildJobItem
-                ),
+                ) : Container(),
               ],
             ),
           ),
@@ -166,10 +165,6 @@ class PubTabState extends State<PubTab> {
       .of(context)
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
-      }))
-      .then((result) {
-        if(result == null) return;
-        getJobList();
-      });
+      }));
   }
 }

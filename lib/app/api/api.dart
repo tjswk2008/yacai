@@ -39,12 +39,54 @@ class Api {
     return Dio().get(serverAddr + "user/query?id=" + id.toString());
   }
 
+  Future<Response<T>> getCompanyInfo<T>(int id) {
+    return Dio().get(serverAddr + "user/getCompanyInfo?id=" + id.toString());
+  }
+
   Future<Response<T>> addPost<T>(String askedBy, String title, String detail) {
     return Dio().get(serverAddr + "post/addPost?askedBy=" + askedBy + "&title=" + title + "&detail=" + detail);
   }
 
   Future<Response<T>> addAnswer<T>(String detail, String answerBy, int postId, ) {
     return Dio().get(serverAddr + "post/addAnswer?answerBy=" + answerBy + "&postId=" + postId.toString() + "&answer=" + detail);
+  }
+
+  Future<Response<T>> saveCompanyInfo<T>(
+    String name,
+    String province,
+    String city,
+    String area,
+    String location,
+    String type,
+    String employee,
+    String inc,
+    String userName,
+    int id
+  ) {
+    String url = '${serverAddr}company/saveCompanyInfo?name=$name&province=$province&city=$city&area=$area&location=$location&type=$type&employee=$employee&inc=$inc&userName=$userName';
+    if(id != null) {
+      url += '&id=${id.toString()}';
+    }
+    return Dio().get(url);
+  }
+
+  Future<Response<T>> saveJobs<T>(
+    String name,
+    String cname,
+    String salary,
+    String province,
+    String city,
+    String area,
+    String addrDetail,
+    String timereq,
+    String academic,
+    String detail,
+    int type,
+    int companyId,
+    String userName,
+  ) {
+    String url = '${serverAddr}jobs/saveJobs?name=$name&cname=$cname&type=$type&companyId=$companyId&salary=$salary&province=$province&city=$city&area=$area&addrDetail=$addrDetail&timereq=$timereq&academic=$academic&detail=$detail&userName=$userName';
+    return Dio().get(url);
   }
 
   Future<Response<T>> savePersonalInfo<T>(

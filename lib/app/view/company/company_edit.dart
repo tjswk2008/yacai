@@ -10,6 +10,10 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/component/city.dart';
 import 'package:flutter_app/app/component/salary.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_app/actions/actions.dart';
+import 'package:flutter_app/app/model/app.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -54,49 +58,49 @@ class CompanyEditState extends State<CompanyEdit>
     super.dispose();
   }
 
-  Widget timeReqOption(BuildContext context, int index) {
+  Widget companyTypeOption(BuildContext context, int index) {
     double factor = MediaQuery.of(context).size.width/750;
     return new InkWell(
       onTap: () {
         setState(() {
-          timereq =  index == 0 ? '不限' : timeReqArr[index - 1].toString() + '年';
+          company.type =  companyTypeArr[index];
         });
       },
       child: new Container(
         height: 40*factor,
-        width: 108*factor,
+        width: 140*factor,
         decoration: BoxDecoration(
-          border: new Border.all(
-            color: (index == 0 && timereq == '不限') || (index > 0 && timereq == timeReqArr[index - 1].toString() + '年') ? const Color(0xffaaaaaa) : const Color(0xffffffff),
+          border: company.type == companyTypeArr[index] ? new Border.all(
+            color: const Color(0xffaaaaaa),
             width: 2*factor
-          ),
+          ) : Border(),
         ),
         child: new Center(
-          child: new Text(index == 0 ? '不限' : timeReqArr[index - 1].toString() + '年', style: TextStyle(fontSize: 22.0*factor),),
+          child: new Text(companyTypeArr[index], style: TextStyle(fontSize: 22.0*factor),),
         ),
       ),
     );
   }
 
-  Widget academicOption(BuildContext context, int index) {
+  Widget employeeOption(BuildContext context, int index) {
     double factor = MediaQuery.of(context).size.width/750;
     return new InkWell(
       onTap: () {
         setState(() {
-          academic =  index == 0 ? '不限' : academicArr[index - 1];
+          company.employee =  employeeArr[index];
         });
       },
       child: new Container(
         height: 40*factor,
-        width: 108*factor,
+        width: 170*factor,
         decoration: BoxDecoration(
-          border: new Border.all(
-            color: (index == 0 && academic == '不限') || (index > 0 && academic == academicArr[index - 1]) ? const Color(0xffaaaaaa) : const Color(0xffffffff),
+          border: company.employee == employeeArr[index] ? new Border.all(
+            color: const Color(0xffaaaaaa),
             width: 2*factor
-          ),
+          ) : Border(),
         ),
         child: new Center(
-          child: new Text(index == 0 ? '不限' : academicArr[index - 1], style: TextStyle(fontSize: 22.0*factor),),
+          child: new Text(employeeArr[index], style: TextStyle(fontSize: 22.0*factor),),
         ),
       ),
     );
@@ -179,35 +183,50 @@ class CompanyEditState extends State<CompanyEdit>
                       context,
                       selectProvince: (prov) {
                         setState(() {
-                         province = prov['name']; 
+                         company.province = prov['name']; 
                         });
                       },
                       selectCity: (res) {
                         setState(() {
-                         city = res['name']; 
+                         company.city = res['name']; 
                         });
                       },
                       selectArea: (res) {
                         setState(() {
-                         area = res['name']; 
+                         company.area = res['name']; 
                         });
                       },
                     );
                   },
-                  child: Text('$province $city $area', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                  child: Text(company.province == null ? '请选择地址' : '${company.province} ${company.city} ${company.area}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
                 ),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 36.0*factor),
                   child: new TextField(
-                    controller: addrCtrl,
-                    style: TextStyle(fontSize: 22*factor),
+                    style: TextStyle(fontSize: 20.0*factor),
+                    controller: TextEditingController.fromValue(
+                      TextEditingValue(
+                        text: company.location,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(
+                            affinity: TextAffinity.downstream,
+                            offset: company.location.length
+                          )
+                        )
+                      )
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        company.location = val;
+                      });
+                    },
                     decoration: new InputDecoration(
                       hintText: "请输入详细地址",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080)
                       ),
                       border: new UnderlineInputBorder(
-                        borderSide: BorderSide(width: 1.0*factor)
+                        borderSide: BorderSide(width: factor)
                       ),
                       contentPadding: EdgeInsets.all(10.0*factor)
                     ),
@@ -221,79 +240,21 @@ class CompanyEditState extends State<CompanyEdit>
                     style: new TextStyle(fontSize: 26.0*factor),
                   ),
                 ),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 36.0*factor),
-                  child: new TextField(
-                    style: TextStyle(fontSize: 20.0*factor),
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: company.type,
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: company.type.length
-                          )
-                        )
-                      )
-                    ),
-                    onChanged: (val) {
-                      setState(() {
-                        company.type = val;
-                      });
-                    },
-                    decoration: new InputDecoration(
-                      hintText: "请输入公司性质",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
-                      ),
-                      border: new UnderlineInputBorder(
-                        borderSide: BorderSide(width: factor)
-                      ),
-                      contentPadding: EdgeInsets.all(10.0*factor)
-                    ),
+                new Container(
+                  height: 60*factor,
+                  child: new ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: companyTypeArr.length,
+                    itemBuilder: companyTypeOption,
+                    scrollDirection: Axis.horizontal,
+                    physics: const ClampingScrollPhysics(),
                   ),
                 ),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 10.0*factor),
-                  child: new Text(
-                    '公司规模：',
-                    textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 26.0*factor),
-                  ),
+                new Container(
+                  height: 10*factor,
                 ),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 36.0*factor),
-                  child: new TextField(
-                    style: TextStyle(fontSize: 20.0*factor),
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: company.size,
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: company.size.length
-                          )
-                        )
-                      )
-                    ),
-                    onChanged: (val) {
-                      setState(() {
-                        company.size = val;
-                      });
-                    },
-                    decoration: new InputDecoration(
-                      hintText: "请输入公司规模",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
-                      ),
-                      border: new UnderlineInputBorder(
-                        borderSide: BorderSide(width: factor)
-                      ),
-                      contentPadding: EdgeInsets.all(10.0*factor)
-                    ),
-                  ),
-                ),
-                
+                new Divider(),
+
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
@@ -302,38 +263,20 @@ class CompanyEditState extends State<CompanyEdit>
                     style: new TextStyle(fontSize: 26.0*factor),
                   ),
                 ),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 36.0*factor),
-                  child: new TextField(
-                    style: TextStyle(fontSize: 20.0*factor),
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: company.employee,
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: company.employee.length
-                          )
-                        )
-                      )
-                    ),
-                    onChanged: (val) {
-                      setState(() {
-                        company.employee = val;
-                      });
-                    },
-                    decoration: new InputDecoration(
-                      hintText: "请输入公司人数",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
-                      ),
-                      border: new UnderlineInputBorder(
-                        borderSide: BorderSide(width: factor)
-                      ),
-                      contentPadding: EdgeInsets.all(10.0*factor)
-                    ),
+                new Container(
+                  height: 60*factor,
+                  child: new ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: employeeArr.length,
+                    itemBuilder: employeeOption,
+                    scrollDirection: Axis.horizontal,
+                    physics: const ClampingScrollPhysics(),
                   ),
                 ),
+                new Container(
+                  height: 10*factor,
+                ),
+                new Divider(),
                 
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),
@@ -346,7 +289,9 @@ class CompanyEditState extends State<CompanyEdit>
                 new Padding(
                   padding: EdgeInsets.only(bottom: 36.0*factor),
                   child: new TextField(
-                    style: TextStyle(fontSize: 20.0*factor),
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 10,
+                    style: TextStyle(fontSize: 24.0*factor),
                     controller: TextEditingController.fromValue(
                       TextEditingValue(
                         text: company.inc,
@@ -368,10 +313,11 @@ class CompanyEditState extends State<CompanyEdit>
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080)
                       ),
-                      border: new UnderlineInputBorder(
-                        borderSide: BorderSide(width: factor)
+                      border: new OutlineInputBorder(
+                        borderSide: BorderSide(width: 1.0*factor),
+                        borderRadius: BorderRadius.all(Radius.circular(6*factor))
                       ),
-                      contentPadding: EdgeInsets.all(10.0*factor)
+                      contentPadding: EdgeInsets.all(15.0*factor)
                     ),
                   ),
                 ),
@@ -383,11 +329,45 @@ class CompanyEditState extends State<CompanyEdit>
                   return new CommonButton(
                     text: "保存",
                     color: new Color.fromARGB(255, 0, 215, 198),
-                    onTap: () {
+                    onTap: () async {
                       if (isRequesting) return;
                       setState(() {
                         isRequesting = true;
                       });
+                      try {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                        Response response = await Api().saveCompanyInfo(
+                          company.name,
+                          company.province,
+                          company.city,
+                          company.area,
+                          company.location,
+                          company.type,
+                          company.employee,
+                          company.inc,
+                          prefs.getString('userName'),
+                          company.id
+                        );
+
+                        setState(() {
+                          isRequesting = false;
+                        });
+                        if(response.data['code'] != 1) {
+                          Scaffold.of(ctx).showSnackBar(new SnackBar(
+                            content: new Text("保存失败！"),
+                          ));
+                          return;
+                        }
+                        company.id = response.data['info']['id'];
+                        StoreProvider.of<AppState>(context).dispatch(SetCompanyAction(company));
+                        Navigator.pop(context, response.data['info']);
+                      } catch(e) {
+                        setState(() {
+                          isRequesting = false;
+                        });
+                        print(e);
+                      }
                     }
                   );
                 })
@@ -396,24 +376,5 @@ class CompanyEditState extends State<CompanyEdit>
           )
         )
     );
-  }
-
-  navCompanyEdit() {
-    Navigator.of(context).push(new PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (BuildContext context, _, __) {
-          Company company = new Company();
-          return new CompanyEdit(company);
-        },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
-    ));
   }
 }

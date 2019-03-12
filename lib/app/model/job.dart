@@ -10,7 +10,9 @@ class Job {
   final String username; // 发布人
   final String title; // 发布人职位描述
   final String pubTime; // 发布时间
-  final String addrSummarize; // 工作地点概述，用于职位详情页最上方显示出地标信息
+  String province; // 公司位置
+  String city; // 公司位置
+  String area; // 公司位置
   final String addrDetail; // 工作地点详情
   final String timereq; // 需要的工作年限
   final String academic; // 需要的学历
@@ -19,13 +21,15 @@ class Job {
 
   Job({
     this.id,
+    this.province,
+    this.city,
+    this.area,
     @required this.name,
     @required this.cname,
     @required this.salary,
     @required this.username,
     @required this.title,
     @required this.pubTime,
-    @required this.addrSummarize,
     @required this.addrDetail,
     @required this.timereq,
     @required this.academic,
@@ -50,8 +54,10 @@ class Job {
         username: map['username'],
         title: map['title'],
         pubTime: map['pubTime'],
-        addrSummarize: map['addrSummarize'],
         addrDetail: map['addrDetail'],
+        province: map['province'],
+        city: map['city'],
+        area: map['area'],
         timereq: map['timereq'],
         academic: map['academic'],
         detail: map['detail'],

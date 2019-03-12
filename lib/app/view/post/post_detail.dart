@@ -243,17 +243,6 @@ class PostDetailState extends State<PostDetail>
       .of(context)
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
-      }))
-      .then((result) {
-        if(result == null) return;
-        Api().getUserInfo(result)
-          .then((Response response) {
-            Resume resume = Resume.fromMap(response.data['info']);
-            StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-          })
-          .catchError((e) {
-            print(e);
-          });
-      });
+      }));
   }
 }

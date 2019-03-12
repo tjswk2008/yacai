@@ -11,6 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/recruit.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_app/app/model/resume.dart';
+import 'package:flutter_app/app/model/company.dart';
+import 'package:flutter_app/app/model/job.dart';
 
 // 新的登录界面
 class NewLoginPage extends StatefulWidget {
@@ -131,7 +134,7 @@ class NewLoginPageState extends State<NewLoginPage> {
                       return new CommonButton(
                         text: "登录",
                         color: new Color.fromARGB(255, 0, 215, 198),
-                        onTap: () {
+                        onTap: () async {
                           if (isOnLogin) return;
                           // 拿到用户输入的账号密码
                           String username = usernameCtrl.text.trim();
@@ -146,35 +149,56 @@ class NewLoginPageState extends State<NewLoginPage> {
                             isOnLogin = true;
                           });
                           // 发送给webview，让webview登录后再取回token
-                          Api().login(username, password)
-                            .then((Response response) {
-                              setState(() {
-                                isOnLogin = false;
-                              });
-                              if(response.data['code'] != 1) {
-                                Scaffold.of(ctx).showSnackBar(new SnackBar(
-                                  content: new Text("账号或密码不正确！", style: TextStyle(fontSize: 20.0*factor),),
-                                ));
-                                return;
-                              }
-                              callback(username);
-                              SharedPreferences.getInstance().then((SharedPreferences prefs) {
-                                prefs.setString('userName', username);
-                                int role = prefs.getInt('role');
-
-                                Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
-                                  builder: (BuildContext context) => role == 1 ? new BossApp() : new Recruit()), (
-                                  Route route) => route == null);
-                              });
-                            })
-                            .catchError((e) {
-                              setState(() {
-                                isOnLogin = false;
-                              });
-                              Scaffold.of(ctx).showSnackBar(new SnackBar(
-                                content: new Text(e.message, style: TextStyle(fontSize: 24.0*factor),),
-                              ));
+                          Response response = await Api().login(username, password);
+                          try {
+                            setState(() {
+                              isOnLogin = false;
                             });
+                            if(response.data['code'] != 1) {
+                              Scaffold.of(ctx).showSnackBar(new SnackBar(
+                                content: new Text("账号或密码不正确！", style: TextStyle(fontSize: 20.0*factor),),
+                              ));
+                              return;
+                            }
+                            callback(username);
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.setString('userName', username);
+                            int role = prefs.getInt('role');
+
+                            if (role == 1) {
+                              Response resumeResponse = await Api().getUserInfo(response.data['id']);
+                              Resume resume = Resume.fromMap(resumeResponse.data['info']);
+                              StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                            } else {
+                              List<Response> resList = await Future.wait([Api().getCompanyInfo(response.data['id']), Api().getRecruitJobList(username)]);
+                              StoreProvider.of<AppState>(context).dispatch(SetJobsAction(Job.fromJson(resList[1].data['list'])));
+                              Company company;
+                              if (resList[0].data['info'] == null) {
+                                company = new Company(
+                                  name: '', // 公司名称
+                                  location: '', // 公司位置
+                                  type: '', // 公司性质
+                                  size: '', // 公司规模
+                                  employee: '', // 公司人数
+                                  inc: '',
+                                );
+                              } else {
+                                company = Company.fromMap(resList[0].data['info']);
+                              }
+                              StoreProvider.of<AppState>(context).dispatch(SetCompanyAction(company));
+                            }
+
+                            Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
+                              builder: (BuildContext context) => role == 1 ? new BossApp() : new Recruit()), (
+                              Route route) => route == null);
+                          } catch(e) {
+                            setState(() {
+                              isOnLogin = false;
+                            });
+                            Scaffold.of(ctx).showSnackBar(new SnackBar(
+                              content: new Text(e.message, style: TextStyle(fontSize: 24.0*factor),),
+                            ));
+                          }
                         }
                       );
                     }),

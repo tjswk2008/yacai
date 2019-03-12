@@ -5,16 +5,19 @@
 import 'package:meta/meta.dart';
 import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_app/app/model/job.dart';
+import 'package:flutter_app/app/model/company.dart';
 
 @immutable
 class AppState {
   final String userName;
   final Resume resume;
+  final Company company;
   final List<Job> jobs;
 
   AppState({
     this.userName = '',
     this.resume,
+    this.company,
     this.jobs
   });
 }
