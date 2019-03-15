@@ -85,8 +85,23 @@ class Api {
     int companyId,
     String userName,
   ) {
-    String url = '${serverAddr}jobs/saveJobs?name=$name&cname=$cname&type=$type&companyId=$companyId&salary=$salary&province=$province&city=$city&area=$area&addrDetail=$addrDetail&timereq=$timereq&academic=$academic&detail=$detail&userName=$userName';
-    return Dio().get(url);
+    // String url = '${serverAddr}jobs/saveJobs?name=$name&cname=$cname&type=$type&companyId=$companyId&salary=$salary&province=$province&city=$city&area=$area&addrDetail=$addrDetail&timereq=$timereq&academic=$academic&detail=$detail&userName=$userName';
+    return Dio().post('${serverAddr}jobs/saveJobs', data: {
+        'name': name,
+        'cname': cname,
+        'salary': salary,
+        'province': province,
+        'city': city,
+        'area': area,
+        'addrDetail': addrDetail,
+        'timereq': timereq,
+        'academic': academic,
+        'detail': detail,
+        'type': type,
+        'companyId': companyId,
+        'userName': userName,
+      }
+    );
   }
 
   Future<Response<T>> savePersonalInfo<T>(
@@ -96,9 +111,10 @@ class Api {
     String wechatId,
     String birthDay,
     String summarize,
+    String avatar,
     String userName
   ) {
-    return Dio().get('${serverAddr}user/addUser?name=${name}&gender=${gender}&firstJobTime=${firstJobTime}&wechatId=${wechatId}&birthDay=${birthDay}&summarize=${summarize}&userName=$userName');
+    return Dio().get('${serverAddr}user/addUser?name=${name}&avatar=$avatar&gender=${gender}&firstJobTime=${firstJobTime}&wechatId=${wechatId}&birthDay=${birthDay}&summarize=${summarize}&userName=$userName');
   }
 
   Future<Response<T>> saveJobExpectation<T>(

@@ -495,6 +495,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                           personalInfo.wechatId,
                           personalInfo.birthDay,
                           personalInfo.summarize,
+                          personalInfo.avatar,
                           state.userName
                         )
                           .then((Response response) {
