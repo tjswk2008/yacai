@@ -294,7 +294,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                       border: new OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                       ),
-                      contentPadding: EdgeInsets.all(10.0*factor)
+                      contentPadding: EdgeInsets.all(15.0*factor)
                     ),
                   ),
                   new Divider(),

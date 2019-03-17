@@ -34,7 +34,7 @@ class EducationViewState extends State<EducationView>
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
-    TextStyle detailStyle = new TextStyle(fontSize: 16.0*factor, color: Colors.grey);
+    TextStyle detailStyle = new TextStyle(fontSize: 22.0*factor, color: Colors.grey);
     return new InkWell(
       onTap: () {
         if(!widget._editable) return;
@@ -60,7 +60,7 @@ class EducationViewState extends State<EducationView>
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new Text(widget._education.name, style: new TextStyle(fontSize: 18.0*factor) ),
+              new Text(widget._education.name, style: new TextStyle(fontSize: 24.0*factor) ),
               new Text(
                 "${formatDate(DateTime.parse(widget._education.startTime), [yyyy, '-', mm])}-${widget._education.endTime == null ? '至今' : formatDate(DateTime.parse(widget._education.endTime), [yyyy, '-', mm])}",
                 style: detailStyle
@@ -71,7 +71,7 @@ class EducationViewState extends State<EducationView>
           new Padding(
             padding: EdgeInsets.only(bottom: 5.0*factor),
           ),
-          new Text(widget._education.detail, style: new TextStyle(fontSize: 18.0*factor)),
+          new Text(widget._education.detail, style: new TextStyle(fontSize: 22.0*factor)),
         ],
       ),
     );

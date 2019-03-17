@@ -95,7 +95,7 @@ class MineTabState extends State<MineTab> {
                                     new Text(
                                         appState.resume == null || appState.resume.jobStatus == '' ? "" : appState.resume.jobStatus,
                                         style: new TextStyle(
-                                            color: Colors.white, fontSize: 18.0*factor)
+                                            color: Colors.white, fontSize: 24.0*factor)
                                     ),
                                   ],
                                 ),
@@ -137,7 +137,7 @@ class MineTabState extends State<MineTab> {
                                 new Padding(
                                   padding: EdgeInsets.only(right: 10.0*factor),
                                 ),
-                                new Text('我的简历', style: TextStyle(fontSize: 22.0*factor),),
+                                new Text('我的简历', style: TextStyle(fontSize: 24.0*factor),),
                               ],
                             ),
                           ),

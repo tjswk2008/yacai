@@ -11,10 +11,10 @@ class PostListItem extends StatelessWidget {
     double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
       padding: EdgeInsets.only(
-        top: 3.0*factor,
-        left: 5.0*factor,
-        right: 5.0*factor,
-        bottom: 3.0*factor,
+        top: 10*factor,
+        left: 10.0*factor,
+        right: 10.0*factor,
+        bottom: 10*factor,
       ),
 
       child: new SizedBox(
@@ -34,7 +34,7 @@ class PostListItem extends StatelessWidget {
                   text: new TextSpan(
                     text: post.title,
                     style: new TextStyle(
-                        fontSize: 20.0*factor,
+                        fontSize: 24.0*factor,
                         color: Colors.black
                     ),
                   ),
@@ -45,9 +45,9 @@ class PostListItem extends StatelessWidget {
                   new Padding(
                     padding: EdgeInsets.only(
                       left: 10.0*factor,
-                      right: 3.0*factor
+                      right: 5.0*factor
                     ),
-                    child: new Icon(Icons.favorite, color: Colors.red, size: 20.0*factor)
+                    child: new Icon(Icons.favorite, color: Colors.red, size: 26.0*factor)
                   ),
                   new Padding(
                     padding: EdgeInsets.only(
@@ -56,7 +56,7 @@ class PostListItem extends StatelessWidget {
                     child: new Text(
                         post.votes.toString(),
                         style: new TextStyle(
-                            fontSize: 16.0*factor,
+                            fontSize: 22.0*factor,
                             color: Colors.grey)),
                   ),
                   new Padding(
@@ -64,10 +64,10 @@ class PostListItem extends StatelessWidget {
                       left: 10.0*factor,
                       right: 3.0*factor
                     ),
-                    child: new Icon(Icons.face, color: Colors.lightBlue[300], size: 20.0*factor),
+                    child: new Icon(Icons.face, color: Colors.lightBlue[300], size: 26.0*factor),
                   ),
                   new Text(post.viewers.toString(),
-                        style: new TextStyle(fontSize: 16.0*factor, color: Colors.grey)),
+                        style: new TextStyle(fontSize: 22.0*factor, color: Colors.grey)),
                 ],
               ),
 
@@ -78,7 +78,7 @@ class PostListItem extends StatelessWidget {
                   right: 10.0*factor,
                   bottom: 15.0*factor,
                 ),
-                child: new Text(post.latestStatus, style: new TextStyle(fontSize: 16.0*factor))
+                child: new Text(post.latestStatus, style: new TextStyle(fontSize: 22.0*factor))
               )
             ],
           ), 

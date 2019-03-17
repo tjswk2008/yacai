@@ -84,7 +84,7 @@ class PostDetailState extends State<PostDetail>
                         text: new TextSpan(
                           text: _post.title,
                           style: new TextStyle(
-                              fontSize: 22.0*factor,
+                              fontSize: 24.0*factor,
                               color: Colors.black
                           ),
                         ),
@@ -94,15 +94,15 @@ class PostDetailState extends State<PostDetail>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           new Container(
-                            width: 80.0*factor,
+                            width: 90.0*factor,
                             padding: EdgeInsets.only(right: 15.0*factor),
                             child: new Column(
                               children: <Widget>[
                                 new Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    new Icon(Icons.favorite, color: Colors.red, size: 20*factor),
-                                    new Text(_post.votes.toString(), style: new TextStyle(fontSize: 20*factor)),
+                                    new Icon(Icons.favorite, color: Colors.red, size: 26*factor),
+                                    new Text(_post.votes.toString(), style: new TextStyle(fontSize: 22*factor)),
                                   ],
                                 )
                               ],
@@ -116,7 +116,7 @@ class PostDetailState extends State<PostDetail>
                                   text: new TextSpan(
                                     text: _post.detail,
                                     style: new TextStyle(
-                                        fontSize: 16.0*factor,
+                                        fontSize: 22.0*factor,
                                         color: Colors.black
                                     ),
                                   ),
@@ -132,9 +132,9 @@ class PostDetailState extends State<PostDetail>
                                       padding: EdgeInsets.only(
                                         right: 10.0*factor
                                       ),
-                                      child: new Text(_post.askedBy, style: new TextStyle(fontSize: 20*factor)),
+                                      child: new Text(_post.askedBy, style: new TextStyle(fontSize: 22*factor)),
                                     ),
-                                    new Text(_post.askedAt, style: new TextStyle(fontSize: 20*factor)),
+                                    new Text(_post.askedAt, style: new TextStyle(fontSize: 22*factor)),
                                   ],
                                 )
                               ],
@@ -145,14 +145,14 @@ class PostDetailState extends State<PostDetail>
                       new Divider(),
                       new Padding(
                         padding: EdgeInsets.only(bottom: 10.0*factor),
-                        child: new Text('${_post.answers.length}个回答：', style: new TextStyle(fontSize: 20*factor)),
+                        child: new Text('${_post.answers.length}个回答：', style: new TextStyle(fontSize: 22*factor)),
                       ),
                       new AnswerList(_post.answers),
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          new Text("您的回答：", style: new TextStyle(fontSize: 20*factor)),
+                          new Text("您的回答：", style: new TextStyle(fontSize: 22*factor)),
                           new Expanded(child: new TextField(
                             keyboardType: TextInputType.multiline,
                             maxLines: 5,
@@ -162,7 +162,7 @@ class PostDetailState extends State<PostDetail>
                               hintText: "请输入",
                               hintStyle: new TextStyle(
                                   color: const Color(0xFF808080),
-                                  fontSize: 20*factor
+                                  fontSize: 22*factor
                               ),
                               border: new OutlineInputBorder(
                                 borderSide: BorderSide(width: 1.0*factor),
@@ -176,7 +176,7 @@ class PostDetailState extends State<PostDetail>
                       new Container(height: 20.0*factor),
                       new Builder(builder: (ctx) {
                         return new CommonButton(
-                          text: "提交你的回复",
+                          text: "提交",
                           color: new Color.fromARGB(255, 0, 215, 198),
                           onTap: () {
                             if(userName == '') {

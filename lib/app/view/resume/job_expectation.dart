@@ -59,18 +59,18 @@ class JobExpectationState extends State<JobExpectation>
             children: <Widget>[
               new Padding(
                 padding: EdgeInsets.only(right: 10.0*factor),
-                child: new Text(widget._jobExpect.jobTitle, style: new TextStyle(fontSize: 20.0*factor),),
+                child: new Text(widget._jobExpect.jobTitle, style: new TextStyle(fontSize: 24.0*factor),),
               ),
-              new Text(widget._jobExpect.salary, style: new TextStyle(fontSize: 20.0*factor),)
+              new Text(widget._jobExpect.salary, style: new TextStyle(fontSize: 24.0*factor),)
             ],
           ),
           new Row(
             children: <Widget>[
               new Padding(
                 padding: EdgeInsets.only(right: 10.0*factor),
-                child: new Text(widget._jobExpect.city, style: new TextStyle(fontSize: 18.0*factor, color: Colors.grey),),
+                child: new Text(widget._jobExpect.city, style: new TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
               ),
-              new Text(widget._jobExpect.industry, style: new TextStyle(fontSize: 18.0*factor, color: Colors.grey),),
+              new Text(widget._jobExpect.industry, style: new TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
             ],
           ),
         ],

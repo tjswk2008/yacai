@@ -39,7 +39,7 @@ class PostList extends State<MessageTab> {
           appBar: new AppBar(
             elevation: 0.0,
             title: new Text(widget._title,
-                style: new TextStyle(fontSize: 20.0*screenWidthInPt/750, color: Colors.white)),
+                style: new TextStyle(fontSize: 30.0*screenWidthInPt/750, color: Colors.white)),
           ),
           body: new SingleChildScrollView(
             child: new Column(
@@ -53,9 +53,10 @@ class PostList extends State<MessageTab> {
                       padding: EdgeInsets.only(top: 5.0*screenWidthInPt/750, right: 15.0*screenWidthInPt/750),
                       child: new Container(
                         height: 60.0*screenWidthInPt/750,
+                        width: 175.0*screenWidthInPt/750,
                         child: RaisedButton(
                           color: Colors.orange[400],
-                          child: Text("我要提问", style: new TextStyle(fontSize: 20.0*screenWidthInPt/750, color: Colors.white),),
+                          child: Text("我要提问", style: new TextStyle(fontSize: 26.0*screenWidthInPt/750, color: Colors.white),),
                           onPressed: () {
                             if(userName == '') {
                               _login();

@@ -43,15 +43,15 @@ class AnswerListState extends State<AnswerList>
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             new Container(
-              width: 80.0*factor,
+              width: 90.0*factor,
               margin: EdgeInsets.only(left: 4.0*factor),
               padding: EdgeInsets.only(right: 15.0*factor),
               child: new Column(
                 children: <Widget>[
                   new Row(
                     children: <Widget>[
-                      new Icon(Icons.favorite, color: Colors.red, size: 20.0*factor),
-                      new Text(answer.votes, style: TextStyle(fontSize: 20.0*factor)),
+                      new Icon(Icons.favorite, color: Colors.red, size: 26.0*factor),
+                      new Text(answer.votes, style: TextStyle(fontSize: 22.0*factor)),
                     ],
                   )
                 ],
@@ -59,7 +59,7 @@ class AnswerListState extends State<AnswerList>
             ),
             new Expanded(
               child: new Container(
-                width: 670*factor,
+                width: 660*factor,
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -67,7 +67,7 @@ class AnswerListState extends State<AnswerList>
                       text: new TextSpan(
                         text: answer.answer,
                         style: new TextStyle(
-                            fontSize: 16.0*factor,
+                            fontSize: 24.0*factor,
                             color: Colors.black
                         ),
                       ),
@@ -82,9 +82,9 @@ class AnswerListState extends State<AnswerList>
                           padding: EdgeInsets.only(
                             right: 10.0*factor
                           ),
-                          child: Text(answer.answerBy, style: TextStyle(fontSize: 20.0*factor)),
+                          child: Text(answer.answerBy, style: TextStyle(fontSize: 22.0*factor)),
                         ),
-                        Text(answer.answerAt, style: TextStyle(fontSize: 20.0*factor)),
+                        Text(answer.answerAt, style: TextStyle(fontSize: 22.0*factor)),
                       ],
                     ),
                     new Divider(),

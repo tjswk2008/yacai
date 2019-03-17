@@ -32,7 +32,7 @@ class CompanyExperienceViewState extends State<CompanyExperienceView>
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
-    TextStyle detailStyle = new TextStyle(fontSize: 16.0*factor, color: Colors.grey);
+    TextStyle detailStyle = new TextStyle(fontSize: 22.0*factor, color: Colors.grey);
     return new InkWell(
       onTap: () {
         if(!widget._editable) return;
@@ -58,7 +58,7 @@ class CompanyExperienceViewState extends State<CompanyExperienceView>
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new Text(widget._companyExperience.cname, style: new TextStyle(fontSize: 18.0*factor) ),
+              new Text(widget._companyExperience.cname, style: new TextStyle(fontSize: 24.0*factor) ),
               new Text(
                 "${formatDate(DateTime.parse(widget._companyExperience.startTime), [yyyy, '-', mm, '-', dd])}-${widget._companyExperience.endTime == null ? '至今' : formatDate(DateTime.parse(widget._companyExperience.endTime), [yyyy, '-', mm, '-', dd])}",
                 style: detailStyle
@@ -69,7 +69,7 @@ class CompanyExperienceViewState extends State<CompanyExperienceView>
           new Padding(
             padding: EdgeInsets.only(bottom: 5.0*factor),
           ),
-          new Text(widget._companyExperience.detail, style: new TextStyle(fontSize: 18.0*factor)),
+          new Text(widget._companyExperience.detail, style: new TextStyle(fontSize: 22.0*factor)),
         ],
       ),
     );
