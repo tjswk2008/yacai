@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/company.dart';
-import 'package:flutter_app/app/model/job.dart';
-import 'package:flutter_app/app/view/company/company_info.dart';
 import 'package:flutter_app/app/component/common_button.dart';
-import 'package:flutter_app/app/view/company/company_edit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/component/city.dart';
-import 'package:flutter_app/app/component/salary.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/model/app.dart';
+import 'package:image_picker/image_picker.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -40,7 +37,7 @@ class CompanyEditState extends State<CompanyEdit>
   String academic = '不限';
   String province = '上海市';
   String city = '上海市';
-  String area = '黄浦区';
+  String area = '徐汇区';
   int start = 1;
   int end = 2;
   Company company;
@@ -138,7 +135,7 @@ class CompanyEditState extends State<CompanyEdit>
                   ),
                 ),
                 new Padding(
-                  padding: EdgeInsets.only(bottom: 36.0*factor),
+                  padding: EdgeInsets.only(bottom: 16.0*factor),
                   child: new TextField(
                     style: TextStyle(fontSize: 20.0*factor),
                     controller: TextEditingController.fromValue(
@@ -169,6 +166,52 @@ class CompanyEditState extends State<CompanyEdit>
                     ),
                   ),
                 ),
+                new Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    new Text(
+                      '公司logo:',
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(fontSize: 24.0*factor),
+                    ),
+
+                    new InkWell(
+                      onTap: () {
+                        ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+                          return Api().upload(image, image.path.substring(image.path.lastIndexOf("/") + 1));
+                        }).then((Response response) {
+                          if(response.data['code'] != 1) {
+                            return;
+                          }
+                          setState(() {
+                            company.logo = response.data['imgurl'];
+                          });
+                        })
+                        .catchError((e) {
+                          print(e);
+                        });
+                      },
+                      child: company.logo != null ? new CircleAvatar(
+                        radius: 45.0*factor,
+                        backgroundImage: new NetworkImage(company.logo)
+                      ) : Container(
+                        width: 90*factor,
+                        height: 90*factor,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: factor),
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.all(Radius.circular(45*factor))
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                new Container(
+                  height: 10*factor,
+                ),
+                new Divider(),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
@@ -346,6 +389,7 @@ class CompanyEditState extends State<CompanyEdit>
                           company.type,
                           company.employee,
                           company.inc,
+                          company.logo,
                           prefs.getString('userName'),
                           company.id
                         );

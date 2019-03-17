@@ -60,10 +60,11 @@ class Api {
     String type,
     String employee,
     String inc,
+    String logo,
     String userName,
     int id
   ) {
-    String url = '${serverAddr}company/saveCompanyInfo?name=$name&province=$province&city=$city&area=$area&location=$location&type=$type&employee=$employee&inc=$inc&userName=$userName';
+    String url = '${serverAddr}company/saveCompanyInfo?name=$name&logo=$logo&province=$province&city=$city&area=$area&location=$location&type=$type&employee=$employee&inc=$inc&userName=$userName';
     if(id != null) {
       url += '&id=${id.toString()}';
     }
