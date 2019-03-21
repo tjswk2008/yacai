@@ -35,7 +35,7 @@ class Resume {
 class Education{
   int id;
   String name; // 学校名称
-  String academic; // 学历
+  int academic; // 学历索引
   String major; // 专业
   String endTime; // 就读该学校的结束时间
   String startTime; // 就读该学校的开始时间
@@ -191,6 +191,7 @@ class CompanyExperience{
 
 class JobExpect{
   int id;
+  int type; //工作类型
   String jobTitle; // 职位
   String industry; // 行业
   String city; // 工作城市
@@ -198,6 +199,7 @@ class JobExpect{
 
   JobExpect({
     this.id,
+    this.type,
     this.jobTitle,
     this.industry,
     this.city,
@@ -207,6 +209,7 @@ class JobExpect{
   static JobExpect fromMap(Map map) {
     return new JobExpect(
         id: map['id'],
+        type: map['expectType'],
         jobTitle: map['expectJobTitle'],
         industry: map['expectIndustry'],
         city: map['expectCity'],
@@ -224,7 +227,8 @@ class PersonalInfo {
   String wechatId; // 微信号
   String birthDay; // 出生年月
   String summarize; // 优势
-  String academic; // 学历
+  int academic; // 学历
+  String school; // 学校
 
   PersonalInfo({
     this.id,
@@ -236,6 +240,7 @@ class PersonalInfo {
     this.birthDay,
     this.summarize,
     this.academic,
+    this.school,
   });
 
   static List<PersonalInfo> fromList(List list) {
@@ -256,7 +261,8 @@ class PersonalInfo {
         wechatId: map['wechatId'],
         birthDay: map['birthDay'],
         summarize: map['summarize'],
-        academic: map['academic']
+        academic: map['academic'],
+        school: map['school']
     );
   }
 }

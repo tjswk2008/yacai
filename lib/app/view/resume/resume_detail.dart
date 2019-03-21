@@ -163,7 +163,7 @@ class ResumeDetailState extends State<ResumeDetail>
       case '添加教育经历':
         widget = new EducationEditView(new Education(
           name: '',
-          academic: '',
+          academic: 0,
           detail: '',
           major: '',
           startTime: formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd])

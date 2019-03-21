@@ -6,6 +6,10 @@ import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
+import 'package:flutter_app/app/model/constants.dart';
+import 'package:flutter_app/app/component/city.dart';
+import 'package:custom_radio/custom_radio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -25,6 +29,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
   VoidCallback onChanged;
   JobExpect _jobExpect;
   bool isRequesting = false;
+  String userName = '';
 
   @override
   void initState() {
@@ -32,11 +37,88 @@ class JobExpectationEditState extends State<JobExpectationEdit>
     setState(() {
      _jobExpect = widget._jobExpect; 
     });
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Widget salaryOption(BuildContext context, int index) {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new InkWell(
+      onTap: () {
+        setState(() {
+          _jobExpect.salary =  salaryArr[index];
+        });
+      },
+      child: new Container(
+        height: 40*factor,
+        width: 140*factor,
+        decoration: BoxDecoration(
+          border: _jobExpect.salary == salaryArr[index] ? new Border.all(
+            color: const Color(0xffaaaaaa),
+            width: 2*factor
+          ) : Border(),
+        ),
+        child: new Center(
+          child: new Text(salaryArr[index], style: TextStyle(fontSize: 22.0*factor),),
+        ),
+      ),
+    );
+  }
+
+  Widget companyTypeOption(BuildContext context, int index) {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new InkWell(
+      onTap: () {
+        setState(() {
+          _jobExpect.industry =  companyTypeArr[index];
+        });
+      },
+      child: new Container(
+        height: 40*factor,
+        width: 140*factor,
+        decoration: BoxDecoration(
+          border: _jobExpect.industry == companyTypeArr[index] ? new Border.all(
+            color: const Color(0xffaaaaaa),
+            width: 2*factor
+          ) : Border(),
+        ),
+        child: new Center(
+          child: new Text(companyTypeArr[index], style: TextStyle(fontSize: 22.0*factor),),
+        ),
+      ),
+    );
+  }
+
+  Widget titleOption(BuildContext context, int index) {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new InkWell(
+      onTap: () {
+        setState(() {
+          _jobExpect.jobTitle =  titleArr[index];
+        });
+      },
+      child: new Container(
+        height: 40*factor,
+        width: 220*factor,
+        decoration: BoxDecoration(
+          border: _jobExpect.jobTitle == titleArr[index] ? new Border.all(
+            color: const Color(0xffaaaaaa),
+            width: 2*factor
+          ) : Border(),
+        ),
+        child: new Center(
+          child: new Text(titleArr[index], style: TextStyle(fontSize: 22.0*factor),),
+        ),
+      ),
+    );
   }
 
   @override
@@ -74,41 +156,18 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
-                    child: new TextField(
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          // 设置内容
-                          text: _jobExpect.jobTitle,
-                          // 保持光标在最后
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: _jobExpect.jobTitle.length
-                            )
-                          )
-                        )
-                      ),
-                      style: TextStyle(fontSize: 20.0*factor),
-                      onChanged: (val) {
-                        setState(() {
-                          _jobExpect.jobTitle = val;
-                        });
-                      },
-                      decoration: new InputDecoration(
-                        hintText: "请输入期望职位",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 20.0*factor
-                        ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
-                      ),
+                  new Container(
+                    height: 60*factor,
+                    child: new ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: titleArr.length,
+                      itemBuilder: titleOption,
+                      scrollDirection: Axis.horizontal,
+                      physics: const ClampingScrollPhysics(),
                     ),
                   ),
+                  Container(height: 10*factor,),
+                  Divider(),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
@@ -117,41 +176,20 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
-                    child: new TextField(
-                      style: TextStyle(fontSize: 20.0*factor),
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          // 设置内容
-                          text: _jobExpect.industry,
-                          // 保持光标在最后
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: _jobExpect.industry.length
-                            )
-                          )
-                        )
-                      ),
-                      onChanged: (val) {
-                        setState(() {
-                          _jobExpect.industry = val;
-                        });
-                      },
-                      decoration: new InputDecoration(
-                        hintText: "请输入您的期望行业",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 20.0*factor
-                        ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
-                      ),
+                  new Container(
+                    height: 60*factor,
+                    child: new ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: companyTypeArr.length,
+                      itemBuilder: companyTypeOption,
+                      scrollDirection: Axis.horizontal,
+                      physics: const ClampingScrollPhysics(),
                     ),
                   ),
+                  new Container(
+                    height: 10*factor,
+                  ),
+                  new Divider(),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
@@ -161,40 +199,222 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                     ),
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
-                    child: new TextField(
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          // 设置内容
-                          text: _jobExpect.city,
-                          // 保持光标在最后
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: _jobExpect.city.length
-                            )
-                          )
-                        )
-                      ),
-                      onChanged: (val) {
-                        setState(() {
-                          _jobExpect.city = val;
-                        });
+                    padding: EdgeInsets.only(left: 15*factor),
+                    child: new InkWell(
+                      onTap: () {
+                        CityPicker.showCityPicker(
+                          context,
+                          selectProvince: (prov) {
+                            
+                          },
+                          selectCity: (res) {
+                            setState(() {
+                              _jobExpect.city = res['name'];
+                            });
+                          },
+                          selectArea: (res) {
+                          },
+                        );
                       },
-                      style: TextStyle(fontSize: 20.0*factor),
-                      decoration: new InputDecoration(
-                        hintText: "请输入您期望的工作城市",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 20.0*factor
-                        ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
-                      ),
+                      child: Text('${_jobExpect.city}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
                     ),
                   ),
+                  new Container(
+                    height: 10*factor,
+                  ),
+                  new Divider(),
+                  new Padding(
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    child: new Text(
+                      '工作类型：',
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(fontSize: 26.0*factor),
+                    ),
+                  ),
+                  
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      new Row(
+                        children: <Widget>[
+                          CustomRadio<int, dynamic>(
+                            value: 1,
+                            groupValue: _jobExpect.type,
+                            animsBuilder: (AnimationController controller) => [
+                              CurvedAnimation(
+                                parent: controller,
+                                curve: Curves.easeInOut
+                              ),
+                              ColorTween(
+                                begin: Colors.grey[600],
+                                end: Colors.cyan[300]
+                              ).animate(controller),
+                              ColorTween(
+                                begin: Colors.cyan[300],
+                                end: Colors.grey[600]
+                              ).animate(controller),
+                            ],
+                            builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _jobExpect.type = value;
+                                  });
+                                },
+                                child: Container(
+                                  width: 24.0*factor,
+                                  height: 24.0*factor,
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.all(10.0*factor),
+                                  padding: EdgeInsets.all(3.0*factor),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: _jobExpect.type == value ? Colors.cyan[300] : Colors.grey[600],
+                                      width: 1.0*factor
+                                    )
+                                  ),
+                                  child: _jobExpect.type == value ? Container(
+                                    width: 14.0*factor,
+                                    height: 14.0*factor,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: animValues[1],
+                                      border: Border.all(
+                                        color: animValues[2],
+                                        width: 1.0*factor
+                                      )
+                                    ),
+                                  ) : Container(),
+                                )
+                              );
+                            },
+                          ),
+                          new Text('全职', style: new TextStyle(fontSize: 24.0*factor),),
+                        ]
+                      ),
+                      new Row(
+                        children: <Widget>[
+                          CustomRadio<int, dynamic>(
+                            value: 2,
+                            groupValue: _jobExpect.type,
+                            animsBuilder: (AnimationController controller) => [
+                              CurvedAnimation(
+                                parent: controller,
+                                curve: Curves.easeInOut
+                              ),
+                              ColorTween(
+                                begin: Colors.grey[600],
+                                end: Colors.cyan[300]
+                              ).animate(controller),
+                              ColorTween(
+                                begin: Colors.cyan[300],
+                                end: Colors.grey[600]
+                              ).animate(controller),
+                            ],
+                            builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _jobExpect.type = value;
+                                  });
+                                },
+                                child: Container(
+                                  width: 24.0*factor,
+                                  height: 24.0*factor,
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.all(10.0*factor),
+                                  padding: EdgeInsets.all(3.0*factor),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: _jobExpect.type == value ? Colors.cyan[300] : Colors.grey[600],
+                                      width: 1.0*factor
+                                    )
+                                  ),
+                                  child: _jobExpect.type == value ? Container(
+                                    width: 14.0*factor,
+                                    height: 14.0*factor,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: animValues[1],
+                                      border: Border.all(
+                                        color: animValues[2],
+                                        width: 1.0*factor
+                                      )
+                                    ),
+                                  ) : Container(),
+                                )
+                              );
+                            },
+                          ),
+                          new Text('兼职', style: new TextStyle(fontSize: 24.0*factor),),
+                        ]
+                      ),
+                      new Row(
+                        children: <Widget>[
+                          CustomRadio<int, dynamic>(
+                            value: 3,
+                            groupValue: _jobExpect.type,
+                            animsBuilder: (AnimationController controller) => [
+                              CurvedAnimation(
+                                parent: controller,
+                                curve: Curves.easeInOut
+                              ),
+                              ColorTween(
+                                begin: Colors.grey[600],
+                                end: Colors.cyan[300]
+                              ).animate(controller),
+                              ColorTween(
+                                begin: Colors.cyan[300],
+                                end: Colors.grey[600]
+                              ).animate(controller),
+                            ],
+                            builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _jobExpect.type = value;
+                                  });
+                                },
+                                child: Container(
+                                  width: 24.0*factor,
+                                  height: 24.0*factor,
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.all(10.0*factor),
+                                  padding: EdgeInsets.all(3.0*factor),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: _jobExpect.type == value ? Colors.cyan[300] : Colors.grey[600],
+                                      width: 1.0*factor
+                                    )
+                                  ),
+                                  child: _jobExpect.type == value ? Container(
+                                    width: 14.0*factor,
+                                    height: 14.0*factor,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: animValues[1],
+                                      border: Border.all(
+                                        color: animValues[2],
+                                        width: 1.0*factor
+                                      )
+                                    ),
+                                  ) : Container(),
+                                )
+                              );
+                            },
+                          ),
+                          new Text('实习', style: new TextStyle(fontSize: 24.0*factor),),
+                        ],
+                      )
+                    ],
+                  ),
+                  new Divider(),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
@@ -203,41 +423,20 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
-                    child: new TextField(
-                      style: TextStyle(fontSize: 20.0*factor),
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          // 设置内容
-                          text: _jobExpect.salary,
-                          // 保持光标在最后
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: _jobExpect.salary.length
-                            )
-                          )
-                        )
-                      ),
-                      onChanged: (val) {
-                        setState(() {
-                          _jobExpect.salary = val;
-                        });
-                      },
-                      decoration: new InputDecoration(
-                        hintText: "请输入您的薪资要求",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 20.0*factor
-                        ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
-                      ),
+                  new Container(
+                    height: 60*factor,
+                    child: new ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: salaryArr.length,
+                      itemBuilder: salaryOption,
+                      scrollDirection: Axis.horizontal,
+                      physics: const ClampingScrollPhysics(),
                     ),
                   ),
+                  new Container(
+                    height: 10*factor,
+                  ),
+                  Divider(),
                   new Builder(builder: (ctx) {
                     return new CommonButton(
                       text: "保存",
@@ -253,7 +452,8 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                           _jobExpect.industry,
                           _jobExpect.city,
                           _jobExpect.salary,
-                          state.userName
+                          _jobExpect.type,
+                          userName
                         )
                           .then((Response response) {
                             setState(() {

@@ -72,11 +72,11 @@ class PersonalInfoView extends StatelessWidget {
                               style: new TextStyle(fontSize: 20.0*factor),
                             ),
                           ),
-                          new Text(
-                            personalInfo.academic,
-                            textAlign: TextAlign.left,
-                            style: new TextStyle(fontSize: 20.0*factor),
-                          ),
+                          // new Text(
+                          //   personalInfo.academic,
+                          //   textAlign: TextAlign.left,
+                          //   style: new TextStyle(fontSize: 20.0*factor),
+                          // ),
                         ],
                       )
                     ]

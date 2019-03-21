@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/resume.dart';
+import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/view/resume/job_expectation_edit.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
@@ -61,7 +62,11 @@ class JobExpectationState extends State<JobExpectation>
                 padding: EdgeInsets.only(right: 10.0*factor),
                 child: new Text(widget._jobExpect.jobTitle, style: new TextStyle(fontSize: 24.0*factor),),
               ),
-              new Text(widget._jobExpect.salary, style: new TextStyle(fontSize: 24.0*factor),)
+              new Text(widget._jobExpect.salary, style: new TextStyle(fontSize: 24.0*factor),),
+              new Padding(
+                padding: EdgeInsets.only(left: 20.0*factor),
+                child: new Text(jobTypeArr[widget._jobExpect.type - 1], style: new TextStyle(fontSize: 24.0*factor),),
+              )
             ],
           ),
           new Row(

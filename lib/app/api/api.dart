@@ -1,18 +1,20 @@
 import 'package:dio/dio.dart';
 import 'dart:io';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_app/app/model/app.dart';
 class Api {
-  final String serverAddr = "http://localhost:3000/api/";
+  final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://localhost:3000/api/";
 
-  Future<Response<T>> getResumeList<T>(int jobId) {
-    String url = '${serverAddr}user/getResumeList';
+  Future<Response<T>> getResumeList<T>(String userName, int jobId) {
+    String url = '${serverAddr}user/getResumeList?userName=$userName';
     if (jobId != null) {
-      url += '?jobId=$jobId';
+      url += '&jobId=$jobId';
     }
     return Dio().get(url);
   }
 
-  Future<Response<T>> getJobList<T>(int type) {
-    return Dio().get(serverAddr + "jobs/jobsList?type=" + type.toString());
+  Future<Response<T>> getJobList<T>(int type, String userName) {
+    return Dio().get('${serverAddr}jobs/jobsList?type=$type&userName=$userName');
   }
 
   Future<Response<T>> getRecruitJobList<T>(String userName) {
@@ -49,6 +51,23 @@ class Api {
 
   Future<Response<T>> addAnswer<T>(String detail, String answerBy, int postId, ) {
     return Dio().get(serverAddr + "post/addAnswer?answerBy=" + answerBy + "&postId=" + postId.toString() + "&answer=" + detail);
+  }
+
+  Future<Response<T>> deliver<T>(String userName, int jobId, ) {
+    return Dio().post('${serverAddr}jobs/deliver', data: {
+        'userName': userName,
+        'jobId': jobId,
+      }
+    );
+  }
+
+  Future<Response<T>> favorite<T>(String userName, int jobId, bool favorite) {
+    return Dio().post('${serverAddr}jobs/favorite', data: {
+        'userName': userName,
+        'jobId': jobId,
+        'favorite':favorite
+      }
+    );
   }
 
   Future<Response<T>> saveCompanyInfo<T>(
@@ -123,9 +142,10 @@ class Api {
     String industry,
     String city,
     String salary,
+    int type,
     String userName
   ) {
-    return Dio().get('${serverAddr}user/addUser?jobTitle=${jobTitle}&industry=${industry}&city=${city}&salary=${salary}&userName=$userName');
+    return Dio().get('${serverAddr}user/addUser?jobTitle=${jobTitle}&industry=${industry}&city=$city&type=$type&salary=${salary}&userName=$userName');
   }
 
   Future<Response<T>> saveCompanyExperience<T>(
@@ -170,7 +190,7 @@ class Api {
 
   Future<Response<T>> saveEducation<T>(
     String name,
-    String academic,
+    int academic,
     String major,
     String startTime,
     String endTime,

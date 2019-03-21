@@ -236,7 +236,11 @@ class CompanyEditState extends State<CompanyEdit>
                       },
                       selectArea: (res) {
                         setState(() {
-                         company.area = res['name']; 
+                          if(res['name'] == '全部') {
+                            company.area = '';
+                          } else {
+                            company.area = res['name'];
+                          }
                         });
                       },
                     );

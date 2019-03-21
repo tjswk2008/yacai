@@ -8,6 +8,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -27,12 +28,18 @@ class EducationEditViewState extends State<EducationEditView>
   VoidCallback onChanged;
   Education _education;
   bool isRequesting = false;
+  String userName = '';
 
   @override
   void initState() {
     super.initState();
     setState(() {
      _education = widget._education; 
+    });
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
     });
   }
 
@@ -125,15 +132,15 @@ class EducationEditViewState extends State<EducationEditView>
                         return new InkWell(
                           onTap: () {
                             setState(() {
-                              _education.academic =  academicArr[index];
+                              _education.academic =  index;
                             });
                           },
                           child: new Container(
                             height: 40*factor,
-                            width: 108*factor,
+                            width: 120*factor,
                             decoration: BoxDecoration(
                               border: new Border.all(
-                                color: _education.academic == academicArr[index] ? const Color(0xffaaaaaa) : const Color(0xffffffff),
+                                color: _education.academic == index ? const Color(0xffaaaaaa) : const Color(0xffffffff),
                                 width: 2*factor
                               ),
                             ),
@@ -312,7 +319,7 @@ class EducationEditViewState extends State<EducationEditView>
                           _education.startTime,
                           _education.endTime,
                           _education.detail,
-                          state.userName,
+                          userName,
                           _education.id,
                         )
                           .then((Response response) {

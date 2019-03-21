@@ -1,6 +1,4 @@
 import 'package:meta/meta.dart';
-import 'dart:convert';
-
 class Post {
   int id; // post id
   String title; // 标题

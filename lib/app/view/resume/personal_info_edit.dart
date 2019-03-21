@@ -11,6 +11,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:custom_radio/custom_radio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalInfoEditView extends StatefulWidget {
 
@@ -28,12 +29,18 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
   PersonalInfo personalInfo;
   bool isRequesting = false;
   File _image;
+  String userName = '';
 
   @override
   void initState() {
     super.initState();
     setState(() {
       personalInfo = widget.personalInfo;
+    });
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
     });
   }
 
@@ -496,7 +503,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                           personalInfo.birthDay,
                           personalInfo.summarize,
                           personalInfo.avatar,
-                          state.userName
+                          userName
                         )
                           .then((Response response) {
                             setState(() {

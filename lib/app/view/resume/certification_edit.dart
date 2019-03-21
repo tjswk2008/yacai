@@ -7,6 +7,7 @@ import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:date_format/date_format.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -26,12 +27,18 @@ class CertificationEditViewState extends State<CertificationEditView>
   VoidCallback onChanged;
   Certification _certification;
   bool isRequesting = false;
+  String userName = '';
 
   @override
   void initState() {
     super.initState();
     setState(() {
      _certification = widget._certification; 
+    });
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
     });
   }
 
@@ -230,7 +237,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                           _certification.industry,
                           _certification.code,
                           _certification.qualifiedTime,
-                          state.userName,
+                          userName,
                           _certification.id,
                         )
                           .then((Response response) {

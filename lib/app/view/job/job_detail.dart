@@ -8,6 +8,8 @@ import 'package:flutter_app/app/view/job/job_addr.dart';
 import 'package:flutter_app/app/view/company/company_detail.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_app/app/component/common_button.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -25,14 +27,29 @@ class JobDetailState extends State<JobDetail>
 
   VoidCallback onChanged;
   Company _company;
+  int role;
+  bool isRequesting = false;
+  String userName = '';
+  Job _job;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _job = widget._job;
+    });
     Api().getCompanyDetail(widget._job.companyId)
       .then((Response response) {
         setState(() {
           _company = Company.fromMap(response.data['data']);
+          _job = widget._job;
+        });
+        return SharedPreferences.getInstance();
+      })
+      .then((SharedPreferences prefs) {
+        setState(() {
+          role = prefs.getInt('role');
+          userName = prefs.getString('userName');
         });
       })
      .catchError((e) {
@@ -49,48 +66,158 @@ class JobDetailState extends State<JobDetail>
   Widget build(BuildContext context) {
     double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Scaffold(
-        backgroundColor: Colors.white,
-        appBar: new AppBar(
-          elevation: 0.0,
-          leading: IconButton(
-            icon: const BackButtonIcon(),
-            iconSize: 40*screenWidthInPt/750,
-            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-            onPressed: () {
-              Navigator.maybePop(context);
-            }
-          ),
-          title: new Text("职位详情",
-              style: new TextStyle(fontSize: 30.0*screenWidthInPt/750, color: Colors.white)),
+      backgroundColor: Colors.white,
+      appBar: new AppBar(
+        elevation: 0.0,
+        leading: IconButton(
+          icon: const BackButtonIcon(),
+          iconSize: 40*screenWidthInPt/750,
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          onPressed: () {
+            Navigator.maybePop(context);
+          }
         ),
-        body: new Stack(
-          children: <Widget>[
-            new SingleChildScrollView(
-                child: new Column(
-                  children: <Widget>[
-                    new Container(
-                      color: Colors.white,
-                      child: new Column(
-                        children: <Widget>[
-                          new JobBase(widget._job),
-                          new Divider(),
-                          new JobDesc(widget._job),
-                          new Divider(),
-                          new JobAddr(widget._job),
-                          new Divider(),
-                          new InkWell(
-                              onTap: () => navCompanyDetail(_company),
-                              child: _company == null ? new Container() : new CompanyInfo(_company)
-                          )
-                        ],
-                      ),
+        title: new Text("职位详情",
+            style: new TextStyle(fontSize: 30.0*screenWidthInPt/750, color: Colors.white)),
+      ),
+      body: new Stack(
+        children: <Widget>[
+          new SingleChildScrollView(
+              child: new Column(
+                children: <Widget>[
+                  new Container(
+                    color: Colors.white,
+                    child: new Column(
+                      children: <Widget>[
+                        new JobBase(_job),
+                        new Divider(),
+                        new JobDesc(_job),
+                        new Divider(),
+                        new JobAddr(_job),
+                        new Divider(),
+                        new InkWell(
+                            onTap: () => navCompanyDetail(_company),
+                            child: _company == null ? new Container() : new CompanyInfo(_company)
+                        ),
+                        Container(
+                          height: 20*screenWidthInPt/750,
+                        ),
+                        role == 1 ? Padding(
+                          padding: EdgeInsets.all(20.0*screenWidthInPt/750),
+                          child: new Builder(builder: (ctx) {
+                            return new FlatButton(
+                              child: new Container(
+                                height: 70*screenWidthInPt/750,
+                                child: new Center(
+                                  child: Text(
+                                    _job.favorite ? "取消收藏" : "收藏",
+                                    style: TextStyle(
+                                      color: _job.favorite ? Colors.black : Colors.white,
+                                      fontSize: 28.0*screenWidthInPt/750,
+                                      letterSpacing: _job.favorite ? 5*screenWidthInPt/750 : 40*screenWidthInPt/750
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              color: _job.favorite ? Colors.grey[300] : Colors.orange[400],
+                              onPressed: () async {
+                                if (isRequesting) return;
+                                setState(() {
+                                  isRequesting = true;
+                                });
+                                // 发送给webview，让webview登录后再取回token
+                                Api().favorite(
+                                  userName,
+                                  _job.id,
+                                  _job.favorite
+                                )
+                                  .then((Response response) {
+                                    setState(() {
+                                      isRequesting = false;
+                                    });
+                                    if(response.data['code'] != 1) {
+                                      Scaffold.of(ctx).showSnackBar(new SnackBar(
+                                        content: new Text("收藏失败！"),
+                                      ));
+                                      return;
+                                    } else {
+                                      setState(() {
+                                        _job.favorite = !_job.favorite;
+                                      });
+                                    }
+                                  })
+                                  .catchError((e) {
+                                    setState(() {
+                                      isRequesting = false;
+                                    });
+                                    print(e);
+                                  });
+                              }
+                            );
+                          }),
+                        ) : Container(),
+                        role == 1 ? Padding(
+                          padding: EdgeInsets.all(20.0*screenWidthInPt/750),
+                          child: new Builder(builder: (ctx) {
+                            return new FlatButton(
+                              child: new Container(
+                                height: 70*screenWidthInPt/750,
+                                child: new Center(
+                                  child: Text(
+                                    _job.delivered ? "已投递" : "投递",
+                                    style: TextStyle(
+                                      color: _job.delivered ? Colors.black : Colors.white,
+                                      fontSize: 28.0*screenWidthInPt/750,
+                                      letterSpacing: _job.delivered ? 5*screenWidthInPt/750 : 40*screenWidthInPt/750
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              color: _job.delivered ? Colors.grey[300] : new Color.fromARGB(255, 0, 215, 198),
+                              onPressed: () async {
+                                if (isRequesting || _job.delivered) return;
+                                setState(() {
+                                  isRequesting = true;
+                                });
+                                // 发送给webview，让webview登录后再取回token
+                                Api().deliver(
+                                  userName,
+                                  _job.id
+                                )
+                                  .then((Response response) {
+                                    setState(() {
+                                      isRequesting = false;
+                                    });
+                                    if(response.data['code'] != 1) {
+                                      Scaffold.of(ctx).showSnackBar(new SnackBar(
+                                        content: new Text("投递失败！"),
+                                      ));
+                                      return;
+                                    } else {
+                                      setState(() {
+                                        _job.delivered = !_job.delivered;
+                                      });
+                                    }
+                                  })
+                                  .catchError((e) {
+                                    setState(() {
+                                      isRequesting = false;
+                                    });
+                                    print(e);
+                                  });
+                              }
+                            );
+                          }),
+                        ) : Container()
+                      ],
                     ),
-                  ],
-                )
-            ),
+                  ),
+                ],
+              )
+          ),
 
-          ],
-        )
+        ],
+      )
     );
   }
 

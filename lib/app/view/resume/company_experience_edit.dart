@@ -7,6 +7,9 @@ import 'package:flutter_app/app/component/common_button.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/actions/actions.dart';
+import 'package:flutter_app/app/model/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -25,6 +28,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
 
   CompanyExperience _companyExperience;
   bool isRequesting = false;
+  String userName = '';
 
   @override
   void initState() {
@@ -32,11 +36,40 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
     setState(() {
       _companyExperience = widget._companyExperience;
     });
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Widget titleOption(BuildContext context, int index) {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new InkWell(
+      onTap: () {
+        setState(() {
+          _companyExperience.jobTitle =  titleArr[index];
+        });
+      },
+      child: new Container(
+        height: 40*factor,
+        width: 220*factor,
+        decoration: BoxDecoration(
+          border: _companyExperience.jobTitle == titleArr[index] ? new Border.all(
+            color: const Color(0xffaaaaaa),
+            width: 2*factor
+          ) : Border(),
+        ),
+        child: new Center(
+          child: new Text(titleArr[index], style: TextStyle(fontSize: 22.0*factor),),
+        ),
+      ),
+    );
   }
 
   @override
@@ -115,47 +148,29 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
-                    child: new TextField(
-                      style: TextStyle(fontSize: 20.0*factor),
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          text: _companyExperience.jobTitle,
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: _companyExperience.jobTitle.length
-                            )
-                          )
-                        )
-                      ),
-                      onChanged: (val) {
-                        setState(() {
-                          _companyExperience.jobTitle = val;
-                        });
-                      },
-                      decoration: new InputDecoration(
-                        hintText: "请输入职位名称",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 20.0*factor
-                        ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
-                      ),
+                  new Container(
+                    height: 60*factor,
+                    child: new ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: titleArr.length,
+                      itemBuilder: titleOption,
+                      scrollDirection: Axis.horizontal,
+                      physics: const ClampingScrollPhysics(),
                     ),
                   ),
+                  Container(height: 10*factor,),
+                  Divider(),
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      new Text(
-                        '开始时间：',
-                        textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10*factor, bottom: 10*factor),
+                        child: new Text(
+                          '开始时间：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
                       ),
 
                       new InkWell(
@@ -182,10 +197,13 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      new Text(
-                        '结束时间：',
-                        textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10*factor, bottom: 10*factor),
+                        child: new Text(
+                          '结束时间：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
                       ),
 
                       new InkWell(
@@ -216,7 +234,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                   ),
                   new Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(bottom: 20.0*factor),
                     child: new Text(
                       '工作内容：',
                       textAlign: TextAlign.left,
@@ -257,7 +275,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                   ),
                   new Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(bottom: 20.0*factor),
                     child: new Text(
                       '工作业绩：',
                       textAlign: TextAlign.left,
@@ -314,7 +332,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                           _companyExperience.endTime,
                           _companyExperience.detail,
                           _companyExperience.performance,
-                          state.userName,
+                          userName,
                           _companyExperience.id,
                         )
                           .then((Response response) {

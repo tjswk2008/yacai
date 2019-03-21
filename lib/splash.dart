@@ -1,8 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_app/home.dart';
-import 'package:flutter_app/recruit.dart';
 import 'package:flutter_app/app/view/register_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +9,7 @@ class SplashPage extends StatefulWidget {
 
 class SplashState extends State<SplashPage> {
 
-  Timer _t;
+  // Timer _t;
 
   @override
   void initState() {

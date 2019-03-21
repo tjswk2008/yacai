@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:meta/meta.dart';
 
 class Job {
@@ -18,6 +16,8 @@ class Job {
   final String academic; // 需要的学历
   final String detail; // 职位详情
   final int companyId; // 公司Id
+  bool delivered;
+  bool favorite;
 
   Job({
     this.id,
@@ -34,7 +34,9 @@ class Job {
     @required this.timereq,
     @required this.academic,
     @required this.detail,
-    @required this.companyId
+    @required this.companyId,
+    this.delivered,
+    this.favorite
   });
 
   static List<Job> fromJson(List list) {
@@ -61,7 +63,9 @@ class Job {
         timereq: map['timereq'],
         academic: map['academic'],
         detail: map['detail'],
-        companyId: map['companyId']
+        companyId: map['companyId'],
+        delivered: map['delivered'],
+        favorite: map['favorite']
     );
   }
 }

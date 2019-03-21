@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/view/login_view.dart';
 import 'package:flutter_app/app/view/resume/resume_detail.dart';
-import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_app/app/api/api.dart';
-import 'package:flutter_app/actions/actions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_app/app/view/jobs_view.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -17,10 +16,16 @@ class MineTabState extends State<MineTab> {
 
   String userAvatar = '';
   String jobStatus = '';
+  String userName = '';
 
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
+    });
   }
 
   @override
@@ -52,7 +57,7 @@ class MineTabState extends State<MineTab> {
 
                       new GestureDetector(
                         onTap: () {
-                          if(appState.userName != '') return;
+                          if(userName != '') return;
                           _login();
                         },
                         child: new Row(
@@ -88,7 +93,7 @@ class MineTabState extends State<MineTab> {
                                           bottom: 10.0*factor,
                                         ),
                                         child: new Text(
-                                            appState.userName == '' ? "点击头像登录" : appState.userName,
+                                            userName == '' ? "点击头像登录" : userName,
                                             style: new TextStyle(
                                                 color: Colors.white, fontSize: 26.0*factor))
                                     ),
@@ -113,10 +118,92 @@ class MineTabState extends State<MineTab> {
                 delegate: new SliverChildListDelegate(<Widget>[
                   new InkWell(
                     onTap: () {
-                      if(appState.userName == '') {
+                      if(userName == '') {
                         _login();
                       } else {
                         _navToResumeDetail();
+                      }
+                    },
+                    child: new Container(
+                      height: 60.0*factor,
+                      margin: EdgeInsets.only(top: 15.0*factor),
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          new Padding(
+                            padding: EdgeInsets.only(
+                              top: 10.0*factor,
+                              bottom: 10.0*factor,
+                              left: 20.0*factor,
+                              right: 20.0*factor,
+                            ),
+                            child: new Row(
+                              children: <Widget>[
+                                new Icon(Icons.insert_drive_file, size: 30.0*factor,),
+                                new Padding(
+                                  padding: EdgeInsets.only(right: 10.0*factor),
+                                ),
+                                new Text('我的简历', style: TextStyle(fontSize: 24.0*factor),),
+                              ],
+                            ),
+                          ),
+                          new Icon(Icons.chevron_right, size: 30.0*factor,),
+                        ],
+                      ),
+                    )
+                  ),
+
+                  new InkWell(
+                    onTap: () {
+                      if(userName == '') {
+                        _login();
+                      } else {
+                        _navToDeliveryList();
+                      }
+                    },
+                    child: new Container(
+                      height: 60.0*factor,
+                      margin: EdgeInsets.only(top: 15.0*factor),
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          new Padding(
+                            padding: EdgeInsets.only(
+                              top: 10.0*factor,
+                              bottom: 10.0*factor,
+                              left: 20.0*factor,
+                              right: 20.0*factor,
+                            ),
+                            child: new Row(
+                              children: <Widget>[
+                                new Icon(Icons.email, size: 30.0*factor,),
+                                new Padding(
+                                  padding: EdgeInsets.only(right: 10.0*factor),
+                                ),
+                                new Text('申请记录', style: TextStyle(fontSize: 24.0*factor),),
+                              ],
+                            ),
+                          ),
+                          new Icon(Icons.chevron_right, size: 30.0*factor,),
+                        ],
+                      ),
+                    )
+                  ),
+
+                  new InkWell(
+                    onTap: () {
+                      if(userName == '') {
+                        _login();
+                      } else {
+                        _navToFavoriteList();
                       }
                     },
                     child: new Container(
@@ -130,14 +217,19 @@ class MineTabState extends State<MineTab> {
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.all(10.0*factor),
+                            padding: EdgeInsets.only(
+                              top: 10.0*factor,
+                              bottom: 10.0*factor,
+                              left: 20.0*factor,
+                              right: 20.0*factor,
+                            ),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.insert_drive_file, size: 30.0*factor,),
+                                new Icon(Icons.favorite_border, size: 30.0*factor,),
                                 new Padding(
                                   padding: EdgeInsets.only(right: 10.0*factor),
                                 ),
-                                new Text('我的简历', style: TextStyle(fontSize: 24.0*factor),),
+                                new Text('职位收藏', style: TextStyle(fontSize: 24.0*factor),),
                               ],
                             ),
                           ),
@@ -216,6 +308,42 @@ class MineTabState extends State<MineTab> {
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
           return new ResumeDetail();
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
+  }
+
+  _navToDeliveryList() {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new JobsTab(4, '申请记录');
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
+  }
+
+  _navToFavoriteList() {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new JobsTab(5, '职位收藏');
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(

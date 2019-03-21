@@ -4,6 +4,8 @@ import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/app/view/job/job_detail.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'dart:developer';
 
 class JobsTab extends StatefulWidget {
@@ -17,6 +19,7 @@ class JobsTab extends StatefulWidget {
 
 class JobList extends State<JobsTab> {
   List<Job> _jobs = [];
+  bool isRequesting = true;
 
   @override
   void initState() {
@@ -26,16 +29,56 @@ class JobList extends State<JobsTab> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidthInPt = MediaQuery.of(context).size.width;
+    double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-      appBar: new AppBar(
+      appBar: (widget._type == 4 || widget._type == 5) ? new AppBar(
+        elevation: 0.0,
+        leading: IconButton(
+          icon: const BackButtonIcon(),
+          iconSize: 40*factor,
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          onPressed: () {
+            Navigator.maybePop(context);
+          }
+        ),
+        title: new Text(widget._title,
+            style: new TextStyle(fontSize: 32.0*factor, color: Colors.white)),
+      ) : new AppBar(
         elevation: 0.0,
         title: new Text(widget._title,
-            style: new TextStyle(fontSize: 32.0*screenWidthInPt/750, color: Colors.white)),
+            style: new TextStyle(fontSize: 32.0*factor, color: Colors.white)),
       ),
-      body: new ListView.builder(
-          itemCount: _jobs.length, itemBuilder: buildJobItem),
+      body: isRequesting ? new Stack(
+        children: <Widget>[
+          Positioned(
+            left: 0,
+            top: 0,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(190, 0, 0, 0)
+              ),
+            ),
+          ),
+          Positioned(
+            left: 0,
+            top: 0,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: SpinKitHourGlass(
+              color: Theme.of(context).primaryColor,
+              size: 50*factor,
+              duration: Duration(milliseconds: 1800),
+            ),
+          )
+        ]
+      ) : (_jobs.length != 0) ? new ListView.builder(
+          itemCount: _jobs.length, itemBuilder: buildJobItem) : Center(
+            child: Text('暂无记录', style: TextStyle(fontSize: 28*factor),),)
     );
   }
 
@@ -49,15 +92,20 @@ class JobList extends State<JobsTab> {
     return jobItem;
   }
 
-  void getJobList() {
-    Api().getJobList(widget._type)
+  void getJobList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Api().getJobList(widget._type, prefs.getString('userName'))
       .then((Response response) {
         setState(() {
+          isRequesting = false;
           _jobs = Job.fromJson(response.data['list']);
         });
       })
      .catchError((e) {
        print(e);
+       setState(() {
+          isRequesting = false;
+        });
      });
   }
 

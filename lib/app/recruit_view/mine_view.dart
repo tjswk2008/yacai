@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/view/login_view.dart';
 import 'package:flutter_app/app/recruit_view/job/job_list.dart';
-import 'package:flutter_app/app/model/job.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_app/app/api/api.dart';
-import 'package:flutter_app/actions/actions.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -18,10 +16,16 @@ class MineTabState extends State<MineTab> {
   final double _appBarHeight = 150.0;
   String userAvatar = '';
   String jobStatus = '';
+  String userName = '';
 
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
+    });
   }
 
   @override
@@ -53,7 +57,7 @@ class MineTabState extends State<MineTab> {
 
                       new GestureDetector(
                         onTap: () {
-                          if(appState.userName != '') return;
+                          if(userName != '') return;
                           _login();
                         },
                         child: new Row(
@@ -87,7 +91,7 @@ class MineTabState extends State<MineTab> {
                                           top: 85.0*factor,
                                         ),
                                         child: new Text(
-                                            appState.userName == '' ? "点击头像登录" : appState.userName,
+                                            userName == '' ? "点击头像登录" : userName,
                                             style: new TextStyle(
                                                 color: Colors.white, fontSize: 30.0*factor))
                                     ),
@@ -112,7 +116,7 @@ class MineTabState extends State<MineTab> {
                 delegate: new SliverChildListDelegate(<Widget>[
                   new InkWell(
                     onTap: () {
-                      if(appState.userName == '') {
+                      if(userName == '') {
                         _login();
                       } else {
                         _navToPubJobList();
@@ -198,7 +202,7 @@ class MineTabState extends State<MineTab> {
             ],
           ),
         );
-      },
+      }
     );
   }
 

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/api/api.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_app/app/item/joblist_item.dart';
 import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/app/recruit_view/resume_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 // import 'dart:developer';
 

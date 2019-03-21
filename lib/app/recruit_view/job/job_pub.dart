@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/company.dart';
 import 'package:flutter_app/app/model/job.dart';
-import 'package:flutter_app/app/view/company/company_info.dart';
 import 'package:flutter_app/app/component/common_button.dart';
 import 'package:flutter_app/app/view/company/company_edit.dart';
 import 'package:dio/dio.dart';
@@ -9,11 +8,11 @@ import 'package:flutter_app/app/api/api.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/component/city.dart';
-import 'package:flutter_app/app/component/salary.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:custom_radio/custom_radio.dart';
 import 'package:flutter_app/actions/actions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -29,7 +28,6 @@ class PubJobState extends State<PubJob>
     with TickerProviderStateMixin {
 
   VoidCallback onChanged;
-  Company _company;
   final nameCtrl = new TextEditingController(text: '');
   final detailCtrl = new TextEditingController(text: '');
   final addrCtrl = new TextEditingController(text: '');
@@ -417,7 +415,11 @@ class PubJobState extends State<PubJob>
                         },
                         selectArea: (res) {
                           setState(() {
-                            area = res['name'];
+                            if(res['name'] == '全部') {
+                              area = '';
+                            } else {
+                              area = res['name'];
+                            }
                           });
                         },
                       );
@@ -546,6 +548,8 @@ class PubJobState extends State<PubJob>
                           isRequesting = true;
                         });
                         try {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          String userName = prefs.getString('userName');
                           Response response = await Api().saveJobs(
                             nameCtrl.text.trim(),
                             state.company.name,
@@ -559,7 +563,7 @@ class PubJobState extends State<PubJob>
                             detailCtrl.text.trim(),
                             type,
                             state.company.id,
-                            state.userName,
+                            userName,
                           );
 
                           setState(() {
@@ -571,7 +575,7 @@ class PubJobState extends State<PubJob>
                             ));
                             return;
                           }
-                          Response resList = await Api().getRecruitJobList(state.userName);
+                          Response resList = await Api().getRecruitJobList(userName);
                           StoreProvider.of<AppState>(context).dispatch(SetJobsAction(Job.fromJson(resList.data['list'])));
                           Navigator.pop(context, response.data['info']);
                         } catch(e) {

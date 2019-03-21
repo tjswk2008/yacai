@@ -4,6 +4,7 @@ import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_app/app/view/resume/resume_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'dart:developer';
 
 class ResumeTab extends StatefulWidget {
@@ -42,8 +43,10 @@ class ResumeTabState extends State<ResumeTab> {
         title: new Text(widget._title,
             style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
       ),
-      body: new ListView.builder(
-          itemCount: _personalInfos.length, itemBuilder: buildResumeItem),
+      body: _personalInfos.length != 0 ? new ListView.builder(
+          itemCount: _personalInfos.length, itemBuilder: buildResumeItem) : Center(
+            child: Text('暂无投递记录', style: TextStyle(fontSize: 28*factor),),
+          ),
     );
   }
 
@@ -56,8 +59,9 @@ class ResumeTabState extends State<ResumeTab> {
     );
   }
 
-  void getResumeList() {
-    Api().getResumeList(widget.jobId)
+  void getResumeList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Api().getResumeList(prefs.getString('userName'), widget.jobId)
       .then((Response response) {
         setState(() {
           _personalInfos = PersonalInfo.fromList(response.data['list']);

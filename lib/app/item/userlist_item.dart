@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/resume.dart';
 import 'package:date_format/date_format.dart';
+import 'package:flutter_app/app/model/constants.dart';
 
 class UserListItem extends StatelessWidget {
   final PersonalInfo personalInfo;
@@ -22,45 +23,61 @@ class UserListItem extends StatelessWidget {
         child: new Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                new Container(
-                  height: 90.0*factor,
-                  padding: EdgeInsets.all(20.0*factor),
-                  child: new Text(
-                    personalInfo.name,
-                    style: new TextStyle(fontSize: 26.0*factor)
-                  ),
-                ),
-                new Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    new Padding(
-                      padding: EdgeInsets.only(
-                        top: 45.0*factor,
-                        right: 10.0*factor,
+            new Padding(
+              padding: EdgeInsets.only(
+                top: 20.0*factor,
+                left: 20.0*factor,
+                right: 10.0*factor,
+                bottom: 15.0*factor,
+              ),
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      new Text(
+                        personalInfo.name,
+                        style: new TextStyle(fontSize: 26.0*factor)
                       ),
-                      child: new Text(
-                        personalInfo.gender,
-                        textAlign: TextAlign.left,
-                        style: new TextStyle(
-                            fontSize: 22.0*factor, color: Colors.grey),
+                      new Row(
+                        children: <Widget>[
+                          new Padding(
+                            padding: EdgeInsets.only(
+                              top: 15.0*factor,
+                              right: 10.0*factor,
+                            ),
+                            child: new Text(
+                              personalInfo.gender,
+                              textAlign: TextAlign.left,
+                              style: new TextStyle(
+                                  fontSize: 22.0*factor, color: Colors.grey),
+                            )
+                          ),
+                          new Padding(
+                            padding: EdgeInsets.only(
+                              top: 15.0*factor,
+                              right: 10.0*factor,
+                            ),
+                            child: new Text(
+                              yearsOffset(personalInfo.birthDay).toString() + "岁",
+                              style: new TextStyle(fontSize: 22.0*factor, color: Colors.red)
+                            ),
+                          ),
+                        ],
                       )
-                    ),
-                    new Padding(
-                      padding: EdgeInsets.only(
-                        right: 10.0*factor,
-                      ),
-                      child: new Text(
-                        yearsOffset(personalInfo.birthDay).toString() + "岁",
-                        style: new TextStyle(fontSize: 22.0*factor, color: Colors.red)
-                      ),
-                    ),
-                  ],
-                )
-              ],
+                    ],
+                  ),
+                  personalInfo.avatar == null ? new Image.asset(
+                    "assets/images/ic_avatar_default.png",
+                    width: 90.0*factor,
+                  ) : new CircleAvatar(
+                    radius: 45.0*factor,
+                    backgroundImage: new NetworkImage(personalInfo.avatar)
+                  )
+                ],
+              ),
             ),
             new Divider(),
             new Row(
@@ -79,11 +96,18 @@ class UserListItem extends StatelessWidget {
                 new Padding(
                   padding: EdgeInsets.only(
                     top: 10.0*factor,
+                    bottom: 15.0*factor,
+                  ),
+                  child: new Text(academicArr[personalInfo.academic], style: new TextStyle(fontSize: 22*factor))
+                ),
+                personalInfo.school != null ? new Padding(
+                  padding: EdgeInsets.only(
+                    top: 10.0*factor,
                     right: 10.0*factor,
                     bottom: 15.0*factor,
                   ),
-                  child: new Text(personalInfo.academic, style: new TextStyle(fontSize: 22*factor))
-                )
+                  child: new Text('(${personalInfo.school})', style: new TextStyle(fontSize: 22*factor))
+                ) : Container(),
               ],
             ),
           ],

@@ -23,10 +23,16 @@ class PubTab extends StatefulWidget {
 
 class PubTabState extends State<PubTab> {
   List<Job> _jobs = [];
+  String userName = '';
 
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
+    });
   }
 
   @override
@@ -42,7 +48,7 @@ class PubTabState extends State<PubTab> {
             title: new Text(widget._title,
                 style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
           ),
-          body: state.userName == '' ? new Column(
+          body: userName == '' ? new Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -129,8 +135,6 @@ class PubTabState extends State<PubTab> {
   }
 
   void getJobList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userName = prefs.getString('userName');
     if (userName == null) return;
     Api().getRecruitJobList(userName)
       .then((Response response) {
