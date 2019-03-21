@@ -9,7 +9,6 @@ import 'package:flutter_app/app/view/company/company_detail.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_app/app/component/common_button.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 

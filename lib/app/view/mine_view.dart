@@ -143,7 +143,7 @@ class MineTabState extends State<MineTab> {
                             ),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.insert_drive_file, size: 30.0*factor,),
+                                new Icon(Icons.insert_drive_file, size: 30.0*factor, color: Colors.cyan[300],),
                                 new Padding(
                                   padding: EdgeInsets.only(right: 10.0*factor),
                                 ),
@@ -184,7 +184,7 @@ class MineTabState extends State<MineTab> {
                             ),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.email, size: 30.0*factor,),
+                                new Icon(Icons.email, size: 30.0*factor, color: Colors.orange[100],),
                                 new Padding(
                                   padding: EdgeInsets.only(right: 10.0*factor),
                                 ),
@@ -225,7 +225,7 @@ class MineTabState extends State<MineTab> {
                             ),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.favorite_border, size: 30.0*factor,),
+                                new Icon(Icons.favorite_border, size: 30.0*factor, color: Colors.red[400],),
                                 new Padding(
                                   padding: EdgeInsets.only(right: 10.0*factor),
                                 ),
@@ -251,33 +251,42 @@ class MineTabState extends State<MineTab> {
                         children: [
                           new _ContactItem(
                             onPressed: () {
-                              showDialog(context: context, child: new AlertDialog(
+                              showDialog(context: context, builder: (BuildContext context) {
+                                return new AlertDialog(
                                   content: new Text(
                                     "沟通过",
                                     style: new TextStyle(fontSize: 20.0*factor),
-                                  )));
+                                  )
+                                );
+                              });
                             },
                             count: '590',
                             title: '沟通过',
                           ),
                           new _ContactItem(
                             onPressed: () {
-                              showDialog(context: context, child: new AlertDialog(
+                              showDialog(context: context, builder: (BuildContext context) {
+                                return new AlertDialog(
                                   content: new Text(
                                     "已沟通",
                                     style: new TextStyle(fontSize: 20.0*factor),
-                                  )));
+                                  )
+                                );
+                              });
                             },
                             count: '71',
                             title: '已沟通',
                           ),
                           new _ContactItem(
                             onPressed: () {
-                              showDialog(context: context, child: new AlertDialog(
+                              showDialog(context: context, builder: (BuildContext context) {
+                                return new AlertDialog(
                                   content: new Text(
-                                    "已沟通",
+                                    "待面试",
                                     style: new TextStyle(fontSize: 20.0*factor),
-                                  )));
+                                  )
+                                );
+                              });
                             },
                             count: '0',
                             title: '待面试',

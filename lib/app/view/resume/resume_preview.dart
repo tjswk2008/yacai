@@ -10,6 +10,7 @@ import 'package:flutter_app/app/view/resume/company_experience.dart';
 import 'package:flutter_app/app/view/resume/project.dart';
 import 'package:flutter_app/app/view/resume/education.dart';
 import 'package:flutter_app/app/view/resume/certification.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -42,12 +43,20 @@ class ResumePreviewState extends State<ResumePreview>
     super.initState();
     Api().getUserInfo(widget.userId)
       .then((Response response) {
-        if(response.data['code'] != 1) {
-          return;
+        if(response.data['code'] == 1) {
+          setState(() {
+            resume = Resume.fromMap(response.data['info']);
+          });
+          return SharedPreferences.getInstance();
         }
-        setState(() {
-          resume = Resume.fromMap(response.data['info']);
-        });
+      })
+      .then((SharedPreferences prefs) {
+        return Api().viewResume(prefs.getString('userName'), widget.userId);
+      })
+      .then((Response response) {
+        if(response.data['code'] == 1) {
+          print(response.data['code']);
+        }
       })
       .catchError((e) {
         print(e);

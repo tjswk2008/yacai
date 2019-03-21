@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'dart:io';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_app/app/model/app.dart';
 class Api {
   final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://localhost:3000/api/";
 
@@ -61,6 +59,14 @@ class Api {
     );
   }
 
+  Future<Response<T>> viewResume<T>(String userName, int userId, ) {
+    return Dio().post('${serverAddr}user/viewResume', data: {
+        'userName': userName,
+        'userId': userId,
+      }
+    );
+  }
+
   Future<Response<T>> favorite<T>(String userName, int jobId, bool favorite) {
     return Dio().post('${serverAddr}jobs/favorite', data: {
         'userName': userName,
@@ -105,7 +111,6 @@ class Api {
     int companyId,
     String userName,
   ) {
-    // String url = '${serverAddr}jobs/saveJobs?name=$name&cname=$cname&type=$type&companyId=$companyId&salary=$salary&province=$province&city=$city&area=$area&addrDetail=$addrDetail&timereq=$timereq&academic=$academic&detail=$detail&userName=$userName';
     return Dio().post('${serverAddr}jobs/saveJobs', data: {
         'name': name,
         'cname': cname,
@@ -134,7 +139,7 @@ class Api {
     String avatar,
     String userName
   ) {
-    return Dio().get('${serverAddr}user/addUser?name=${name}&avatar=$avatar&gender=${gender}&firstJobTime=${firstJobTime}&wechatId=${wechatId}&birthDay=${birthDay}&summarize=${summarize}&userName=$userName');
+    return Dio().get('${serverAddr}user/addUser?name=$name&avatar=$avatar&gender=$gender&firstJobTime=$firstJobTime&wechatId=$wechatId&birthDay=$birthDay&summarize=$summarize&userName=$userName');
   }
 
   Future<Response<T>> saveJobExpectation<T>(
@@ -145,7 +150,7 @@ class Api {
     int type,
     String userName
   ) {
-    return Dio().get('${serverAddr}user/addUser?jobTitle=${jobTitle}&industry=${industry}&city=$city&type=$type&salary=${salary}&userName=$userName');
+    return Dio().get('${serverAddr}user/addUser?jobTitle=$jobTitle&industry=$industry&city=$city&type=$type&salary=$salary&userName=$userName');
   }
 
   Future<Response<T>> saveCompanyExperience<T>(
@@ -158,7 +163,7 @@ class Api {
     String userName,
     int id
   ) {
-    String url = '${serverAddr}user/saveCompanyExperience?cname=${cname}&jobTitle=${jobTitle}&startTime=${startTime}&detail=${detail}&performance=${performance}&userName=$userName';
+    String url = '${serverAddr}user/saveCompanyExperience?cname=$cname&jobTitle=$jobTitle&startTime=$startTime&detail=$detail&performance=$performance&userName=$userName';
     if(endTime != null) {
       url += '&endTime=$endTime';
     }
@@ -178,7 +183,7 @@ class Api {
     String userName,
     int id
   ) {
-    String url = '${serverAddr}user/saveProject?name=${name}&role=${role}&startTime=${startTime}&detail=${detail}&performance=${performance}&userName=$userName';
+    String url = '${serverAddr}user/saveProject?name=$name&role=$role&startTime=$startTime&detail=$detail&performance=$performance&userName=$userName';
     if(endTime != null) {
       url += '&endTime=$endTime';
     }
@@ -198,12 +203,12 @@ class Api {
     String userName,
     int id
   ) {
-    String url = '${serverAddr}user/saveEducation?name=${name}&academic=${academic}&startTime=${startTime}&detail=${detail}&major=${major}&userName=$userName';
+    String url = '${serverAddr}user/saveEducation?name=$name&academic=$academic&startTime=$startTime&detail=$detail&major=$major&userName=$userName';
     if(endTime != null) {
-      url += '&endTime=${endTime}';
+      url += '&endTime=$endTime';
     }
     if(id != null) {
-      url += '&id=${id}';
+      url += '&id=$id';
     }
     return Dio().get(url);
   }
@@ -216,9 +221,9 @@ class Api {
     String userName,
     int id
   ) {
-    String url = '${serverAddr}user/saveCertification?name=${name}&industry=${industry}&qualifiedTime=${qualifiedTime}&code=${code}&userName=$userName';
+    String url = '${serverAddr}user/saveCertification?name=$name&industry=$industry&qualifiedTime=$qualifiedTime&code=$code&userName=$userName';
     if(id != null) {
-      url += '&id=${id}';
+      url += '&id=$id';
     }
     return Dio().get(url);
   }
