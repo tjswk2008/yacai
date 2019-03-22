@@ -12,7 +12,7 @@ class JobListItem extends StatelessWidget {
     return new Padding(
       padding: EdgeInsets.only(
         top: 10.0*screenWidthInPt/750,
-        left: 10.0*screenWidthInPt/7100,
+        left: 10.0*screenWidthInPt/750,
         right: 10.0*screenWidthInPt/750,
         bottom: 10.0*screenWidthInPt/750,
       ),

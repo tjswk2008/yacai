@@ -6,7 +6,6 @@ import 'package:flutter_app/app/component/common_button.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
@@ -28,7 +27,6 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
 
   PersonalInfo personalInfo;
   bool isRequesting = false;
-  File _image;
   String userName = '';
 
   @override
@@ -98,10 +96,13 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             print(e);
                           });
                         },
-                        child: _image == null ? new CircleAvatar(
+                        child: personalInfo.avatar != null ? new CircleAvatar(
                           radius: 45.0*factor,
                           backgroundImage: new NetworkImage(personalInfo.avatar)
-                        ) : Image.file(_image, width: 90.0*factor),
+                        ) : new Image.asset(
+                          "assets/images/ic_avatar_default.png",
+                          width: 90.0*factor,
+                        ),
                       )
                     ],
                   ),
@@ -120,12 +121,12 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
                           // 设置内容
-                          text: personalInfo.name,
+                          text: personalInfo.name == null ? '' : personalInfo.name,
                           // 保持光标在最后
                           selection: TextSelection.fromPosition(
                             TextPosition(
                               affinity: TextAffinity.downstream,
-                              offset: personalInfo.name.length
+                              offset: personalInfo.name == null ? 0 : personalInfo.name.length
                             )
                           )
                         )
@@ -355,8 +356,8 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         onTap: () {
                           showDatePicker(
                             context: context,
-                            initialDate: DateTime.parse(personalInfo.firstJobTime),
-                            firstDate: DateTime.parse(personalInfo.firstJobTime).subtract(new Duration(days: 30)), // 减 30 天
+                            initialDate: personalInfo.firstJobTime == null ? DateTime.now() : DateTime.parse(personalInfo.firstJobTime),
+                            firstDate: personalInfo.firstJobTime == null ? DateTime.parse('1950-01-01') : DateTime.parse(personalInfo.firstJobTime).subtract(new Duration(days: 30)), // 减 30 天
                             lastDate: new DateTime.now(),       // 加 30 天
                           ).then((DateTime val) {
                             setState(() {
@@ -366,7 +367,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             print(err);
                           });
                         },
-                        child: new Text(personalInfo.firstJobTime, style: TextStyle(fontSize: 24.0*factor),),
+                        child: new Text(personalInfo.firstJobTime == null ? '请选择' : personalInfo.firstJobTime, style: TextStyle(fontSize: 24.0*factor),),
                       )
                     ],
                   ),
@@ -385,12 +386,12 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
                           // 设置内容
-                          text: personalInfo.wechatId,
+                          text: personalInfo.wechatId == null ? '' : personalInfo.wechatId,
                           // 保持光标在最后
                           selection: TextSelection.fromPosition(
                             TextPosition(
                               affinity: TextAffinity.downstream,
-                              offset: personalInfo.wechatId.length
+                              offset: personalInfo.wechatId == null ? 0 : personalInfo.wechatId.length
                             )
                           )
                         )
@@ -426,8 +427,8 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         onTap: () {
                           showDatePicker(
                             context: context,
-                            initialDate: DateTime.parse(personalInfo.birthDay),
-                            firstDate: DateTime.parse(personalInfo.birthDay).subtract(new Duration(days: 30)), // 减 30 天
+                            initialDate: personalInfo.birthDay == null ? DateTime.now() : DateTime.parse(personalInfo.birthDay),
+                            firstDate: personalInfo.birthDay == null ? DateTime.parse('1950-01-01') : DateTime.parse(personalInfo.birthDay).subtract(new Duration(days: 30)), // 减 30 天
                             lastDate: new DateTime.now(),       // 加 30 天
                           ).then((DateTime val) {
                             setState(() {
@@ -437,7 +438,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             print(err);
                           });
                         },
-                        child: new Text(personalInfo.birthDay, style: TextStyle(fontSize: 24.0*factor),),
+                        child: new Text(personalInfo.birthDay == null ? '请选择' : personalInfo.birthDay, style: TextStyle(fontSize: 24.0*factor),),
                       )
                     ],
                   ),
@@ -454,12 +455,12 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                     controller: TextEditingController.fromValue(
                       TextEditingValue(
                         // 设置内容
-                        text: personalInfo.summarize,
+                        text: personalInfo.summarize == null ? '' : personalInfo.summarize,
                         // 保持光标在最后
                         selection: TextSelection.fromPosition(
                           TextPosition(
                             affinity: TextAffinity.downstream,
-                            offset: personalInfo.summarize.length
+                            offset: personalInfo.summarize == null ? 0 : personalInfo.summarize.length
                           )
                         )
                       )

@@ -49,7 +49,7 @@ class PersonalInfoView extends StatelessWidget {
                       new Padding(
                         padding: EdgeInsets.only(bottom: 10.0*factor),
                         child: new Text(
-                          personalInfo.name,
+                          personalInfo.name == null ? '姓名' : personalInfo.name,
                           textAlign: TextAlign.left,
                           style: new TextStyle(fontSize: 30.0*factor),
                         ),
@@ -59,7 +59,7 @@ class PersonalInfoView extends StatelessWidget {
                           new Padding(
                             padding: EdgeInsets.only(right: 15.0*factor),
                             child: new Text(
-                              personalInfo.firstJobTime,
+                              personalInfo.firstJobTime == null ? '首次参加工作时间' : personalInfo.firstJobTime,
                               textAlign: TextAlign.left,
                               style: new TextStyle(fontSize: 20.0*factor),
                             ),
@@ -67,7 +67,7 @@ class PersonalInfoView extends StatelessWidget {
                           new Padding(
                             padding: EdgeInsets.only(right: 15.0*factor),
                             child: new Text(
-                              formatDate(DateTime.parse(personalInfo.birthDay), [yyyy, '-', mm]),
+                              personalInfo.birthDay == null ? '出生年月' : formatDate(DateTime.parse(personalInfo.birthDay), [yyyy, '-', mm]),
                               textAlign: TextAlign.left,
                               style: new TextStyle(fontSize: 20.0*factor),
                             ),
@@ -82,7 +82,11 @@ class PersonalInfoView extends StatelessWidget {
                     ]
                   ),
 
-                  new CircleAvatar(
+                  personalInfo.avatar == null ? new Image.asset(
+                      "assets/images/ic_avatar_default.png",
+                      width: 90.0*factor,
+                    )
+                  : new CircleAvatar(
                     radius: 45.0*factor,
                     backgroundImage: new NetworkImage(personalInfo.avatar)
                   )
@@ -100,7 +104,7 @@ class PersonalInfoView extends StatelessWidget {
                       top: 5.0*factor,
                       bottom: 5.0*factor,
                     ),
-                    child: new Text(personalInfo.summarize, style: new TextStyle(
+                    child: new Text(personalInfo.summarize == null ? '优势' : personalInfo.summarize, style: new TextStyle(
                         fontSize: 20.0*factor, color: Colors.grey)),
                   ),
                 ],

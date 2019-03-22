@@ -37,23 +37,7 @@ class JobDetailState extends State<JobDetail>
     setState(() {
       _job = widget._job;
     });
-    Api().getCompanyDetail(widget._job.companyId)
-      .then((Response response) {
-        setState(() {
-          _company = Company.fromMap(response.data['data']);
-          _job = widget._job;
-        });
-        return SharedPreferences.getInstance();
-      })
-      .then((SharedPreferences prefs) {
-        setState(() {
-          role = prefs.getInt('role');
-          userName = prefs.getString('userName');
-        });
-      })
-     .catchError((e) {
-       print(e);
-     });
+    getCompanyDetail();
   }
 
   @override
@@ -218,6 +202,23 @@ class JobDetailState extends State<JobDetail>
         ],
       )
     );
+  }
+
+  getCompanyDetail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      role = prefs.getInt('role');
+      userName = prefs.getString('userName');
+    });
+    Api().getCompanyDetail(widget._job.companyId, prefs.getString('userName'))
+      .then((Response response) {
+        setState(() {
+          _company = Company.fromMap(response.data['data']);
+        });
+      })
+     .catchError((e) {
+       print(e);
+     });
   }
 
   navCompanyDetail(Company company) {

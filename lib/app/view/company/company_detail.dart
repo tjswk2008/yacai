@@ -47,7 +47,7 @@ class CompanyDetailState extends State<CompanyDetail>
         if (_currentIndex == 0) {
           _companyTabContent = new CompanyInc(widget._company.inc);
         } else {
-          _companyTabContent = new CompanyHotJob();
+          _companyTabContent = new CompanyHotJob(widget._company.jobs);
         }
         _currentIndex = this._controller.index;
       });
@@ -86,55 +86,60 @@ class CompanyDetailState extends State<CompanyDetail>
     }
     return new Scaffold(
         backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-        body: new Stack(
-          children: <Widget>[
-            new SingleChildScrollView(
-                child: new Column(
-                  children: <Widget>[
-                    new SizedBox.fromSize(
-                      size: Size.fromHeight(_kAppBarHeight),
-                      child: new IndicatorViewPager(_imagePages),
-                    ),
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          child: new Stack(
+            children: <Widget>[
+              new Column(
+                children: <Widget>[
+                  new SizedBox.fromSize(
+                    size: Size.fromHeight(_kAppBarHeight),
+                    child: new IndicatorViewPager(_imagePages),
+                  ),
 
-                    new Container(
-                      color: Colors.white,
-                      child: new Column(
-                        children: <Widget>[
-                          new CompanyInfo(widget._company),
-                          new Divider(),
-                          new TabBar(
-                            indicatorWeight: 3.0*screenWidthInPt/750,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            labelStyle: new TextStyle(fontSize: 26.0*screenWidthInPt/750),
-                            labelColor: Colors.black,
-                            controller: _controller,
-                            tabs: _tabs,
-                            indicatorColor: Theme
-                                .of(context)
-                                .primaryColor,
-                          ),
-                        ],
-                      ),
+                  new Container(
+                    color: Colors.white,
+                    child: new Column(
+                      children: <Widget>[
+                        new CompanyInfo(widget._company),
+                        new Divider(),
+                        new TabBar(
+                          indicatorWeight: 3.0*screenWidthInPt/750,
+                          indicatorSize: TabBarIndicatorSize.tab,
+                          labelStyle: new TextStyle(fontSize: 26.0*screenWidthInPt/750),
+                          labelColor: Colors.black,
+                          controller: _controller,
+                          tabs: _tabs,
+                          indicatorColor: Theme
+                              .of(context)
+                              .primaryColor,
+                        ),
+                      ],
                     ),
-                    _companyTabContent
-                  ],
-                )
-            ),
+                  ),
 
-            new Positioned(
-              top: 30.0*screenWidthInPt/750,
-              left: 10.0*screenWidthInPt/750,
-              child: IconButton(
-                icon: const BackButtonIcon(),
-                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-                iconSize: 40.0*screenWidthInPt/750,
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.maybePop(context);
-                }
+                  Container(
+                    height: MediaQuery.of(context).size.height - 535*screenWidthInPt/750 - 77.0,
+                    child: _companyTabContent,
+                  ),
+                ],
               ),
-            ),
-          ],
+
+              new Positioned(
+                top: 30.0*screenWidthInPt/750,
+                left: 10.0*screenWidthInPt/750,
+                child: IconButton(
+                  icon: const BackButtonIcon(),
+                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                  iconSize: 40.0*screenWidthInPt/750,
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.maybePop(context);
+                  }
+                ),
+              ),
+            ],
+          ),
         )
     );
   }

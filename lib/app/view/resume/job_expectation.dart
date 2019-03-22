@@ -60,12 +60,12 @@ class JobExpectationState extends State<JobExpectation>
             children: <Widget>[
               new Padding(
                 padding: EdgeInsets.only(right: 10.0*factor),
-                child: new Text(widget._jobExpect.jobTitle, style: new TextStyle(fontSize: 24.0*factor),),
+                child: new Text(widget._jobExpect.jobTitle == null ? '期望职位' : widget._jobExpect.jobTitle, style: new TextStyle(fontSize: 22.0*factor),),
               ),
-              new Text(widget._jobExpect.salary, style: new TextStyle(fontSize: 24.0*factor),),
+              new Text(widget._jobExpect.salary == null ? '期望薪资' : widget._jobExpect.salary, style: new TextStyle(fontSize: 22.0*factor),),
               new Padding(
                 padding: EdgeInsets.only(left: 20.0*factor),
-                child: new Text(jobTypeArr[widget._jobExpect.type - 1], style: new TextStyle(fontSize: 24.0*factor),),
+                child: new Text(widget._jobExpect.type == null ? '期望工作类型' : jobTypeArr[widget._jobExpect.type - 1], style: new TextStyle(fontSize: 22.0*factor),),
               )
             ],
           ),
@@ -73,9 +73,9 @@ class JobExpectationState extends State<JobExpectation>
             children: <Widget>[
               new Padding(
                 padding: EdgeInsets.only(right: 10.0*factor),
-                child: new Text(widget._jobExpect.city, style: new TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                child: new Text(widget._jobExpect.city == null ? '期望城市' : widget._jobExpect.city, style: new TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
               ),
-              new Text(widget._jobExpect.industry, style: new TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+              new Text(widget._jobExpect.industry == null ? '期望行业' : widget._jobExpect.industry, style: new TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
             ],
           ),
         ],

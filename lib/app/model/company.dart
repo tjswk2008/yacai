@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:meta/meta.dart';
+import './job.dart';
 
 class Company {
   int id;
@@ -16,6 +15,7 @@ class Company {
   String hot; // 热招职位
   String count; // 职位总数
   String inc;   // 公司详情
+  List<Job> jobs;
 
   //构造函数
   Company({
@@ -31,13 +31,14 @@ class Company {
     @required this.employee,
     this.hot,
     this.count,
-    @required this.inc
+    @required this.inc,
+    this.jobs
   });
 
-  static List<Company> fromJson(String json) {
+  static List<Company> fromJson(List list) {
     List<Company> _companys = [];
 
-    for (var value in new JsonDecoder().convert(json)['list']) {
+    for (var value in list) {
       _companys.add(Company.fromMap(value));
     }
       return _companys;
@@ -57,7 +58,8 @@ class Company {
         area: map['area'],
         hot: map['hot'],
         count: map['count'],
-        inc: map['inc']
+        inc: map['inc'],
+        jobs: Job.fromJson(map['jobs'])
     );
   }
 }

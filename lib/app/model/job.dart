@@ -41,10 +41,14 @@ class Job {
 
   static List<Job> fromJson(List list) {
     List<Job> _jobs = [];
-    for (var value in list) {
-      _jobs.add(Job.fromMap(value));
+    if(list != null && list.length != 0) {
+      for (var value in list) {
+        _jobs.add(Job.fromMap(value));
+      }
+      return _jobs;
+    } else {
+      return [];
     }
-    return _jobs;
   }
 
   static Job fromMap(Map map) {

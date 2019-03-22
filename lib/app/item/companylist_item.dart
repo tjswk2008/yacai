@@ -8,12 +8,13 @@ class CompanyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
-      padding: const EdgeInsets.only(
-        top: 3.0,
-        left: 5.0,
-        right: 5.0,
-        bottom: 3.0,
+      padding: EdgeInsets.only(
+        top: 10.0*factor,
+        left: 15.0*factor,
+        right: 15.0*factor,
+        bottom: 10.0*factor,
       ),
 
       child: new SizedBox(
@@ -23,16 +24,19 @@ class CompanyListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               new Padding(
-                padding: const EdgeInsets.only(
-                  top: 10.0,
-                  left: 15.0,
-                  right: 15.0,
+                padding: EdgeInsets.only(
+                  top: 10.0*factor,
+                  left: 15.0*factor,
+                  right: 15.0*factor,
                   bottom: 0.0,
                 ),
-                child: new Image.network(
+                child: company.logo != null ? new Image.network(
                   company.logo,
-                  width: 50.0,
-                  height: 50.0,),
+                  width: 100.0*factor,
+                  height: 100.0*factor,) : Container(
+                    width: 100.0*factor,
+                    height: 100.0*factor,
+                  ),
               ),
 
               new Expanded(
@@ -44,59 +48,69 @@ class CompanyListItem extends StatelessWidget {
                       child: new Text(
                         company.name,
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 15.0),
+                        style: new TextStyle(fontSize: 24.0*factor),
                       ),
-                      margin: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+                      margin: EdgeInsets.only(top: 10.0*factor, bottom: 10.0*factor),
                     ),
 
                     new Padding(
-                      padding: const EdgeInsets.only(
-                        top: 5.0,
+                      padding: EdgeInsets.only(
+                        top: 10.0*factor,
                         left: 0.0,
-                        right: 5.0,
-                        bottom: 5.0,
+                        right: 10.0*factor,
+                        bottom: 10.0*factor,
                       ),
                       child: new Text(company.location, style: new TextStyle(
-                          fontSize: 13.0, color: Colors.grey)),
+                          fontSize: 22.0*factor, color: Colors.grey)),
                     ),
 
                     new Padding(
-                      padding: const EdgeInsets.only(
-                        top: 5.0,
+                      padding: EdgeInsets.only(
+                        top: 10.0*factor,
                         left: 0.0,
-                        right: 5.0,
-                        bottom: 5.0,
+                        right: 10.0*factor,
+                        bottom: 10.0*factor,
                       ),
                       child: new Text(
-                          company.type + " | " + company.size + " | " +
-                              company.employee, style: new TextStyle(
-                          fontSize: 13.0, color: Colors.grey)),
+                          '${company.type} | ${company.employee}', style: new TextStyle(
+                          fontSize: 22.0*factor, color: Colors.grey)),
                     ),
 
                     new Divider(),
                     new Row(
                       children: <Widget>[
                         new Padding(
-                          padding: const EdgeInsets.only(
-                            top: 5.0,
+                          padding: EdgeInsets.only(
+                            top: 10.0*factor,
                             left: 0.0,
-                            right: 5.0,
-                            bottom: 15.0,
+                            right: 10.0*factor,
+                            bottom: 15.0*factor,
                           ),
-                          child: new Text(
-                              "热招：" + company.hot + " 等" + company.count +
-                                  "个职位", style: new TextStyle(
-                              fontSize: 13.0, color: Colors.grey)),
+                          child: Row(
+                            children: <Widget>[
+                              Text('热招：', style: new TextStyle(
+                                fontSize: 22.0*factor, color: Colors.grey)),
+                              Text(company.jobs[0].name, style: new TextStyle(
+                                fontSize: 22.0*factor, color: Colors.red)),
+                              Text(' 等 ', style: new TextStyle(
+                                fontSize: 22.0*factor, color: Colors.grey)),
+                              Text(company.jobs.length.toString(), style: new TextStyle(
+                                fontSize: 22.0*factor, color: Colors.red)),
+                              Text(' 个职位', style: new TextStyle(
+                                fontSize: 22.0*factor, color: Colors.grey)),
+                            ],
+                          )
                         ),
                         new Expanded(child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             new Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: 8.0,
+                              padding: EdgeInsets.only(
+                                bottom: 10.0*factor,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.keyboard_arrow_right,
+                                size: 36*factor,
                                 color: Colors.grey,),
                             ),
                           ],

@@ -3,6 +3,7 @@ import 'dart:io';
 class Api {
   final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://localhost:3000/api/";
 
+  // user interface
   Future<Response<T>> getResumeList<T>(String userName, int jobId) {
     String url = '${serverAddr}user/getResumeList?userName=$userName';
     if (jobId != null) {
@@ -11,120 +12,10 @@ class Api {
     return Dio().get(url);
   }
 
-  Future<Response<T>> getJobList<T>(int type, String userName) {
-    return Dio().get('${serverAddr}jobs/jobsList?type=$type&userName=$userName');
-  }
-
-  Future<Response<T>> getRecruitJobList<T>(String userName) {
-    return Dio().get(serverAddr + "jobs/getRecruitJobList?userName=$userName");
-  }
-
-  Future<Response<T>> getPostList<T>() {
-    return Dio().get(serverAddr + "post/query");
-  }
-
-  Future<Response<T>> getCompanyDetail<T>(int companyId) {
-    return Dio().get(serverAddr + "company/query?id=" + companyId.toString());
-  }
-
-  Future<Response<T>> login<T>(String account, String pwd) {
-    return Dio().get(serverAddr + "user/login?account=" + account + "&pwd=" + pwd);
-  }
-
-  Future<Response<T>> register<T>(String account, String pwd, int role) {
-    return Dio().get(serverAddr + "user/register?account=$account&pwd=$pwd&role=$role");
-  }
-
-  Future<Response<T>> getUserInfo<T>(int id) {
-    return Dio().get(serverAddr + "user/query?id=" + id.toString());
-  }
-
-  Future<Response<T>> getCompanyInfo<T>(int id) {
-    return Dio().get(serverAddr + "user/getCompanyInfo?id=" + id.toString());
-  }
-
-  Future<Response<T>> addPost<T>(String askedBy, String title, String detail) {
-    return Dio().get(serverAddr + "post/addPost?askedBy=" + askedBy + "&title=" + title + "&detail=" + detail);
-  }
-
-  Future<Response<T>> addAnswer<T>(String detail, String answerBy, int postId, ) {
-    return Dio().get(serverAddr + "post/addAnswer?answerBy=" + answerBy + "&postId=" + postId.toString() + "&answer=" + detail);
-  }
-
-  Future<Response<T>> deliver<T>(String userName, int jobId, ) {
-    return Dio().post('${serverAddr}jobs/deliver', data: {
-        'userName': userName,
-        'jobId': jobId,
-      }
-    );
-  }
-
   Future<Response<T>> viewResume<T>(String userName, int userId, ) {
     return Dio().post('${serverAddr}user/viewResume', data: {
         'userName': userName,
         'userId': userId,
-      }
-    );
-  }
-
-  Future<Response<T>> favorite<T>(String userName, int jobId, bool favorite) {
-    return Dio().post('${serverAddr}jobs/favorite', data: {
-        'userName': userName,
-        'jobId': jobId,
-        'favorite':favorite
-      }
-    );
-  }
-
-  Future<Response<T>> saveCompanyInfo<T>(
-    String name,
-    String province,
-    String city,
-    String area,
-    String location,
-    String type,
-    String employee,
-    String inc,
-    String logo,
-    String userName,
-    int id
-  ) {
-    String url = '${serverAddr}company/saveCompanyInfo?name=$name&logo=$logo&province=$province&city=$city&area=$area&location=$location&type=$type&employee=$employee&inc=$inc&userName=$userName';
-    if(id != null) {
-      url += '&id=${id.toString()}';
-    }
-    return Dio().get(url);
-  }
-
-  Future<Response<T>> saveJobs<T>(
-    String name,
-    String cname,
-    String salary,
-    String province,
-    String city,
-    String area,
-    String addrDetail,
-    String timereq,
-    String academic,
-    String detail,
-    int type,
-    int companyId,
-    String userName,
-  ) {
-    return Dio().post('${serverAddr}jobs/saveJobs', data: {
-        'name': name,
-        'cname': cname,
-        'salary': salary,
-        'province': province,
-        'city': city,
-        'area': area,
-        'addrDetail': addrDetail,
-        'timereq': timereq,
-        'academic': academic,
-        'detail': detail,
-        'type': type,
-        'companyId': companyId,
-        'userName': userName,
       }
     );
   }
@@ -228,6 +119,126 @@ class Api {
     return Dio().get(url);
   }
 
+  Future<Response<T>> getCompanyInfo<T>(int id) {
+    return Dio().get(serverAddr + "user/getCompanyInfo?id=" + id.toString());
+  }
+
+  Future<Response<T>> login<T>(String account, String pwd) {
+    return Dio().get(serverAddr + "user/login?account=" + account + "&pwd=" + pwd);
+  }
+
+  Future<Response<T>> register<T>(String account, String pwd, int role) {
+    return Dio().get(serverAddr + "user/register?account=$account&pwd=$pwd&role=$role");
+  }
+
+  Future<Response<T>> getUserInfo<T>(int id) {
+    return Dio().get(serverAddr + "user/query?id=" + id.toString());
+  }
+
+  // jobs interface
+  Future<Response<T>> getJobList<T>(int type, String userName) {
+    return Dio().get('${serverAddr}jobs/jobsList?type=$type&userName=$userName');
+  }
+
+  Future<Response<T>> getRecruitJobList<T>(String userName) {
+    return Dio().get(serverAddr + "jobs/getRecruitJobList?userName=$userName");
+  }
+
+  Future<Response<T>> favorite<T>(String userName, int jobId, bool favorite) {
+    return Dio().post('${serverAddr}jobs/favorite', data: {
+        'userName': userName,
+        'jobId': jobId,
+        'favorite':favorite
+      }
+    );
+  }
+
+  Future<Response<T>> saveJobs<T>(
+    String name,
+    String cname,
+    String salary,
+    String province,
+    String city,
+    String area,
+    String addrDetail,
+    String timereq,
+    String academic,
+    String detail,
+    int type,
+    int companyId,
+    String userName,
+  ) {
+    return Dio().post('${serverAddr}jobs/saveJobs', data: {
+        'name': name,
+        'cname': cname,
+        'salary': salary,
+        'province': province,
+        'city': city,
+        'area': area,
+        'addrDetail': addrDetail,
+        'timereq': timereq,
+        'academic': academic,
+        'detail': detail,
+        'type': type,
+        'companyId': companyId,
+        'userName': userName,
+      }
+    );
+  }
+
+  Future<Response<T>> deliver<T>(String userName, int jobId, ) {
+    return Dio().post('${serverAddr}jobs/deliver', data: {
+        'userName': userName,
+        'jobId': jobId,
+      }
+    );
+  }
+
+  // post interface
+  Future<Response<T>> getPostList<T>() {
+    return Dio().get(serverAddr + "post/query");
+  }
+
+  Future<Response<T>> addPost<T>(String askedBy, String title, String detail) {
+    return Dio().get(serverAddr + "post/addPost?askedBy=" + askedBy + "&title=" + title + "&detail=" + detail);
+  }
+
+  Future<Response<T>> addAnswer<T>(String detail, String answerBy, int postId, ) {
+    return Dio().get(serverAddr + "post/addAnswer?answerBy=" + answerBy + "&postId=" + postId.toString() + "&answer=" + detail);
+  }
+
+  // company interface
+  Future<Response<T>> getCompanyDetail<T>(int companyId, String userName) {
+    return Dio().get('${serverAddr}company/query?id=$companyId&userName=$userName');
+  }
+
+  Future<Response<T>> getCompanyList<T>(String userName) {
+    return Dio().post(serverAddr + "company/getCompanyList", data: {
+      'userName': userName
+    });
+  }
+
+  Future<Response<T>> saveCompanyInfo<T>(
+    String name,
+    String province,
+    String city,
+    String area,
+    String location,
+    String type,
+    String employee,
+    String inc,
+    String logo,
+    String userName,
+    int id
+  ) {
+    String url = '${serverAddr}company/saveCompanyInfo?name=$name&logo=$logo&province=$province&city=$city&area=$area&location=$location&type=$type&employee=$employee&inc=$inc&userName=$userName';
+    if(id != null) {
+      url += '&id=${id.toString()}';
+    }
+    return Dio().get(url);
+  }
+
+  // upload interface
   Future<Response<T>> upload<T>(File file, String fileName) {
     FormData formData = new FormData.from({
       "file": new UploadFileInfo(file, fileName)

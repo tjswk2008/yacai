@@ -89,7 +89,7 @@ class ResumeDetailState extends State<ResumeDetail>
                 child: new Text(
                   title,
                   style: new TextStyle(
-                    fontSize: 22.0*factor
+                    fontSize: 24.0*factor
                   )
                 ),
               )
@@ -97,7 +97,7 @@ class ResumeDetailState extends State<ResumeDetail>
           ),
           new Padding(
             padding: EdgeInsets.only(left: 10.0*factor),
-            child: new ListView.builder(
+            child: list == null ? Container() : new ListView.builder(
               physics: new NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: list.length,
@@ -285,10 +285,10 @@ class ResumeDetailState extends State<ResumeDetail>
                               new Text(
                                 "求职状态",
                                 style: new TextStyle(
-                                  fontSize: 22.0*factor
+                                  fontSize: 24.0*factor
                                 )
                               ),
-                              new Text(appState.resume.jobStatus, style: TextStyle(fontSize: 22.0*factor),)
+                              new Text(appState.resume.jobStatus == null ? '请选择' : appState.resume.jobStatus, style: TextStyle(fontSize: 22.0*factor),)
                             ],
                           ),
                         ) 
@@ -308,7 +308,7 @@ class ResumeDetailState extends State<ResumeDetail>
                                 new Text(
                                   "求职期望",
                                   style: new TextStyle(
-                                    fontSize: 22.0*factor
+                                    fontSize: 24.0*factor
                                   )
                                 ),
                               ],
