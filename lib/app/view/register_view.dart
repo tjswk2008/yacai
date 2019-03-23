@@ -79,11 +79,26 @@ class RegisterPageState extends State<RegisterPage> {
         iconTheme: new IconThemeData(color: Colors.white),
       ),
       body: new Container(
-        padding: EdgeInsets.all(10.0*factor),
+        padding: EdgeInsets.all(60.0*factor),
         child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Center(child: new Text("请使用帐号密码注册", style: new TextStyle(color: Colors.white, fontSize: 22.0*factor))),
-            new Container(height: 30.0*factor),
+            Padding(
+              padding: EdgeInsets.only(top: 140*factor, bottom: 40*factor),
+              child: new Text("欢迎登陆丫财", style: new TextStyle(
+                color: Colors.black, fontSize: 60.0*factor)
+              )
+            ),
+            Row(
+              children: <Widget>[
+                Text("手机验证后自动注册，注册即代表阅读并同意", style: new TextStyle(color: Colors.grey, fontSize: 22.0*factor)),
+                InkWell(
+                  onTap: () {},
+                  child: Text("服务条款", style: new TextStyle(color: Colors.lightBlue, fontSize: 22.0*factor)),
+                )
+              ],
+            ),
+            new Container(height: 70.0*factor),
             new Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -128,7 +143,7 @@ class RegisterPageState extends State<RegisterPage> {
                 ))
               ],
             ),
-            new Container(height: 30.0*factor),
+            new Container(height: 40.0*factor),
             new Builder(builder: (ctx) {
               return new CommonButton(
                 text: "注册",

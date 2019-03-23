@@ -41,8 +41,11 @@ class CompanyList extends State<CompanyTab> {
           '被查阅记录', style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
         ),
       ),
-      body: new ListView.builder(
-          itemCount: _companties.length, itemBuilder: buildCompanyItem),
+      body: _companties.length != 0 ? new ListView.builder(
+          itemCount: _companties.length, itemBuilder: buildCompanyItem) : Center(
+            child: Text('暂无记录', style: TextStyle(fontSize: 28*factor)
+            )
+          ),
     );
   }
 
