@@ -34,8 +34,9 @@ class RegisterPageState extends State<RegisterPage> {
   bool loading = true;
   // 标记当前页面是否是我们自定义的回调页面
   bool isLoadingCallbackPage = false;
-  // 是否正在登录
-  bool isOnLogin = false;
+  // 是否正在请求api
+  bool isRequesting = false;
+  bool pwdVisible = false;
 
   final usernameCtrl = new TextEditingController(text: '');
   final passwordCtrl = new TextEditingController(text: '');
@@ -49,7 +50,7 @@ class RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
     var loadingView;
-    if (isOnLogin) {
+    if (isRequesting) {
       loadingView = new Center(
         child: new Padding(
           padding: EdgeInsets.fromLTRB(0, 30*factor, 0, 0),
@@ -99,21 +100,50 @@ class RegisterPageState extends State<RegisterPage> {
               ],
             ),
             new Container(height: 70.0*factor),
+            new Stack(
+              children: <Widget>[
+                // new Text("用户名：", style: TextStyle(fontSize: 26.0*factor)),
+                new TextField(
+                  controller: usernameCtrl,
+                  style: TextStyle(fontSize: 26.0*factor),
+                  decoration: new InputDecoration(
+                    labelText: "请输入手机号",
+                    hintStyle: new TextStyle(
+                        color: const Color(0xFF808080),
+                    ),
+                    border: new UnderlineInputBorder(
+                      borderSide: BorderSide(width: 1.0*factor),
+                    ),
+                    contentPadding: EdgeInsets.all(20.0*factor)
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  child: RaisedButton(
+                    color: Colors.orange[400],
+                    child: Text("发送验证码", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
+                    onPressed: () {
+                      
+                    },
+                  ),
+                )
+              ],
+            ),
+            new Container(height: 30.0*factor),
             new Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                new Text("用户名：", style: TextStyle(fontSize: 26.0*factor)),
+                // new Text("用户名：", style: TextStyle(fontSize: 26.0*factor)),
                 new Expanded(child: new TextField(
                   controller: usernameCtrl,
                   style: TextStyle(fontSize: 26.0*factor),
                   decoration: new InputDecoration(
-                    hintText: "请输入帐号",
+                    labelText: "请输入验证码",
                     hintStyle: new TextStyle(
                         color: const Color(0xFF808080),
                     ),
-                    border: new OutlineInputBorder(
+                    border: new UnderlineInputBorder(
                       borderSide: BorderSide(width: 1.0*factor),
-                      borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                     ),
                     contentPadding: EdgeInsets.all(20.0*factor)
                   ),
@@ -121,26 +151,35 @@ class RegisterPageState extends State<RegisterPage> {
               ],
             ),
             new Container(height: 30.0*factor),
-            new Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            Stack(
               children: <Widget>[
-                new Text("密　码：", style: TextStyle(fontSize: 26.0*factor),),
-                new Expanded(child: new TextField(
+                // new Text("密　码：", style: TextStyle(fontSize: 26.0*factor),),
+                TextField(
                   controller: passwordCtrl,
                   style: TextStyle(fontSize: 26.0*factor),
-                  obscureText: true,
+                  obscureText: pwdVisible ? false : true,
                   decoration: new InputDecoration(
-                    hintText: "请输入密码",
+                    labelText: "请输入密码",
                     hintStyle: new TextStyle(
                         color: const Color(0xFF808080),
                     ),
-                    border: new OutlineInputBorder(
+                    border: new UnderlineInputBorder(
                       borderSide: BorderSide(width: 1.0*factor),
-                      borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                     ),
                     contentPadding: EdgeInsets.all(20.0*factor)
                   ),
-                ))
+                ),
+                Positioned(
+                  right: 0,
+                  child: IconButton(
+                    icon: Icon(pwdVisible ? Icons.visibility_off : Icons.visibility, size: 40*factor, ),
+                    onPressed: () {
+                      setState(() {
+                        pwdVisible = !pwdVisible;
+                      });
+                    },
+                  ),
+                )
               ],
             ),
             new Container(height: 40.0*factor),
@@ -149,7 +188,7 @@ class RegisterPageState extends State<RegisterPage> {
                 text: "注册",
                 color: new Color.fromARGB(255, 0, 215, 198),
                 onTap: () async {
-                  if (isOnLogin) return;
+                  if (isRequesting) return;
                   // 拿到用户输入的账号密码
                   String username = usernameCtrl.text.trim();
                   String password = passwordCtrl.text.trim();
@@ -160,7 +199,7 @@ class RegisterPageState extends State<RegisterPage> {
                     return;
                   }
                   setState(() {
-                    isOnLogin = true;
+                    isRequesting = true;
                   });
                   // 发送给webview，让webview登录后再取回token
                   try {
@@ -168,7 +207,7 @@ class RegisterPageState extends State<RegisterPage> {
                     int role = prefs.getInt('role');
                     Response response = await Api().register(username, password, role);
                     setState(() {
-                      isOnLogin = false;
+                      isRequesting = false;
                     });
                     if(response.data['code'] != 1) {
                       Scaffold.of(ctx).showSnackBar(new SnackBar(
@@ -206,7 +245,7 @@ class RegisterPageState extends State<RegisterPage> {
                       Route route) => route == null);
                   } catch (e) {
                     setState(() {
-                      isOnLogin = false;
+                      isRequesting = false;
                     });
                     print(e);
                   }
@@ -218,7 +257,7 @@ class RegisterPageState extends State<RegisterPage> {
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('已有账号，前往', style: TextStyle(fontSize: 24.0*factor)),
+                  Text('使用用户名密码', style: TextStyle(fontSize: 24.0*factor)),
                   new InkWell(
                     onTap: () {
                       Navigator.of(context).push(new PageRouteBuilder(
