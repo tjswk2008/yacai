@@ -119,13 +119,17 @@ class RegisterPageState extends State<RegisterPage> {
                 ),
                 Positioned(
                   right: 0,
-                  child: RaisedButton(
-                    color: Colors.orange[400],
-                    child: Text("发送验证码", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
-                    onPressed: () {
-                      
-                    },
-                  ),
+                  bottom: 20*factor,
+                  child: Container(
+                    height: 50*factor,
+                    child: RaisedButton(
+                      color: Colors.orange[400],
+                      child: Text("发送验证码", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
+                      onPressed: () {
+                        
+                      },
+                    ),
+                  )
                 )
               ],
             ),
@@ -171,6 +175,7 @@ class RegisterPageState extends State<RegisterPage> {
                 ),
                 Positioned(
                   right: 0,
+                  bottom: 13*factor,
                   child: IconButton(
                     icon: Icon(pwdVisible ? Icons.visibility_off : Icons.visibility, size: 40*factor, ),
                     onPressed: () {
