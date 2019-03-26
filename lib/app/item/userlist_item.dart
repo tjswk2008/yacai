@@ -43,7 +43,10 @@ class UserListItemState extends State<UserListItem> {
         bottom: 10.0*factor,
       ),
 
-      child: new Card(
+      child: new Container(
+        decoration: BoxDecoration(
+          color: Colors.white
+        ),
         child: new Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
@@ -148,7 +151,7 @@ class UserListItemState extends State<UserListItem> {
                       child: Text('标记为:', style: TextStyle(fontSize: 22*factor),),
                     ),
                     YCSelect(
-                      itemWidth: 165.0*factor,
+                      itemWidth: 170.0*factor,
                       selectedIndex: selectedIndex,
                       onSelectedItemChanged: (index) {
                         setState(() {
@@ -156,7 +159,7 @@ class UserListItemState extends State<UserListItem> {
                         });
                       },
                       items: [
-                        '--请选择--',
+                        '-请选择-',
                         '有意向',
                         '已电联',
                       ]

@@ -46,7 +46,7 @@ class YCSelectState extends State<YCSelect> {
                   padding: EdgeInsets.symmetric(horizontal: 10*factor),
                   child: Text(widget.items[widget.selectedIndex], style: TextStyle(fontSize: 22*factor),),
                 ),
-                Icon(Icons.arrow_drop_down, size: 36*factor,),
+                Icon(isMenuOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down, size: 36*factor,),
               ],
             ),
           ),
@@ -59,7 +59,7 @@ class YCSelectState extends State<YCSelect> {
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: widget.items.length, itemBuilder: (BuildContext context, int index) {
-                return InkWell(
+                return GestureDetector(
                   onTap: () {
                     widget.onSelectedItemChanged(index);
                     setState(() {
