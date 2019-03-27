@@ -96,7 +96,7 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
                   .primaryColor,
             ),
             Container(
-              height: MediaQuery.of(context).size.height - 210*factor,
+              height: MediaQuery.of(context).size.height - 310*factor,
               child: _tabContent,
             ),
           ],
