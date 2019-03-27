@@ -174,12 +174,12 @@ class LoginWithMsgState extends State<LoginWithMsg> {
                       ));
                       return;
                     }
-                    // if (password != code) {
-                    //   Scaffold.of(ctx).showSnackBar(new SnackBar(
-                    //     content: new Text("验证码不正确！", style: TextStyle(fontSize: 20.0*factor),),
-                    //   ));
-                    //   return;
-                    // }
+                    if (password != code) {
+                      Scaffold.of(ctx).showSnackBar(new SnackBar(
+                        content: new Text("验证码不正确！", style: TextStyle(fontSize: 20.0*factor),),
+                      ));
+                      return;
+                    }
                     setState(() {
                       isOnLogin = true;
                     });

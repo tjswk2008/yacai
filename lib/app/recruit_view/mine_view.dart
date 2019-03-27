@@ -154,6 +154,42 @@ class MineTabState extends State<MineTab> {
                         )
                       ),
 
+                      new InkWell(
+                        onTap: () {
+                          if(userName == '') {
+                            _login();
+                          } else {
+                            _navToPubJobList();
+                          }
+                        },
+                        child: new Container(
+                          height: 80.0*factor,
+                          margin: EdgeInsets.only(bottom: 10.0*factor),
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Padding(
+                                padding: EdgeInsets.all(20.0*factor),
+                                child: new Row(
+                                  children: <Widget>[
+                                    new Icon(Icons.fingerprint, size: 32.0*factor,),
+                                    new Padding(
+                                      padding: EdgeInsets.only(right: 20.0*factor),
+                                    ),
+                                    new Text('企业认证', style: TextStyle(fontSize: 26.0*factor),),
+                                  ],
+                                ),
+                              ),
+                              new Icon(Icons.chevron_right, size: 32.0*factor,),
+                            ],
+                          ),
+                        )
+                      ),
+
                       new Container(
                         color: Colors.white,
                         child: new Padding(

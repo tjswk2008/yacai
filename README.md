@@ -52,3 +52,17 @@ ENGINE=InnoDB
 AUTO_INCREMENT=2
 ;
 
+CREATE TABLE `mark` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`marker` INT(1) NOT NULL DEFAULT '0' COMMENT '1 有意向 2 已电联',
+	`userId` INT(11) NOT NULL DEFAULT '0',
+	`account` VARCHAR(64) NOT NULL DEFAULT '',
+	PRIMARY KEY (`id`),
+	INDEX `FK_mark_user` (`userId`),
+	CONSTRAINT `FK_mark_user` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
+)
+COMMENT='标记记录'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=6
+;
