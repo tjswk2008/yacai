@@ -29,7 +29,6 @@ class YCSelectState extends State<YCSelect> {
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
     return Stack(
-      overflow: Overflow.visible,
       children: <Widget>[
         new InkWell(
           onTap: () {
@@ -51,42 +50,46 @@ class YCSelectState extends State<YCSelect> {
             ),
           ),
         ),
-        isMenuOpen ? Positioned(
-          top: 46.0*factor,
-          child: Container(
-            width: widget.itemWidth,
-            height: 46*widget.items.length*factor,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: widget.items.length, itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    widget.onSelectedItemChanged(index);
-                    setState(() {
-                      isMenuOpen = !isMenuOpen; 
-                    });
-                  },
-                  child: Container(
-                    height: 46.0*factor,
-                    width: widget.itemWidth,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(
-                        top: BorderSide(width: factor, color: Colors.grey[300])
-                      )
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(widget.items[index], style: TextStyle(fontSize: 22*factor),),
-                      ],
-                    )
-                  ),
-                );
-              }
-            ),
-          )
-        ) : Container()
+        Stack(
+          children: <Widget>[
+            isMenuOpen ? Positioned(
+              top: 46.0*factor,
+              child: Container(
+                width: widget.itemWidth,
+                height: 46*widget.items.length*factor,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget.items.length, itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        widget.onSelectedItemChanged(index);
+                        setState(() {
+                          isMenuOpen = !isMenuOpen; 
+                        });
+                      },
+                      child: Container(
+                        height: 46.0*factor,
+                        width: widget.itemWidth,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border(
+                            top: BorderSide(width: factor, color: Colors.grey[300])
+                          )
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(widget.items[index], style: TextStyle(fontSize: 22*factor),),
+                          ],
+                        )
+                      ),
+                    );
+                  }
+                ),
+              )
+            ) : Container()
+          ],
+        )
       ],
     );
   }

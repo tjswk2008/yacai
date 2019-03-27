@@ -16,6 +16,7 @@ class ResumeTab extends StatefulWidget {
 }
 
 class ResumeTabState extends State<ResumeTab> {
+  List<PersonalInfo> _originalPersonalInfos = [];
   List<PersonalInfo> _personalInfos = [];
 
   @override
@@ -40,7 +41,41 @@ class ResumeTabState extends State<ResumeTab> {
           }
         ),
         title: new Text(widget._title,
-            style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
+          style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
+        ),
+        actions: <Widget>[
+          new PopupMenuButton(
+            onSelected: (int value){
+               setState(() {
+                 if(value == 0) {
+                   _personalInfos = _originalPersonalInfos;
+                 } else {
+                   _personalInfos = [];
+                  for (var i = 0; i < _originalPersonalInfos.length; i++) {
+                    PersonalInfo element = _originalPersonalInfos[i];
+                    if(element.mark == value) {
+                      _personalInfos.add(element);
+                    }
+                  }
+                 }
+               });
+            },
+            itemBuilder: (BuildContext context) =><PopupMenuItem<int>>[
+              new PopupMenuItem(
+                  value: 0,
+                  child: new Text("全部", style: TextStyle(fontSize: 22*factor),)
+              ),
+              new PopupMenuItem(
+                value: 1,
+                  child: new Text("有意向", style: TextStyle(fontSize: 22*factor),)
+              ),
+              new PopupMenuItem(
+                value: 2,
+                  child: new Text("已电联", style: TextStyle(fontSize: 22*factor),)
+              )
+            ]
+          )
+        ],
       ),
       body: _personalInfos.length != 0 ? new ListView.builder(
           itemCount: _personalInfos.length, itemBuilder: buildResumeItem) : Center(
@@ -60,6 +95,7 @@ class ResumeTabState extends State<ResumeTab> {
     Api().getResumeList(prefs.getString('userName'), widget.jobId)
       .then((Response response) {
         setState(() {
+          _originalPersonalInfos = PersonalInfo.fromList(response.data['list']);
           _personalInfos = PersonalInfo.fromList(response.data['list']);
         });
       })

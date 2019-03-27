@@ -53,13 +53,16 @@ class ResumeDetailState extends State<ResumeDetail>
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                new Icon(Icons.close, size: 28.0*factor,),
-                new Text('求职状态', style: new TextStyle(fontSize: 28.0*factor)),
-                new Icon(Icons.check, size: 28.0*factor),
-              ],
+            Padding(
+              padding: EdgeInsets.only(top: 10*factor, bottom: 15*factor),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  new Icon(Icons.close, size: 28.0*factor,),
+                  new Text('求职状态', style: new TextStyle(fontSize: 28.0*factor)),
+                  new Icon(Icons.check, size: 28.0*factor),
+                ],
+              ),
             ),
             new ListView.builder(
               shrinkWrap: true,
@@ -123,13 +126,11 @@ class ResumeDetailState extends State<ResumeDetail>
             Resume resume = state.resume;
             resume.jobStatus = jobStatusArr[index];
             StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-            Navigator.pop(context);
+            Navigator.pop(context); 
           },
           child: new Container(
-            height: 40*factor,
-            decoration: new BoxDecoration(
-              border: new Border.all(color: jobStatus == jobStatusArr[index] ? const Color(0xffcccccc) : Colors.transparent),
-            ),
+            height: 50*factor,
+            color: state.resume.jobStatus == jobStatusArr[index] ? Colors.grey[300] : Colors.transparent,
             child: new Center(
               child: new Text(jobStatusArr[index], style: TextStyle(fontSize: 22.0*factor),),
             ),

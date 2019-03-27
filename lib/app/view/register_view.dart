@@ -37,7 +37,10 @@ class RegisterPageState extends State<RegisterPage> {
   // 是否正在请求api
   bool isRequesting = false;
   bool pwdVisible = false;
+  
+  String code;
 
+  final codeCtrl = new TextEditingController(text: '');
   final usernameCtrl = new TextEditingController(text: '');
   final passwordCtrl = new TextEditingController(text: '');
 
@@ -125,8 +128,44 @@ class RegisterPageState extends State<RegisterPage> {
                     child: RaisedButton(
                       color: Colors.orange[400],
                       child: Text("发送验证码", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
-                      onPressed: () {
-                        
+                      onPressed: () async {
+                        if (isRequesting) return;
+                        // 拿到用户输入的账号密码
+                        String username = usernameCtrl.text.trim();
+                        if (username.isEmpty) {
+                          Scaffold.of(context).showSnackBar(new SnackBar(
+                            content: new Text("手机号码不能为空！", style: TextStyle(fontSize: 20.0*factor),),
+                          ));
+                          return;
+                        }
+                        if(!RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(username)){
+                          Scaffold.of(context).showSnackBar(new SnackBar(
+                            content: new Text("手机号码不正确！", style: TextStyle(fontSize: 20.0*factor),),
+                          ));
+                          return;
+                        }
+                        setState(() {
+                          isRequesting = true;
+                        });
+                        // 发送给webview，让webview登录后再取回token
+                        Response response = await Api().sendSms(username);
+                        try {
+                          setState(() {
+                            isRequesting = false;
+                          });
+                          if(response.data['code'] != 1) {
+                            Scaffold.of(context).showSnackBar(new SnackBar(
+                              content: new Text("短信发送失败！", style: TextStyle(fontSize: 20.0*factor),),
+                            ));
+                            return;
+                          } else {
+                            code = response.data['sms'];
+                          }
+                        } catch(e) {
+                          setState(() {
+                            isRequesting = false;
+                          });
+                        }
                       },
                     ),
                   )
@@ -139,7 +178,7 @@ class RegisterPageState extends State<RegisterPage> {
               children: <Widget>[
                 // new Text("用户名：", style: TextStyle(fontSize: 26.0*factor)),
                 new Expanded(child: new TextField(
-                  controller: usernameCtrl,
+                  controller: codeCtrl,
                   style: TextStyle(fontSize: 26.0*factor),
                   decoration: new InputDecoration(
                     labelText: "请输入验证码",
@@ -203,6 +242,12 @@ class RegisterPageState extends State<RegisterPage> {
                     ));
                     return;
                   }
+                  if (codeCtrl.text.trim() != code) {
+                    Scaffold.of(ctx).showSnackBar(new SnackBar(
+                      content: new Text("验证码不正确！", style: TextStyle(fontSize: 20.0*factor),),
+                    ));
+                    return;
+                  }
                   setState(() {
                     isRequesting = true;
                   });
@@ -262,7 +307,7 @@ class RegisterPageState extends State<RegisterPage> {
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('使用用户名密码', style: TextStyle(fontSize: 24.0*factor)),
+                  Text('已有账号，前往', style: TextStyle(fontSize: 24.0*factor)),
                   new InkWell(
                     onTap: () {
                       Navigator.of(context).push(new PageRouteBuilder(

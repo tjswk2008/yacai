@@ -124,7 +124,11 @@ class Api {
   }
 
   Future<Response<T>> login<T>(String account, String pwd) {
-    return Dio().get(serverAddr + "user/login?account=" + account + "&pwd=" + pwd);
+    String url = '${serverAddr}user/login?account=$account';
+    if(pwd != null) {
+      url += '&pwd=$pwd';
+    }
+    return Dio().get(url);
   }
 
   Future<Response<T>> register<T>(String account, String pwd, int role) {
@@ -133,6 +137,23 @@ class Api {
 
   Future<Response<T>> getUserInfo<T>(int id) {
     return Dio().get(serverAddr + "user/query?id=" + id.toString());
+  }
+
+  Future<Response<T>> sendSms<T>(String phone) {
+    return Dio().post('${serverAddr}user/sendSms', data: {
+        'phone': phone
+      }
+    );
+  }
+
+  // mark interface
+  Future<Response<T>> mark<T>(String account, int userId, int marker) {
+    return Dio().post('${serverAddr}mark/edit', data: {
+        'account': account,
+        'userId': userId,
+        'marker':marker
+      }
+    );
   }
 
   // jobs interface

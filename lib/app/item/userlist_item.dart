@@ -4,12 +4,13 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/view/resume/resume_preview.dart';
 import 'package:flutter_app/app/component/select.dart';
+import 'package:flutter_app/app/api/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-const List<String> ORDERS = [
-  "综合排序",
-  "好评优先",
-  "离我最近",
-  "人气最高",
+const List<String> MARKERS = [
+  '-请选择-',
+  '有意向',
+  '已电联',
 ];
 
 class UserListItem extends StatefulWidget {
@@ -22,6 +23,8 @@ class UserListItem extends StatefulWidget {
 
 class UserListItemState extends State<UserListItem> {
   PersonalInfo personalInfo;
+  bool isRequesting = false;
+  String userName;
   int selectedIndex = 0;
 
   @override
@@ -29,6 +32,11 @@ class UserListItemState extends State<UserListItem> {
     super.initState();
     setState(() {
       personalInfo = widget.personalInfo;
+    });
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
     });
   }
 
@@ -150,19 +158,80 @@ class UserListItemState extends State<UserListItem> {
                       padding: EdgeInsets.only(right: 10*factor),
                       child: Text('标记为:', style: TextStyle(fontSize: 22*factor),),
                     ),
-                    YCSelect(
-                      itemWidth: 170.0*factor,
-                      selectedIndex: selectedIndex,
-                      onSelectedItemChanged: (index) {
-                        setState(() {
-                          selectedIndex = index;
-                        });
+                    // YCSelect(
+                    //   selectedIndex: selectedIndex,
+                    //   items: ['-请选择', '有意向', '已电联'],
+                    //   onSelectedItemChanged: (value) {
+                    //     setState(() {
+                    //       selectedIndex = value;
+                    //     });
+                    //   },
+                    //   itemWidth: 170*factor
+                    // ),
+                    InkWell(
+                      child: Text(personalInfo.mark == null ? MARKERS[0] : MARKERS[personalInfo.mark], style: TextStyle(fontSize: 22*factor),),
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context){
+                            return new Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(top: 10*factor, bottom: 15*factor),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      new Icon(Icons.close, size: 28.0*factor,),
+                                      new Text('标记状态', style: new TextStyle(fontSize: 28.0*factor)),
+                                      new Icon(Icons.check, size: 28.0*factor),
+                                    ],
+                                  ),
+                                ),
+                                new ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: MARKERS.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return InkWell(
+                                      onTap: () async {
+                                        setState(() {
+                                          personalInfo.mark = index;
+                                        });
+                                        if (isRequesting) return;
+                                        setState(() {
+                                          isRequesting = true;
+                                        });
+                                        // 发送给webview，让webview登录后再取回token
+                                        try {
+                                          await Api().mark(userName, personalInfo.id, index);
+                                          setState(() {
+                                            isRequesting = false;
+                                          });
+                                        } catch (e) {
+                                          setState(() {
+                                            isRequesting = false;
+                                          });
+                                          print(e);
+                                        }
+                                        Navigator.pop(context);
+                                      },
+                                      child: new Container(
+                                        height: 50*factor,
+                                        color: personalInfo.mark == index ? Colors.grey[300] : Colors.transparent,
+                                        child: new Center(
+                                          child: new Text(MARKERS[index], style: TextStyle(fontSize: 22.0*factor),),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                ),
+                              ],
+                            );
+                          }
+                        );
                       },
-                      items: [
-                        '-请选择-',
-                        '有意向',
-                        '已电联',
-                      ]
                     ),
                     Container(width: 20*factor,)
                   ]

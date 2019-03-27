@@ -229,6 +229,7 @@ class PersonalInfo {
   String summarize; // 优势
   int academic; // 学历
   String school; // 学校
+  int mark; // 招聘人员标记的状态
 
   PersonalInfo({
     this.id,
@@ -241,6 +242,7 @@ class PersonalInfo {
     this.summarize,
     this.academic,
     this.school,
+    this.mark
   });
 
   static List<PersonalInfo> fromList(List list) {
@@ -262,7 +264,8 @@ class PersonalInfo {
         birthDay: map['birthDay'],
         summarize: map['summarize'],
         academic: map['academic'],
-        school: map['school']
+        school: map['school'],
+        mark: map['marker']
     );
   }
 }
