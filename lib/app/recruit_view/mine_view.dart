@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
+import 'package:flutter_app/app/recruit_view/verification.dart';
+import 'package:flutter_app/app/model/company.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -140,7 +142,7 @@ class MineTabState extends State<MineTab> {
                                 padding: EdgeInsets.all(20.0*factor),
                                 child: new Row(
                                   children: <Widget>[
-                                    new Icon(Icons.near_me, size: 32.0*factor,),
+                                    new Icon(Icons.near_me, size: 32.0*factor, color: Colors.blue,),
                                     new Padding(
                                       padding: EdgeInsets.only(right: 20.0*factor),
                                     ),
@@ -159,7 +161,7 @@ class MineTabState extends State<MineTab> {
                           if(userName == '') {
                             _login();
                           } else {
-                            _navToPubJobList();
+                            _navToVerification(appState.company);
                           }
                         },
                         child: new Container(
@@ -176,11 +178,21 @@ class MineTabState extends State<MineTab> {
                                 padding: EdgeInsets.all(20.0*factor),
                                 child: new Row(
                                   children: <Widget>[
-                                    new Icon(Icons.fingerprint, size: 32.0*factor,),
+                                    new Icon(Icons.verified_user, size: 32.0*factor, color: Colors.green,),
                                     new Padding(
                                       padding: EdgeInsets.only(right: 20.0*factor),
                                     ),
                                     new Text('企业认证', style: TextStyle(fontSize: 26.0*factor),),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10*factor),
+                                      child: new Text(
+                                        appState.company.verified == null ? '(未认证)' : '(已认证)',
+                                        style: TextStyle(
+                                          fontSize: 26.0*factor,
+                                          color: appState.company.verified == null ? Colors.red : Colors.green,
+                                        )
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
@@ -301,6 +313,24 @@ class MineTabState extends State<MineTab> {
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
       }));
+  }
+
+  _navToVerification(Company company) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new Verification(company);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
   }
 
   _navToPubJobList() {

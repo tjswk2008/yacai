@@ -3,7 +3,6 @@ import 'package:flutter_app/app/model/resume.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/view/resume/resume_preview.dart';
-import 'package:flutter_app/app/component/select.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

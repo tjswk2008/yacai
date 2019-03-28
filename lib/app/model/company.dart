@@ -15,6 +15,12 @@ class Company {
   String hot; // 热招职位
   String count; // 职位总数
   String inc;   // 公司详情
+  String idBack; // 身份证背面照
+  String idFront; // 身份证正面照
+  String corporator; // 法人姓名
+  String idCard; // 法人身份证号码
+  String license; // 营业执照 
+  int verified;
   List<Job> jobs;
 
   //构造函数
@@ -32,7 +38,13 @@ class Company {
     this.hot,
     this.count,
     @required this.inc,
-    this.jobs
+    this.jobs,
+    this.idBack, // 身份证背面照
+    this.idFront, // 身份证正面照
+    this.corporator, // 法人姓名
+    this.idCard, // 法人身份证号码
+    this.license,
+    this.verified
   });
 
   static List<Company> fromJson(List list) {
@@ -41,7 +53,7 @@ class Company {
     for (var value in list) {
       _companys.add(Company.fromMap(value));
     }
-      return _companys;
+    return _companys;
   }
 
   static Company fromMap(Map map) {
@@ -59,7 +71,13 @@ class Company {
         hot: map['hot'],
         count: map['count'],
         inc: map['inc'],
-        jobs: Job.fromJson(map['jobs'])
+        jobs: Job.fromJson(map['jobs']),
+        idBack: map['idBack'], // 身份证背面照
+        idFront: map['idFront'], // 身份证正面照
+        corporator: map['corporator'], // 法人姓名
+        idCard: map['idCard'], // 法人身份证号码
+        license: map['license'],
+        verified: map['verified']
     );
   }
 }

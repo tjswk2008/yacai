@@ -259,6 +259,24 @@ class Api {
     return Dio().get(url);
   }
 
+  Future<Response<T>> verification<T>(
+    String corporator,
+    String idCard,
+    String idFront,
+    String idBack,
+    String license,
+    int id
+  ) {
+    return Dio().post('${serverAddr}company/verification', data: {
+      'corporator': corporator,
+      'idCard': idCard,
+      'idFront': idFront,
+      'idBack': idBack,
+      'license': license,
+      'id': id
+    });
+  }
+
   // upload interface
   Future<Response<T>> upload<T>(File file, String fileName) {
     FormData formData = new FormData.from({

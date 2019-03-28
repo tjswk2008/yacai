@@ -83,7 +83,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       new InkWell(
                         onTap: () {
                           ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
-                            return Api().upload(image, image.path.substring(image.path.lastIndexOf("/") + 1));
+                            return Api().upload(image, '${userName}_avatar${image.path.substring(image.path.lastIndexOf("."))}');
                           }).then((Response response) {
                             if(response.data['code'] != 1) {
                               return;
