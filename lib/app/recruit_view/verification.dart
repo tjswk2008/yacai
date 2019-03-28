@@ -307,7 +307,7 @@ class VerificationState extends State<Verification>
                           });
                           if(response.data['code'] != 1) {
                             Scaffold.of(ctx).showSnackBar(new SnackBar(
-                              content: new Text("保存失败！"),
+                              content: new Text(response.data['msg'] != null ? response.data['msg'] : "保存失败！"),
                             ));
                             return;
                           }
