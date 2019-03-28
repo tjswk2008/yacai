@@ -186,10 +186,10 @@ class MineTabState extends State<MineTab> {
                                     Padding(
                                       padding: EdgeInsets.only(left: 10*factor),
                                       child: new Text(
-                                        appState.company.verified == null || appState.company.verified == 0 ? '(未认证)' : '(已认证)',
+                                        appState.company == null || appState.company.verified == null || appState.company.verified == 0 ? '(未认证)' : '(已认证)',
                                         style: TextStyle(
                                           fontSize: 26.0*factor,
-                                          color: appState.company.verified == null || appState.company.verified == 0 ? Colors.red : Colors.green,
+                                          color: appState.company == null || appState.company.verified == null || appState.company.verified == 0 ? Colors.red : Colors.green,
                                         )
                                       ),
                                     )
