@@ -18,6 +18,7 @@ class MessageTab extends StatefulWidget {
 
 class PostList extends State<MessageTab> {
   List<Post> _posts = [];
+  List<Post> _originalPosts = [];
   String userName = '';
 
   @override
@@ -28,13 +29,51 @@ class PostList extends State<MessageTab> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidthInPt = MediaQuery.of(context).size.width;
+    double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: new AppBar(
         elevation: 0.0,
         title: new Text(widget._title,
-            style: new TextStyle(fontSize: 30.0*screenWidthInPt/750, color: Colors.white)),
+          style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
+        ),
+        actions: <Widget>[
+          new PopupMenuButton(
+            onSelected: (int value){
+               setState(() {
+                 if(value == 0) {
+                   _posts = _originalPosts;
+                 } else {
+                   _posts = [];
+                  for (var i = 0; i < _originalPosts.length; i++) {
+                    Post element = _originalPosts[i];
+                    if(element.type == value) {
+                      _posts.add(element);
+                    }
+                  }
+                 }
+               });
+            },
+            itemBuilder: (BuildContext context) =><PopupMenuItem<int>>[
+              new PopupMenuItem(
+                  value: 0,
+                  child: new Text("全部", style: TextStyle(fontSize: 22*factor),)
+              ),
+              new PopupMenuItem(
+                value: 1,
+                  child: new Text("财务/审计/税务", style: TextStyle(fontSize: 22*factor),)
+              ),
+              new PopupMenuItem(
+                value: 2,
+                  child: new Text("求职经", style: TextStyle(fontSize: 22*factor),)
+              ),
+              new PopupMenuItem(
+                value: 3,
+                  child: new Text("吐槽", style: TextStyle(fontSize: 22*factor),)
+              )
+            ]
+          )
+        ],
       ),
       body: new SingleChildScrollView(
         child: new Column(
@@ -45,13 +84,13 @@ class PostList extends State<MessageTab> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 new Padding(
-                  padding: EdgeInsets.only(top: 5.0*screenWidthInPt/750, right: 15.0*screenWidthInPt/750),
+                  padding: EdgeInsets.only(top: 5.0*factor, right: 15.0*factor),
                   child: new Container(
-                    height: 60.0*screenWidthInPt/750,
-                    width: 175.0*screenWidthInPt/750,
+                    height: 60.0*factor,
+                    width: 175.0*factor,
                     child: RaisedButton(
                       color: Colors.orange[400],
-                      child: Text("我要提问", style: new TextStyle(fontSize: 26.0*screenWidthInPt/750, color: Colors.white),),
+                      child: Text("我要提问", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
                       onPressed: () {
                         if(userName == '') {
                           _login();
@@ -106,6 +145,7 @@ class PostList extends State<MessageTab> {
       .then((Response response) {
         setState(() {
           _posts = Post.fromJson(response.data['list']);
+          _originalPosts = Post.fromJson(response.data['list']);
         });
         return SharedPreferences.getInstance();
       })

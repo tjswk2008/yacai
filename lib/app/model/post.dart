@@ -8,6 +8,7 @@ class Post {
   String latestStatus; // 最新状态
   String askedBy; // 提问者
   String askedAt; // 提问时间
+  int type; // 帖子类型
   List<Answer> answers; // 回复
 
   Post({
@@ -19,6 +20,7 @@ class Post {
     @required this.latestStatus,
     @required this.askedBy,
     @required this.askedAt,
+    this.type,
     @required this.answers,
   });
 
@@ -40,6 +42,7 @@ class Post {
         latestStatus: map['latestStatus'],
         askedBy: map['askedBy'],
         askedAt: map['askedAt'],
+        type: map['type'],
         answers: Answer.fromList(map['answers']),
     );
   }
