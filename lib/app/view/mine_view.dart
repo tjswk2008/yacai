@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/view/login_view.dart';
 import 'package:flutter_app/app/view/resume/resume_detail.dart';
+import 'package:flutter_app/app/view/shield_list.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:dio/dio.dart';
@@ -254,7 +255,7 @@ class MineTabState extends State<MineTab> {
                         },
                         child: new Container(
                           height: 60.0*factor,
-                          margin: EdgeInsets.only(top: 15.0*factor, bottom: 15.0*factor),
+                          margin: EdgeInsets.only(top: 15.0*factor),
                           decoration: new BoxDecoration(
                             color: Colors.white,
                           ),
@@ -285,6 +286,46 @@ class MineTabState extends State<MineTab> {
                         )
                       ),
 
+                      new InkWell(
+                        onTap: () {
+                          if(userName == '') {
+                            _login();
+                          } else {
+                            _navToShieldList();
+                          }
+                        },
+                        child: new Container(
+                          height: 60.0*factor,
+                          margin: EdgeInsets.only(top: 15.0*factor, bottom: 15.0*factor, ),
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  top: 10.0*factor,
+                                  bottom: 10.0*factor,
+                                  left: 20.0*factor,
+                                  right: 20.0*factor,
+                                ),
+                                child: new Row(
+                                  children: <Widget>[
+                                    new Icon(Icons.do_not_disturb_alt, size: 30.0*factor),
+                                    new Padding(
+                                      padding: EdgeInsets.only(right: 10.0*factor),
+                                    ),
+                                    new Text('不让该公司看我的简历', style: TextStyle(fontSize: 24.0*factor),),
+                                  ],
+                                ),
+                              ),
+                              new Icon(Icons.chevron_right, size: 30.0*factor,),
+                            ],
+                          ),
+                        )
+                      ),
                       new Container(
                         color: Colors.white,
                         child: new Padding(
@@ -419,6 +460,24 @@ class MineTabState extends State<MineTab> {
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
           return new ResumeDetail();
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
+  }
+
+  _navToShieldList() {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ShieldList();
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(

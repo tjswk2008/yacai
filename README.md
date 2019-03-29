@@ -66,3 +66,18 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 AUTO_INCREMENT=6
 ;
+
+CREATE TABLE `block` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`blocked` INT(1) NOT NULL DEFAULT '0' COMMENT '1 已屏蔽 0 开放',
+	`companyId` INT(11) NOT NULL DEFAULT '0',
+	`account` VARCHAR(64) NOT NULL DEFAULT '',
+	PRIMARY KEY (`id`),
+	INDEX `FK_block_company` (`companyId`),
+	CONSTRAINT `FK_block_company` FOREIGN KEY (`companyId`) REFERENCES `company` (`id`)
+)
+COMMENT='屏蔽记录'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=13
+;

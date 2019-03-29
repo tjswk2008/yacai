@@ -9,6 +9,7 @@ import 'package:flutter_app/app/model/app.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -85,35 +86,49 @@ class EducationEditViewState extends State<EducationEditView>
                   ),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 16.0*factor),
-                    child: new TextField(
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          text: _education.name,
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: _education.name.length
+                    child: TypeAheadField(
+                      textFieldConfiguration: TextFieldConfiguration(
+                        autofocus: true,
+                        controller: TextEditingController.fromValue(
+                          TextEditingValue(
+                            text: _education.name,
+                            selection: TextSelection.fromPosition(
+                              TextPosition(
+                                affinity: TextAffinity.downstream,
+                                offset: _education.name.length
+                              )
                             )
                           )
-                        )
+                        ),
+                        style: TextStyle(fontSize: 20*factor),
+                        decoration: new InputDecoration(
+                          hintText: "请输入学校名称",
+                          hintStyle: new TextStyle(
+                              color: const Color(0xFF808080),
+                              fontSize: 20.0*factor
+                          ),
+                          border: new UnderlineInputBorder(
+                            borderSide: BorderSide(width: 1.0*factor)
+                          ),
+                          contentPadding: EdgeInsets.all(10.0*factor)
+                        ),
                       ),
-                      onChanged: (val) {
+                      suggestionsCallback: (pattern) async {
+                        Response response = await Api().getSchoolSuggestions(pattern);
+                        return response.data;
+                      },
+                      itemBuilder: (context, suggestion) {
+                        return ListTile(
+                          leading: Icon(Icons.school),
+                          title: Text(suggestion['name']),
+                        );
+                      },
+                      onSuggestionSelected: (suggestion) {
                         setState(() {
-                          _education.name = val;
+                        _education.name = suggestion['name'];
                         });
                       },
-                      style: TextStyle(fontSize: 20.0*factor),
-                      decoration: new InputDecoration(
-                        hintText: "请输入学校名称",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
-                        ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
-                      ),
-                    ),
+                    )
                   ),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 10.0*factor),

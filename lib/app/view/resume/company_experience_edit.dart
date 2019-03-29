@@ -9,6 +9,7 @@ import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
@@ -109,36 +110,50 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                   ),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 16.0*factor),
-                    child: new TextField(
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          text: _companyExperience.cname,
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: _companyExperience.cname.length
+                    child: TypeAheadField(
+                      textFieldConfiguration: TextFieldConfiguration(
+                        autofocus: true,
+                        controller: TextEditingController.fromValue(
+                          TextEditingValue(
+                            text: _companyExperience.cname,
+                            selection: TextSelection.fromPosition(
+                              TextPosition(
+                                affinity: TextAffinity.downstream,
+                                offset: _companyExperience.cname.length
+                              )
                             )
                           )
-                        )
+                        ),
+                        style: TextStyle(fontSize: 20*factor),
+                        decoration: new InputDecoration(
+                          hintText: "请输入公司名",
+                          hintStyle: new TextStyle(
+                              color: const Color(0xFF808080),
+                              fontSize: 20.0*factor
+                          ),
+                          border: new UnderlineInputBorder(
+                            borderSide: BorderSide(width: 1.0*factor)
+                          ),
+                          contentPadding: EdgeInsets.all(10.0*factor)
+                        ),
                       ),
-                      onChanged: (val) {
+                      suggestionsCallback: (pattern) async {
+                        Response response = await Api().getCompanySuggestions(pattern);
+                        return response.data;
+                      },
+                      itemBuilder: (context, suggestion) {
+                        return ListTile(
+                          leading: Icon(Icons.business),
+                          title: Text(suggestion['name']),
+                          subtitle: Text('${suggestion['location']}'),
+                        );
+                      },
+                      onSuggestionSelected: (suggestion) {
                         setState(() {
-                          _companyExperience.cname = val;
+                        _companyExperience.cname = suggestion['name'];
                         });
                       },
-                      style: TextStyle(fontSize: 20*factor),
-                      decoration: new InputDecoration(
-                        hintText: "请输入公司名",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 20.0*factor
-                        ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
-                      ),
-                    ),
+                    )
                   ),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 10.0*factor),

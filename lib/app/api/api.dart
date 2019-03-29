@@ -277,6 +277,45 @@ class Api {
     });
   }
 
+  Future getCompanySuggestions<T>(
+    String pattern
+  ) {
+    return Dio().post('${serverAddr}company/getCompanySuggestions', data: {
+      'pattern': pattern
+    });
+  }
+
+  // education interface
+  Future getSchoolSuggestions<T>(
+    String pattern
+  ) {
+    return Dio().post('${serverAddr}education/getSchoolSuggestions', data: {
+      'pattern': pattern
+    });
+  }
+
+  // block interface
+  Future addToBlockedList<T>(
+    String userName,
+    int companyId,
+    int blocked
+  ) {
+    return Dio().post('${serverAddr}block/addToBlockedList', data: {
+      'account': userName,
+      'companyId': companyId,
+      'blocked':blocked
+    });
+  }
+
+  // block interface
+  Future getBlockedList<T>(
+    String userName,
+  ) {
+    return Dio().post('${serverAddr}block/getBlockedList', data: {
+      'account': userName,
+    });
+  }
+
   // upload interface
   Future<Response<T>> upload<T>(File file, String fileName) {
     FormData formData = new FormData.from({

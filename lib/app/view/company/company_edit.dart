@@ -11,6 +11,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -136,35 +137,49 @@ class CompanyEditState extends State<CompanyEdit>
                 ),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 16.0*factor),
-                  child: new TextField(
-                    style: TextStyle(fontSize: 20.0*factor),
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: company.name,
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: company.name.length
+                  child: TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                      autofocus: true,
+                      controller: TextEditingController.fromValue(
+                        TextEditingValue(
+                          text: company.name,
+                          selection: TextSelection.fromPosition(
+                            TextPosition(
+                              affinity: TextAffinity.downstream,
+                              offset: company.name.length
+                            )
                           )
                         )
-                      )
+                      ),
+                      style: TextStyle(fontSize: 20.0*factor),
+                      decoration: new InputDecoration(
+                        hintText: "请输入公司名称",
+                        hintStyle: new TextStyle(
+                            color: const Color(0xFF808080)
+                        ),
+                        border: new UnderlineInputBorder(
+                          borderSide: BorderSide(width: factor)
+                        ),
+                        contentPadding: EdgeInsets.all(10.0*factor)
+                      ),
                     ),
-                    onChanged: (val) {
+                    suggestionsCallback: (pattern) async {
+                      Response response = await Api().getCompanySuggestions(pattern);
+                      return response.data;
+                    },
+                    itemBuilder: (context, suggestion) {
+                      return ListTile(
+                        leading: Icon(Icons.business),
+                        title: Text(suggestion['name']),
+                        subtitle: Text('${suggestion['location']}'),
+                      );
+                    },
+                    onSuggestionSelected: (suggestion) {
                       setState(() {
-                        company.name = val;
+                       company.name = suggestion['name'];
                       });
                     },
-                    decoration: new InputDecoration(
-                      hintText: "请输入公司名称",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
-                      ),
-                      border: new UnderlineInputBorder(
-                        borderSide: BorderSide(width: factor)
-                      ),
-                      contentPadding: EdgeInsets.all(10.0*factor)
-                    ),
-                  ),
+                  )
                 ),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -180,7 +195,7 @@ class CompanyEditState extends State<CompanyEdit>
                     new InkWell(
                       onTap: () {
                         ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
-                          return Api().upload(image, image.path.substring(image.path.lastIndexOf("/") + 1));
+                          return Api().upload(image, '${company.id}_company_logo${image.path.substring(image.path.lastIndexOf("."))}');
                         }).then((Response response) {
                           if(response.data['code'] != 1) {
                             return;

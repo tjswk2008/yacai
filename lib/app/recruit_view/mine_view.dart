@@ -8,6 +8,7 @@ import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/recruit_view/verification.dart';
 import 'package:flutter_app/app/model/company.dart';
+import 'package:flutter_app/app/view/company/company_edit.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -161,6 +162,47 @@ class MineTabState extends State<MineTab> {
                           if(userName == '') {
                             _login();
                           } else {
+                            _navToCompanyEdit(appState.company);
+                          }
+                        },
+                        child: new Container(
+                          height: 80.0*factor,
+                          margin: EdgeInsets.only(bottom: 10.0*factor),
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Padding(
+                                padding: EdgeInsets.all(20.0*factor),
+                                child: new Row(
+                                  children: <Widget>[
+                                    new Icon(Icons.business, size: 32.0*factor),
+                                    new Padding(
+                                      padding: EdgeInsets.only(right: 20.0*factor),
+                                    ),
+                                    new Text('填写企业资料', style: TextStyle(fontSize: 26.0*factor),),
+                                  ],
+                                ),
+                              ),
+                              new Icon(Icons.chevron_right, size: 32.0*factor,),
+                            ],
+                          ),
+                        )
+                      ),
+
+                      new InkWell(
+                        onTap: () {
+                          if(userName == '') {
+                            _login();
+                          } else if (appState.company.name == '' || appState.company.name == null) {
+                            Scaffold.of(context).showSnackBar(new SnackBar(
+                              content: new Text("请先填写企业基本资料", style: TextStyle(fontSize: 20.0*factor),),
+                            ));
+                            return;
+                          } else {
                             _navToVerification(appState.company);
                           }
                         },
@@ -313,6 +355,24 @@ class MineTabState extends State<MineTab> {
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
       }));
+  }
+
+  _navToCompanyEdit(Company company) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new CompanyEdit(company);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
   }
 
   _navToVerification(Company company) {

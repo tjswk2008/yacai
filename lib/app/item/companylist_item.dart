@@ -90,9 +90,9 @@ class CompanyListItem extends StatelessWidget {
                             children: <Widget>[
                               Text('热招：', style: new TextStyle(
                                 fontSize: 22.0*factor, color: Colors.grey)),
-                              Text(company.jobs[0].name, style: new TextStyle(
+                              company.jobs.length == 0 ? Container() : Text(company.jobs[0].name, style: new TextStyle(
                                 fontSize: 22.0*factor, color: Colors.red)),
-                              Text(' 等 ', style: new TextStyle(
+                              company.jobs.length == 0 ? Container() : Text(' 等 ', style: new TextStyle(
                                 fontSize: 22.0*factor, color: Colors.grey)),
                               Text(company.jobs.length.toString(), style: new TextStyle(
                                 fontSize: 22.0*factor, color: Colors.red)),
