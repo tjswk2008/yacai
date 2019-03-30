@@ -61,6 +61,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
         height: 40*factor,
         width: 140*factor,
         decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: _jobExpect.salary == salaryArr[index] ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor
@@ -85,6 +86,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
         height: 40*factor,
         width: 140*factor,
         decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: _jobExpect.industry == companyTypeArr[index] ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor
@@ -109,6 +111,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
         height: 40*factor,
         width: 220*factor,
         decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: _jobExpect.jobTitle == titleArr[index] ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor

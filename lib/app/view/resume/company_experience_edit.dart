@@ -61,6 +61,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
         height: 40*factor,
         width: 220*factor,
         decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: _companyExperience.jobTitle == titleArr[index] ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor

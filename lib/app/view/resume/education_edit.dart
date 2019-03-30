@@ -154,6 +154,7 @@ class EducationEditViewState extends State<EducationEditView>
                             height: 40*factor,
                             width: 120*factor,
                             decoration: BoxDecoration(
+                              borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
                               border: new Border.all(
                                 color: _education.academic == index ? const Color(0xffaaaaaa) : const Color(0xffffffff),
                                 width: 2*factor

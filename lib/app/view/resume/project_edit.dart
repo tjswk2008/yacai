@@ -60,6 +60,7 @@ class ProjectEditViewState extends State<ProjectEditView>
         height: 40*factor,
         width: 220*factor,
         decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: _project.role == titleArr[index] ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor

@@ -4,6 +4,7 @@ import 'package:flutter_app/app/component/common_button.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_app/app/model/constants.dart';
 
 // 我要提问界面
 class AskQuestion extends StatefulWidget {
@@ -31,6 +32,7 @@ class AskQuestionState extends State<AskQuestion> {
   final titleCtrl = new TextEditingController(text: '');
   final detailCtrl = new TextEditingController(text: '');
   String userName = '';
+  int type = 1;
 
   @override
   void initState() {
@@ -40,6 +42,31 @@ class AskQuestionState extends State<AskQuestion> {
         userName = prefs.getString('userName');
       });
     });
+  }
+
+  Widget postTypeOption(BuildContext context, int index) {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new InkWell(
+      onTap: () {
+        setState(() {
+          type =  index + 1;
+        });
+      },
+      child: new Container(
+        height: 40*factor,
+        width: 180*factor,
+        decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
+          border: type == (index + 1) ? new Border.all(
+            color: const Color(0xffaaaaaa),
+            width: 2*factor
+          ) : Border(),
+        ),
+        child: new Center(
+          child: new Text(postTypeArr[index], style: TextStyle(fontSize: 22.0*factor),),
+        ),
+      ),
+    );
   }
 
   @override
@@ -106,6 +133,22 @@ class AskQuestionState extends State<AskQuestion> {
             ),
             new Container(height: 20.0*factor),
             new Row(
+              children: <Widget>[
+                new Text("分类：", style: new TextStyle(fontSize: 22.0*factor)),
+                new Container(
+                  height: 60*factor,
+                  child: new ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: postTypeArr.length,
+                    itemBuilder: postTypeOption,
+                    scrollDirection: Axis.horizontal,
+                    physics: const ClampingScrollPhysics(),
+                  ),
+                ),
+              ],
+            ),
+            new Container(height: 20.0*factor),
+            new Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new Text("详情：", style: new TextStyle(fontSize: 22.0*factor)),
@@ -149,7 +192,7 @@ class AskQuestionState extends State<AskQuestion> {
                     isRequesting = true;
                   });
                   // 发送给webview，让webview登录后再取回token
-                  Api().addPost(userName, title, detail)
+                  Api().addPost(userName, title, detail, type)
                     .then((Response response) {
                       setState(() {
                         isRequesting = false;

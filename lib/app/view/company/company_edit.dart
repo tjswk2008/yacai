@@ -68,6 +68,7 @@ class CompanyEditState extends State<CompanyEdit>
         height: 40*factor,
         width: 140*factor,
         decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: company.type == companyTypeArr[index] ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor
@@ -92,6 +93,7 @@ class CompanyEditState extends State<CompanyEdit>
         height: 40*factor,
         width: 170*factor,
         decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: company.employee == employeeArr[index] ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor

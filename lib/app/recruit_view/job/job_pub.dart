@@ -63,6 +63,7 @@ class PubJobState extends State<PubJob>
         height: 40*factor,
         width: 120*factor,
         decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: (index == 0 && timereq == '不限') || (index > 0 && timereq == timeReqArr[index - 1].toString() + '年') ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor
@@ -87,6 +88,7 @@ class PubJobState extends State<PubJob>
         height: 40*factor,
         width: 120*factor,
         decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: (index == 0 && academic == '不限') || (index > 0 && academic == academicArr[index - 1]) ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor
@@ -111,6 +113,7 @@ class PubJobState extends State<PubJob>
         height: 40*factor,
         width: 120*factor,
         decoration: BoxDecoration(
+          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: salary == salaryArr[index] ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor

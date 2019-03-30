@@ -5,6 +5,12 @@ const List<String> jobStatusArr = <String>[
   "在职-暂不考虑",
 ];
 
+const List<String> postTypeArr = <String>[
+  "财务/审计/税务",
+  "求职经",
+  "吐槽"
+];
+
 const List<String> jobTypeArr = <String>[
   "全职",
   "兼职",
