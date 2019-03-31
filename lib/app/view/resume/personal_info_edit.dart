@@ -91,6 +91,9 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             setState(() {
                               personalInfo.avatar = response.data['imgurl'];
                             });
+                            Resume resume = state.resume;
+                            resume.personalInfo = personalInfo;
+                            StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
                           })
                           .catchError((e) {
                             print(e);

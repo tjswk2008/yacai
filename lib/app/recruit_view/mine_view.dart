@@ -16,8 +16,7 @@ class MineTab extends StatefulWidget {
 }
 
 class MineTabState extends State<MineTab> {
-
-  final double _appBarHeight = 150.0;
+  
   String userAvatar = '';
   String jobStatus = '';
   String userName = '';
@@ -36,6 +35,7 @@ class MineTabState extends State<MineTab> {
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
+    final double _appBarHeight = 250.0*factor;
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, appState) {
@@ -304,7 +304,6 @@ class MineTabState extends State<MineTab> {
                   )
                 ],
               ),
-
               userName != '' ? new Positioned(
                 bottom: 30.0*factor,
                 left: 20.0*factor,
@@ -343,7 +342,6 @@ class MineTabState extends State<MineTab> {
               ) : Container(),
             ],
           )
-          
         );
       }
     );
