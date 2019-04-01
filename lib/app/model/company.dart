@@ -22,6 +22,7 @@ class Company {
   String license; // 营业执照 
   int verified;
   int blocked;
+  String reason; // 未通过认证原因
   List<Job> jobs;
 
   //构造函数
@@ -46,7 +47,8 @@ class Company {
     this.idCard, // 法人身份证号码
     this.license,
     this.verified,
-    this.blocked
+    this.blocked,
+    this.reason
   });
 
   static List<Company> fromJson(List list) {
@@ -80,7 +82,8 @@ class Company {
         idCard: map['idCard'], // 法人身份证号码
         license: map['license'],
         verified: map['verified'],
-        blocked: map['blocked']
+        blocked: map['blocked'],
+        reason: map['reason']
     );
   }
 }

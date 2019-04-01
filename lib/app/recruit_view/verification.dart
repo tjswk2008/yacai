@@ -252,7 +252,7 @@ class VerificationState extends State<Verification>
                     ),
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(left: 112*factor, bottom: 30.0*factor),
+                    padding: EdgeInsets.only(left: 112*factor),
                     child: InkWell(
                       onTap: () {
                         ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
@@ -282,10 +282,46 @@ class VerificationState extends State<Verification>
                       ),
                     ),
                   ),
+
+                  company.verified == 2 ? Divider() : Container(height: 30*factor,),
+                  company.verified == 2 ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                        child: new Text(
+                          '未通过原因:',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
+                      ),
+                      new Row(
+                        children: <Widget>[
+                          Container(width: 20*factor,),
+                          new Flexible(
+                            child: new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                new Text(
+                                  company.reason,
+                                  style: new TextStyle(
+                                    fontSize: 24.0*factor,
+                                    color: Colors.red
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(width: 20*factor,),
+                        ]
+                      ),
+                      Container(height: 30*factor,)
+                    ],
+                  ) : Container(),
                   
                   new Builder(builder: (ctx) {
                     return new CommonButton(
-                      text: "确认",
+                      text: "提交",
                       color: new Color.fromARGB(255, 0, 215, 198),
                       onTap: () async {
                         if (isRequesting) return;
