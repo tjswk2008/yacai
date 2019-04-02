@@ -140,18 +140,17 @@ class PostList extends State<MessageTab> {
         child: new PostListItem(post));
   }
 
-  void getPostList() {
-    Api().getPostList()
+  void getPostList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String user = prefs.getString('userName');
+    setState(() {
+      userName = user;
+    });
+    Api().getPostList(user)
       .then((Response response) {
         setState(() {
           _posts = Post.fromJson(response.data['list']);
           _originalPosts = Post.fromJson(response.data['list']);
-        });
-        return SharedPreferences.getInstance();
-      })
-      .then((SharedPreferences prefs) {
-        setState(() {
-          userName = prefs.getString('userName');
         });
       })
      .catchError((e) {

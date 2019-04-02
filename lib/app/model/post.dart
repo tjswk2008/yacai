@@ -5,9 +5,10 @@ class Post {
   String detail; // 详情
   int viewers; // 已读人数
   int votes; // 点赞人数
-  String latestStatus; // 最新状态
+  String updateAt; // 最新状态
   String askedBy; // 提问者
   String askedAt; // 提问时间
+  int like;
   int type; // 帖子类型
   List<Answer> answers; // 回复
 
@@ -17,10 +18,11 @@ class Post {
     @required this.detail,
     @required this.viewers,
     @required this.votes,
-    @required this.latestStatus,
+    @required this.updateAt,
     @required this.askedBy,
     @required this.askedAt,
     this.type,
+    this.like,
     @required this.answers,
   });
 
@@ -34,32 +36,37 @@ class Post {
 
   static Post fromMap(Map map) {
     return new Post(
-        id: map["id"],
-        title: map['title'],
-        detail: map['detail'],
-        viewers: map['viewers'],
-        votes: map['votes'],
-        latestStatus: map['latestStatus'],
-        askedBy: map['askedBy'],
-        askedAt: map['askedAt'],
-        type: map['type'],
-        answers: Answer.fromList(map['answers']),
+      id: map["id"],
+      title: map['title'],
+      detail: map['detail'],
+      viewers: map['viewers'],
+      votes: map['votes'],
+      updateAt: map['updateAt'],
+      askedBy: map['askedBy'],
+      askedAt: map['askedAt'],
+      type: map['type'],
+      like: map['like'],
+      answers: Answer.fromList(map['answers']),
     );
   }
 }
 
 class Answer{
+  int id;
   String answer; // 答复详情
   String answerBy; // 答复人
   String answerAt; // 答复时间
-  String votes; // 点赞数
+  int votes; // 点赞数
+  int like;
   List<Commet> commets; // 追评
 
   Answer({
+    this.id,
     this.answer,
     this.answerBy,
     this.answerAt,
     this.votes,
+    this.like,
     this.commets,
   });
 
@@ -73,11 +80,12 @@ class Answer{
 
   static Answer fromMap(Map map) {
     return new Answer(
+        id: map['id'],
         answer: map['answer'],
         answerBy: map['answerBy'],
         answerAt: map['answerAt'],
         votes: map['votes'],
-        commets: Commet.fromList(map['commets']),
+        like: map['like'],
     );
   }
 }

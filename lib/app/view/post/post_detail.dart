@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter_app/app/model/post.dart';
 import 'package:flutter_app/app/view/post/answer_list.dart';
 import 'package:flutter_app/app/component/common_button.dart';
+import 'package:flutter_app/app/component/likebutton/like_button.dart';
 import 'package:flutter_app/app/view/login_view.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:dio/dio.dart';
@@ -94,14 +95,45 @@ class PostDetailState extends State<PostDetail>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       new Container(
-                        width: 90.0*factor,
+                        width: 150.0*factor,
                         padding: EdgeInsets.only(right: 15.0*factor),
                         child: new Column(
                           children: <Widget>[
                             new Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                new Icon(Icons.favorite, color: Colors.red, size: 26*factor),
+                                LikeButton(
+                                  width: 75*factor,
+                                  isLiked: _post.like == 1 ? true : false,
+                                  onIconClicked: (bool isLike) {
+                                    if (isRequesting) return;
+                                    setState(() {
+                                      isRequesting = true;
+                                    });
+                                    // 发送给webview，让webview登录后再取回token
+                                    Api().like(userName, isLike ? 1 : 0, _post.id, null)
+                                      .then((Response response) {
+                                        if(response.data['code'] != 1) {
+                                          Scaffold.of(context).showSnackBar(new SnackBar(
+                                            content: new Text("点赞失败！"),
+                                          ));
+                                          return;
+                                        }
+                                        setState(() {
+                                          isRequesting = false;
+                                          _post.like = isLike ? 1 : 0;
+                                          _post.votes = isLike ? (_post.votes + 1) : (_post.votes - 1);
+                                        });
+                                      })
+                                      .catchError((e) {
+                                        setState(() {
+                                          isRequesting = false;
+                                        });
+                                        print(e);
+                                      });
+                                  }
+                                ),
+                                // new Icon(Icons.favorite, color: Colors.red, size: 26*factor),
                                 new Text(_post.votes.toString(), style: new TextStyle(fontSize: 22*factor)),
                               ],
                             )
@@ -116,7 +148,7 @@ class PostDetailState extends State<PostDetail>
                               text: new TextSpan(
                                 text: _post.detail,
                                 style: new TextStyle(
-                                    fontSize: 22.0*factor,
+                                    fontSize: 24.0*factor,
                                     color: Colors.black
                                 ),
                               ),
@@ -134,7 +166,7 @@ class PostDetailState extends State<PostDetail>
                                   ),
                                   child: new Text(_post.askedBy, style: new TextStyle(fontSize: 22*factor)),
                                 ),
-                                new Text(_post.askedAt, style: new TextStyle(fontSize: 22*factor)),
+                                new Text(formatDate(DateTime.parse(_post.askedAt), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]), style: new TextStyle(fontSize: 22*factor)),
                               ],
                             )
                           ],
@@ -144,7 +176,7 @@ class PostDetailState extends State<PostDetail>
                   ),
                   new Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.symmetric(vertical: 20.0*factor),
                     child: new Text('${_post.answers.length}个回答：', style: new TextStyle(fontSize: 22*factor)),
                   ),
                   new AnswerList(_post.answers),
@@ -209,7 +241,7 @@ class PostDetailState extends State<PostDetail>
                                 answer: detail,// 答复详情
                                 answerBy: userName,// 答复人
                                 answerAt: formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]),// 答复时间
-                                votes: '0' // 点赞数
+                                votes: 0 // 点赞数
                               )
                             );
                             setState(() {

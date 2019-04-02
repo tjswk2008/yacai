@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter_app/app/model/post.dart';
+import 'package:flutter_app/app/component/likebutton/like_button.dart';
+import 'package:date_format/date_format.dart';
+import 'package:flutter_app/app/api/api.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -18,10 +23,17 @@ class AnswerListState extends State<AnswerList>
     with TickerProviderStateMixin {
 
   VoidCallback onChanged;
+  bool isRequesting = false;
+  String userName = '';
 
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
+    });
   }
 
   @override
@@ -43,15 +55,45 @@ class AnswerListState extends State<AnswerList>
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             new Container(
-              width: 90.0*factor,
+              width: 150.0*factor,
               margin: EdgeInsets.only(left: 4.0*factor),
               padding: EdgeInsets.only(right: 15.0*factor),
               child: new Column(
                 children: <Widget>[
                   new Row(
                     children: <Widget>[
-                      new Icon(Icons.favorite, color: Colors.red, size: 26.0*factor),
-                      new Text(answer.votes, style: TextStyle(fontSize: 22.0*factor)),
+                      LikeButton(
+                        width: 75*factor,
+                        isLiked: answer.like == 1 ? true : false,
+                        onIconClicked: (bool isLike) {
+                          if (isRequesting) return;
+                          setState(() {
+                            isRequesting = true;
+                          });
+                          // 发送给webview，让webview登录后再取回token
+                          Api().like(userName, isLike ? 1 : 0, null, answer.id)
+                            .then((Response response) {
+                              if(response.data['code'] != 1) {
+                                Scaffold.of(context).showSnackBar(new SnackBar(
+                                  content: new Text("点赞失败！"),
+                                ));
+                                return;
+                              }
+                              setState(() {
+                                isRequesting = false;
+                                answer.like = isLike ? 1 : 0;
+                                answer.votes = isLike ? (answer.votes + 1) : (answer.votes - 1);
+                              });
+                            })
+                            .catchError((e) {
+                              setState(() {
+                                isRequesting = false;
+                              });
+                              print(e);
+                            });
+                        }
+                      ),
+                      new Text(answer.votes.toString(), style: TextStyle(fontSize: 22.0*factor)),
                     ],
                   )
                 ],
@@ -84,7 +126,7 @@ class AnswerListState extends State<AnswerList>
                           ),
                           child: Text(answer.answerBy, style: TextStyle(fontSize: 22.0*factor)),
                         ),
-                        Text(answer.answerAt, style: TextStyle(fontSize: 22.0*factor)),
+                        Text(formatDate(DateTime.parse(answer.answerAt), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]), style: TextStyle(fontSize: 22.0*factor)),
                       ],
                     ),
                     new Divider(),

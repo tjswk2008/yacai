@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/post.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostListItem extends StatelessWidget {
   final Post post;
@@ -9,6 +10,7 @@ class PostListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
+    timeago.setLocaleMessages("zh_cn", timeago.ZhCnMessages());
     return new Padding(
       padding: EdgeInsets.only(
         top: 10*factor,
@@ -78,7 +80,10 @@ class PostListItem extends StatelessWidget {
                   right: 10.0*factor,
                   bottom: 15.0*factor,
                 ),
-                child: new Text(post.latestStatus, style: new TextStyle(fontSize: 22.0*factor))
+                child: new Text(
+                  post.updateAt != post.askedAt ? '${timeago.format(DateTime.parse(post.updateAt), locale: 'zh_cn')}更新' : '${timeago.format(DateTime.parse(post.askedAt), locale: 'zh_cn')}创建',
+                  style: new TextStyle(fontSize: 22.0*factor)
+                )
               )
             ],
           ), 

@@ -216,8 +216,20 @@ class Api {
   }
 
   // post interface
-  Future<Response<T>> getPostList<T>() {
-    return Dio().get(serverAddr + "post/query");
+  Future<Response<T>> getPostList<T>(String userName) {
+    return Dio().get(serverAddr + "post/query?userName=" + userName);
+  }
+
+  Future<Response<T>> like<T>(String userName, int like, int postId, int answerId) {
+    return Dio().post(serverAddr + "post/like", data: postId != null ? {
+      'userName': userName,
+      'postId': postId,
+      'like': like
+    } : {
+      'userName': userName,
+      'answerId': answerId,
+      'like': like
+    });
   }
 
   Future<Response<T>> addPost<T>(String askedBy, String title, String detail, int type) {
