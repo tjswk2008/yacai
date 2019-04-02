@@ -81,3 +81,19 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 AUTO_INCREMENT=13
 ;
+
+CREATE TABLE `likelist` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`answerId` INT(11) NULL DEFAULT NULL,
+	`account` VARCHAR(64) NOT NULL,
+	`like` INT(1) NOT NULL DEFAULT '0' COMMENT '1. 已点赞 0. 未点赞',
+	`postId` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COMMENT='帖子点赞记录'
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=8
+;
+
+answer, post: DATE -> DATETIME
