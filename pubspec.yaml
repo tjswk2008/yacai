@@ -17,7 +17,6 @@ dependencies:
   custom_radio: ^0.1.2
   flutter_spinkit: "^3.1.0"
   flutter_typeahead: "^1.4.0"
-  timeago: "^2.0.13"
 
 dev_dependencies:
   flutter_test:

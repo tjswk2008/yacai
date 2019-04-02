@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/post.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:flutter_app/app/component/timeago/timeago.dart' as timeago;
 
 class PostListItem extends StatelessWidget {
   final Post post;
