@@ -30,7 +30,6 @@ class CompanyEditState extends State<CompanyEdit>
   VoidCallback onChanged;
   Company _company;
   final nameCtrl = new TextEditingController(text: '');
-  final salaryCtrl = new TextEditingController(text: '');
   final addrCtrl = new TextEditingController(text: '');
   bool isRequesting = false;
   String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);

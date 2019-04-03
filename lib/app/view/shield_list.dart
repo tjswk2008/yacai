@@ -6,7 +6,6 @@ import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/app/model/company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:flutter_app/app/item/companylist_item.dart';
 import 'package:flutter_app/app/view/company/company_detail.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }

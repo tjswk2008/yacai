@@ -148,7 +148,7 @@ class SplashState extends State<SplashPage> {
     int role = prefs.getInt('role');
     String username = prefs.getString('userName');
     if (username != '' && username != null) {
-      Response response = await Api().login(username, null);;
+      Response response = await Api().login(username, null);
     
       if (role == 1) {
         Response resumeResponse = await Api().getUserInfo(response.data['id']);

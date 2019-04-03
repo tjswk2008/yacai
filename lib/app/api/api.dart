@@ -177,7 +177,8 @@ class Api {
   Future<Response<T>> saveJobs<T>(
     String name,
     String cname,
-    String salary,
+    int salaryLow,
+    int salaryHigh,
     String province,
     String city,
     String area,
@@ -192,7 +193,8 @@ class Api {
     return Dio().post('${serverAddr}jobs/saveJobs', data: {
         'name': name,
         'cname': cname,
-        'salary': salary,
+        'salaryLow': salaryLow,
+        'salaryHigh': salaryHigh,
         'province': province,
         'city': city,
         'area': area,

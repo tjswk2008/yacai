@@ -136,7 +136,7 @@ class _SalaryPickerState extends State<_SalaryPickerWidget> {
                   color: Colors.transparent,
                   child: new Container(
                     width: double.infinity,
-                    height: 500.0*factor,
+                    height: 520.0*factor,
                     child: new Container(
                       width: double.infinity,
                       color: Colors.white,
@@ -271,7 +271,7 @@ class _MySalaryPickerState extends State<_MySalaryPicker> {
           bottom: 10.0*factor,
         ),
         alignment: Alignment.center,
-        height: 440.0*factor,
+        height: 430.0*factor,
         child: CupertinoPicker(
           backgroundColor: Colors.white,
           scrollController: widget.controller,
@@ -301,7 +301,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = 300.0;
+    double maxHeight = 600.0;
 
     return new BoxConstraints(
       minWidth: constraints.maxWidth,

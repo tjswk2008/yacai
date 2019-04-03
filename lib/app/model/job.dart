@@ -4,7 +4,8 @@ class Job {
   final int id;
   final String name; // 职位名称
   final String cname; // 公司名字
-  final String salary; // 工资
+  final int salaryLow; // 工资
+  final int salaryHigh; // 工资
   final String username; // 发布人
   final String title; // 发布人职位描述
   final String pubTime; // 发布时间
@@ -26,7 +27,8 @@ class Job {
     this.area,
     @required this.name,
     @required this.cname,
-    @required this.salary,
+    @required this.salaryLow,
+    @required this.salaryHigh,
     @required this.username,
     @required this.title,
     @required this.pubTime,
@@ -56,7 +58,8 @@ class Job {
         id: map['id'],
         name: map['name'],
         cname: map['cname'],
-        salary: map['salary'],
+        salaryLow: map['salaryLow'],
+        salaryHigh: map['salaryHigh'],
         username: map['username'],
         title: map['title'],
         pubTime: map['pubTime'],

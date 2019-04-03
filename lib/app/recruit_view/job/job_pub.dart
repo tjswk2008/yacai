@@ -8,6 +8,7 @@ import 'package:flutter_app/app/api/api.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/component/city.dart';
+import 'package:flutter_app/app/component/salary.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:custom_radio/custom_radio.dart';
@@ -38,7 +39,8 @@ class PubJobState extends State<PubJob>
   String province = '上海市';
   String city = '上海市';
   String area = '黄浦区';
-  String salary = '2千以下';
+  int salaryLow = 1;
+  int salaryHigh = 2;
   int type = 1; // 工作类型
 
   @override
@@ -56,7 +58,7 @@ class PubJobState extends State<PubJob>
     return new InkWell(
       onTap: () {
         setState(() {
-          timereq =  index == 0 ? '不限' : timeReqArr[index - 1].toString() + '年';
+          timereq =  index == 0 ? '不限' : timeReqArr[index - 1];
         });
       },
       child: new Container(
@@ -64,13 +66,13 @@ class PubJobState extends State<PubJob>
         width: 120*factor,
         decoration: BoxDecoration(
           borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-          border: (index == 0 && timereq == '不限') || (index > 0 && timereq == timeReqArr[index - 1].toString() + '年') ? new Border.all(
+          border: (index == 0 && timereq == '不限') || (index > 0 && timereq == timeReqArr[index - 1]) ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor
           ) : Border(),
         ),
         child: new Center(
-          child: new Text(index == 0 ? '不限' : timeReqArr[index - 1].toString() + '年', style: TextStyle(fontSize: 22.0*factor),),
+          child: new Text(index == 0 ? '不限' : timeReqArr[index - 1], style: TextStyle(fontSize: 22.0*factor),),
         ),
       ),
     );
@@ -96,31 +98,6 @@ class PubJobState extends State<PubJob>
         ),
         child: new Center(
           child: new Text(index == 0 ? '不限' : academicArr[index - 1], style: TextStyle(fontSize: 22.0*factor),),
-        ),
-      ),
-    );
-  }
-
-  Widget salaryOption(BuildContext context, int index) {
-    double factor = MediaQuery.of(context).size.width/750;
-    return new InkWell(
-      onTap: () {
-        setState(() {
-          salary =  salaryArr[index];
-        });
-      },
-      child: new Container(
-        height: 40*factor,
-        width: 120*factor,
-        decoration: BoxDecoration(
-          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-          border: salary == salaryArr[index] ? new Border.all(
-            color: const Color(0xffaaaaaa),
-            width: 2*factor
-          ) : Border(),
-        ),
-        child: new Center(
-          child: new Text(salaryArr[index], style: TextStyle(fontSize: 22.0*factor),),
         ),
       ),
     );
@@ -369,33 +346,46 @@ class PubJobState extends State<PubJob>
                     ],
                   ),
                   new Divider(),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
-                    child: new Text(
-                      '薪资待遇：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*factor),
-                    ),
-                  ),
-                  new Container(
-                    height: 60*factor,
-                    child: new ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: salaryArr.length,
-                      itemBuilder: salaryOption,
-                      scrollDirection: Axis.horizontal,
-                      physics: const ClampingScrollPhysics(),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20*factor, bottom: 10.0*factor),
+                        child: new Text(
+                          '薪资待遇：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 26.0*factor),
+                        ),
+                      ),
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20*factor, bottom: 10.0*factor),
+                        child: new InkWell(
+                          onTap: () {
+                            SalaryPicker.showSalaryPicker(
+                              context,
+                              selectStart: (low) {
+                                setState(() {
+                                  salaryLow = low;
+                                });
+                              },
+                              selectEnd: (high) {
+                                setState(() {
+                                  salaryHigh = high;
+                                });
+                              },
+                            );
+                          },
+                          child: Text('${salaryLow}k-${salaryHigh}k', style: TextStyle(fontSize: 24.0*factor, color: Colors.grey),),
+                        ),
+                      ),
+                    ],
                   ),
                   new Container(
                     height: 10*factor,
                   ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor)
-                  ),
                   new Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
                     child: new Text(
                       '工作地点：',
                       textAlign: TextAlign.left,
@@ -556,7 +546,8 @@ class PubJobState extends State<PubJob>
                           Response response = await Api().saveJobs(
                             nameCtrl.text.trim(),
                             state.company.name,
-                            salary,
+                            salaryLow,
+                            salaryHigh,
                             province,
                             city,
                             area,

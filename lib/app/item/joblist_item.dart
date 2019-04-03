@@ -44,7 +44,7 @@ class JobListItem extends StatelessWidget {
                                 right: 20.0*screenWidthInPt/750,
                               ),
                               child: new Text(
-                                  job.salary,
+                                  '${job.salaryLow}k-${job.salaryHigh}k',
                                   style: new TextStyle(color: Colors.red, fontSize: 26.0*screenWidthInPt/750)),
                             ),
                           ],
