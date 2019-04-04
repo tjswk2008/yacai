@@ -18,7 +18,6 @@ class JobDesc extends StatelessWidget {
       ),
       child: new Container(
           color: Colors.white,
-          height: 330.0*screenWidthInPt/750,
           child: new Padding(
               padding: EdgeInsets.all(15.0*screenWidthInPt/750),
               child: new Column(

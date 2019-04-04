@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/job.dart';
+import 'package:flutter_app/app/component/timeago/timeago.dart' as timeago;
 
 class JobListItem extends StatelessWidget {
   final Job job;
@@ -9,6 +10,7 @@ class JobListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidthInPt = MediaQuery.of(context).size.width;
+    timeago.setLocaleMessages("zh_cn", timeago.ZhCnMessages());
     return new Padding(
       padding: EdgeInsets.only(
         top: 10.0*screenWidthInPt/750,
@@ -19,6 +21,7 @@ class JobListItem extends StatelessWidget {
 
       child: new SizedBox(
         child: new Card(
+          elevation: 4.0,
           child: new Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -68,21 +71,22 @@ class JobListItem extends StatelessWidget {
                     new Divider(),
                     new Row(
                       children: <Widget>[
+                        // new Padding(
+                        //   padding: EdgeInsets.only(
+                        //     left: 20.0*screenWidthInPt/750,
+                        //     right: 5.0*screenWidthInPt/750,
+                        //     bottom: 15.0*screenWidthInPt/750,
+                        //   ),
+                        //   child: new Text(job.username + " | " + job.title,
+                        //       style: new TextStyle(color: new Color.fromARGB(255, 0, 215, 198), fontSize: 24.0*screenWidthInPt/750)),
+                        // ),
                         new Padding(
                           padding: EdgeInsets.only(
                             left: 20.0*screenWidthInPt/750,
-                            right: 5.0*screenWidthInPt/750,
                             bottom: 15.0*screenWidthInPt/750,
                           ),
-                          child: new Text(job.username + " | " + job.title,
-                              style: new TextStyle(color: new Color.fromARGB(255, 0, 215, 198), fontSize: 24.0*screenWidthInPt/750)),
-                        ),
-                        new Padding(
-                          padding: EdgeInsets.only(
-                            right: 10.0*screenWidthInPt/750,
-                            bottom: 15.0*screenWidthInPt/750,
-                          ),
-                          child: new Text(" 发布于 " + job.pubTime, style: new TextStyle(fontSize: 24.0*screenWidthInPt/750))
+                          child: new Text("发布于 ${timeago.format(DateTime.parse(job.pubTime), locale: 'zh_cn')}",
+                            style: new TextStyle(fontSize: 24.0*screenWidthInPt/750))
                         )
                       ],
                     ),
