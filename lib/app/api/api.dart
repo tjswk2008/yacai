@@ -157,8 +157,18 @@ class Api {
   }
 
   // jobs interface
-  Future<Response<T>> getJobList<T>(int type, String userName) {
-    return Dio().get('${serverAddr}jobs/jobsList?type=$type&userName=$userName');
+  Future<Response<T>> getJobList<T>(int type, String userName, String timeReq, String academic, String employee) {
+    String url = '${serverAddr}jobs/jobsList?type=$type&userName=$userName';
+    if(timeReq != null) {
+      url += '&timeReq=$timeReq';
+    }
+    if(academic != null) {
+      url += '&academic=$academic';
+    }
+    if(employee != null) {
+      url += '&employee=$employee';
+    }
+    return Dio().get(url);
   }
 
   Future<Response<T>> getRecruitJobList<T>(String userName) {

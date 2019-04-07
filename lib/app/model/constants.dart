@@ -18,6 +18,7 @@ const List<String> jobTypeArr = <String>[
 ];
 
 List<String> timeReqArr = <String>[
+  '学历不限',
   '应届生',
   '1年以内',
   '1-3年',
@@ -65,6 +66,7 @@ List<String> companyTypeArr = <String>[
   '咨询',
   '工程施工',
   '汽车生产',
+  '酒店',
   '其他行业'
 ];
 
