@@ -265,7 +265,7 @@ class CompanyEditState extends State<CompanyEdit>
                           print(e);
                         });
                       },
-                      child: company.imgs != null && company.imgs[index] != '' ? Image.network(company.imgs[index], width: 192*factor, height: 108*factor,) : Container(
+                      child: company.imgs != null && index < company.imgs.length && company.imgs[index] != '' ? Image.network(company.imgs[index], width: 192*factor) : Container(
                         width: 192*factor,
                         height: 108*factor,
                         decoration: BoxDecoration(
