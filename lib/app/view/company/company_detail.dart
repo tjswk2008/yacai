@@ -23,11 +23,6 @@ class CompanyDetailState extends State<CompanyDetail>
   List<Tab> _tabs;
   List<Widget> _imagePages;
   TabController _controller;
-  List<String> _urls = [
-    'https://img.bosszhipin.com/beijin/mcs/chatphoto/20170725/861159df793857d6cb984b52db4d4c9c.jpg',
-    'https://img2.bosszhipin.com/mcs/chatphoto/20151215/a79ac724c2da2a66575dab35384d2d75532b24d64bc38c29402b4a6629fcefd6_s.jpg',
-    'https://img.bosszhipin.com/beijin/mcs/chatphoto/20180207/c15c2fc01c7407b98faf4002e682676b.jpg'
-  ];
   Widget _companyTabContent;
   VoidCallback onChanged;
   int _currentIndex = 0;
@@ -67,9 +62,9 @@ class CompanyDetailState extends State<CompanyDetail>
   Widget build(BuildContext context) {
     double screenWidthInPt = MediaQuery.of(context).size.width;
     double _kAppBarHeight = 375.0*screenWidthInPt/750;
-    if (_urls.isNotEmpty) {
+    if (widget._company.imgs.isNotEmpty) {
       _imagePages = <Widget>[];
-      _urls.forEach((String url) {
+      widget._company.imgs.forEach((String url) {
         _imagePages.add(
             new Container(
                 color: Colors.black.withAlpha(900),

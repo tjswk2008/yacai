@@ -24,6 +24,7 @@ class Company {
   int blocked;
   String reason; // 未通过认证原因
   List<Job> jobs;
+  List<String> imgs;
 
   //构造函数
   Company({
@@ -48,7 +49,8 @@ class Company {
     this.license,
     this.verified,
     this.blocked,
-    this.reason
+    this.reason,
+    this.imgs = const <String>[]
   });
 
   static List<Company> fromJson(List list) {
@@ -58,6 +60,15 @@ class Company {
       _companys.add(Company.fromMap(value));
     }
     return _companys;
+  }
+
+  static List<String> convertToStringList(List list) {
+    List<String> _imgs = [];
+
+    for (var value in list) {
+      _imgs.add(value);
+    }
+    return _imgs;
   }
 
   static Company fromMap(Map map) {
@@ -83,7 +94,8 @@ class Company {
         license: map['license'],
         verified: map['verified'],
         blocked: map['blocked'],
-        reason: map['reason']
+        reason: map['reason'],
+        imgs: convertToStringList(map['imgs'])
     );
   }
 }

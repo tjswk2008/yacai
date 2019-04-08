@@ -233,6 +233,60 @@ class CompanyEditState extends State<CompanyEdit>
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),
                   child: new Text(
+                    '详情图：',
+                    textAlign: TextAlign.left,
+                    style: new TextStyle(fontSize: 26.0*factor),
+                  ),
+                ),
+                GridView.builder(
+                  padding: EdgeInsets.all(10.0*factor),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10.0 * factor,
+                    crossAxisSpacing: 10.0 * factor,
+                  ),
+                  itemCount: company.imgs == null ? 1 : (company.imgs.length + 1),
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+                          return Api().upload(image, '${company.id}_detail$index${image.path.substring(image.path.lastIndexOf("."))}');
+                        }).then((Response response) {
+                          if(response.data['code'] != 1) {
+                            return;
+                          }
+                          setState(() {
+                            company.imgs[index] = response.data['imgurl'];
+                            company.imgs.add('');
+                          });
+                        })
+                        .catchError((e) {
+                          print(e);
+                        });
+                      },
+                      child: company.imgs != null && company.imgs[index] != '' ? Image.network(company.imgs[index], width: 192*factor, height: 108*factor,) : Container(
+                        width: 192*factor,
+                        height: 108*factor,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 2*factor,
+                            color: Colors.grey
+                          )
+                        ),
+                        child: Icon(Icons.add, size: 50*factor)
+                      ),
+                    );
+                  },
+                ),
+                
+                new Container(
+                  height: 10*factor,
+                ),
+                new Divider(),
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 10.0*factor),
+                  child: new Text(
                     '公司位置：',
                     textAlign: TextAlign.left,
                     style: new TextStyle(fontSize: 26.0*factor),
