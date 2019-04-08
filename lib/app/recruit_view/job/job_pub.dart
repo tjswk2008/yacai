@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
-import 'package:flutter_app/app/component/city.dart';
+import 'package:flutter_app/app/component/select.dart';
 import 'package:flutter_app/app/component/salary.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
@@ -42,6 +42,7 @@ class PubJobState extends State<PubJob>
   int salaryLow = 1;
   int salaryHigh = 2;
   int type = 1; // 工作类型
+  List<String> areas = areaArr.sublist(1);
 
   @override
   void initState() {
@@ -63,7 +64,7 @@ class PubJobState extends State<PubJob>
       },
       child: new Container(
         height: 40*factor,
-        width: 120*factor,
+        width: 140*factor,
         decoration: BoxDecoration(
           borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: timereq == timeReqArr[index] ? new Border.all(
@@ -83,21 +84,21 @@ class PubJobState extends State<PubJob>
     return new InkWell(
       onTap: () {
         setState(() {
-          academic =  index == 0 ? '不限' : academicArr[index - 1];
+          academic =  academicArr[index];
         });
       },
       child: new Container(
         height: 40*factor,
-        width: 120*factor,
+        width: 140*factor,
         decoration: BoxDecoration(
           borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-          border: (index == 0 && academic == '不限') || (index > 0 && academic == academicArr[index - 1]) ? new Border.all(
+          border: academic == academicArr[index] ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor
           ) : Border(),
         ),
         child: new Center(
-          child: new Text(index == 0 ? '不限' : academicArr[index - 1], style: TextStyle(fontSize: 22.0*factor),),
+          child: new Text(academicArr[index], style: TextStyle(fontSize: 22.0*factor),),
         ),
       ),
     );
@@ -394,30 +395,17 @@ class PubJobState extends State<PubJob>
                   ),
                   new InkWell(
                     onTap: () {
-                      CityPicker.showCityPicker(
+                      YCPicker.showYCPicker(
                         context,
-                        selectProvince: (prov) {
+                        selectItem: (res) {
                           setState(() {
-                            province = prov['name'];
+                            area = res;
                           });
                         },
-                        selectCity: (res) {
-                          setState(() {
-                            city = res['name'];
-                          });
-                        },
-                        selectArea: (res) {
-                          setState(() {
-                            if(res['name'] == '全部') {
-                              area = '';
-                            } else {
-                              area = res['name'];
-                            }
-                          });
-                        },
+                        data: areas,
                       );
                     },
-                    child: Text('$province $city $area', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                    child: Text('上海市 $area', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
                   ),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 36.0*factor),
@@ -470,7 +458,7 @@ class PubJobState extends State<PubJob>
                     height: 60*factor,
                     child: new ListView.builder(
                       shrinkWrap: true,
-                      itemCount: academicArr.length + 1,
+                      itemCount: academicArr.length,
                       itemBuilder: academicOption,
                       scrollDirection: Axis.horizontal,
                       physics: const ClampingScrollPhysics(),
@@ -548,8 +536,8 @@ class PubJobState extends State<PubJob>
                             state.company.name,
                             salaryLow,
                             salaryHigh,
-                            province,
-                            city,
+                            '上海市',
+                            '上海市',
                             area,
                             addrCtrl.text.trim(),
                             timereq,

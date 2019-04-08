@@ -7,7 +7,7 @@ import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_app/app/model/constants.dart';
-import 'package:flutter_app/app/component/select.dart';
+import 'package:dropdown_menu/dropdown_menu.dart';
 // import 'dart:developer';
 
 class JobsTab extends StatefulWidget {
@@ -23,21 +23,134 @@ class JobList extends State<JobsTab> {
   List<Job> _jobs = [];
   bool isRequesting = true;
 
+  String area = areaArr[0];
   String timeReq = timeReqArr[0];
   String academic = academicArr[0];
   String employee = employeeArr[0];
+  String salary = salaryArr[0];
+
+  int index1 = 0,
+      index2 = 0,
+      index3 = 0,
+      index4 = 0,
+      index5 = 0;
 
   @override
   void initState() {
     super.initState();
     getJobList();
   }
+
+  DropdownMenu buildDropdownMenu() {
+    double factor = MediaQuery.of(context).size.width/750;
+
+    return new DropdownMenu(
+        maxMenuHeight: 70 * factor * 10,
+        menus: [
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  selectedIndex: index1,
+                  data: salaryArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 70 * factor * salaryArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  selectedIndex: index2,
+                  data: areaArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 70 * factor * areaArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  itemExtent: 70 * factor,
+                  selectedIndex: index3,
+                  data: timeReqArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 70 * factor * timeReqArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  selectedIndex: index4,
+                  data: academicArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 70 * factor * academicArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  selectedIndex: index5,
+                  data: employeeArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 70 * factor * employeeArr.length),
+        ]);
+  }
+
+  DropdownHeader buildDropdownHeader({DropdownMenuHeadTapCallback onTap}) {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new DropdownHeader(
+      onTap: onTap,
+      height: 70*factor,
+      titles: [salaryArr[index1], areaArr[index2], timeReqArr[index3], academicArr[index4], employeeArr[index5]],
+    );
+  }
+
+  Widget buildFixHeaderDropdownMenu() {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new DefaultDropdownMenuController(
+      onSelected: ({int menuIndex, int index, int subIndex, dynamic data}) {
+        switch (menuIndex) {
+          case 0:
+            salary = data;
+            break;
+          case 1:
+            area = data;
+            break;
+          case 2:
+            timeReq = data;
+            break;
+          case 3:
+            academic = data;
+            break;
+          case 4:
+            employee = data;
+            break;
+          default:
+            break;
+        }
+        getJobList();
+      },
+      child: new Column(
+        children: <Widget>[
+          buildDropdownHeader(),
+          new Expanded(
+              child: new Stack(
+            children: <Widget>[
+              (_jobs.length != 0) ? new ListView.builder(
+                itemCount: _jobs.length, itemBuilder: buildJobItem) : Center(
+                  child: Text('暂无记录', style: TextStyle(fontSize: 28*factor),),),
+              buildDropdownMenu()
+            ],
+          ))
+        ],
+    ));
+  }
   
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
-      backgroundColor: new Color.fromARGB(255, 242, 242, 245),
+      backgroundColor: Colors.white,
       appBar: (widget._type == 4 || widget._type == 5) ? new AppBar(
         elevation: 0.0,
         leading: IconButton(
@@ -82,124 +195,7 @@ class JobList extends State<JobsTab> {
             ),
           )
         ]
-      ) : SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 15*factor,
-            ),
-            Padding(
-              padding: EdgeInsets.all(15*factor),
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(right: 20*factor),
-                    child: InkWell(
-                      onTap: () {
-                        YCPicker.showYCPicker(
-                          context,
-                          selectItem: (low) {
-                            setState(() {
-                              timeReq = low;
-                            });
-                            getJobList();
-                          },
-                          data: timeReqArr
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(15*factor),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Text(timeReq, style: TextStyle(fontSize: 24.0*factor, color: Colors.grey),),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10*factor),
-                              child: Icon(Icons.arrow_drop_down, size: 40*factor)
-                            )
-                          ],
-                        )
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 20*factor),
-                    child: InkWell(
-                      onTap: () {
-                        YCPicker.showYCPicker(
-                          context,
-                          selectItem: (low) {
-                            setState(() {
-                              academic = low;
-                            });
-                            getJobList();
-                          },
-                          data: academicArr
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(15*factor),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Text(academic, style: TextStyle(fontSize: 24.0*factor, color: Colors.grey),),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10*factor),
-                              child: Icon(Icons.arrow_drop_down, size: 40*factor)
-                            )
-                          ],
-                        )
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      YCPicker.showYCPicker(
-                        context,
-                        selectItem: (low) {
-                          setState(() {
-                            employee = low;
-                          });
-                          getJobList();
-                        },
-                        data: employeeArr
-                      );
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(15*factor),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Text(employee, style: TextStyle(fontSize: 24.0*factor, color: Colors.grey),),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10*factor),
-                            child: Icon(Icons.arrow_drop_down, size: 40*factor)
-                          )
-                        ],
-                      )
-                    ),
-                  )
-                ],
-              ),
-            ),
-            
-            (_jobs.length != 0) ? new ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: _jobs.length, itemBuilder: buildJobItem) : Center(
-                child: Text('暂无记录', style: TextStyle(fontSize: 28*factor),),)
-          ],
-        )
-      )
+      ) : buildFixHeaderDropdownMenu()
     );
   }
 
@@ -215,7 +211,7 @@ class JobList extends State<JobsTab> {
 
   void getJobList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Api().getJobList(widget._type, prefs.getString('userName'), timeReq, academic, employee)
+    Api().getJobList(widget._type, prefs.getString('userName'), timeReq, academic, employee, salary, area)
       .then((Response response) {
         setState(() {
           isRequesting = false;

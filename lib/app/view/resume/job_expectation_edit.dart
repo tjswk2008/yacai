@@ -7,7 +7,6 @@ import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/app/model/constants.dart';
-import 'package:flutter_app/app/component/city.dart';
 import 'package:custom_radio/custom_radio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -192,36 +191,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                   new Container(
                     height: 10*factor,
                   ),
-                  new Divider(),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
-                    child: new Text(
-                      '工作城市：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
-                    ),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(left: 15*factor),
-                    child: new InkWell(
-                      onTap: () {
-                        CityPicker.showCityPicker(
-                          context,
-                          selectProvince: (prov) {
-                            
-                          },
-                          selectCity: (res) {
-                            setState(() {
-                              _jobExpect.city = res['name'];
-                            });
-                          },
-                          selectArea: (res) {
-                          },
-                        );
-                      },
-                      child: Text('${_jobExpect.city}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
-                    ),
-                  ),
+                  
                   new Container(
                     height: 10*factor,
                   ),
@@ -453,7 +423,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                         Api().saveJobExpectation(
                           _jobExpect.jobTitle,
                           _jobExpect.industry,
-                          _jobExpect.city,
+                          '上海市',
                           _jobExpect.salary,
                           _jobExpect.type,
                           userName

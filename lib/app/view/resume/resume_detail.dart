@@ -16,6 +16,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/model/constants.dart';
+import 'package:flutter_app/app/component/select.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -41,38 +42,6 @@ class ResumeDetailState extends State<ResumeDetail>
   @override
   void dispose() {
     super.dispose();
-  }
-
-  void _showJobStatus(context) {
-    double factor = MediaQuery.of(context).size.width/750;
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context){
-        return new Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 10*factor, bottom: 15*factor),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  new Icon(Icons.close, size: 28.0*factor,),
-                  new Text('求职状态', style: new TextStyle(fontSize: 28.0*factor)),
-                  new Icon(Icons.check, size: 28.0*factor),
-                ],
-              ),
-            ),
-            new ListView.builder(
-              shrinkWrap: true,
-              itemCount: jobStatusArr.length,
-              itemBuilder: jobStatusOption
-            ),
-          ],
-        );
-      }
-    );
   }
 
   Widget addExperience(double factor, String title, String btnName, List list, IndexedWidgetBuilder itemBuilder) {
@@ -113,30 +82,6 @@ class ResumeDetailState extends State<ResumeDetail>
           addButton(btnName, factor),
         ],
       ),
-    );
-  }
-  
-  Widget jobStatusOption(BuildContext context, int index) {
-    double factor = MediaQuery.of(context).size.width/750;
-    return StoreConnector<AppState, AppState>(
-      converter: (store) => store.state,
-      builder: (context, state) {
-        return new InkWell(
-          onTap: () {
-            Resume resume = state.resume;
-            resume.jobStatus = jobStatusArr[index];
-            StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-            Navigator.pop(context); 
-          },
-          child: new Container(
-            height: 50*factor,
-            color: state.resume.jobStatus == jobStatusArr[index] ? Colors.grey[300] : Colors.transparent,
-            child: new Center(
-              child: new Text(jobStatusArr[index], style: TextStyle(fontSize: 22.0*factor),),
-            ),
-          ),
-        );
-      }
     );
   }
 
@@ -279,7 +224,18 @@ class ResumeDetailState extends State<ResumeDetail>
                           right: 10.0*factor
                         ),
                         child: new InkWell(
-                          onTap: () {_showJobStatus(context);},
+                          onTap: () {
+                            // _showJobStatus(context);
+                            YCPicker.showYCPicker(
+                              context,
+                              selectItem: (res) {
+                                Resume resume = appState.resume;
+                                resume.jobStatus = res;
+                                StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                              },
+                              data: jobStatusArr,
+                            );
+                          },
                           child: new Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[

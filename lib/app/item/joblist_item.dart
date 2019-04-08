@@ -12,11 +12,12 @@ class JobListItem extends StatelessWidget {
     double factor = MediaQuery.of(context).size.width/750;
     timeago.setLocaleMessages("zh_cn", timeago.ZhCnMessages());
     return new Padding(
-      padding: EdgeInsets.all(10.0*factor),
+      padding: EdgeInsets.only(left: 20.0*factor, right: 20*factor, top: 30*factor),
 
       child: new SizedBox(
         child: new Card(
-          elevation: 4.0,
+          elevation: 2,
+          // color: Color(0xffeeeeee),
           child: new Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

@@ -30,6 +30,7 @@ class EducationEditViewState extends State<EducationEditView>
   Education _education;
   bool isRequesting = false;
   String userName = '';
+  List<String> academics = academicArr.sublist(1);
 
   @override
   void initState() {
@@ -142,7 +143,7 @@ class EducationEditViewState extends State<EducationEditView>
                     height: 60*factor,
                     child: new ListView.builder(
                       shrinkWrap: true,
-                      itemCount: academicArr.length,
+                      itemCount: academics.length,
                       itemBuilder: (BuildContext context, int index) {
                         return new InkWell(
                           onTap: () {
@@ -152,7 +153,7 @@ class EducationEditViewState extends State<EducationEditView>
                           },
                           child: new Container(
                             height: 40*factor,
-                            width: 120*factor,
+                            width: 140*factor,
                             decoration: BoxDecoration(
                               borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
                               border: new Border.all(
@@ -161,7 +162,7 @@ class EducationEditViewState extends State<EducationEditView>
                               ),
                             ),
                             child: new Center(
-                              child: new Text(academicArr[index], style: TextStyle(fontSize: 22.0*factor),),
+                              child: new Text(academics[index], style: TextStyle(fontSize: 22.0*factor),),
                             ),
                           ),
                         );

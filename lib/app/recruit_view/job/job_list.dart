@@ -43,10 +43,12 @@ class PubJobListState extends State<PubJobList> {
               style: TextStyle(fontSize: 30.0*factor, color: Colors.white)
             )
           ),
-          body: state.jobs != null ? new ListView.builder(
+          body: state.jobs != null && state.jobs.length != 0 ? new ListView.builder(
             itemCount: state.jobs.length,
             itemBuilder: buildJobItem
-          ) : new Container()
+          ) : Center(
+            child: Text('暂无投递记录', style: TextStyle(fontSize: 28*factor),),
+          )
         );
       }
     );

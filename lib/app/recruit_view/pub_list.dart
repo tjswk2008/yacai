@@ -68,7 +68,7 @@ class PubTabState extends State<PubTab> {
                 ),
               )
             ],
-          ) : new SingleChildScrollView(
+          ) : state.jobs != null && state.jobs.length != 0 ? new SingleChildScrollView(
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -110,15 +110,58 @@ class PubTabState extends State<PubTab> {
                     )
                   ],
                 ),
-                state.jobs != null ? new ListView.builder(
+                new ListView.builder(
                   shrinkWrap: true,
                   physics: new NeverScrollableScrollPhysics(),
                   itemCount: state.jobs.length,
                   itemBuilder: buildJobItem
-                ) : Container(),
+                )
               ],
-            ),
-          ),
+            )
+          ) : Stack(
+            children: <Widget>[
+              Center(
+                child: Text('暂无记录', style: TextStyle(fontSize: 28*factor),)
+              ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  new Padding(
+                    padding: EdgeInsets.only(top: 5.0*factor, right: 20.0*factor),
+                    child: Container(
+                      height: 60*factor,
+                      width: 175*factor,
+                      child: RaisedButton(
+                        color: Colors.orange[400],
+                        child: Text("发布职位", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
+                        onPressed: () {
+                          Navigator.of(context).push(new PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (BuildContext context, _, __) {
+                              return new PubJob();
+                            },
+                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                              return new FadeTransition(
+                                opacity: animation,
+                                child: new SlideTransition(position: new Tween<Offset>(
+                                  begin: const Offset(0.0, 1.0),
+                                  end: Offset.zero,
+                                ).animate(animation), child: child),
+                              );
+                            }
+                          )).then((result) {
+                            if(result == null) return;
+                            getJobList();
+                          });
+                        },
+                      ),
+                    )
+                    
+                  )
+                ],
+              ),
+            ],
+          )
         );
       }
     );

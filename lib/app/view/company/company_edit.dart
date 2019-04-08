@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
-import 'package:flutter_app/app/component/city.dart';
+import 'package:flutter_app/app/component/select.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/actions/actions.dart';
@@ -41,6 +41,8 @@ class CompanyEditState extends State<CompanyEdit>
   int start = 1;
   int end = 2;
   Company company;
+  List<String> areas = areaArr.sublist(1);
+  List<String> employees = employeeArr.sublist(1);
 
   @override
   void initState() {
@@ -65,7 +67,7 @@ class CompanyEditState extends State<CompanyEdit>
       },
       child: new Container(
         height: 40*factor,
-        width: 140*factor,
+        width: 180*factor,
         decoration: BoxDecoration(
           borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
           border: company.type == companyTypeArr[index] ? new Border.all(
@@ -85,21 +87,21 @@ class CompanyEditState extends State<CompanyEdit>
     return new InkWell(
       onTap: () {
         setState(() {
-          company.employee =  employeeArr[index];
+          company.employee =  employees[index];
         });
       },
       child: new Container(
         height: 40*factor,
-        width: 170*factor,
+        width: 180*factor,
         decoration: BoxDecoration(
           borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-          border: company.employee == employeeArr[index] ? new Border.all(
+          border: company.employee == employees[index] ? new Border.all(
             color: const Color(0xffaaaaaa),
             width: 2*factor
           ) : Border(),
         ),
         child: new Center(
-          child: new Text(employeeArr[index], style: TextStyle(fontSize: 22.0*factor),),
+          child: new Text(employees[index], style: TextStyle(fontSize: 22.0*factor),),
         ),
       ),
     );
@@ -238,30 +240,17 @@ class CompanyEditState extends State<CompanyEdit>
                 ),
                 new InkWell(
                   onTap: () {
-                    CityPicker.showCityPicker(
+                    YCPicker.showYCPicker(
                       context,
-                      selectProvince: (prov) {
+                      selectItem: (res) {
                         setState(() {
-                         company.province = prov['name']; 
+                          company.area = res;
                         });
                       },
-                      selectCity: (res) {
-                        setState(() {
-                         company.city = res['name']; 
-                        });
-                      },
-                      selectArea: (res) {
-                        setState(() {
-                          if(res['name'] == '全部') {
-                            company.area = '';
-                          } else {
-                            company.area = res['name'];
-                          }
-                        });
-                      },
+                      data: areas,
                     );
                   },
-                  child: Text(company.province == null ? '请选择地址' : '${company.province} ${company.city} ${company.area}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                  child: Text(company.province == null ? '请选择地址' : '上海市 ${company.area}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
                 ),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 36.0*factor),
@@ -330,7 +319,7 @@ class CompanyEditState extends State<CompanyEdit>
                   height: 60*factor,
                   child: new ListView.builder(
                     shrinkWrap: true,
-                    itemCount: employeeArr.length,
+                    itemCount: employees.length,
                     itemBuilder: employeeOption,
                     scrollDirection: Axis.horizontal,
                     physics: const ClampingScrollPhysics(),
@@ -402,8 +391,8 @@ class CompanyEditState extends State<CompanyEdit>
 
                         Response response = await Api().saveCompanyInfo(
                           company.name,
-                          company.province,
-                          company.city,
+                          '上海市',
+                          '上海市',
                           company.area,
                           company.location,
                           company.type,

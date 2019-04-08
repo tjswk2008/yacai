@@ -28,7 +28,7 @@ class JobAddr extends StatelessWidget {
               ),
 
               new Expanded(
-                child: new Text(job.addrDetail, style: new TextStyle(fontSize: 24.0*screenWidthInPt/750))
+                child: new Text('上海市 ${job.area} ${job.addrDetail}', style: new TextStyle(fontSize: 24.0*screenWidthInPt/750))
               ),
             ],
           ),

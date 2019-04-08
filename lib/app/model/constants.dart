@@ -1,3 +1,23 @@
+const List<String> areaArr = <String>[
+  "地点不限",
+  "黄浦区",
+  "徐汇区",
+  "长宁区",
+  "静安区",
+  "普陀区",
+  "虹口区",
+  "杨浦区",
+  "闵行区",
+  "宝山区",
+  "嘉定区",
+  "浦东新区",
+  "金山区",
+  "松江区",
+  "青浦区",
+  "奉贤区",
+  "崇明区"
+];
+
 const List<String> jobStatusArr = <String>[
   "离职-随时到岗",
   "在职-月内到岗",
@@ -18,7 +38,7 @@ const List<String> jobTypeArr = <String>[
 ];
 
 List<String> timeReqArr = <String>[
-  '学历不限',
+  '经验不限',
   '应届生',
   '1年以内',
   '1-3年',
@@ -28,6 +48,7 @@ List<String> timeReqArr = <String>[
 ];
 
 List<String> academicArr = <String>[
+  '学历不限',
   '初中及以下',
   '中专/中技',
   '高中',
@@ -70,9 +91,24 @@ List<String> companyTypeArr = <String>[
   '其他行业'
 ];
 
-List<String> salaryArr = <String>['2千以下', '2-3千', '3-4.5千', '4.5-6千', '6-8千', '0.8-1万', '1-1.5万', '1.5-2万', '2-3万', '3-4万', '4-5万', '5万以上'];
+List<String> salaryArr = <String>[
+  '薪资不限',
+  '2k以下',
+  '2-3k',
+  '3-4.5k',
+  '4.5-6k',
+  '6-8k',
+  '8-10k',
+  '10-15k',
+  '15-20k',
+  '20-30k',
+  '30-40k',
+  '40-50k',
+  '50k以上'
+];
 
 List<String> employeeArr = <String>[
+  '规模不限',
   '0-20人',
   '20-99人',
   '100-499人',
