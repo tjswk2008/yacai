@@ -91,6 +91,11 @@ class EducationEditViewState extends State<EducationEditView>
                     child: TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
                         autofocus: true,
+                        onChanged: (val) {
+                          setState(() {
+                            _education.name = val;
+                          });
+                        },
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
                             text: _education.name,
@@ -127,7 +132,7 @@ class EducationEditViewState extends State<EducationEditView>
                       },
                       onSuggestionSelected: (suggestion) {
                         setState(() {
-                        _education.name = suggestion['name'];
+                          _education.name = suggestion['name'];
                         });
                       },
                     )

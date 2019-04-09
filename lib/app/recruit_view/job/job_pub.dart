@@ -54,31 +54,6 @@ class PubJobState extends State<PubJob>
     super.dispose();
   }
 
-  Widget academicOption(BuildContext context, int index) {
-    double factor = MediaQuery.of(context).size.width/750;
-    return new InkWell(
-      onTap: () {
-        setState(() {
-          academic =  academicArr[index];
-        });
-      },
-      child: new Container(
-        height: 40*factor,
-        width: 140*factor,
-        decoration: BoxDecoration(
-          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-          border: academic == academicArr[index] ? new Border.all(
-            color: const Color(0xffaaaaaa),
-            width: 2*factor
-          ) : Border(),
-        ),
-        child: new Center(
-          child: new Text(academicArr[index], style: TextStyle(fontSize: 22.0*factor),),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
@@ -532,9 +507,15 @@ class PubJobState extends State<PubJob>
                   ),
                   new Builder(builder: (ctx) {
                     return new CommonButton(
-                      text: "保存",
+                      text: "发布",
                       color: new Color.fromARGB(255, 0, 215, 198),
                       onTap: () async {
+                        if(state.company.verified == 0 || state.company.verified == null) {
+                          Scaffold.of(ctx).showSnackBar(new SnackBar(
+                            content: new Text("您的企业尚未认证，请稍后发布哦~"),
+                          ));
+                          return;
+                        }
                         if (isRequesting) return;
                         setState(() {
                           isRequesting = true;
