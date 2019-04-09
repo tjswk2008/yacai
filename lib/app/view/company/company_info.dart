@@ -23,7 +23,7 @@ class CompanyInfo extends StatelessWidget {
               new Padding(
                 padding: EdgeInsets.only(
                   left: 10.0*screenWidthInPt/750,
-                  right: 15.0*screenWidthInPt/750,
+                  right: 45.0*screenWidthInPt/750,
                 ),
                 child: company.logo != null ? new Image.network(
                   company.logo,

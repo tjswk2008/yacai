@@ -45,7 +45,7 @@ class JobList extends State<JobsTab> {
     double factor = MediaQuery.of(context).size.width/750;
 
     return new DropdownMenu(
-        maxMenuHeight: 70 * factor * 10,
+        maxMenuHeight: 80 * factor * 10,
         menus: [
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
@@ -55,7 +55,7 @@ class JobList extends State<JobsTab> {
                   itemBuilder: buildCheckItem,
                 );
               },
-              height: 70 * factor * salaryArr.length),
+              height: 80 * factor * salaryArr.length),
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
                 return new DropdownListMenu(
@@ -64,17 +64,17 @@ class JobList extends State<JobsTab> {
                   itemBuilder: buildCheckItem,
                 );
               },
-              height: 70 * factor * areaArr.length),
+              height: 80 * factor * areaArr.length),
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
                 return new DropdownListMenu(
-                  itemExtent: 70 * factor,
+                  itemExtent: 80 * factor,
                   selectedIndex: index3,
                   data: timeReqArr,
                   itemBuilder: buildCheckItem,
                 );
               },
-              height: 70 * factor * timeReqArr.length),
+              height: 80 * factor * timeReqArr.length),
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
                 return new DropdownListMenu(
@@ -83,16 +83,16 @@ class JobList extends State<JobsTab> {
                   itemBuilder: buildCheckItem,
                 );
               },
-              height: 70 * factor * academicArr.length),
-          new DropdownMenuBuilder(
-              builder: (BuildContext context) {
-                return new DropdownListMenu(
-                  selectedIndex: index5,
-                  data: employeeArr,
-                  itemBuilder: buildCheckItem,
-                );
-              },
-              height: 70 * factor * employeeArr.length),
+              height: 80 * factor * academicArr.length),
+          // new DropdownMenuBuilder(
+          //     builder: (BuildContext context) {
+          //       return new DropdownListMenu(
+          //         selectedIndex: index5,
+          //         data: employeeArr,
+          //         itemBuilder: buildCheckItem,
+          //       );
+          //     },
+          //     height: 80 * factor * employeeArr.length),
         ]);
   }
 
@@ -100,8 +100,8 @@ class JobList extends State<JobsTab> {
     double factor = MediaQuery.of(context).size.width/750;
     return new DropdownHeader(
       onTap: onTap,
-      height: 70*factor,
-      titles: [salaryArr[index1], areaArr[index2], timeReqArr[index3], academicArr[index4], employeeArr[index5]],
+      height: 80*factor,
+      titles: [salaryArr[index1], areaArr[index2], timeReqArr[index3], academicArr[index4]],
     );
   }
 
@@ -134,12 +134,20 @@ class JobList extends State<JobsTab> {
         children: <Widget>[
           buildDropdownHeader(),
           new Expanded(
-              child: new Stack(
-            children: <Widget>[
-              (_jobs.length != 0) ? new ListView.builder(
-                itemCount: _jobs.length, itemBuilder: buildJobItem) : Center(
-                  child: Text('暂无记录', style: TextStyle(fontSize: 28*factor),),),
-              buildDropdownMenu()
+            child: new Stack(
+              children: <Widget>[
+                (_jobs.length != 0) ? new Padding(
+                  padding: EdgeInsets.only(
+                    top: 15.0*factor
+                  ),
+                  child: new ListView.builder(
+                    itemCount: _jobs.length,
+                    itemBuilder: buildJobItem
+                  )
+                ) : Center(
+                  child: Text('暂无记录', style: TextStyle(fontSize: 28*factor))
+                ),
+                buildDropdownMenu()
             ],
           ))
         ],

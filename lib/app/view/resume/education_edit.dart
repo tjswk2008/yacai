@@ -10,6 +10,7 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:flutter_app/app/component/select.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -131,45 +132,41 @@ class EducationEditViewState extends State<EducationEditView>
                       },
                     )
                   ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
-                    child: new Text(
-                      '学历：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
-                    ),
-                  ),
-                  new Container(
-                    height: 60*factor,
-                    child: new ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: academics.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new InkWell(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                        child: new Text(
+                          '学历：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
+                      ),
+                      new Padding(
+                        padding: EdgeInsets.only(
+                          top: 20.0*factor,
+                          bottom: 10.0*factor,
+                          left: 10.0*factor,
+                          right: 20.0*factor
+                        ),
+                        child: new InkWell(
                           onTap: () {
-                            setState(() {
-                              _education.academic =  index;
-                            });
+                            // _showJobStatus(context);
+                            YCPicker.showYCPicker(
+                              context,
+                              selectItem: (res) {
+                                setState(() {
+                                  _education.academic = academics.indexOf(res);
+                                });
+                              },
+                              data: academics,
+                            );
                           },
-                          child: new Container(
-                            height: 40*factor,
-                            width: 140*factor,
-                            decoration: BoxDecoration(
-                              borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-                              border: new Border.all(
-                                color: _education.academic == index ? const Color(0xffaaaaaa) : const Color(0xffffffff),
-                                width: 2*factor
-                              ),
-                            ),
-                            child: new Center(
-                              child: new Text(academics[index], style: TextStyle(fontSize: 22.0*factor),),
-                            ),
-                          ),
-                        );
-                      },
-                      scrollDirection: Axis.horizontal,
-                      physics: const ClampingScrollPhysics(),
-                    ),
+                          child: new Text(_education.academic == null ? '请选择' : academics[_education.academic], style: TextStyle(fontSize: 22.0*factor),),
+                        ) 
+                      ),
+                    ],
                   ),
                   new Divider(),
                   new Padding(

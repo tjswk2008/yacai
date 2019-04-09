@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/view/jobs_view.dart';
 import 'package:flutter_app/app/view/company/company_list.dart';
 import 'package:flutter_app/actions/actions.dart';
+import 'package:flutter_app/splash.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -419,6 +420,12 @@ class MineTabState extends State<MineTab> {
                       userName = '';
                     });
                     StoreProvider.of<AppState>(context).dispatch(SetResumeAction(null));
+                    Navigator
+                      .of(context)
+                      .pushAndRemoveUntil(new MaterialPageRoute(
+                        builder: (BuildContext context) => new SplashPage()), (
+                        Route route) => route == null
+                      );
                   }
                 ),
               ) : Container(),

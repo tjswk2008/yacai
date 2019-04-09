@@ -56,57 +56,7 @@ class CompanyEditState extends State<CompanyEdit>
   void dispose() {
     super.dispose();
   }
-
-  Widget companyTypeOption(BuildContext context, int index) {
-    double factor = MediaQuery.of(context).size.width/750;
-    return new InkWell(
-      onTap: () {
-        setState(() {
-          company.type =  companyTypeArr[index];
-        });
-      },
-      child: new Container(
-        height: 40*factor,
-        width: 180*factor,
-        decoration: BoxDecoration(
-          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-          border: company.type == companyTypeArr[index] ? new Border.all(
-            color: const Color(0xffaaaaaa),
-            width: 2*factor
-          ) : Border(),
-        ),
-        child: new Center(
-          child: new Text(companyTypeArr[index], style: TextStyle(fontSize: 22.0*factor),),
-        ),
-      ),
-    );
-  }
-
-  Widget employeeOption(BuildContext context, int index) {
-    double factor = MediaQuery.of(context).size.width/750;
-    return new InkWell(
-      onTap: () {
-        setState(() {
-          company.employee =  employees[index];
-        });
-      },
-      child: new Container(
-        height: 40*factor,
-        width: 180*factor,
-        decoration: BoxDecoration(
-          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-          border: company.employee == employees[index] ? new Border.all(
-            color: const Color(0xffaaaaaa),
-            width: 2*factor
-          ) : Border(),
-        ),
-        child: new Center(
-          child: new Text(employees[index], style: TextStyle(fontSize: 22.0*factor),),
-        ),
-      ),
-    );
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
@@ -184,6 +134,141 @@ class CompanyEditState extends State<CompanyEdit>
                     },
                   )
                 ),
+                new Padding(
+                  padding: EdgeInsets.only(top:10.0*factor, bottom: 10.0*factor),
+                  child: new Text(
+                    '公司位置：',
+                    textAlign: TextAlign.left,
+                    style: new TextStyle(fontSize: 26.0*factor),
+                  ),
+                ),
+                new InkWell(
+                  onTap: () {
+                    YCPicker.showYCPicker(
+                      context,
+                      selectItem: (res) {
+                        setState(() {
+                          company.area = res;
+                        });
+                      },
+                      data: areas,
+                    );
+                  },
+                  child: Text(company.province == null ? '请选择地址' : '上海市 ${company.area}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                ),
+                new Padding(
+                  padding: EdgeInsets.only(bottom: 36.0*factor),
+                  child: new TextField(
+                    style: TextStyle(fontSize: 20.0*factor),
+                    controller: TextEditingController.fromValue(
+                      TextEditingValue(
+                        text: company.location,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(
+                            affinity: TextAffinity.downstream,
+                            offset: company.location.length
+                          )
+                        )
+                      )
+                    ),
+                    onChanged: (val) {
+                      setState(() {
+                        company.location = val;
+                      });
+                    },
+                    decoration: new InputDecoration(
+                      hintText: "请输入详细地址",
+                      hintStyle: new TextStyle(
+                          color: const Color(0xFF808080)
+                      ),
+                      border: new UnderlineInputBorder(
+                        borderSide: BorderSide(width: factor)
+                      ),
+                      contentPadding: EdgeInsets.all(10.0*factor)
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    new Padding(
+                      padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                      child: new Text(
+                        '公司性质：',
+                        textAlign: TextAlign.left,
+                        style: new TextStyle(fontSize: 24.0*factor),
+                      ),
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.only(
+                        top: 20.0*factor,
+                        bottom: 10.0*factor,
+                        left: 10.0*factor,
+                        right: 20.0*factor
+                      ),
+                      child: new InkWell(
+                        onTap: () {
+                          // _showJobStatus(context);
+                          YCPicker.showYCPicker(
+                            context,
+                            selectItem: (res) {
+                              setState(() {
+                                company.type =  res;
+                              });
+                            },
+                            data: companyTypeArr,
+                          );
+                        },
+                        child: new Text(company.type == null ? '请选择' : company.type, style: TextStyle(fontSize: 22.0*factor),),
+                      ) 
+                    ),
+                  ],
+                ),
+                new Container(
+                  height: 10*factor,
+                ),
+                new Divider(),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    new Padding(
+                      padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                      child: new Text(
+                        '公司人数：',
+                        textAlign: TextAlign.left,
+                        style: new TextStyle(fontSize: 24.0*factor),
+                      ),
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.only(
+                        top: 20.0*factor,
+                        bottom: 10.0*factor,
+                        left: 10.0*factor,
+                        right: 20.0*factor
+                      ),
+                      child: new InkWell(
+                        onTap: () {
+                          // _showJobStatus(context);
+                          YCPicker.showYCPicker(
+                            context,
+                            selectItem: (res) {
+                              setState(() {
+                                company.employee =  res;
+                              });
+                            },
+                            data: employees,
+                          );
+                        },
+                        child: new Text(company.employee == null ? '请选择' : company.employee, style: TextStyle(fontSize: 22.0*factor),),
+                      ) 
+                    ),
+                  ],
+                ),
+                new Container(
+                  height: 10*factor,
+                ),
+                new Divider(),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -240,6 +325,7 @@ class CompanyEditState extends State<CompanyEdit>
                 ),
                 GridView.builder(
                   padding: EdgeInsets.all(10.0*factor),
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
@@ -284,105 +370,7 @@ class CompanyEditState extends State<CompanyEdit>
                   height: 10*factor,
                 ),
                 new Divider(),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 10.0*factor),
-                  child: new Text(
-                    '公司位置：',
-                    textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 26.0*factor),
-                  ),
-                ),
-                new InkWell(
-                  onTap: () {
-                    YCPicker.showYCPicker(
-                      context,
-                      selectItem: (res) {
-                        setState(() {
-                          company.area = res;
-                        });
-                      },
-                      data: areas,
-                    );
-                  },
-                  child: Text(company.province == null ? '请选择地址' : '上海市 ${company.area}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
-                ),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 36.0*factor),
-                  child: new TextField(
-                    style: TextStyle(fontSize: 20.0*factor),
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: company.location,
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: company.location.length
-                          )
-                        )
-                      )
-                    ),
-                    onChanged: (val) {
-                      setState(() {
-                        company.location = val;
-                      });
-                    },
-                    decoration: new InputDecoration(
-                      hintText: "请输入详细地址",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
-                      ),
-                      border: new UnderlineInputBorder(
-                        borderSide: BorderSide(width: factor)
-                      ),
-                      contentPadding: EdgeInsets.all(10.0*factor)
-                    ),
-                  ),
-                ),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 10.0*factor),
-                  child: new Text(
-                    '公司性质：',
-                    textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 26.0*factor),
-                  ),
-                ),
-                new Container(
-                  height: 60*factor,
-                  child: new ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: companyTypeArr.length,
-                    itemBuilder: companyTypeOption,
-                    scrollDirection: Axis.horizontal,
-                    physics: const ClampingScrollPhysics(),
-                  ),
-                ),
-                new Container(
-                  height: 10*factor,
-                ),
-                new Divider(),
-
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 10.0*factor),
-                  child: new Text(
-                    '公司人数：',
-                    textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 26.0*factor),
-                  ),
-                ),
-                new Container(
-                  height: 60*factor,
-                  child: new ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: employees.length,
-                    itemBuilder: employeeOption,
-                    scrollDirection: Axis.horizontal,
-                    physics: const ClampingScrollPhysics(),
-                  ),
-                ),
-                new Container(
-                  height: 10*factor,
-                ),
-                new Divider(),
+                
                 
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),

@@ -10,6 +10,7 @@ import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:flutter_app/app/component/select.dart';
 
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
@@ -47,31 +48,6 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
   @override
   void dispose() {
     super.dispose();
-  }
-
-  Widget titleOption(BuildContext context, int index) {
-    double factor = MediaQuery.of(context).size.width/750;
-    return new InkWell(
-      onTap: () {
-        setState(() {
-          _companyExperience.jobTitle =  titleArr[index];
-        });
-      },
-      child: new Container(
-        height: 40*factor,
-        width: 220*factor,
-        decoration: BoxDecoration(
-          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-          border: _companyExperience.jobTitle == titleArr[index] ? new Border.all(
-            color: const Color(0xffaaaaaa),
-            width: 2*factor
-          ) : Border(),
-        ),
-        child: new Center(
-          child: new Text(titleArr[index], style: TextStyle(fontSize: 22.0*factor),),
-        ),
-      ),
-    );
   }
 
   @override
@@ -156,25 +132,42 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       },
                     )
                   ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
-                    child: new Text(
-                      '职位名称：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                        child: new Text(
+                          '职位名称：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
+                      ),
+                      new Padding(
+                        padding: EdgeInsets.only(
+                          top: 20.0*factor,
+                          bottom: 10.0*factor,
+                          left: 10.0*factor,
+                          right: 20.0*factor
+                        ),
+                        child: new InkWell(
+                          onTap: () {
+                            // _showJobStatus(context);
+                            YCPicker.showYCPicker(
+                              context,
+                              selectItem: (res) {
+                                setState(() {
+                                  _companyExperience.jobTitle =  res;
+                                });
+                              },
+                              data: titleArr,
+                            );
+                          },
+                          child: new Text(_companyExperience.jobTitle == null ? '请选择' : _companyExperience.jobTitle, style: TextStyle(fontSize: 22.0*factor),),
+                        ) 
+                      ),
+                    ],
                   ),
-                  new Container(
-                    height: 60*factor,
-                    child: new ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: titleArr.length,
-                      itemBuilder: titleOption,
-                      scrollDirection: Axis.horizontal,
-                      physics: const ClampingScrollPhysics(),
-                    ),
-                  ),
-                  Container(height: 10*factor,),
                   Divider(),
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

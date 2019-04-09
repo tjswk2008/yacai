@@ -34,8 +34,8 @@ class PubJobState extends State<PubJob>
   final addrCtrl = new TextEditingController(text: '');
   bool isRequesting = false;
   String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
-  String timereq = '不限';
-  String academic = '不限';
+  String timereq;
+  String academic;
   String province = '上海市';
   String city = '上海市';
   String area = '黄浦区';
@@ -52,31 +52,6 @@ class PubJobState extends State<PubJob>
   @override
   void dispose() {
     super.dispose();
-  }
-
-  Widget timeReqOption(BuildContext context, int index) {
-    double factor = MediaQuery.of(context).size.width/750;
-    return new InkWell(
-      onTap: () {
-        setState(() {
-          timereq =  timeReqArr[index];
-        });
-      },
-      child: new Container(
-        height: 40*factor,
-        width: 140*factor,
-        decoration: BoxDecoration(
-          borderRadius: new BorderRadius.all(new Radius.circular(6*factor)),
-          border: timereq == timeReqArr[index] ? new Border.all(
-            color: const Color(0xffaaaaaa),
-            width: 2*factor
-          ) : Border(),
-        ),
-        child: new Center(
-          child: new Text(timeReqArr[index], style: TextStyle(fontSize: 22.0*factor),),
-        ),
-      ),
-    );
   }
 
   Widget academicOption(BuildContext context, int index) {
@@ -424,45 +399,81 @@ class PubJobState extends State<PubJob>
                       ),
                     ),
                   ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
-                    child: new Text(
-                      '工作年限：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*factor),
-                    ),
-                  ),
-                  new Container(
-                    height: 60*factor,
-                    child: new ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: timeReqArr.length,
-                      itemBuilder: timeReqOption,
-                      scrollDirection: Axis.horizontal,
-                      physics: const ClampingScrollPhysics(),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                        child: new Text(
+                          '工作年限：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
+                      ),
+                      new Padding(
+                        padding: EdgeInsets.only(
+                          top: 20.0*factor,
+                          bottom: 10.0*factor,
+                          left: 10.0*factor,
+                          right: 20.0*factor
+                        ),
+                        child: new InkWell(
+                          onTap: () {
+                            // _showJobStatus(context);
+                            YCPicker.showYCPicker(
+                              context,
+                              selectItem: (res) {
+                                setState(() {
+                                  timereq =  res;
+                                });
+                              },
+                              data: timeReqArr,
+                            );
+                          },
+                          child: new Text(timereq == null ? '请选择' : timereq, style: TextStyle(fontSize: 22.0*factor),),
+                        ) 
+                      ),
+                    ],
                   ),
                   new Container(
                     height: 10*factor,
                   ),
                   new Divider(),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
-                    child: new Text(
-                      '学历要求：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*factor),
-                    ),
-                  ),
-                  new Container(
-                    height: 60*factor,
-                    child: new ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: academicArr.length,
-                      itemBuilder: academicOption,
-                      scrollDirection: Axis.horizontal,
-                      physics: const ClampingScrollPhysics(),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                        child: new Text(
+                          '学历要求：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
+                      ),
+                      new Padding(
+                        padding: EdgeInsets.only(
+                          top: 20.0*factor,
+                          bottom: 10.0*factor,
+                          left: 10.0*factor,
+                          right: 20.0*factor
+                        ),
+                        child: new InkWell(
+                          onTap: () {
+                            // _showJobStatus(context);
+                            YCPicker.showYCPicker(
+                              context,
+                              selectItem: (res) {
+                                setState(() {
+                                  academic =  res;
+                                });
+                              },
+                              data: academicArr,
+                            );
+                          },
+                          child: new Text(academic == null ? '请选择' : academic, style: TextStyle(fontSize: 22.0*factor),),
+                        ) 
+                      ),
+                    ],
                   ),
                   new Container(
                     height: 10*factor,

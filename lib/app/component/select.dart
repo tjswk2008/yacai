@@ -153,7 +153,7 @@ class _YCPickerState extends State<_YCPickerWidget> {
                                     if (widget.selectItem != null) {
                                       widget.selectItem(start[startIndex]);
                                     }
-                                    Navigator.pop(context);
+                                    Navigator.maybePop(context);
                                   },
                                   child: new Text(
                                     '确定',

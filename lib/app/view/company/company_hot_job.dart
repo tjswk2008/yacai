@@ -15,6 +15,7 @@ class CompanyHotJob extends StatelessWidget {
     double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
         padding: EdgeInsets.only(
+          top: 20.0*factor,
           left: 10.0*factor,
           right: 10.0*factor,
         ),
