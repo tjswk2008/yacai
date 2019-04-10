@@ -65,10 +65,13 @@ class Company {
   static List<String> convertToStringList(List list) {
     List<String> _imgs = [];
 
-    for (var value in list) {
-      _imgs.add(value);
+    if (list != null) {
+      for (var value in list) {
+        _imgs.add(value);
+      }
+      return _imgs;
     }
-    return _imgs;
+    return [];
   }
 
   static Company fromMap(Map map) {
