@@ -138,7 +138,7 @@ class UserListItemState extends State<UserListItem> {
                         top: 10.0*factor,
                         bottom: 15.0*factor,
                       ),
-                      child: new Text(academicArr[personalInfo.academic + 1], style: new TextStyle(fontSize: 22*factor))
+                      child: new Text(personalInfo.academic != null ? academicArr[personalInfo.academic + 1] : '', style: new TextStyle(fontSize: 22*factor))
                     ),
                     personalInfo.school != null ? new Padding(
                       padding: EdgeInsets.only(

@@ -57,37 +57,40 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
       ),
       bottomNavigationBar: new Material(
         color: Colors.white,
-        child: new TabBar(
-          controller: _controller,
-          indicatorSize: TabBarIndicatorSize.label,
-          labelStyle: new TextStyle(fontSize: _kTabTextSize*factor),
-          tabs: <IconTab>[
-            new IconTab(
-                iconData: Icons.school,
-                text: "简历大厅",
-                color: _currentIndex == INDEX_RESUME
-                    ? _kPrimaryColor
-                    : Colors.grey[900]),
-            new IconTab(
-                iconData: Icons.work,
-                text: "职位",
-                color: _currentIndex == INDEX_PUB
-                    ? _kPrimaryColor
-                    : Colors.grey[900]),
-            new IconTab(
-                iconData: Icons.person_outline,
-                text: "我的",
-                color: _currentIndex == INDEX_MINE
-                    ? _kPrimaryColor
-                    : Colors.grey[900]),
-            // new IconTab(
-            //     iconData: Icons.shop,
-            //     text: "全职",
-            //     color: _currentIndex == INDEX_JOB
-            //         ? _kPrimaryColor
-            //         : Colors.grey[900]),
-          ],
-        ),
+        child: SafeArea(
+          bottom: true,
+          child: new TabBar(
+            controller: _controller,
+            indicatorSize: TabBarIndicatorSize.label,
+            labelStyle: new TextStyle(fontSize: _kTabTextSize*factor),
+            tabs: <IconTab>[
+              new IconTab(
+                  iconData: Icons.school,
+                  text: "简历大厅",
+                  color: _currentIndex == INDEX_RESUME
+                      ? _kPrimaryColor
+                      : Colors.grey[900]),
+              new IconTab(
+                  iconData: Icons.work,
+                  text: "职位",
+                  color: _currentIndex == INDEX_PUB
+                      ? _kPrimaryColor
+                      : Colors.grey[900]),
+              new IconTab(
+                  iconData: Icons.person_outline,
+                  text: "我的",
+                  color: _currentIndex == INDEX_MINE
+                      ? _kPrimaryColor
+                      : Colors.grey[900]),
+              // new IconTab(
+              //     iconData: Icons.shop,
+              //     text: "全职",
+              //     color: _currentIndex == INDEX_JOB
+              //         ? _kPrimaryColor
+              //         : Colors.grey[900]),
+            ],
+          ),
+        )
       ),
     );
   }
