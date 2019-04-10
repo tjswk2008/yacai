@@ -11,6 +11,13 @@ class PersonalInfoView extends StatelessWidget {
 
   PersonalInfoView(this.personalInfo, this._editable);
 
+  static int yearsOffset(String dateTime) {
+    DateTime now = DateTime.parse(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]));
+    int v = now.millisecondsSinceEpoch - DateTime.parse(dateTime).millisecondsSinceEpoch;
+    if (v < 0) v = -v;
+    return v ~/ (86400000 * 30 * 12);
+  }
+
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
@@ -47,7 +54,7 @@ class PersonalInfoView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 10.0*factor),
+                        padding: EdgeInsets.only(bottom: 20.0*factor),
                         child: new Text(
                           personalInfo.name == null ? '姓名' : personalInfo.name,
                           textAlign: TextAlign.left,
@@ -59,7 +66,7 @@ class PersonalInfoView extends StatelessWidget {
                           new Padding(
                             padding: EdgeInsets.only(right: 15.0*factor),
                             child: new Text(
-                              personalInfo.firstJobTime == null ? '首次参加工作时间' : personalInfo.firstJobTime,
+                              personalInfo.firstJobTime == null ? '首次参加工作时间' : yearsOffset(personalInfo.firstJobTime).toString() + "年经验",
                               textAlign: TextAlign.left,
                               style: new TextStyle(fontSize: 20.0*factor),
                             ),
@@ -67,7 +74,7 @@ class PersonalInfoView extends StatelessWidget {
                           new Padding(
                             padding: EdgeInsets.only(right: 15.0*factor),
                             child: new Text(
-                              personalInfo.birthDay == null ? '出生年月' : formatDate(DateTime.parse(personalInfo.birthDay), [yyyy, '-', mm]),
+                              personalInfo.birthDay == null ? '出生年月' : yearsOffset(personalInfo.birthDay).toString() + "岁",
                               textAlign: TextAlign.left,
                               style: new TextStyle(fontSize: 20.0*factor),
                             ),

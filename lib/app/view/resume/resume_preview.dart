@@ -14,13 +14,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
-List<String> jobStatusArr = <String>[
-  "离职-随时到岗",
-  "在职-月内到岗",
-  "在职-考虑机会",
-  "在职-暂不考虑",
-];
-
 class ResumePreview extends StatefulWidget {
   final int userId;
 

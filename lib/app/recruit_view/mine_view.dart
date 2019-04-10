@@ -50,6 +50,10 @@ class MineTabState extends State<MineTab> {
       converter: (store) => store.state,
       builder: (context, appState) {
         return new Scaffold(
+          appBar: PreferredSize(
+            child: AppBar(elevation: 0.0,),
+            preferredSize: Size.fromHeight(0)
+          ),
           backgroundColor: Color(0xFFEEEEEE),
           body: Stack(
             children: <Widget>[
@@ -77,11 +81,6 @@ class MineTabState extends State<MineTab> {
                       company = Company.fromMap(resList[0].data['info']);
                     }
                     StoreProvider.of<AppState>(context).dispatch(SetCompanyAction(company));
-                    // await new Future.delayed(const Duration(seconds: 3), () {
-                    //   setState(() {
-                        
-                    //   });
-                    // });
                   },
                   child: Column(
                     children: <Widget>[

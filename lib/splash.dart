@@ -65,9 +65,21 @@ class SplashState extends State<SplashPage> {
                       onTap: () async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         prefs.setInt('role', 2);
-                        Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
-                          builder: (BuildContext context) => new RegisterPage()), (
-                          Route route) => route == null);
+                        Navigator.of(context).push(new PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (BuildContext context, _, __) {
+                              return new RegisterPage();
+                            },
+                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                              return new FadeTransition(
+                                opacity: animation,
+                                child: new SlideTransition(position: new Tween<Offset>(
+                                  begin: const Offset(0.0, 1.0),
+                                  end: Offset.zero,
+                                ).animate(animation), child: child),
+                              );
+                            }
+                        ));
                       },
                       child: new Container(
                         height: 70.0*screenWidthInPt/750,

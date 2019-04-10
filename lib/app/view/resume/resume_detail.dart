@@ -17,6 +17,10 @@ import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/component/select.dart';
+import 'package:flutter_app/app/view/resume/resume_preview.dart';
+import 'package:flutter_app/app/api/api.dart';
+import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -33,10 +37,17 @@ class ResumeDetailState extends State<ResumeDetail>
 
   VoidCallback onChanged;
   String jobStatus;
+  bool isRequesting = false;
+  String userName;
 
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
+    });
   }
 
   @override
@@ -187,7 +198,24 @@ class ResumeDetailState extends State<ResumeDetail>
                     padding: EdgeInsets.only(top: 4.0*factor),
                     child: Text('预览', style: TextStyle(color: Colors.white, fontSize: 22.0*factor),),
                   ),
-                  onTap: () {
+                  onTap: () async {
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    Response response = await Api().login(prefs.getString('userName'), null);
+                    Navigator.of(context).push(new PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (BuildContext context, _, __) {
+                          return new ResumePreview(response.data['id']);
+                        },
+                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                          return new FadeTransition(
+                            opacity: animation,
+                            child: new SlideTransition(position: new Tween<Offset>(
+                              begin: const Offset(0.0, 1.0),
+                              end: Offset.zero,
+                            ).animate(animation), child: child),
+                          );
+                        }
+                    ));
                   }
                 )
               )
@@ -228,10 +256,36 @@ class ResumeDetailState extends State<ResumeDetail>
                             // _showJobStatus(context);
                             YCPicker.showYCPicker(
                               context,
-                              selectItem: (res) {
-                                Resume resume = appState.resume;
-                                resume.jobStatus = res;
-                                StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                              selectItem: (res) async {
+                                if (isRequesting) return;
+                                setState(() {
+                                  isRequesting = true;
+                                });
+                                // 发送给webview，让webview登录后再取回token
+                                Api().saveJobStatus(
+                                  res,
+                                  userName
+                                )
+                                  .then((Response response) {
+                                    setState(() {
+                                      isRequesting = false;
+                                    });
+                                    if(response.data['code'] != 1) {
+                                      Scaffold.of(context).showSnackBar(new SnackBar(
+                                        content: new Text("保存失败！"),
+                                      ));
+                                      return;
+                                    }
+                                    Resume resume = appState.resume;
+                                    resume.jobStatus = res;
+                                    StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                                  })
+                                  .catchError((e) {
+                                    setState(() {
+                                      isRequesting = false;
+                                    });
+                                    print(e);
+                                  });
                               },
                               data: jobStatusArr,
                             );

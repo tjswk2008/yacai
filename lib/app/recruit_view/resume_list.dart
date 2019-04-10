@@ -4,6 +4,11 @@ import 'package:flutter_app/app/model/resume.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dropdown_menu/dropdown_menu.dart';
+import 'package:flutter_app/app/model/constants.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_easyrefresh/bezier_hour_glass_header.dart';
+import 'package:flutter_easyrefresh/bezier_bounce_footer.dart';
 // import 'dart:developer';
 
 class ResumeTab extends StatefulWidget {
@@ -19,17 +24,160 @@ class ResumeTabState extends State<ResumeTab> {
   List<PersonalInfo> _originalPersonalInfos = [];
   List<PersonalInfo> _personalInfos = [];
 
+  GlobalKey<RefreshHeaderState> _headerKey =
+      new GlobalKey<RefreshHeaderState>();
+  GlobalKey<RefreshFooterState> _footerKey =
+      new GlobalKey<RefreshFooterState>();
+
+  int index1 = 0,
+      index2 = 0,
+      index3 = 0,
+      index4 = 0,
+      index5 = 0;
+
+  int currentPage = 1,
+      totalPage = 2;
+  
+  static List<String> markers = [
+    "全部",
+    "有意向",
+    "已电联",
+  ];
+
+  String timeReq = timeReqArr[0];
+  String academic = academicArr[0];
+  String salary = salaryArr[0];
+  int mark = 0;
+
   @override
   void initState() {
     super.initState();
-    getResumeList();
+    getResumeList(1);
+  }
+
+  DropdownMenu buildDropdownMenu() {
+    double factor = MediaQuery.of(context).size.width/750;
+
+    return new DropdownMenu(
+        maxMenuHeight: 80 * factor * 10,
+        menus: [
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  selectedIndex: index1,
+                  data: salaryArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 80 * factor * salaryArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  selectedIndex: index2,
+                  data: academicArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 80 * factor * academicArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  itemExtent: 80 * factor,
+                  selectedIndex: index3,
+                  data: timeReqArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 80 * factor * timeReqArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  itemExtent: 80 * factor,
+                  selectedIndex: index4,
+                  data: markers,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 80 * factor * markers.length),
+        ]);
+  }
+
+  DropdownHeader buildDropdownHeader({DropdownMenuHeadTapCallback onTap}) {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new DropdownHeader(
+      onTap: onTap,
+      height: 80*factor,
+      titles: [salaryArr[index1], academicArr[index2], timeReqArr[index3], markers[index4]],
+    );
+  }
+
+  Widget buildFixHeaderDropdownMenu() {
+    double factor = MediaQuery.of(context).size.width/750;
+    return new DefaultDropdownMenuController(
+      onSelected: ({int menuIndex, int index, int subIndex, dynamic data}) {
+        switch (menuIndex) {
+          case 0:
+            salary = data;
+            break;
+          case 1:
+            academic = data;
+            break;
+          case 2:
+            timeReq = data;
+            break;
+          case 3:
+            mark = index;
+            break;
+          default:
+            break;
+        }
+        getResumeList(1);
+      },
+      child: new Column(
+        children: <Widget>[
+          buildDropdownHeader(),
+          new Expanded(
+            child: new Stack(
+              children: <Widget>[
+                (_personalInfos.length != 0) ? new Padding(
+                  padding: EdgeInsets.only(
+                    top: 15.0*factor
+                  ),
+                  child: EasyRefresh(
+                    refreshHeader:BezierHourGlassHeader(
+                      key: _headerKey,
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
+                    refreshFooter: BezierBounceFooter(
+                      key: _footerKey,
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
+                    onRefresh: () {
+                      getResumeList(1);
+                    },
+                    loadMore: () async {
+                      getResumeList(++currentPage);
+                    },
+                    child: new ListView.builder(
+                      itemCount: _personalInfos.length,
+                      itemBuilder: buildResumeItem
+                    )
+                  )
+                ) : Center(
+                  child: Text('暂无记录', style: TextStyle(fontSize: 28*factor))
+                ),
+                buildDropdownMenu()
+            ],
+          ))
+        ],
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
-      backgroundColor: new Color.fromARGB(255, 242, 242, 245),
+      backgroundColor: Colors.white,
       appBar: new AppBar(
         elevation: 0.0,
         leading: IconButton(
@@ -43,44 +191,8 @@ class ResumeTabState extends State<ResumeTab> {
         title: new Text(widget._title,
           style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
         ),
-        actions: <Widget>[
-          new PopupMenuButton(
-            onSelected: (int value){
-               setState(() {
-                 if(value == 0) {
-                   _personalInfos = _originalPersonalInfos;
-                 } else {
-                   _personalInfos = [];
-                  for (var i = 0; i < _originalPersonalInfos.length; i++) {
-                    PersonalInfo element = _originalPersonalInfos[i];
-                    if(element.mark == value) {
-                      _personalInfos.add(element);
-                    }
-                  }
-                 }
-               });
-            },
-            itemBuilder: (BuildContext context) =><PopupMenuItem<int>>[
-              new PopupMenuItem(
-                  value: 0,
-                  child: new Text("全部", style: TextStyle(fontSize: 22*factor),)
-              ),
-              new PopupMenuItem(
-                value: 1,
-                  child: new Text("有意向", style: TextStyle(fontSize: 22*factor),)
-              ),
-              new PopupMenuItem(
-                value: 2,
-                  child: new Text("已电联", style: TextStyle(fontSize: 22*factor),)
-              )
-            ]
-          )
-        ],
       ),
-      body: _personalInfos.length != 0 ? new ListView.builder(
-          itemCount: _personalInfos.length, itemBuilder: buildResumeItem) : Center(
-            child: Text('暂无投递记录', style: TextStyle(fontSize: 28*factor),),
-          ),
+      body: buildFixHeaderDropdownMenu()
     );
   }
 
@@ -90,14 +202,21 @@ class ResumeTabState extends State<ResumeTab> {
     return UserListItem(personalInfo);
   }
 
-  void getResumeList() async {
+  void getResumeList(page) async {
+    if(page >= totalPage) {
+      return;
+    }
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Api().getResumeList(prefs.getString('userName'), widget.jobId)
+    Api().getResumeList(prefs.getString('userName'), widget.jobId, timeReq, academic, salary, mark, page)
       .then((Response response) {
-        setState(() {
-          _originalPersonalInfos = PersonalInfo.fromList(response.data['list']);
-          _personalInfos = PersonalInfo.fromList(response.data['list']);
-        });
+        if (response.data['code'] == 1) {
+          setState(() {
+            PersonalInfo.fromList(response.data['list']).forEach((item) {
+              _personalInfos.add(item);
+            });
+          });
+          totalPage = response.data['total'];
+        }
       })
      .catchError((e) {
        print(e);

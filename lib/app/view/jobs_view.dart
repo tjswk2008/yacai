@@ -230,7 +230,17 @@ class JobList extends State<JobsTab> {
             ),
           )
         ]
-      ) : buildFixHeaderDropdownMenu()
+      ) : (widget._type == 4 || widget._type == 5) ? ((_jobs.length != 0) ? new Padding(
+          padding: EdgeInsets.only(
+            top: 15.0*factor
+          ),
+          child: new ListView.builder(
+            itemCount: _jobs.length,
+            itemBuilder: buildJobItem
+          )
+        ) : Center(
+          child: Text('暂无记录', style: TextStyle(fontSize: 28*factor))
+        )) : buildFixHeaderDropdownMenu() 
     );
   }
 

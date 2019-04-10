@@ -5,6 +5,7 @@ import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/view/resume/resume_preview.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_app/app/component/select.dart';
 
 const List<String> MARKERS = [
   '-请选择-',
@@ -50,10 +51,8 @@ class UserListItemState extends State<UserListItem> {
         bottom: 10.0*factor,
       ),
 
-      child: new Container(
-        decoration: BoxDecoration(
-          color: Colors.white
-        ),
+      child: new Card(
+        elevation: 2,
         child: new Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
@@ -157,78 +156,33 @@ class UserListItemState extends State<UserListItem> {
                       padding: EdgeInsets.only(right: 10*factor),
                       child: Text('标记为:', style: TextStyle(fontSize: 22*factor),),
                     ),
-                    // YCSelect(
-                    //   selectedIndex: selectedIndex,
-                    //   items: ['-请选择', '有意向', '已电联'],
-                    //   onSelectedItemChanged: (value) {
-                    //     setState(() {
-                    //       selectedIndex = value;
-                    //     });
-                    //   },
-                    //   itemWidth: 170*factor
-                    // ),
                     InkWell(
                       child: Text(personalInfo.mark == null ? MARKERS[0] : MARKERS[personalInfo.mark], style: TextStyle(fontSize: 22*factor),),
                       onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (BuildContext context){
-                            return new Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(top: 10*factor, bottom: 15*factor),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      new Icon(Icons.close, size: 28.0*factor,),
-                                      new Text('标记状态', style: new TextStyle(fontSize: 28.0*factor)),
-                                      new Icon(Icons.check, size: 28.0*factor),
-                                    ],
-                                  ),
-                                ),
-                                new ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: MARKERS.length,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return InkWell(
-                                      onTap: () async {
-                                        setState(() {
-                                          personalInfo.mark = index;
-                                        });
-                                        if (isRequesting) return;
-                                        setState(() {
-                                          isRequesting = true;
-                                        });
-                                        // 发送给webview，让webview登录后再取回token
-                                        try {
-                                          await Api().mark(userName, personalInfo.id, index);
-                                          setState(() {
-                                            isRequesting = false;
-                                          });
-                                        } catch (e) {
-                                          setState(() {
-                                            isRequesting = false;
-                                          });
-                                          print(e);
-                                        }
-                                        Navigator.pop(context);
-                                      },
-                                      child: new Container(
-                                        height: 50*factor,
-                                        color: personalInfo.mark == index ? Colors.grey[300] : Colors.transparent,
-                                        child: new Center(
-                                          child: new Text(MARKERS[index], style: TextStyle(fontSize: 22.0*factor),),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                ),
-                              ],
-                            );
-                          }
+                        YCPicker.showYCPicker(
+                          context,
+                          selectItem: (res) async {
+                            setState(() {
+                              personalInfo.mark = MARKERS.indexOf(res);
+                            });
+                            if (isRequesting) return;
+                            setState(() {
+                              isRequesting = true;
+                            });
+                            // 发送给webview，让webview登录后再取回token
+                            try {
+                              await Api().mark(userName, personalInfo.id, MARKERS.indexOf(res));
+                              setState(() {
+                                isRequesting = false;
+                              });
+                            } catch (e) {
+                              setState(() {
+                                isRequesting = false;
+                              });
+                              print(e);
+                            }
+                          },
+                          data: MARKERS,
                         );
                       },
                     ),

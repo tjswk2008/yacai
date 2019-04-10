@@ -60,8 +60,8 @@ class CompanyDetailState extends State<CompanyDetail>
 
   @override
   Widget build(BuildContext context) {
-    double screenWidthInPt = MediaQuery.of(context).size.width;
-    double _kAppBarHeight = 375.0*screenWidthInPt/750;
+    double factor = MediaQuery.of(context).size.width/750;
+    double _kAppBarHeight = 375.0*factor;
     if (widget._company.imgs.isNotEmpty) {
       _imagePages = <Widget>[];
       widget._company.imgs.forEach((String url) {
@@ -101,9 +101,9 @@ class CompanyDetailState extends State<CompanyDetail>
                             new CompanyInfo(widget._company),
                             new Divider(),
                             new TabBar(
-                              indicatorWeight: 3.0*screenWidthInPt/750,
+                              indicatorWeight: 3.0*factor,
                               indicatorSize: TabBarIndicatorSize.tab,
-                              labelStyle: new TextStyle(fontSize: 26.0*screenWidthInPt/750),
+                              labelStyle: new TextStyle(fontSize: 26.0*factor),
                               labelColor: Colors.black,
                               controller: _controller,
                               tabs: _tabs,
@@ -116,7 +116,7 @@ class CompanyDetailState extends State<CompanyDetail>
                       ),
 
                       Container(
-                        height: MediaQuery.of(context).size.height - 535*screenWidthInPt/750 - 77.0,
+                        height: MediaQuery.of(context).size.height - 535*factor - 77.0,
                         child: _companyTabContent,
                       ),
                     ],
@@ -124,17 +124,28 @@ class CompanyDetailState extends State<CompanyDetail>
                 ),
 
                 new Positioned(
-                  top: 30.0*screenWidthInPt/750,
-                  left: 10.0*screenWidthInPt/750,
-                  child: IconButton(
-                    icon: const BackButtonIcon(),
-                    tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-                    iconSize: 40.0*screenWidthInPt/750,
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.maybePop(context);
-                    }
-                  ),
+                  top: 20.0*factor,
+                  left: 20.0*factor,
+                  child: Container(
+                    width: 50.0*factor,
+                    height: 50.0*factor,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: factor, color: Colors.grey),
+                      borderRadius: BorderRadius.all(Radius.circular(25*factor))
+                    ),
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.transparent,
+                      child: Icon(
+                        Theme.of(context).platform == TargetPlatform.android ? Icons.arrow_back : Icons.arrow_back_ios,
+                        size: 40.0*factor,
+                        color: Colors.white,
+                      ),
+                      
+                      onPressed: () {
+                        Navigator.maybePop(context);
+                      }
+                    ),
+                  )
                 ),
               ],
             ),

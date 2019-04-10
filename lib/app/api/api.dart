@@ -4,10 +4,25 @@ class Api {
   final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://localhost:3000/api/";
 
   // user interface
-  Future<Response<T>> getResumeList<T>(String userName, int jobId) {
+  Future<Response<T>> getResumeList<T>(String userName, int jobId, String timeReq, String academic, String salary, int mark, int page) {
     String url = '${serverAddr}user/getResumeList?userName=$userName';
     if (jobId != null) {
       url += '&jobId=$jobId';
+    }
+    if(timeReq != null) {
+      url += '&timeReq=$timeReq';
+    }
+    if(academic != null) {
+      url += '&academic=$academic';
+    }
+    if(salary != null) {
+      url += '&salary=$salary';
+    }
+    if(mark != null) {
+      url += '&mark=$mark';
+    }
+    if(page != null) {
+      url += '&page=$page';
     }
     return Dio().get(url);
   }
@@ -31,6 +46,16 @@ class Api {
     String userName
   ) {
     return Dio().get('${serverAddr}user/addUser?name=$name&avatar=$avatar&gender=$gender&firstJobTime=$firstJobTime&wechatId=$wechatId&birthDay=$birthDay&summarize=$summarize&userName=$userName');
+  }
+
+  Future<Response<T>> saveJobStatus<T>(
+    String jobStatus,
+    String userName
+  ) {
+    return Dio().post('${serverAddr}user/saveJobStatus', data: {
+        'jobStatus': jobStatus,
+        'userName':userName
+      });
   }
 
   Future<Response<T>> saveJobExpectation<T>(
