@@ -96,4 +96,15 @@ ENGINE=InnoDB
 AUTO_INCREMENT=8
 ;
 
-answer, post: DATE -> DATETIME
+CREATE TABLE `invitation` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`sendBy` VARCHAR(64) NOT NULL,
+	`detail` VARCHAR(1024) NOT NULL,
+	`userId` INT(11) NOT NULL,
+	`accepted` INT(1) NOT NULL DEFAULT '0' COMMENT '1. 已接受邀请 0. 未接受 2. 已拒绝',
+	`jobId` INT(11) NOT NULL,
+	PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+AUTO_INCREMENT=2
+;

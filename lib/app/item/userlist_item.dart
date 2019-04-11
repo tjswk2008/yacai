@@ -15,8 +15,9 @@ const List<String> MARKERS = [
 
 class UserListItem extends StatefulWidget {
   final PersonalInfo personalInfo;
+  final int jobId;
 
-  UserListItem(this.personalInfo);
+  UserListItem(this.personalInfo, this.jobId);
   @override
   UserListItemState createState() => new UserListItemState();
 }
@@ -201,7 +202,7 @@ class UserListItemState extends State<UserListItem> {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          return new ResumePreview(userId);
+          return new ResumePreview(userId, widget.jobId);
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(

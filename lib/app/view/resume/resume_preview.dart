@@ -9,6 +9,7 @@ import 'package:flutter_app/app/view/resume/job_expectation.dart';
 import 'package:flutter_app/app/view/resume/company_experience.dart';
 import 'package:flutter_app/app/view/resume/project.dart';
 import 'package:flutter_app/app/view/resume/education.dart';
+import 'package:flutter_app/app/recruit_view/invite.dart';
 import 'package:flutter_app/app/view/resume/certification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,8 +17,9 @@ enum AppBarBehavior { normal, pinned, floating, snapping }
 
 class ResumePreview extends StatefulWidget {
   final int userId;
+  final int jobId;
 
-  ResumePreview(this.userId);
+  ResumePreview(this.userId, this.jobId);
 
   @override
   ResumePreviewState createState() => new ResumePreviewState();
@@ -120,6 +122,55 @@ class ResumePreviewState extends State<ResumePreview>
           }
         ),
         iconTheme: new IconThemeData(color: Colors.white),
+        actions: <Widget>[
+          widget.jobId != null ? PopupMenuButton(
+            onSelected: (int value){
+               if(value == 0) {
+                 Navigator.of(context).push(new PageRouteBuilder(
+                    opaque: false,
+                    pageBuilder: (BuildContext context, _, __) {
+                      return new Invite(widget.jobId, widget.userId);
+                    },
+                    transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                      return new FadeTransition(
+                        opacity: animation,
+                        child: new SlideTransition(position: new Tween<Offset>(
+                          begin: const Offset(0.0, 1.0),
+                          end: Offset.zero,
+                        ).animate(animation), child: child),
+                      );
+                    }
+                 ));
+               }
+            },
+            itemBuilder: (BuildContext context) =><PopupMenuItem<int>>[
+              new PopupMenuItem(
+                  value: 0,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 25*factor),
+                        child: Icon(Icons.insert_invitation, size: 28*factor,),
+                      ),
+                      Text("邀请面试", style: TextStyle(fontSize: 22*factor),)
+                    ],
+                  )
+              ),
+              new PopupMenuItem(
+                  value: 1,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 25*factor),
+                        child: Icon(Icons.remove_red_eye, size: 28*factor,),
+                      ),
+                      Text("查看全部", style: TextStyle(fontSize: 22*factor),)
+                    ],
+                  )
+              )
+            ]
+          ) : Container()
+        ],
       ),
       backgroundColor: Colors.white,
       body: resume == null ? new Center(

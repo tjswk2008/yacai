@@ -195,7 +195,7 @@ class ResumeTabState extends State<ResumeTab> {
   Widget buildResumeItem(BuildContext context, int index) {
     PersonalInfo personalInfo = _personalInfos[index];
 
-    return UserListItem(personalInfo);
+    return UserListItem(personalInfo, widget.jobId);
   }
 
   void getResumeList(page) async {

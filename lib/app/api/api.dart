@@ -374,12 +374,26 @@ class Api {
     });
   }
 
-  // block interface
   Future getBlockedList<T>(
     String userName,
   ) {
     return Dio().post('${serverAddr}block/getBlockedList', data: {
       'account': userName,
+    });
+  }
+
+  // invite interface
+  Future<Response<T>> invite<T>(
+    String userName,
+    String detail,
+    int jobId,
+    int userId
+  ) {
+    return Dio().post('${serverAddr}invite/invite', data: {
+      'userName': userName,
+      'detail': detail,
+      'jobId': jobId,
+      'userId': userId
     });
   }
 

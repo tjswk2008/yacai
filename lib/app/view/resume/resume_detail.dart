@@ -204,7 +204,7 @@ class ResumeDetailState extends State<ResumeDetail>
                     Navigator.of(context).push(new PageRouteBuilder(
                         opaque: false,
                         pageBuilder: (BuildContext context, _, __) {
-                          return new ResumePreview(response.data['id']);
+                          return new ResumePreview(response.data['id'], null);
                         },
                         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
                           return new FadeTransition(
