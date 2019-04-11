@@ -58,37 +58,39 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
       ),
       bottomNavigationBar: new Material(
         color: Colors.white,
-        child: new TabBar(
-          controller: _controller,
-          indicatorSize: TabBarIndicatorSize.label,
-          labelStyle: new TextStyle(fontSize: _kTabTextSize),
-          tabs: <IconTab>[
-            new IconTab(
-                iconData: Icons.business,
-                text: "全职",
-                color: _currentIndex == INDEX_JOB
-                    ? _kPrimaryColor
-                    : Colors.grey[900]),
-            new IconTab(
-                iconData: Icons.business_center,
-                text: "兼职/实习",
-                color: _currentIndex == INDEX_COMPANY
-                    ? _kPrimaryColor
-                    : Colors.grey[900]),
-            new IconTab(
-                iconData: Icons.content_paste,
-                text: "交流",
-                color: _currentIndex == INDEX_MESSAGE
-                    ? _kPrimaryColor
-                    : Colors.grey[900]),
-            new IconTab(
-                iconData: Icons.person_outline,
-                text: "我的",
-                color: (_currentIndex == INDEX_MINE)
-                    ? _kPrimaryColor
-                    : Colors.grey[900]),
-          ],
-        ),
+        child: SafeArea(
+          child: new TabBar(
+            controller: _controller,
+            indicatorSize: TabBarIndicatorSize.label,
+            labelStyle: new TextStyle(fontSize: _kTabTextSize),
+            tabs: <IconTab>[
+              new IconTab(
+                  iconData: Icons.business,
+                  text: "全职",
+                  color: _currentIndex == INDEX_JOB
+                      ? _kPrimaryColor
+                      : Colors.grey[900]),
+              new IconTab(
+                  iconData: Icons.business_center,
+                  text: "兼职/实习",
+                  color: _currentIndex == INDEX_COMPANY
+                      ? _kPrimaryColor
+                      : Colors.grey[900]),
+              new IconTab(
+                  iconData: Icons.content_paste,
+                  text: "交流",
+                  color: _currentIndex == INDEX_MESSAGE
+                      ? _kPrimaryColor
+                      : Colors.grey[900]),
+              new IconTab(
+                  iconData: Icons.person_outline,
+                  text: "我的",
+                  color: (_currentIndex == INDEX_MINE)
+                      ? _kPrimaryColor
+                      : Colors.grey[900]),
+            ],
+          ),
+        )
       ),
     );
   }
