@@ -39,7 +39,7 @@ class JobList extends State<JobsTab> {
       index5 = 0;
 
   int currentPage = 1,
-      totalPage = 2;
+      totalPage = 1;
 
   GlobalKey<RefreshHeaderState> _headerKey =
       new GlobalKey<RefreshHeaderState>();
@@ -76,16 +76,16 @@ class JobList extends State<JobsTab> {
                 );
               },
               height: 80 * factor * areaArr.length),
-          new DropdownMenuBuilder(
-              builder: (BuildContext context) {
-                return new DropdownListMenu(
-                  itemExtent: 80 * factor,
-                  selectedIndex: index3,
-                  data: timeReqArr,
-                  itemBuilder: buildCheckItem,
-                );
-              },
-              height: 80 * factor * timeReqArr.length),
+          // new DropdownMenuBuilder(
+          //     builder: (BuildContext context) {
+          //       return new DropdownListMenu(
+          //         itemExtent: 80 * factor,
+          //         selectedIndex: index3,
+          //         data: timeReqArr,
+          //         itemBuilder: buildCheckItem,
+          //       );
+          //     },
+          //     height: 80 * factor * timeReqArr.length),
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
                 return new DropdownListMenu(
@@ -112,7 +112,7 @@ class JobList extends State<JobsTab> {
     return new DropdownHeader(
       onTap: onTap,
       height: 80*factor,
-      titles: [salaryArr[index1], areaArr[index2], timeReqArr[index3], academicArr[index4]],
+      titles: [salaryArr[index1], areaArr[index2], academicArr[index4]],
     );
   }
 
@@ -128,13 +128,7 @@ class JobList extends State<JobsTab> {
             area = data;
             break;
           case 2:
-            timeReq = data;
-            break;
-          case 3:
             academic = data;
-            break;
-          case 4:
-            employee = data;
             break;
           default:
             break;
@@ -164,7 +158,7 @@ class JobList extends State<JobsTab> {
                       getJobList(1);
                     },
                     loadMore: () async {
-                      getJobList(++currentPage);
+                      getJobList(currentPage);
                     },
                     child: new ListView.builder(
                       itemCount: _jobs.length,
@@ -255,20 +249,27 @@ class JobList extends State<JobsTab> {
   }
 
   void getJobList(page) async {
-    if(page >= totalPage) {
+    if(page > totalPage) {
       return;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Api().getJobList(widget._type, prefs.getString('userName'), timeReq, academic, employee, salary, area, page)
       .then((Response response) {
         if (response.data['code'] == 1) {
+          totalPage = response.data['total'] == 0 ? 1 : response.data['total'];
+          if(totalPage != 1 && currentPage <= totalPage) {
+            currentPage++;
+          }
           setState(() {
             isRequesting = false;
-            Job.fromJson(response.data['list']).forEach((item) {
-              _jobs.add(item);
-            });
+            if (page == 1) {
+              _jobs = Job.fromJson(response.data['list']);
+            } else {
+              Job.fromJson(response.data['list']).forEach((item) {
+                _jobs.add(item);
+              });
+            }
           });
-          totalPage = response.data['total'];
         }
       })
      .catchError((e) {

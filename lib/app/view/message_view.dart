@@ -7,6 +7,7 @@ import 'package:flutter_app/app/view/login_view.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class MessageTab extends StatefulWidget {
   final String _title;
@@ -20,6 +21,7 @@ class PostList extends State<MessageTab> {
   List<Post> _posts = [];
   List<Post> _originalPosts = [];
   String userName = '';
+  bool isRequesting = true;
 
   @override
   void initState() {
@@ -75,7 +77,26 @@ class PostList extends State<MessageTab> {
           )
         ],
       ),
-      body: new SingleChildScrollView(
+      body: isRequesting ? new Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(190, 0, 0, 0)
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: SpinKitHourGlass(
+              color: Theme.of(context).primaryColor,
+              size: 50*factor,
+              duration: Duration(milliseconds: 1800),
+            ),
+          )
+        ]
+      ) : new SingleChildScrollView(
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
@@ -146,12 +167,16 @@ class PostList extends State<MessageTab> {
     Api().getPostList(user)
       .then((Response response) {
         setState(() {
+          isRequesting = false;
           userName = user;
           _posts = Post.fromJson(response.data['list']);
           _originalPosts = Post.fromJson(response.data['list']);
         });
       })
      .catchError((e) {
+       setState(() {
+          isRequesting = false;
+        });
        print(e);
      });
   }

@@ -21,7 +21,6 @@ class ResumeTab extends StatefulWidget {
 }
 
 class ResumeTabState extends State<ResumeTab> {
-  List<PersonalInfo> _originalPersonalInfos = [];
   List<PersonalInfo> _personalInfos = [];
 
   GlobalKey<RefreshHeaderState> _headerKey =
@@ -36,7 +35,7 @@ class ResumeTabState extends State<ResumeTab> {
       index5 = 0;
 
   int currentPage = 1,
-      totalPage = 2;
+      totalPage = 1;
   
   static List<String> markers = [
     "全部",
@@ -61,15 +60,15 @@ class ResumeTabState extends State<ResumeTab> {
     return new DropdownMenu(
         maxMenuHeight: 80 * factor * 10,
         menus: [
-          new DropdownMenuBuilder(
-              builder: (BuildContext context) {
-                return new DropdownListMenu(
-                  selectedIndex: index1,
-                  data: salaryArr,
-                  itemBuilder: buildCheckItem,
-                );
-              },
-              height: 80 * factor * salaryArr.length),
+          // new DropdownMenuBuilder(
+          //     builder: (BuildContext context) {
+          //       return new DropdownListMenu(
+          //         selectedIndex: index1,
+          //         data: salaryArr,
+          //         itemBuilder: buildCheckItem,
+          //       );
+          //     },
+          //     height: 80 * factor * salaryArr.length),
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
                 return new DropdownListMenu(
@@ -107,7 +106,7 @@ class ResumeTabState extends State<ResumeTab> {
     return new DropdownHeader(
       onTap: onTap,
       height: 80*factor,
-      titles: [salaryArr[index1], academicArr[index2], timeReqArr[index3], markers[index4]],
+      titles: [academicArr[index2], timeReqArr[index3], markers[index4]],
     );
   }
 
@@ -117,15 +116,12 @@ class ResumeTabState extends State<ResumeTab> {
       onSelected: ({int menuIndex, int index, int subIndex, dynamic data}) {
         switch (menuIndex) {
           case 0:
-            salary = data;
-            break;
-          case 1:
             academic = data;
             break;
-          case 2:
+          case 1:
             timeReq = data;
             break;
-          case 3:
+          case 2:
             mark = index;
             break;
           default:
@@ -156,7 +152,7 @@ class ResumeTabState extends State<ResumeTab> {
                       getResumeList(1);
                     },
                     loadMore: () async {
-                      getResumeList(++currentPage);
+                      getResumeList(currentPage);
                     },
                     child: new ListView.builder(
                       itemCount: _personalInfos.length,
@@ -203,19 +199,26 @@ class ResumeTabState extends State<ResumeTab> {
   }
 
   void getResumeList(page) async {
-    if(page >= totalPage) {
+    if(page > totalPage) {
       return;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Api().getResumeList(prefs.getString('userName'), widget.jobId, timeReq, academic, salary, mark, page)
       .then((Response response) {
         if (response.data['code'] == 1) {
+          totalPage = response.data['total'] == 0 ? 1 : response.data['total'];
+          if(totalPage != 1 && currentPage <= totalPage) {
+            currentPage++;
+          }
           setState(() {
-            PersonalInfo.fromList(response.data['list']).forEach((item) {
-              _personalInfos.add(item);
-            });
+            if (page == 1) {
+              _personalInfos = PersonalInfo.fromList(response.data['list']);
+            } else {
+              PersonalInfo.fromList(response.data['list']).forEach((item) {
+                _personalInfos.add(item);
+              });
+            }
           });
-          totalPage = response.data['total'];
         }
       })
      .catchError((e) {

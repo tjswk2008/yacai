@@ -196,6 +196,7 @@ class LoginWithMsgState extends State<LoginWithMsg> {
                         return;
                       }
                       SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setInt('role', response.data['info']['role']);
                       prefs.setString('userName', username);
                       int role = prefs.getInt('role');
 
