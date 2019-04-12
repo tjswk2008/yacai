@@ -24,7 +24,7 @@ class Company {
   int blocked;
   String reason; // 未通过认证原因
   List<Job> jobs;
-  List<String> imgs;
+  List<Map> imgs;
 
   //构造函数
   Company({
@@ -50,7 +50,7 @@ class Company {
     this.verified,
     this.blocked,
     this.reason,
-    this.imgs = const <String>[]
+    this.imgs = const <Map>[]
   });
 
   static List<Company> fromJson(List list) {
@@ -62,8 +62,8 @@ class Company {
     return _companys;
   }
 
-  static List<String> convertToStringList(List list) {
-    List<String> _imgs = [];
+  static List<Map> convertToStringList(List list) {
+    List<Map> _imgs = [];
 
     if (list != null) {
       for (var value in list) {

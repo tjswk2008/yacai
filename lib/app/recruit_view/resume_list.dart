@@ -174,7 +174,7 @@ class ResumeTabState extends State<ResumeTab> {
     double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
       backgroundColor: Colors.white,
-      appBar: new AppBar(
+      appBar: widget.jobId != null ? new AppBar(
         elevation: 0.0,
         leading: IconButton(
           icon: const BackButtonIcon(),
@@ -184,6 +184,11 @@ class ResumeTabState extends State<ResumeTab> {
             Navigator.maybePop(context);
           }
         ),
+        title: new Text(widget._title,
+          style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
+        ),
+      ) : AppBar(
+        elevation: 0.0,
         title: new Text(widget._title,
           style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
         ),

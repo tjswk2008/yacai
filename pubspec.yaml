@@ -42,16 +42,7 @@ flutter:
   #  - images/a_dot_ham.jpeg
 
   assets:
-      - assets/images/ic_main_tab_company_nor.png
-      - assets/images/ic_main_tab_company_pre.png
-      - assets/images/ic_main_tab_contacts_nor.png
-      - assets/images/ic_main_tab_contacts_pre.png
-      - assets/images/ic_main_tab_find_nor.png
-      - assets/images/ic_main_tab_find_pre.png
-      - assets/images/ic_main_tab_my_nor.png
-      - assets/images/ic_main_tab_my_pre.png
       - assets/images/ic_avatar_default.png
-      - data/province.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

@@ -49,6 +49,10 @@ class CompanyEditState extends State<CompanyEdit>
     super.initState();
     setState(() {
       company = widget._company;
+      if (company.imgs != null && company.imgs[company.imgs.length - 1]['url'] != '') {
+        Map<String, String> item = {'url': ''};
+        company.imgs.add(item);
+      }
     });
   }
 
@@ -315,24 +319,37 @@ class CompanyEditState extends State<CompanyEdit>
                   height: 10*factor,
                 ),
                 new Divider(),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 10.0*factor),
-                  child: new Text(
-                    '详情图：',
-                    textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 26.0*factor),
-                  ),
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10.0*factor),
+                      child: new Text(
+                        '详情图：',
+                        textAlign: TextAlign.left,
+                        style: new TextStyle(fontSize: 26.0*factor),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 10.0*factor),
+                      child: new Text(
+                        '(为了更好地显示效果，请上传16:9的图片)',
+                        textAlign: TextAlign.left,
+                        style: new TextStyle(fontSize: 22.0*factor, color: Colors.red),
+                      ),
+                    ),
+                  ],
                 ),
                 GridView.builder(
-                  padding: EdgeInsets.all(10.0*factor),
+                  padding: EdgeInsets.all(30.0*factor),
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    mainAxisSpacing: 10.0 * factor,
-                    crossAxisSpacing: 10.0 * factor,
+                    childAspectRatio: 16 / 9,
+                    mainAxisSpacing: 30.0 * factor,
+                    crossAxisSpacing: 30.0 * factor,
                   ),
-                  itemCount: company.imgs == null ? 1 : (company.imgs.length + 1),
+                  itemCount: company.imgs == null ? 1 : (company.imgs.length),
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {
@@ -343,15 +360,16 @@ class CompanyEditState extends State<CompanyEdit>
                             return;
                           }
                           setState(() {
-                            company.imgs[index] = response.data['imgurl'];
-                            company.imgs.add('');
+                            company.imgs[index]['url'] = response.data['imgurl'];
+                            Map<String, String> item = {'url': ''};
+                            company.imgs.add(item);
                           });
                         })
                         .catchError((e) {
                           print(e);
                         });
                       },
-                      child: company.imgs != null && index < company.imgs.length && company.imgs[index] != '' ? Image.network(company.imgs[index], width: 192*factor) : Container(
+                      child: Container(
                         width: 192*factor,
                         height: 108*factor,
                         decoration: BoxDecoration(
@@ -360,7 +378,7 @@ class CompanyEditState extends State<CompanyEdit>
                             color: Colors.grey
                           )
                         ),
-                        child: Icon(Icons.add, size: 50*factor)
+                        child: company.imgs != null && company.imgs[index]['url'] != '' ? Image.network(company.imgs[index]['url'], width: 192*factor) : Icon(Icons.add, size: 50*factor)
                       ),
                     );
                   },
@@ -441,6 +459,7 @@ class CompanyEditState extends State<CompanyEdit>
                           company.employee,
                           company.inc,
                           company.logo,
+                          company.imgs.sublist(0, company.imgs.length - 1),
                           prefs.getString('userName'),
                           company.id
                         );

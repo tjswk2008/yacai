@@ -11,6 +11,7 @@ import 'package:dropdown_menu/dropdown_menu.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/bezier_hour_glass_header.dart';
 import 'package:flutter_easyrefresh/bezier_bounce_footer.dart';
+import 'package:flutter_app/app/recruit_view/invite.dart';
 // import 'dart:developer';
 
 class JobsTab extends StatefulWidget {
@@ -41,6 +42,8 @@ class JobList extends State<JobsTab> {
   int currentPage = 1,
       totalPage = 1;
 
+  int userId;
+
   GlobalKey<RefreshHeaderState> _headerKey =
       new GlobalKey<RefreshHeaderState>();
   GlobalKey<RefreshFooterState> _footerKey =
@@ -49,6 +52,11 @@ class JobList extends State<JobsTab> {
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      return Api().login(prefs.getString('userName'), null);
+    }).then((Response response) {
+      userId = response.data['id'];
+    });
     getJobList(1);
   }
 
@@ -180,7 +188,7 @@ class JobList extends State<JobsTab> {
     double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
       backgroundColor: Colors.white,
-      appBar: (widget._type == 4 || widget._type == 5) ? new AppBar(
+      appBar: (widget._type == 4 || widget._type == 5 || widget._type == 6) ? new AppBar(
         elevation: 0.0,
         leading: IconButton(
           icon: const BackButtonIcon(),
@@ -224,7 +232,7 @@ class JobList extends State<JobsTab> {
             ),
           )
         ]
-      ) : (widget._type == 4 || widget._type == 5) ? ((_jobs.length != 0) ? new Padding(
+      ) : (widget._type == 4 || widget._type == 5 || widget._type == 6) ? ((_jobs.length != 0) ? new Padding(
           padding: EdgeInsets.only(
             top: 15.0*factor
           ),
@@ -242,7 +250,7 @@ class JobList extends State<JobsTab> {
     Job job = _jobs[index];
 
     var jobItem = new InkWell(
-        onTap: () => navJobDetail(job),
+        onTap: () => widget._type != 6 ? navJobDetail(job) : navToInvitation(job.id),
         child: new JobListItem(job));
 
     return jobItem;
@@ -285,6 +293,24 @@ class JobList extends State<JobsTab> {
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
           return new JobDetail(job);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
+  }
+
+  navToInvitation(int jobId) {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new Invite(jobId, userId);
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(

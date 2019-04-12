@@ -64,14 +64,14 @@ class CompanyDetailState extends State<CompanyDetail>
     double _kAppBarHeight = 375.0*factor;
     if (widget._company.imgs.isNotEmpty) {
       _imagePages = <Widget>[];
-      widget._company.imgs.forEach((String url) {
+      widget._company.imgs.forEach((Map map) {
         _imagePages.add(
             new Container(
                 color: Colors.black.withAlpha(900),
                 child: new ConstrainedBox(
                   constraints: const BoxConstraints.expand(),
                   child: new Image.network(
-                    url,
+                    map['url'],
                     fit: BoxFit.cover,
                     height: _kAppBarHeight,
                   ),

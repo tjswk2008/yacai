@@ -316,14 +316,28 @@ class Api {
     String employee,
     String inc,
     String logo,
+    List<Map> imgs,
     String userName,
     int id
   ) {
-    String url = '${serverAddr}company/saveCompanyInfo?name=$name&logo=$logo&province=$province&city=$city&area=$area&location=$location&type=$type&employee=$employee&inc=$inc&userName=$userName';
+    String url = '${serverAddr}company/saveCompanyInfo';
+    Map data = {
+      'name': name,
+      'logo': logo,
+      'province': province,
+      'city': city,
+      'area': area,
+      'location': location,
+      'type': type,
+      'employee': employee,
+      'inc': inc,
+      'userName': userName,
+      'imgs': imgs
+    };
     if(id != null) {
-      url += '&id=${id.toString()}';
+      data['id']=id;
     }
-    return Dio().get(url);
+    return Dio().post(url, data: data);
   }
 
   Future<Response<T>> verification<T>(
@@ -394,6 +408,28 @@ class Api {
       'detail': detail,
       'jobId': jobId,
       'userId': userId
+    });
+  }
+
+  Future<Response<T>> getInvitation<T>(
+    int jobId,
+    int userId
+  ) {
+    return Dio().post('${serverAddr}invite/getInvitation', data: {
+      'jobId': jobId,
+      'userId': userId
+    });
+  }
+
+  Future<Response<T>> updateInvitation<T>(
+    int jobId,
+    int userId,
+    int accepted
+  ) {
+    return Dio().post('${serverAddr}invite/updateInvitation', data: {
+      'jobId': jobId,
+      'userId': userId,
+      'accepted': accepted
     });
   }
 

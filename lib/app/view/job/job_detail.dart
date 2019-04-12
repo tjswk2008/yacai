@@ -47,21 +47,21 @@ class JobDetailState extends State<JobDetail>
 
   @override
   Widget build(BuildContext context) {
-    double screenWidthInPt = MediaQuery.of(context).size.width;
+    double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
       backgroundColor: Colors.white,
       appBar: new AppBar(
         elevation: 0.0,
         leading: IconButton(
           icon: const BackButtonIcon(),
-          iconSize: 40*screenWidthInPt/750,
+          iconSize: 40*factor,
           tooltip: MaterialLocalizations.of(context).backButtonTooltip,
           onPressed: () {
             Navigator.maybePop(context);
           }
         ),
         title: new Text("职位详情",
-            style: new TextStyle(fontSize: 30.0*screenWidthInPt/750, color: Colors.white)),
+            style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
       ),
       body: new Stack(
         children: <Widget>[
@@ -83,21 +83,21 @@ class JobDetailState extends State<JobDetail>
                             child: _company == null ? new Container() : new CompanyInfo(_company)
                         ),
                         Container(
-                          height: 20*screenWidthInPt/750,
+                          height: 20*factor,
                         ),
                         role == 1 ? Padding(
-                          padding: EdgeInsets.all(20.0*screenWidthInPt/750),
+                          padding: EdgeInsets.all(20.0*factor),
                           child: new Builder(builder: (ctx) {
                             return new FlatButton(
                               child: new Container(
-                                height: 70*screenWidthInPt/750,
+                                height: 70*factor,
                                 child: new Center(
                                   child: Text(
                                     _job.favorite ? "取消收藏" : "收藏",
                                     style: TextStyle(
                                       color: _job.favorite ? Colors.black : Colors.white,
-                                      fontSize: 28.0*screenWidthInPt/750,
-                                      letterSpacing: _job.favorite ? 5*screenWidthInPt/750 : 40*screenWidthInPt/750
+                                      fontSize: 28.0*factor,
+                                      letterSpacing: _job.favorite ? 5*factor : 40*factor
                                     ),
                                   ),
                                 ),
@@ -140,18 +140,18 @@ class JobDetailState extends State<JobDetail>
                           }),
                         ) : Container(),
                         role == 1 ? Padding(
-                          padding: EdgeInsets.all(20.0*screenWidthInPt/750),
+                          padding: EdgeInsets.symmetric(horizontal: 20.0*factor),
                           child: new Builder(builder: (ctx) {
                             return new FlatButton(
                               child: new Container(
-                                height: 70*screenWidthInPt/750,
+                                height: 70*factor,
                                 child: new Center(
                                   child: Text(
                                     _job.delivered ? "已投递" : "投递",
                                     style: TextStyle(
                                       color: _job.delivered ? Colors.black : Colors.white,
-                                      fontSize: 28.0*screenWidthInPt/750,
-                                      letterSpacing: _job.delivered ? 5*screenWidthInPt/750 : 40*screenWidthInPt/750
+                                      fontSize: 28.0*factor,
+                                      letterSpacing: _job.delivered ? 5*factor : 40*factor
                                     ),
                                   ),
                                 ),

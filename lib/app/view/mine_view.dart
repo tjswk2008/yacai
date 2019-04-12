@@ -132,7 +132,7 @@ class MineTabState extends State<MineTab> {
                           }
                         },
                         child: new Container(
-                          height: 60.0*factor,
+                          height: 70.0*factor,
                           margin: EdgeInsets.only(top: 15.0*factor),
                           decoration: new BoxDecoration(
                             color: Colors.white,
@@ -145,20 +145,26 @@ class MineTabState extends State<MineTab> {
                                 padding: EdgeInsets.only(
                                   top: 10.0*factor,
                                   bottom: 10.0*factor,
-                                  left: 20.0*factor,
+                                  left: 25.0*factor,
                                   right: 20.0*factor,
                                 ),
                                 child: new Row(
                                   children: <Widget>[
                                     new Icon(Icons.insert_drive_file, size: 30.0*factor, color: Colors.cyan[300],),
                                     new Padding(
-                                      padding: EdgeInsets.only(right: 10.0*factor),
+                                      padding: EdgeInsets.only(right: 15.0*factor),
                                     ),
                                     new Text('我的简历', style: TextStyle(fontSize: 24.0*factor),),
                                   ],
                                 ),
                               ),
-                              new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  right: 20.0*factor,
+                                ),
+                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              )
+                              
                             ],
                           ),
                         )
@@ -173,7 +179,7 @@ class MineTabState extends State<MineTab> {
                           }
                         },
                         child: new Container(
-                          height: 60.0*factor,
+                          height: 70.0*factor,
                           margin: EdgeInsets.only(top: 15.0*factor),
                           decoration: new BoxDecoration(
                             color: Colors.white,
@@ -186,20 +192,25 @@ class MineTabState extends State<MineTab> {
                                 padding: EdgeInsets.only(
                                   top: 10.0*factor,
                                   bottom: 10.0*factor,
-                                  left: 20.0*factor,
+                                  left: 25.0*factor,
                                   right: 20.0*factor,
                                 ),
                                 child: new Row(
                                   children: <Widget>[
                                     new Icon(Icons.favorite_border, size: 30.0*factor, color: Colors.red[400],),
                                     new Padding(
-                                      padding: EdgeInsets.only(right: 10.0*factor),
+                                      padding: EdgeInsets.only(right: 15.0*factor),
                                     ),
                                     new Text('职位收藏', style: TextStyle(fontSize: 24.0*factor),),
                                   ],
                                 ),
                               ),
-                              new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  right: 20.0*factor,
+                                ),
+                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              )
                             ],
                           ),
                         )
@@ -210,11 +221,11 @@ class MineTabState extends State<MineTab> {
                           if(userName == '') {
                             _login();
                           } else {
-                            _navToDeliveryList();
+                            _navToDeliveryList(4, '申请记录');
                           }
                         },
                         child: new Container(
-                          height: 60.0*factor,
+                          height: 70.0*factor,
                           margin: EdgeInsets.only(top: 15.0*factor),
                           decoration: new BoxDecoration(
                             color: Colors.white,
@@ -227,20 +238,71 @@ class MineTabState extends State<MineTab> {
                                 padding: EdgeInsets.only(
                                   top: 10.0*factor,
                                   bottom: 10.0*factor,
-                                  left: 20.0*factor,
+                                  left: 25.0*factor,
                                   right: 20.0*factor,
                                 ),
                                 child: new Row(
                                   children: <Widget>[
                                     new Icon(Icons.email, size: 30.0*factor, color: Colors.orange[100],),
                                     new Padding(
-                                      padding: EdgeInsets.only(right: 10.0*factor),
+                                      padding: EdgeInsets.only(right: 15.0*factor),
                                     ),
                                     new Text('申请记录', style: TextStyle(fontSize: 24.0*factor),),
                                   ],
                                 ),
                               ),
-                              new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  right: 20.0*factor,
+                                ),
+                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              )
+                            ],
+                          ),
+                        )
+                      ),
+
+                      new InkWell(
+                        onTap: () {
+                          if(userName == '') {
+                            _login();
+                          } else {
+                            _navToDeliveryList(6, '面试邀请');
+                          }
+                        },
+                        child: new Container(
+                          height: 70.0*factor,
+                          margin: EdgeInsets.only(top: 15.0*factor),
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  top: 10.0*factor,
+                                  bottom: 10.0*factor,
+                                  left: 25.0*factor,
+                                  right: 20.0*factor,
+                                ),
+                                child: new Row(
+                                  children: <Widget>[
+                                    new Icon(Icons.insert_invitation, size: 30.0*factor),
+                                    new Padding(
+                                      padding: EdgeInsets.only(right: 15.0*factor),
+                                    ),
+                                    new Text('面试邀请', style: TextStyle(fontSize: 24.0*factor),),
+                                  ],
+                                ),
+                              ),
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  right: 20.0*factor,
+                                ),
+                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              )
                             ],
                           ),
                         )
@@ -255,7 +317,7 @@ class MineTabState extends State<MineTab> {
                           }
                         },
                         child: new Container(
-                          height: 60.0*factor,
+                          height: 70.0*factor,
                           margin: EdgeInsets.only(top: 15.0*factor),
                           decoration: new BoxDecoration(
                             color: Colors.white,
@@ -268,20 +330,25 @@ class MineTabState extends State<MineTab> {
                                 padding: EdgeInsets.only(
                                   top: 10.0*factor,
                                   bottom: 10.0*factor,
-                                  left: 20.0*factor,
+                                  left: 25.0*factor,
                                   right: 20.0*factor,
                                 ),
                                 child: new Row(
                                   children: <Widget>[
                                     new Icon(Icons.remove_red_eye, size: 30.0*factor, color: Colors.red,),
                                     new Padding(
-                                      padding: EdgeInsets.only(right: 10.0*factor),
+                                      padding: EdgeInsets.only(right: 15.0*factor),
                                     ),
                                     new Text('谁看过我', style: TextStyle(fontSize: 24.0*factor),),
                                   ],
                                 ),
                               ),
-                              new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  right: 20.0*factor,
+                                ),
+                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              )
                             ],
                           ),
                         )
@@ -296,7 +363,7 @@ class MineTabState extends State<MineTab> {
                           }
                         },
                         child: new Container(
-                          height: 60.0*factor,
+                          height: 70.0*factor,
                           margin: EdgeInsets.only(top: 15.0*factor, bottom: 15.0*factor, ),
                           decoration: new BoxDecoration(
                             color: Colors.white,
@@ -309,80 +376,30 @@ class MineTabState extends State<MineTab> {
                                 padding: EdgeInsets.only(
                                   top: 10.0*factor,
                                   bottom: 10.0*factor,
-                                  left: 20.0*factor,
+                                  left: 25.0*factor,
                                   right: 20.0*factor,
                                 ),
                                 child: new Row(
                                   children: <Widget>[
                                     new Icon(Icons.do_not_disturb_alt, size: 30.0*factor),
                                     new Padding(
-                                      padding: EdgeInsets.only(right: 10.0*factor),
+                                      padding: EdgeInsets.only(right: 15.0*factor),
                                     ),
                                     new Text('不让该公司看我的简历', style: TextStyle(fontSize: 24.0*factor),),
                                   ],
                                 ),
                               ),
-                              new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  right: 20.0*factor,
+                                ),
+                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              )
                             ],
                           ),
                         )
                       ),
-                      new Container(
-                        color: Colors.white,
-                        child: new Padding(
-                          padding: EdgeInsets.only(
-                            top: 10.0*factor,
-                            bottom: 10.0*factor,
-                          ),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              new _ContactItem(
-                                onPressed: () {
-                                  showDialog(context: context, builder: (BuildContext context) {
-                                    return new AlertDialog(
-                                      content: new Text(
-                                        "沟通过",
-                                        style: new TextStyle(fontSize: 20.0*factor),
-                                      )
-                                    );
-                                  });
-                                },
-                                count: '590',
-                                title: '沟通过',
-                              ),
-                              new _ContactItem(
-                                onPressed: () {
-                                  showDialog(context: context, builder: (BuildContext context) {
-                                    return new AlertDialog(
-                                      content: new Text(
-                                        "已沟通",
-                                        style: new TextStyle(fontSize: 20.0*factor),
-                                      )
-                                    );
-                                  });
-                                },
-                                count: '71',
-                                title: '已沟通',
-                              ),
-                              new _ContactItem(
-                                onPressed: () {
-                                  showDialog(context: context, builder: (BuildContext context) {
-                                    return new AlertDialog(
-                                      content: new Text(
-                                        "待面试",
-                                        style: new TextStyle(fontSize: 20.0*factor),
-                                      )
-                                    );
-                                  });
-                                },
-                                count: '0',
-                                title: '待面试',
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      
                     ])
                   )
                 ],
@@ -454,7 +471,7 @@ class MineTabState extends State<MineTab> {
           return new FadeTransition(
             opacity: animation,
             child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
+              begin: const Offset(1.0, 0.0),
               end: Offset.zero,
             ).animate(animation), child: child),
           );
@@ -472,7 +489,7 @@ class MineTabState extends State<MineTab> {
           return new FadeTransition(
             opacity: animation,
             child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
+              begin: const Offset(1.0, 0.0),
               end: Offset.zero,
             ).animate(animation), child: child),
           );
@@ -490,7 +507,7 @@ class MineTabState extends State<MineTab> {
           return new FadeTransition(
             opacity: animation,
             child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
+              begin: const Offset(1.0, 0.0),
               end: Offset.zero,
             ).animate(animation), child: child),
           );
@@ -498,17 +515,17 @@ class MineTabState extends State<MineTab> {
     ));
   }
 
-  _navToDeliveryList() {
+  _navToDeliveryList(int type, String title) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          return new JobsTab(4, '申请记录');
+          return new JobsTab(type, title);
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(
             opacity: animation,
             child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
+              begin: const Offset(1.0, 0.0),
               end: Offset.zero,
             ).animate(animation), child: child),
           );
@@ -526,40 +543,11 @@ class MineTabState extends State<MineTab> {
           return new FadeTransition(
             opacity: animation,
             child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
+              begin: const Offset(1.0, 0.0),
               end: Offset.zero,
             ).animate(animation), child: child),
           );
         }
     ));
-  }
-}
-
-class _ContactItem extends StatelessWidget {
-  _ContactItem({ Key key, this.count, this.title, this.onPressed })
-      : super(key: key);
-
-  final String count;
-  final String title;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
-    return new GestureDetector(
-        onTap: onPressed,
-        child: new Column(
-          children: [
-            new Padding(
-              padding: EdgeInsets.only(
-                bottom: 10.0*factor,
-              ),
-              child: new Text(count, style: new TextStyle(
-                  fontSize: 28.0*factor)),
-            ),
-            new Text(title, style: TextStyle(fontSize: 22.0*factor),),
-          ],
-        )
-    );
   }
 }

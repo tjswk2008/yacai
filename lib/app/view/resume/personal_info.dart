@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/resume.dart';
+import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/view/resume/personal_info_edit.dart';
 import 'package:date_format/date_format.dart';
 
@@ -53,13 +54,25 @@ class PersonalInfoView extends StatelessWidget {
                   new Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      new Padding(
-                        padding: EdgeInsets.only(bottom: 20.0*factor),
-                        child: new Text(
-                          personalInfo.name == null ? '姓名' : personalInfo.name,
-                          textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 30.0*factor),
-                        ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 20.0*factor, right: 10*factor),
+                            child: new Text(
+                              personalInfo.name == null ? '姓名' : personalInfo.name,
+                              textAlign: TextAlign.left,
+                              style: new TextStyle(fontSize: 30.0*factor),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 20.0*factor),
+                            child: new Text(
+                              personalInfo.gender == null ? '' : '(${personalInfo.gender})',
+                              textAlign: TextAlign.left,
+                              style: new TextStyle(fontSize: 20.0*factor),
+                            ),
+                          ),
+                        ],
                       ),
                       new Row(
                         children: <Widget>[
@@ -79,11 +92,11 @@ class PersonalInfoView extends StatelessWidget {
                               style: new TextStyle(fontSize: 20.0*factor),
                             ),
                           ),
-                          // new Text(
-                          //   personalInfo.academic,
-                          //   textAlign: TextAlign.left,
-                          //   style: new TextStyle(fontSize: 20.0*factor),
-                          // ),
+                          new Text(
+                            personalInfo.academic != null ? academicArr[personalInfo.academic + 1] : '',
+                            textAlign: TextAlign.left,
+                            style: new TextStyle(fontSize: 20.0*factor),
+                          ),
                         ],
                       )
                     ]
