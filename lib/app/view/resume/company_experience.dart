@@ -9,8 +9,9 @@ class CompanyExperienceView extends StatefulWidget {
 
   final CompanyExperience _companyExperience;
   final bool _editable;
+  final bool _canBeViewed;
 
-  CompanyExperienceView(this._companyExperience, this._editable);
+  CompanyExperienceView(this._companyExperience, this._editable, this._canBeViewed);
 
   @override
   CompanyExperienceViewState createState() => new CompanyExperienceViewState();
@@ -58,7 +59,10 @@ class CompanyExperienceViewState extends State<CompanyExperienceView>
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new Text(widget._companyExperience.cname, style: new TextStyle(fontSize: 24.0*factor) ),
+              new Text(
+                widget._canBeViewed ? 
+                  widget._companyExperience.cname : '*' + widget._companyExperience.cname.substring(1, 2) + '*' + widget._companyExperience.cname.substring(3, widget._companyExperience.cname.length),
+                style: new TextStyle(fontSize: 24.0*factor) ),
               new Text(
                 "${formatDate(DateTime.parse(widget._companyExperience.startTime), [yyyy, '-', mm, '-', dd])}-${widget._companyExperience.endTime == null ? '至今' : formatDate(DateTime.parse(widget._companyExperience.endTime), [yyyy, '-', mm, '-', dd])}",
                 style: detailStyle

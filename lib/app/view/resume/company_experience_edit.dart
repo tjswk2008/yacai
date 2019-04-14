@@ -163,7 +163,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                               data: titleArr,
                             );
                           },
-                          child: new Text(_companyExperience.jobTitle == null ? '请选择' : _companyExperience.jobTitle, style: TextStyle(fontSize: 22.0*factor),),
+                          child: new Text(_companyExperience.jobTitle == null || _companyExperience.jobTitle == '' ? '请选择' : _companyExperience.jobTitle, style: TextStyle(fontSize: 22.0*factor),),
                         ) 
                       ),
                     ],

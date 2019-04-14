@@ -32,6 +32,8 @@ class ResumePreviewState extends State<ResumePreview>
   String jobStatus;
   Resume resume;
   bool isRequesting = true;
+  String userName;
+  bool canBeViewed = false;
 
   @override
   void initState() {
@@ -46,12 +48,9 @@ class ResumePreviewState extends State<ResumePreview>
         }
       })
       .then((SharedPreferences prefs) {
-        return Api().viewResume(prefs.getString('userName'), widget.userId);
-      })
-      .then((Response response) {
-        if(response.data['code'] == 1) {
-          print(response.data['code']);
-        }
+        setState(() {
+         userName =  prefs.getString('userName');
+        });
       })
       .catchError((e) {
         print(e);
@@ -123,9 +122,9 @@ class ResumePreviewState extends State<ResumePreview>
         ),
         iconTheme: new IconThemeData(color: Colors.white),
         actions: <Widget>[
-          widget.jobId != null ? PopupMenuButton(
+          PopupMenuButton(
             onSelected: (int value){
-               if(value == 0) {
+               if(value == 1) {
                  Navigator.of(context).push(new PageRouteBuilder(
                     opaque: false,
                     pageBuilder: (BuildContext context, _, __) {
@@ -141,23 +140,23 @@ class ResumePreviewState extends State<ResumePreview>
                       );
                     }
                  ));
+               } else {
+                 Api().viewResume(userName, widget.userId)
+                  .then((Response response) {
+                    if(response.data['code'] == 1) {
+                      setState(() {
+                        canBeViewed = true; 
+                      });
+                    }
+                  })
+                  .catchError((e) {
+                    print(e);
+                  });
                }
             },
-            itemBuilder: (BuildContext context) =><PopupMenuItem<int>>[
+            itemBuilder: widget.jobId == null ? (BuildContext context) =><PopupMenuItem<int>>[
               new PopupMenuItem(
                   value: 0,
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 25*factor),
-                        child: Icon(Icons.insert_invitation, size: 28*factor,),
-                      ),
-                      Text("邀请面试", style: TextStyle(fontSize: 22*factor),)
-                    ],
-                  )
-              ),
-              new PopupMenuItem(
-                  value: 1,
                   child: Row(
                     children: <Widget>[
                       Padding(
@@ -168,8 +167,33 @@ class ResumePreviewState extends State<ResumePreview>
                     ],
                   )
               )
+            ] : (BuildContext context) =><PopupMenuItem<int>>[
+              new PopupMenuItem(
+                  value: 0,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 25*factor),
+                        child: Icon(Icons.remove_red_eye, size: 28*factor,),
+                      ),
+                      Text("查看全部", style: TextStyle(fontSize: 22*factor),)
+                    ],
+                  )
+              ),
+              new PopupMenuItem(
+                  value: 1,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 25*factor),
+                        child: Icon(Icons.insert_invitation, size: 28*factor,),
+                      ),
+                      Text("邀请面试", style: TextStyle(fontSize: 22*factor),)
+                    ],
+                  )
+              ),
             ]
-          ) : Container()
+          )
         ],
       ),
       backgroundColor: Colors.white,
@@ -208,7 +232,7 @@ class ResumePreviewState extends State<ResumePreview>
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      new PersonalInfoView(resume.personalInfo, false),
+                      new PersonalInfoView(resume.personalInfo, false, canBeViewed),
                       new Padding(
                         padding: EdgeInsets.only(
                           top: 5.0*factor,
@@ -266,8 +290,11 @@ class ResumePreviewState extends State<ResumePreview>
                         resume.companyExperiences,
                         (context, int index) {
                           return new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new CompanyExperienceView(resume.companyExperiences[index], false),
+                              canBeViewed ? CompanyExperienceView(resume.companyExperiences[index], false, canBeViewed) : 
+                                index == 0 ? CompanyExperienceView(resume.companyExperiences[0], false, canBeViewed) : 
+                                Text('****', style: TextStyle(fontSize: 24*factor)),
                               index == resume.companyExperiences.length - 1 ? new Container() : new Divider()
                             ],
                           );
@@ -281,8 +308,11 @@ class ResumePreviewState extends State<ResumePreview>
                         resume.projects,
                         (context, int index) {
                           return new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new ProjectView(resume.projects[index], false),
+                              canBeViewed ? ProjectView(resume.projects[index], false) : 
+                                index == 0 ? ProjectView(resume.projects[0], false) : 
+                                Text('****', style: TextStyle(fontSize: 24*factor)),
                               index == resume.projects.length - 1 ? new Container() : new Divider()
                             ],
                           );

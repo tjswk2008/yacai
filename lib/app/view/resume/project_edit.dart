@@ -148,7 +148,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                               data: titleArr,
                             );
                           },
-                          child: new Text(_project.role == null ? '请选择' : _project.role, style: TextStyle(fontSize: 22.0*factor),),
+                          child: new Text(_project.role == null || _project.role == '' ? '请选择' : _project.role, style: TextStyle(fontSize: 22.0*factor),),
                         ) 
                       ),
                     ],

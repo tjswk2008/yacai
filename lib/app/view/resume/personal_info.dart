@@ -4,13 +4,40 @@ import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/app/view/resume/personal_info_edit.dart';
 import 'package:date_format/date_format.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PersonalInfoView extends StatelessWidget {
+
+class PersonalInfoView extends StatefulWidget {
 
   final PersonalInfo personalInfo;
   final bool _editable;
+  final bool _canBeViewed;
 
-  PersonalInfoView(this.personalInfo, this._editable);
+  PersonalInfoView(this.personalInfo, this._editable, this._canBeViewed);
+
+  @override
+  PersonalInfoViewState createState() => new PersonalInfoViewState();
+}
+
+class PersonalInfoViewState extends State<PersonalInfoView>
+    with TickerProviderStateMixin {
+
+  String userName;
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   static int yearsOffset(String dateTime) {
     DateTime now = DateTime.parse(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]));
@@ -26,11 +53,11 @@ class PersonalInfoView extends StatelessWidget {
       padding: EdgeInsets.only(top: 10.0*factor),
       child: new InkWell(
         onTap: () {
-          if(!_editable) return;
+          if(!widget._editable) return;
           Navigator.of(context).push(new PageRouteBuilder(
             opaque: false,
             pageBuilder: (BuildContext context, _, __) {
-              return new PersonalInfoEditView(personalInfo);
+              return new PersonalInfoEditView(widget.personalInfo);
             },
             transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
               return new FadeTransition(
@@ -55,23 +82,35 @@ class PersonalInfoView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(bottom: 20.0*factor, right: 10*factor),
+                            padding: EdgeInsets.only(bottom: 20.0*factor, right: 20*factor),
                             child: new Text(
-                              personalInfo.name == null ? '姓名' : personalInfo.name,
+                              widget.personalInfo.name == null ? 
+                                '姓名' : widget._canBeViewed ? 
+                                widget.personalInfo.name : widget.personalInfo.name.length == 2 ? 
+                                widget.personalInfo.name.replaceRange(1, 2, '*') : '*' + widget.personalInfo.name.substring(1, 2) + '*' + widget.personalInfo.name.substring(3, widget.personalInfo.name.length),
                               textAlign: TextAlign.left,
                               style: new TextStyle(fontSize: 30.0*factor),
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(bottom: 20.0*factor),
+                            padding: EdgeInsets.only(bottom: 25.0*factor, right: 10*factor),
                             child: new Text(
-                              personalInfo.gender == null ? '' : '(${personalInfo.gender})',
+                              widget.personalInfo.gender == null ? '' : '(${widget.personalInfo.gender})',
                               textAlign: TextAlign.left,
                               style: new TextStyle(fontSize: 20.0*factor),
                             ),
                           ),
+                          widget._canBeViewed ? Padding(
+                            padding: EdgeInsets.only(bottom: 25.0*factor),
+                            child: new Text(
+                              widget.personalInfo.account,
+                              textAlign: TextAlign.left,
+                              style: new TextStyle(fontSize: 20.0*factor),
+                            ),
+                          ) : Container(),
                         ],
                       ),
                       new Row(
@@ -79,7 +118,7 @@ class PersonalInfoView extends StatelessWidget {
                           new Padding(
                             padding: EdgeInsets.only(right: 15.0*factor),
                             child: new Text(
-                              personalInfo.firstJobTime == null ? '首次参加工作时间' : yearsOffset(personalInfo.firstJobTime).toString() + "年经验",
+                              widget.personalInfo.firstJobTime == null ? '首次参加工作时间' : yearsOffset(widget.personalInfo.firstJobTime).toString() + "年经验",
                               textAlign: TextAlign.left,
                               style: new TextStyle(fontSize: 20.0*factor),
                             ),
@@ -87,13 +126,13 @@ class PersonalInfoView extends StatelessWidget {
                           new Padding(
                             padding: EdgeInsets.only(right: 15.0*factor),
                             child: new Text(
-                              personalInfo.birthDay == null ? '出生年月' : yearsOffset(personalInfo.birthDay).toString() + "岁",
+                              widget.personalInfo.birthDay == null ? '出生年月' : yearsOffset(widget.personalInfo.birthDay).toString() + "岁",
                               textAlign: TextAlign.left,
                               style: new TextStyle(fontSize: 20.0*factor),
                             ),
                           ),
                           new Text(
-                            personalInfo.academic != null ? academicArr[personalInfo.academic + 1] : '',
+                            widget.personalInfo.academic != null ? academicArr[widget.personalInfo.academic + 1] : '',
                             textAlign: TextAlign.left,
                             style: new TextStyle(fontSize: 20.0*factor),
                           ),
@@ -102,13 +141,13 @@ class PersonalInfoView extends StatelessWidget {
                     ]
                   ),
 
-                  personalInfo.avatar == null ? new Image.asset(
+                  widget.personalInfo.avatar == null ? new Image.asset(
                       "assets/images/ic_avatar_default.png",
                       width: 90.0*factor,
                     )
                   : new CircleAvatar(
                     radius: 45.0*factor,
-                    backgroundImage: new NetworkImage(personalInfo.avatar)
+                    backgroundImage: new NetworkImage(widget.personalInfo.avatar)
                   )
                 ],
               ),
@@ -124,7 +163,7 @@ class PersonalInfoView extends StatelessWidget {
                       top: 5.0*factor,
                       bottom: 5.0*factor,
                     ),
-                    child: new Text(personalInfo.summarize == null ? '优势' : personalInfo.summarize, style: new TextStyle(
+                    child: new Text(widget.personalInfo.summarize == null ? '优势' : widget.personalInfo.summarize, style: new TextStyle(
                         fontSize: 20.0*factor, color: Colors.grey)),
                   ),
                 ],

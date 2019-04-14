@@ -220,6 +220,7 @@ class JobExpect{
 
 class PersonalInfo {
   int id;
+  String account;
   String name; // 姓名
   String gender; // 性别
   String firstJobTime; // 首次参加工作时间
@@ -233,6 +234,7 @@ class PersonalInfo {
 
   PersonalInfo({
     this.id,
+    this.account,
     this.name,
     this.gender,
     this.firstJobTime,
@@ -256,6 +258,7 @@ class PersonalInfo {
   static PersonalInfo fromMap(Map map) {
     return new PersonalInfo(
         id: map['id'],
+        account: map['account'],
         name: map['name'],
         gender: map['gender'],
         firstJobTime: map['firstJobTime'],

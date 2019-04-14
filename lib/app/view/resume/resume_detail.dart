@@ -243,7 +243,7 @@ class ResumeDetailState extends State<ResumeDetail>
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      new PersonalInfoView(appState.resume.personalInfo, true),
+                      new PersonalInfoView(appState.resume.personalInfo, true, true),
                       new Padding(
                         padding: EdgeInsets.only(
                           top: 5.0*factor,
@@ -343,7 +343,7 @@ class ResumeDetailState extends State<ResumeDetail>
                         (context, int index) {
                           return new Column(
                             children: <Widget>[
-                              new CompanyExperienceView(appState.resume.companyExperiences[index], true),
+                              new CompanyExperienceView(appState.resume.companyExperiences[index], true, true),
                               index == appState.resume.companyExperiences.length - 1 ? new Container() : new Divider()
                             ],
                           );
