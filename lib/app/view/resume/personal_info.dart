@@ -90,7 +90,7 @@ class PersonalInfoViewState extends State<PersonalInfoView>
                               widget.personalInfo.name == null ? 
                                 '姓名' : widget._canBeViewed ? 
                                 widget.personalInfo.name : widget.personalInfo.name.length == 2 ? 
-                                widget.personalInfo.name.replaceRange(1, 2, '*') : '*' + widget.personalInfo.name.substring(1, 2) + '*' + widget.personalInfo.name.substring(3, widget.personalInfo.name.length),
+                                widget.personalInfo.name.replaceRange(0, 1, '*') : '*' + widget.personalInfo.name.substring(1, 2) + '*' + widget.personalInfo.name.substring(3, widget.personalInfo.name.length),
                               textAlign: TextAlign.left,
                               style: new TextStyle(fontSize: 30.0*factor),
                             ),
