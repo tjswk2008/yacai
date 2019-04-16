@@ -231,6 +231,7 @@ class PersonalInfo {
   int academic; // 学历
   String school; // 学校
   int mark; // 招聘人员标记的状态
+  int accepted; // 邀请函状态 1. 已接受邀请 0. 未接受 2. 已拒绝
 
   PersonalInfo({
     this.id,
@@ -244,7 +245,8 @@ class PersonalInfo {
     this.summarize,
     this.academic,
     this.school,
-    this.mark
+    this.mark,
+    this.accepted
   });
 
   static List<PersonalInfo> fromList(List list) {
@@ -268,7 +270,8 @@ class PersonalInfo {
         summarize: map['summarize'],
         academic: map['academic'],
         school: map['school'],
-        mark: map['marker']
+        mark: map['marker'],
+        accepted: map['accepted']
     );
   }
 }

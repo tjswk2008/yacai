@@ -73,9 +73,20 @@ class UserListItemState extends State<UserListItem> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          new Text(
-                            personalInfo.name,
-                            style: new TextStyle(fontSize: 26.0*factor)
+                          Row(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(right: 10*factor),
+                                child: Text(
+                                  personalInfo.name,
+                                  style: new TextStyle(fontSize: 26.0*factor)
+                                ),
+                              ),
+                              
+                              widget.jobId == null ? Container() : personalInfo.accepted == 2 ? Text("(已拒绝邀请)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.red))
+                                : personalInfo.accepted == 1 ? Text("(已接受邀请)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.green))
+                                : Container()
+                            ],
                           ),
                           new Row(
                             children: <Widget>[

@@ -110,7 +110,7 @@ class InviteState extends State<Invite> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(bottom: 20*factor),
-                      child: accepted == 2 ? Text("(已拒绝)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.red))
+                      child: accepted == 2 ? Text("(已拒绝邀请)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.red))
                           : accepted == 1 ? Text("(已接受邀请)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.green))
                           : Container(),
                     ),

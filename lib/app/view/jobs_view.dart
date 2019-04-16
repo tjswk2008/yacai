@@ -271,6 +271,7 @@ class JobList extends State<JobsTab> {
           setState(() {
             isRequesting = false;
             if (page == 1) {
+              _jobs = [];
               _jobs = Job.fromJson(response.data['list']);
             } else {
               Job.fromJson(response.data['list']).forEach((item) {

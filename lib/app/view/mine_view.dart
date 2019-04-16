@@ -414,11 +414,10 @@ class MineTabState extends State<MineTab> {
                     height: 70*factor,
                     child: new Center(
                       child: Text(
-                        "注销",
+                        "退出登录",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 28.0*factor,
-                          letterSpacing: 40*factor
                         ),
                       ),
                     ),
