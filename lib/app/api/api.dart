@@ -160,6 +160,16 @@ class Api {
     return Dio().get(serverAddr + "user/register?account=$account&pwd=$pwd&role=$role");
   }
 
+  Future<Response<T>> deleteUser<T>(String account) {
+    String url = '${serverAddr}user/deleteUser';
+    return Dio().post(url, data: {'account': account});
+  }
+
+  Future<Response<T>> switchOpenStatus<T>(String account, int open) {
+    String url = '${serverAddr}user/switchOpenStatus';
+    return Dio().post(url, data: {'account': account, 'isOpen': open});
+  }
+
   Future<Response<T>> getUserInfo<T>(int id, String userName) {
     String url = "${serverAddr}user/query?id=$id";
     if(userName != null) {

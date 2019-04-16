@@ -4,12 +4,12 @@ import 'package:flutter_app/app/view/resume/resume_detail.dart';
 import 'package:flutter_app/app/view/shield_list.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
-import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/view/jobs_view.dart';
 import 'package:flutter_app/app/view/company/company_list.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/splash.dart';
+import 'package:flutter_app/app/view/setting_view.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -150,7 +150,7 @@ class MineTabState extends State<MineTab> {
                                 ),
                                 child: new Row(
                                   children: <Widget>[
-                                    new Icon(Icons.insert_drive_file, size: 30.0*factor, color: Colors.cyan[300],),
+                                    new Icon(Icons.insert_drive_file, size: 30.0*factor, color: Theme.of(context).primaryColor),
                                     new Padding(
                                       padding: EdgeInsets.only(right: 15.0*factor),
                                     ),
@@ -243,7 +243,7 @@ class MineTabState extends State<MineTab> {
                                 ),
                                 child: new Row(
                                   children: <Widget>[
-                                    new Icon(Icons.email, size: 30.0*factor, color: Colors.orange[100],),
+                                    new Icon(Icons.email, size: 30.0*factor, color: Colors.orange[400],),
                                     new Padding(
                                       padding: EdgeInsets.only(right: 15.0*factor),
                                     ),
@@ -335,7 +335,7 @@ class MineTabState extends State<MineTab> {
                                 ),
                                 child: new Row(
                                   children: <Widget>[
-                                    new Icon(Icons.remove_red_eye, size: 30.0*factor, color: Colors.red,),
+                                    new Icon(Icons.remove_red_eye, size: 30.0*factor, color: Theme.of(context).primaryColor,),
                                     new Padding(
                                       padding: EdgeInsets.only(right: 15.0*factor),
                                     ),
@@ -364,7 +364,7 @@ class MineTabState extends State<MineTab> {
                         },
                         child: new Container(
                           height: 70.0*factor,
-                          margin: EdgeInsets.only(top: 15.0*factor, bottom: 15.0*factor, ),
+                          margin: EdgeInsets.only(top: 15.0*factor),
                           decoration: new BoxDecoration(
                             color: Colors.white,
                           ),
@@ -381,7 +381,7 @@ class MineTabState extends State<MineTab> {
                                 ),
                                 child: new Row(
                                   children: <Widget>[
-                                    new Icon(Icons.do_not_disturb_alt, size: 30.0*factor),
+                                    new Icon(Icons.do_not_disturb_alt, size: 30.0*factor, color: Colors.red,),
                                     new Padding(
                                       padding: EdgeInsets.only(right: 15.0*factor),
                                     ),
@@ -400,6 +400,51 @@ class MineTabState extends State<MineTab> {
                         )
                       ),
                       
+                      new InkWell(
+                        onTap: () {
+                          if(userName == '') {
+                            _login();
+                          } else {
+                            _navToSettingView();
+                          }
+                        },
+                        child: new Container(
+                          height: 70.0*factor,
+                          margin: EdgeInsets.only(top: 15.0*factor),
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  top: 10.0*factor,
+                                  bottom: 10.0*factor,
+                                  left: 25.0*factor,
+                                  right: 20.0*factor,
+                                ),
+                                child: new Row(
+                                  children: <Widget>[
+                                    new Icon(Icons.settings, size: 30.0*factor),
+                                    new Padding(
+                                      padding: EdgeInsets.only(right: 15.0*factor),
+                                    ),
+                                    new Text('设置', style: TextStyle(fontSize: 24.0*factor),),
+                                  ],
+                                ),
+                              ),
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  right: 20.0*factor,
+                                ),
+                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              )
+                            ],
+                          ),
+                        )
+                      ),
                     ])
                   )
                 ],
@@ -458,6 +503,24 @@ class MineTabState extends State<MineTab> {
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
       }));
+  }
+
+  _navToSettingView() {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new SettingView();
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(1.0, 0.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
   }
 
   _navToViewerList() {

@@ -179,7 +179,7 @@ class ShieldListState extends State<ShieldList>
                                         ),
                                         margin: EdgeInsets.only(top: 10.0*factor, bottom: 10.0*factor),
                                       ),
-                                      Switch(
+                                      Switch.adaptive(
                                         value: true,
                                         activeColor: Theme.of(context).primaryColor,     // 激活时原点颜色
                                         onChanged: (bool val) async {

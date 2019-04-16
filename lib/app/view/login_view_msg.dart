@@ -191,7 +191,7 @@ class LoginWithMsgState extends State<LoginWithMsg> {
                       });
                       if(response.data['code'] != 1) {
                         Scaffold.of(ctx).showSnackBar(new SnackBar(
-                          content: new Text("登录失败！", style: TextStyle(fontSize: 20.0*factor),),
+                          content: new Text(response.data['msg'], style: TextStyle(fontSize: 20.0*factor),),
                         ));
                         return;
                       }
