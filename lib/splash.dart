@@ -163,7 +163,7 @@ class SplashState extends State<SplashPage> {
       Response response = await Api().login(username, null);
     
       if (role == 1) {
-        Response resumeResponse = await Api().getUserInfo(response.data['id']);
+        Response resumeResponse = await Api().getUserInfo(response.data['id'], null);
         Resume resume = Resume.fromMap(resumeResponse.data['info']);
         StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
       } else {

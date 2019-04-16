@@ -38,19 +38,24 @@ class ResumePreviewState extends State<ResumePreview>
   @override
   void initState() {
     super.initState();
-    Api().getUserInfo(widget.userId)
-      .then((Response response) {
-        if(response.data['code'] == 1) {
-          setState(() {
-            resume = Resume.fromMap(response.data['info']);
-          });
-          return SharedPreferences.getInstance();
-        }
-      })
+    SharedPreferences.getInstance()
       .then((SharedPreferences prefs) {
         setState(() {
          userName =  prefs.getString('userName');
         });
+        int role = prefs.getInt('role');
+        if (role == 1) {
+          return Api().getUserInfo(widget.userId, null);
+        }
+        return Api().getUserInfo(widget.userId, userName);
+      })
+      .then((Response response) {
+        if(response.data['code'] == 1) {
+          setState(() {
+            resume = Resume.fromMap(response.data['info']);
+            canBeViewed = response.data['info']['canBeViewed'] == null ? true : response.data['info']['canBeViewed'];
+          });
+        }
       })
       .catchError((e) {
         print(e);

@@ -160,8 +160,12 @@ class Api {
     return Dio().get(serverAddr + "user/register?account=$account&pwd=$pwd&role=$role");
   }
 
-  Future<Response<T>> getUserInfo<T>(int id) {
-    return Dio().get(serverAddr + "user/query?id=" + id.toString());
+  Future<Response<T>> getUserInfo<T>(int id, String userName) {
+    String url = "${serverAddr}user/query?id=$id";
+    if(userName != null) {
+      url += '&userName=$userName';
+    }
+    return Dio().get(url);
   }
 
   Future<Response<T>> sendSms<T>(String phone) {

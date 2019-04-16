@@ -217,6 +217,7 @@ class ResumeTabState extends State<ResumeTab> {
           }
           setState(() {
             if (page == 1) {
+              _personalInfos = [];
               _personalInfos = PersonalInfo.fromList(response.data['list']);
             } else {
               PersonalInfo.fromList(response.data['list']).forEach((item) {
