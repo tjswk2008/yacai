@@ -7,7 +7,7 @@ import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart' as Spinkit;
 import 'package:flutter_app/app/model/constants.dart';
-import 'package:dropdown_menu/dropdown_menu.dart';
+import 'package:flutter_app/app/component/dropdown_menu/dropdown_menu.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/bezier_hour_glass_header.dart';
 import 'package:flutter_easyrefresh/bezier_bounce_footer.dart';

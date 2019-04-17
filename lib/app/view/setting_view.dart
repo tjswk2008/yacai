@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/view/login_view.dart';
-import 'package:flutter_app/app/view/shield_list.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/view/jobs_view.dart';
-import 'package:flutter_app/app/view/company/company_list.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/splash.dart';
@@ -58,7 +56,7 @@ class SettingViewState extends State<SettingView> {
           body: Container(
             padding: EdgeInsets.all(40.0*factor),
             child: Container(
-              height: 520*factor + 6*16,
+              height: 320*factor + 3*16,
               padding: EdgeInsets.only(left: 30*factor),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -281,11 +279,11 @@ class SettingViewState extends State<SettingView> {
                             ),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.email, size: 30.0*factor, color: Colors.orange[400],),
+                                new Icon(Icons.share, size: 30.0*factor, color: Colors.orange[400],),
                                 new Padding(
                                   padding: EdgeInsets.only(right: 15.0*factor),
                                 ),
-                                new Text('申请记录', style: TextStyle(fontSize: 24.0*factor),),
+                                new Text('丫财应用分享', style: TextStyle(fontSize: 24.0*factor),),
                               ],
                             ),
                           ),
@@ -316,123 +314,18 @@ class SettingViewState extends State<SettingView> {
                             ),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.insert_invitation, size: 30.0*factor),
+                                new Icon(Icons.system_update, size: 30.0*factor),
                                 new Padding(
                                   padding: EdgeInsets.only(right: 15.0*factor),
                                 ),
-                                new Text('面试邀请', style: TextStyle(fontSize: 24.0*factor),),
+                                new Text('版本更新检查', style: TextStyle(fontSize: 24.0*factor),),
                               ],
                             ),
                           ),
                         ],
                       ),
                     )
-                  ),
-                  Divider(),
-                  new InkWell(
-                    onTap: () {
-                      if(userName == '') {
-                        _login();
-                      } else {
-                        _navToViewerList();
-                      }
-                    },
-                    child: new Container(
-                      height: 70.0*factor,
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Padding(
-                            padding: EdgeInsets.only(
-                              top: 10.0*factor,
-                              bottom: 10.0*factor,
-                              right: 20.0*factor,
-                            ),
-                            child: new Row(
-                              children: <Widget>[
-                                new Icon(Icons.remove_red_eye, size: 30.0*factor, color: Theme.of(context).primaryColor,),
-                                new Padding(
-                                  padding: EdgeInsets.only(right: 15.0*factor),
-                                ),
-                                new Text('谁看过我', style: TextStyle(fontSize: 24.0*factor),),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ),
-                  Divider(),
-                  new InkWell(
-                    onTap: () {
-                      if(userName == '') {
-                        _login();
-                      } else {
-                        _navToShieldList();
-                      }
-                    },
-                    child: new Container(
-                      height: 70.0*factor,
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Padding(
-                            padding: EdgeInsets.only(
-                              top: 10.0*factor,
-                              bottom: 10.0*factor,
-                              right: 20.0*factor,
-                            ),
-                            child: new Row(
-                              children: <Widget>[
-                                new Icon(Icons.do_not_disturb_alt, size: 30.0*factor, color: Colors.red,),
-                                new Padding(
-                                  padding: EdgeInsets.only(right: 15.0*factor),
-                                ),
-                                new Text('不让该公司看我的简历', style: TextStyle(fontSize: 24.0*factor),),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ),
-                  Divider(),
-                  new InkWell(
-                    onTap: () {
-                      if(userName == '') {
-                        _login();
-                      } else {
-                        _navToViewerList();
-                      }
-                    },
-                    child: new Container(
-                      height: 70.0*factor,
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          new Padding(
-                            padding: EdgeInsets.only(
-                              top: 10.0*factor,
-                              bottom: 10.0*factor,
-                              right: 20.0*factor,
-                            ),
-                            child: new Row(
-                              children: <Widget>[
-                                new Icon(Icons.settings, size: 30.0*factor),
-                                new Padding(
-                                  padding: EdgeInsets.only(right: 15.0*factor),
-                                ),
-                                new Text('设置', style: TextStyle(fontSize: 24.0*factor),),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ),
+                  )
                 ]
               ),
             )
@@ -448,42 +341,6 @@ class SettingViewState extends State<SettingView> {
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
       }));
-  }
-
-  _navToViewerList() {
-    Navigator.of(context).push(new PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (BuildContext context, _, __) {
-          return new CompanyTab();
-        },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
-    ));
-  }
-
-  _navToShieldList() {
-    Navigator.of(context).push(new PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (BuildContext context, _, __) {
-          return new ShieldList();
-        },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
-    ));
   }
 
   _navToDeliveryList(int type, String title) {

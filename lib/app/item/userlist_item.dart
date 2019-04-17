@@ -83,8 +83,10 @@ class UserListItemState extends State<UserListItem> {
                                 ),
                               ),
                               
-                              widget.jobId == null ? Container() : personalInfo.accepted == 2 ? Text("(已拒绝邀请)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.red))
+                              widget.jobId == null ? Container() : personalInfo.accepted == 2 ? 
+                                Text("(已拒绝邀请)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.red))
                                 : personalInfo.accepted == 1 ? Text("(已接受邀请)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.green))
+                                : personalInfo.accepted == 0 ? Text("(已发送邀请)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.green))
                                 : Container()
                             ],
                           ),

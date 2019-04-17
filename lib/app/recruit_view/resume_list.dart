@@ -4,7 +4,7 @@ import 'package:flutter_app/app/model/resume.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:dropdown_menu/dropdown_menu.dart';
+import 'package:flutter_app/app/component/dropdown_menu/dropdown_menu.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/bezier_hour_glass_header.dart';
@@ -14,8 +14,9 @@ import 'package:flutter_easyrefresh/bezier_bounce_footer.dart';
 class ResumeTab extends StatefulWidget {
   final String _title;
   final int jobId;
+  final int type;
 
-  ResumeTab(this._title, this.jobId);
+  ResumeTab(this._title, this.jobId, this.type);
   @override
   ResumeTabState createState() => new ResumeTabState();
 }
@@ -208,7 +209,7 @@ class ResumeTabState extends State<ResumeTab> {
       return;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Api().getResumeList(prefs.getString('userName'), widget.jobId, timeReq, academic, salary, mark, page)
+    Api().getResumeList(prefs.getString('userName'), widget.jobId, timeReq, academic, salary, mark, page, widget.type)
       .then((Response response) {
         if (response.data['code'] == 1) {
           totalPage = response.data['total'] == 0 ? 1 : response.data['total'];

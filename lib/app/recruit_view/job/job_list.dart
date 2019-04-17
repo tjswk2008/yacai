@@ -68,7 +68,7 @@ class PubJobListState extends State<PubJobList> {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
-          return new ResumeTab('简历投递列表', job.id);
+          return new ResumeTab('简历投递列表', job.id, 3);
         },
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(

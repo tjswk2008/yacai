@@ -14,6 +14,7 @@ import 'package:flutter_easyrefresh/delivery_header.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/splash.dart';
+import 'package:flutter_app/app/recruit_view/resume_list.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -157,12 +158,48 @@ class MineTabState extends State<MineTab> {
                               if(userName == '') {
                                 _login();
                               } else {
-                                _navToPubJobList();
+                                _navToViewerList();
                               }
                             },
                             child: new Container(
                               height: 80.0*factor,
                               margin: EdgeInsets.only(top: 10.0*factor, bottom: 10.0*factor),
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Padding(
+                                    padding: EdgeInsets.all(20.0*factor),
+                                    child: new Row(
+                                      children: <Widget>[
+                                        new Icon(Icons.remove_red_eye, size: 32.0*factor, color: Theme.of(context).primaryColor,),
+                                        new Padding(
+                                          padding: EdgeInsets.only(right: 20.0*factor),
+                                        ),
+                                        new Text('简历查看记录', style: TextStyle(fontSize: 26.0*factor),),
+                                      ],
+                                    ),
+                                  ),
+                                  new Icon(Icons.chevron_right, size: 32.0*factor,),
+                                ],
+                              ),
+                            )
+                          ),
+
+                          new InkWell(
+                            onTap: () {
+                              if(userName == '') {
+                                _login();
+                              } else {
+                                _navToPubJobList();
+                              }
+                            },
+                            child: new Container(
+                              height: 80.0*factor,
+                              margin: EdgeInsets.only(bottom: 10.0*factor),
                               decoration: new BoxDecoration(
                                 color: Colors.white,
                               ),
@@ -275,62 +312,7 @@ class MineTabState extends State<MineTab> {
                             )
                           ),
 
-                          new Container(
-                            color: Colors.white,
-                            child: new Padding(
-                              padding: EdgeInsets.only(
-                                top: 10.0*factor,
-                                bottom: 10.0*factor,
-                              ),
-                              child: new Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  new _ContactItem(
-                                    onPressed: () {
-                                      showDialog(context: context, builder: (BuildContext context) {
-                                        return new AlertDialog(
-                                          content: new Text(
-                                            "沟通过",
-                                            style: new TextStyle(fontSize: 20.0*factor),
-                                          )
-                                        );
-                                      });
-                                    },
-                                    count: '590',
-                                    title: '沟通过',
-                                  ),
-                                  new _ContactItem(
-                                    onPressed: () {
-                                      showDialog(context: context, builder: (BuildContext context) {
-                                        return new AlertDialog(
-                                          content: new Text(
-                                            "已沟通",
-                                            style: new TextStyle(fontSize: 20.0*factor),
-                                          )
-                                        );
-                                      });
-                                    },
-                                    count: '71',
-                                    title: '已沟通',
-                                  ),
-                                  new _ContactItem(
-                                    onPressed: () {
-                                      showDialog(context: context, builder: (BuildContext context) {
-                                        return new AlertDialog(
-                                          content: new Text(
-                                            "待面试",
-                                            style: new TextStyle(fontSize: 20.0*factor),
-                                          )
-                                        );
-                                      });
-                                    },
-                                    count: '0',
-                                    title: '待面试',
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          
                         ]
                       )
                     ],
@@ -394,6 +376,24 @@ class MineTabState extends State<MineTab> {
       }));
   }
 
+  _navToViewerList() {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new ResumeTab('简历查看列表', null, 2);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
+  }
+
   _navToCompanyEdit(Company company) {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
@@ -446,34 +446,5 @@ class MineTabState extends State<MineTab> {
           );
         }
     ));
-  }
-}
-
-class _ContactItem extends StatelessWidget {
-  _ContactItem({ Key key, this.count, this.title, this.onPressed })
-      : super(key: key);
-
-  final String count;
-  final String title;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
-    return new GestureDetector(
-        onTap: onPressed,
-        child: new Column(
-          children: [
-            new Padding(
-              padding: EdgeInsets.only(
-                bottom: 10.0*factor,
-              ),
-              child: new Text(count, style: new TextStyle(
-                  fontSize: 28.0*factor)),
-            ),
-            new Text(title, style: TextStyle(fontSize: 22.0*factor),),
-          ],
-        )
-    );
   }
 }
