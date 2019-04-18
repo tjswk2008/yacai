@@ -1,18 +1,24 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_downloader (0.0.1):
+    - Flutter
   - image_picker (0.0.1):
     - Flutter
   - keyboard_visibility (0.5.0):
     - Flutter
     - Reachability
+  - package_info (0.0.1):
+    - Flutter
   - Reachability (3.2)
   - shared_preferences (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
+  - flutter_downloader (from `.symlinks/plugins/flutter_downloader/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - keyboard_visibility (from `.symlinks/plugins/keyboard_visibility/ios`)
+  - package_info (from `.symlinks/plugins/package_info/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
 
 SPEC REPOS:
@@ -22,17 +28,23 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: ".symlinks/flutter/ios"
+  flutter_downloader:
+    :path: ".symlinks/plugins/flutter_downloader/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
   keyboard_visibility:
     :path: ".symlinks/plugins/keyboard_visibility/ios"
+  package_info:
+    :path: ".symlinks/plugins/package_info/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
 
 SPEC CHECKSUMS:
   Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  flutter_downloader: ff8f392c1b9d2a35f7c7578508e64504335fdab0
   image_picker: ee00aab0487cedc80a304085219503cc6d0f2e22
   keyboard_visibility: 091164adbb54829fcee802523daff9e64a7d8023
+  package_info: d7c98b64f60add4c2908b9d94d82a45d3c8827ad
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
 
