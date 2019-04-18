@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import './drapdown_common.dart';
 
-typedef Widget MenuItemBuilder<T>(BuildContext context, T data, bool selected);
+typedef Widget MenuItemBuilder<T>(BuildContext context, T data, bool selected, List<int> subIndexs);
 typedef void MenuItemOnTap<T>(T data, int index);
 typedef List<E> GetSubData<T, E>(T data);
 
@@ -42,7 +42,7 @@ class _MenuListState<T> extends DropdownState<DropdownListMenu<T>> {
     final T data = list[index];
     return new GestureDetector(
       behavior: HitTestBehavior.opaque,
-      child: widget.itemBuilder(context, data, index == _selectedIndex),
+      child: widget.itemBuilder(context, data, index == _selectedIndex, null),
       onTap: () {
         setState(() {
           _selectedIndex = index;
@@ -98,7 +98,7 @@ class DropdownTreeMenu<T, E> extends DropdownWidget {
   final MenuItemBuilder<T> itemBuilder;
 
   //selected index of sub list
-  final int subSelectedIndex;
+  final List<int> subSelectedIndex;
 
   /// A function to build right item of the tree
   final MenuItemBuilder<E> subItemBuilder;
@@ -150,7 +150,7 @@ class DropdownTreeMenu<T, E> extends DropdownWidget {
 }
 
 class _TreeMenuList<T, E> extends DropdownState<DropdownTreeMenu> {
-  int _subSelectedIndex;
+  List<int> _subSelectedIndex;
   int _selectedIndex;
 
   //
@@ -188,14 +188,14 @@ class _TreeMenuList<T, E> extends DropdownState<DropdownTreeMenu> {
     return new GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: widget.subItemBuilder(context, _subData[index],
-          _activeIndex == _selectedIndex && index == _subSelectedIndex),
+          index == _subSelectedIndex[_activeIndex], _subSelectedIndex),
       onTap: () {
         assert(controller != null);
         controller.select(_subData[index],
             index: _activeIndex, subIndex: index);
         setState(() {
           _selectedIndex = _activeIndex;
-          _subSelectedIndex = index;
+          _subSelectedIndex[_selectedIndex] = index;
         });
       },
     );
@@ -206,7 +206,7 @@ class _TreeMenuList<T, E> extends DropdownState<DropdownTreeMenu> {
     final T data = list[index];
     return new GestureDetector(
       behavior: HitTestBehavior.opaque,
-      child: widget.itemBuilder(context, data, index == _activeIndex),
+      child: widget.itemBuilder(context, data, index == _activeIndex, null),
       onTap: () {
         //切换
         //拿到数据

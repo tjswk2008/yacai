@@ -208,6 +208,7 @@ class Api {
     String employee,
     String salary,
     String area,
+    String companyType,
     int currentPage
   ) {
     String url = '${serverAddr}jobs/jobsList?type=$type&userName=$userName';
@@ -226,9 +227,13 @@ class Api {
     if(area != null) {
       url += '&area=$area';
     }
+    if(companyType != null) {
+      url += '&companyType=$companyType';
+    }
     if(currentPage != null) {
       url += '&currentPage=$currentPage';
     }
+    
     return Dio().get(url);
   }
 

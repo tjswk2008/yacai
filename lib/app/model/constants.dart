@@ -59,6 +59,7 @@ List<String> academicArr = <String>[
 ];
 
 List<String> companyTypeArr = <String>[
+  '行业不限',
   '电子商务',
   '游戏',
   '媒体',

@@ -32,6 +32,7 @@ class JobList extends State<JobsTab> {
   String academic = academicArr[0];
   String employee = employeeArr[0];
   String salary = salaryArr[0];
+  String companyType = companyTypeArr[0];
 
   int index1 = 0,
       index2 = 0,
@@ -98,20 +99,85 @@ class JobList extends State<JobsTab> {
               builder: (BuildContext context) {
                 return new DropdownListMenu(
                   selectedIndex: index4,
-                  data: academicArr,
+                  data: timeReqArr,
                   itemBuilder: buildCheckItem,
                 );
               },
-              height: 80 * factor * academicArr.length),
-          // new DropdownMenuBuilder(
-          //     builder: (BuildContext context) {
-          //       return new DropdownListMenu(
-          //         selectedIndex: index5,
-          //         data: employeeArr,
-          //         itemBuilder: buildCheckItem,
-          //       );
-          //     },
-          //     height: 80 * factor * employeeArr.length),
+              height: 80 * factor * timeReqArr.length),
+          new DropdownMenuBuilder(
+            builder: (BuildContext context) {
+              return new DropdownTreeMenu(
+                selectedIndex: 0,
+                subSelectedIndex: [0,0,0],
+                itemExtent: 80*factor,
+                subBackground: Colors.white,
+                itemBuilder: (BuildContext context, dynamic data, bool selected, List<int> subIndexs) {
+                  if (!selected) {
+                    return new DecoratedBox(
+                        decoration: new BoxDecoration(
+                            border: new Border(
+                                right: Divider.createBorderSide(context))),
+                        child: new Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: new Row(
+                              children: <Widget>[
+                                new Text(data['title']),
+                              ],
+                            )));
+                  }
+                  return new DecoratedBox(
+                    decoration: new BoxDecoration(
+                      border: new Border(
+                        top: Divider.createBorderSide(context),
+                        bottom: Divider.createBorderSide(context)
+                      )
+                    ),
+                    child: new Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: new Row(
+                        children: <Widget>[
+                          new Container(
+                              color: Theme.of(context).primaryColor,
+                              width: 3.0,
+                              height: 20.0),
+                          new Padding(
+                              padding: EdgeInsets.only(left: 12.0),
+                              child: new Text(data['title'])),
+                        ],
+                      )
+                    )
+                  );
+                },
+                subItemBuilder: (BuildContext context, dynamic data, bool selected, List<int> subIndexs) {
+                  Color color = selected
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).textTheme.body1.color;
+
+                  return new SizedBox(
+                    height: 80*factor,
+                    child: new Padding(
+                      padding: new EdgeInsets.all(10.0),
+                      child: new Text(
+                        data,
+                        style: new TextStyle(color: color),
+                      ),
+                      
+                    ),
+                  );
+                },
+                getSubData: (dynamic data) {
+                  return data['children'];
+                },
+                data: [
+                  {'title': '学历要求', 'children': academicArr},
+                  {'title': '公司规模', 'children': employeeArr},
+                  {'title': '公司行业', 'children': companyTypeArr},
+                ],
+              );
+            },
+            height: 800.0*factor
+          ),
+
         ]);
   }
 
@@ -120,7 +186,7 @@ class JobList extends State<JobsTab> {
     return new DropdownHeader(
       onTap: onTap,
       height: 80*factor,
-      titles: [salaryArr[index1], areaArr[index2], academicArr[index4]],
+      titles: [salaryArr[index1], areaArr[index2], timeReqArr[index4], '更多'],
     );
   }
 
@@ -136,7 +202,17 @@ class JobList extends State<JobsTab> {
             area = data;
             break;
           case 2:
-            academic = data;
+            timeReq = data;
+            break;
+          case 3:
+            RegExp exp = new RegExp(r"不限");
+            if(index == 0) {
+              academic = data;
+            } else if(index == 1) {
+              employee = exp.hasMatch(data) ? null : data;
+            } else {
+              companyType = exp.hasMatch(data) ? null : data;
+            }
             break;
           default:
             break;
@@ -261,7 +337,7 @@ class JobList extends State<JobsTab> {
       return;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Api().getJobList(widget._type, prefs.getString('userName'), timeReq, academic, employee, salary, area, page)
+    Api().getJobList(widget._type, prefs.getString('userName'), timeReq, academic, employee, salary, area, companyType, page)
       .then((Response response) {
         if (response.data['code'] == 1) {
           totalPage = response.data['total'] == 0 ? 1 : response.data['total'];

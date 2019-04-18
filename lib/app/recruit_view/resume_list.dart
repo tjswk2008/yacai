@@ -61,24 +61,24 @@ class ResumeTabState extends State<ResumeTab> {
     return new DropdownMenu(
         maxMenuHeight: 80 * factor * 10,
         menus: [
-          // new DropdownMenuBuilder(
-          //     builder: (BuildContext context) {
-          //       return new DropdownListMenu(
-          //         selectedIndex: index1,
-          //         data: salaryArr,
-          //         itemBuilder: buildCheckItem,
-          //       );
-          //     },
-          //     height: 80 * factor * salaryArr.length),
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
                 return new DropdownListMenu(
-                  selectedIndex: index2,
-                  data: academicArr,
+                  selectedIndex: index1,
+                  data: salaryArr,
                   itemBuilder: buildCheckItem,
                 );
               },
-              height: 80 * factor * academicArr.length),
+              height: 80 * factor * salaryArr.length),
+          // new DropdownMenuBuilder(
+          //     builder: (BuildContext context) {
+          //       return new DropdownListMenu(
+          //         selectedIndex: index2,
+          //         data: academicArr,
+          //         itemBuilder: buildCheckItem,
+          //       );
+          //     },
+          //     height: 80 * factor * academicArr.length),
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
                 return new DropdownListMenu(
@@ -99,6 +99,58 @@ class ResumeTabState extends State<ResumeTab> {
                 );
               },
               height: 80 * factor * markers.length),
+          new DropdownMenuBuilder(
+            builder: (BuildContext context) {
+              return new DropdownTreeMenu(
+                selectedIndex: 0,
+                subSelectedIndex: [0],
+                itemExtent: 80*factor,
+                subBackground: Colors.white,
+                itemBuilder: (BuildContext context, dynamic data, bool selected, List<int> subIndexs) {
+                  return new DecoratedBox(
+                    decoration: new BoxDecoration(
+                        border: new Border(
+                            top: Divider.createBorderSide(context),
+                            bottom: Divider.createBorderSide(context))),
+                    child: new Container(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: new Row(
+                          children: <Widget>[
+                            new Container(
+                                color: Theme.of(context).primaryColor,
+                                width: 3.0,
+                                height: 20.0),
+                            new Padding(
+                                padding: EdgeInsets.only(left: 12.0),
+                                child: new Text(data['title'])),
+                          ],
+                        )));
+                },
+                subItemBuilder: (BuildContext context, dynamic data, bool selected, List<int> subIndexs) {
+                  Color color = selected
+                      ? Theme.of(context).primaryColor
+                      : Theme.of(context).textTheme.body1.color;
+
+                  return new SizedBox(
+                    height: 80*factor,
+                    child: new Padding(
+                      padding: new EdgeInsets.all(10.0),
+                      child: new Text(
+                        data,
+                        style: new TextStyle(color: color),
+                      ),
+                      
+                    ),
+                  );
+                },
+                getSubData: (dynamic data) {
+                  return data['children'];
+                },
+                data: [{'title': '学历', 'children': academicArr}],
+              );
+            },
+            height: 800.0*factor
+          ),
         ]);
   }
 
@@ -107,7 +159,7 @@ class ResumeTabState extends State<ResumeTab> {
     return new DropdownHeader(
       onTap: onTap,
       height: 80*factor,
-      titles: [academicArr[index2], timeReqArr[index3], markers[index4]],
+      titles: [salaryArr[index1], timeReqArr[index3], markers[index4], '更多'],
     );
   }
 
@@ -117,13 +169,16 @@ class ResumeTabState extends State<ResumeTab> {
       onSelected: ({int menuIndex, int index, int subIndex, dynamic data}) {
         switch (menuIndex) {
           case 0:
-            academic = data;
+            salary = data;
             break;
           case 1:
             timeReq = data;
             break;
           case 2:
             mark = index;
+            break;
+          case 3:
+            academic = data;
             break;
           default:
             break;

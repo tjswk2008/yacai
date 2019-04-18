@@ -43,6 +43,7 @@ class CompanyEditState extends State<CompanyEdit>
   Company company;
   List<String> areas = areaArr.sublist(1);
   List<String> employees = employeeArr.sublist(1);
+  List<String> companyTypes = companyTypeArr.sublist(1);
 
   @override
   void initState() {
@@ -220,7 +221,7 @@ class CompanyEditState extends State<CompanyEdit>
                                 company.type =  res;
                               });
                             },
-                            data: companyTypeArr,
+                            data: companyTypes,
                           );
                         },
                         child: new Text(company.type == null ? '请选择' : company.type, style: TextStyle(fontSize: 22.0*factor),),
