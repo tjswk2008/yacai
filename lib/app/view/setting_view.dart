@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/splash.dart';
 import 'package:flutter_app/actions/actions.dart';
+import 'package:package_info/package_info.dart';
 
 class SettingView extends StatefulWidget {
   @override
@@ -21,6 +22,7 @@ class SettingViewState extends State<SettingView> {
   String userName = '';
   bool isRequesting = false;
   int isOpen = 1;
+  String version;
 
   @override
   void initState() {
@@ -28,6 +30,11 @@ class SettingViewState extends State<SettingView> {
     SharedPreferences.getInstance().then((SharedPreferences prefs) {
       setState(() {
         userName = prefs.getString('userName');
+      });
+      return PackageInfo.fromPlatform();
+    }).then((PackageInfo packageInfo) {
+      setState(() {
+        version = packageInfo.version;
       });
     });
   }
@@ -187,8 +194,6 @@ class SettingViewState extends State<SettingView> {
                     onTap: () {
                       if(userName == '') {
                         _login();
-                      } else {
-                        _navToFavoriteList();
                       }
                     },
                     child: new Container(
@@ -262,7 +267,7 @@ class SettingViewState extends State<SettingView> {
                       if(userName == '') {
                         _login();
                       } else {
-                        _navToDeliveryList(4, '申请记录');
+                        
                       }
                     },
                     child: new Container(
@@ -286,7 +291,7 @@ class SettingViewState extends State<SettingView> {
                                 new Text('丫财应用分享', style: TextStyle(fontSize: 24.0*factor),),
                               ],
                             ),
-                          ),
+                          )
                         ],
                       ),
                     )
@@ -297,7 +302,7 @@ class SettingViewState extends State<SettingView> {
                       if(userName == '') {
                         _login();
                       } else {
-                        _navToDeliveryList(6, '面试邀请');
+                        
                       }
                     },
                     child: new Container(
@@ -322,6 +327,12 @@ class SettingViewState extends State<SettingView> {
                               ],
                             ),
                           ),
+                          new Padding(
+                            padding: EdgeInsets.only(
+                              right: 45.0*factor,
+                            ),
+                            child: Text(version, style: TextStyle(fontSize: 26*factor),),
+                          )
                         ],
                       ),
                     )
@@ -341,41 +352,5 @@ class SettingViewState extends State<SettingView> {
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
       }));
-  }
-
-  _navToDeliveryList(int type, String title) {
-    Navigator.of(context).push(new PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (BuildContext context, _, __) {
-          return new JobsTab(type, title);
-        },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
-    ));
-  }
-
-  _navToFavoriteList() {
-    Navigator.of(context).push(new PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (BuildContext context, _, __) {
-          return new JobsTab(5, '职位收藏');
-        },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
-    ));
   }
 }

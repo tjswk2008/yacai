@@ -30,9 +30,9 @@ class JobList extends State<JobsTab> {
   String area = areaArr[0];
   String timeReq = timeReqArr[0];
   String academic = academicArr[0];
-  String employee = employeeArr[0];
+  String employee;
   String salary = salaryArr[0];
-  String companyType = companyTypeArr[0];
+  String companyType;
 
   int index1 = 0,
       index2 = 0,
@@ -85,16 +85,6 @@ class JobList extends State<JobsTab> {
                 );
               },
               height: 80 * factor * areaArr.length),
-          // new DropdownMenuBuilder(
-          //     builder: (BuildContext context) {
-          //       return new DropdownListMenu(
-          //         itemExtent: 80 * factor,
-          //         selectedIndex: index3,
-          //         data: timeReqArr,
-          //         itemBuilder: buildCheckItem,
-          //       );
-          //     },
-          //     height: 80 * factor * timeReqArr.length),
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
                 return new DropdownListMenu(
@@ -345,7 +335,6 @@ class JobList extends State<JobsTab> {
             currentPage++;
           }
           setState(() {
-            isRequesting = false;
             if (page == 1) {
               _jobs = [];
               _jobs = Job.fromJson(response.data['list']);
@@ -356,6 +345,9 @@ class JobList extends State<JobsTab> {
             }
           });
         }
+        setState(() {
+            isRequesting = false;
+          });
       })
      .catchError((e) {
        print(e);

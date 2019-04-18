@@ -1,5 +1,6 @@
 name: flutter_app
 description: A new Flutter application.
+version: 1.0.0
 
 dependencies:
   flutter:
@@ -17,7 +18,8 @@ dependencies:
   custom_radio: ^0.1.2
   flutter_spinkit: "^3.1.0"
   flutter_typeahead: "^1.4.0"
-  flutter_easyrefresh: ^1.2.7
+  flutter_easyrefresh: "^1.2.7"
+  package_info: "^0.4.0+3"
 
 dev_dependencies:
   flutter_test:

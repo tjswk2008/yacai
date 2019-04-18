@@ -12,11 +12,11 @@ class DropdownSliverChildBuilderDelegate
     return builder(context);
   }
 
-  // TODO: implement maxExtent
+  // implement maxExtent
   @override
   double get maxExtent => 46.0;
 
-  // TODO: implement minExtent
+  // implement minExtent
   @override
   double get minExtent => 46.0;
 
