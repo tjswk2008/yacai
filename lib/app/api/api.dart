@@ -463,5 +463,9 @@ class Api {
     });
     return Dio().post(serverAddr + "upload/uploadFile", data: formData);
   }
+
+  Future<Response<T>> checkAppVersion<T>() {
+    return Dio().post(serverAddr + "upload/checkAppVersion");
+  }
   
 }

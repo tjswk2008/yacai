@@ -3,12 +3,13 @@ import 'package:flutter_app/app/view/login_view.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_app/app/view/jobs_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/splash.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:package_info/package_info.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'dart:io';
 
 class SettingView extends StatefulWidget {
   @override
@@ -23,19 +24,34 @@ class SettingViewState extends State<SettingView> {
   bool isRequesting = false;
   int isOpen = 1;
   String version;
+  String newestVersion;
+  String versionStr = '';
 
   @override
   void initState() {
     super.initState();
-    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      version = packageInfo.version;
+      return Api().checkAppVersion();
+    })
+    .then((Response response) {
+      if (response.data['code'] == 1) {
+        newestVersion = response.data['version'];
+        if(newestVersion == version) {
+          setState(() {
+           versionStr = '已是最新版'; 
+          });
+        } else {
+          versionStr = '可升级到$newestVersion';
+        }
+      }
+      return SharedPreferences.getInstance();
+    })
+    .then((SharedPreferences prefs) {
       setState(() {
         userName = prefs.getString('userName');
       });
-      return PackageInfo.fromPlatform();
-    }).then((PackageInfo packageInfo) {
-      setState(() {
-        version = packageInfo.version;
-      });
+      return ;
     });
   }
 
@@ -299,10 +315,9 @@ class SettingViewState extends State<SettingView> {
                   Divider(),
                   new InkWell(
                     onTap: () {
-                      if(userName == '') {
+                      if(newestVersion != version) {
                         _login();
-                      } else {
-                        
+
                       }
                     },
                     child: new Container(
@@ -331,7 +346,7 @@ class SettingViewState extends State<SettingView> {
                             padding: EdgeInsets.only(
                               right: 45.0*factor,
                             ),
-                            child: Text(version, style: TextStyle(fontSize: 26*factor),),
+                            child: Text(versionStr, style: TextStyle(fontSize: 26*factor),),
                           )
                         ],
                       ),
@@ -353,4 +368,41 @@ class SettingViewState extends State<SettingView> {
         return new NewLoginPage();
       }));
   }
+
+  // 获取安装地址
+  // Future<String> get _apkLocalPath async {
+  //   final directory = await getExternalStorageDirectory();
+  //   return directory.path;
+  // }
+
+
+  // 下载
+  // Future<void> executeDownload() async {
+  //   final path = await _apkLocalPath;
+  //   String downLoadUrl = Platform.isAndroid ? 'http://192.168.140.56:8080/public' : 'http://localhost:8080/public';
+  //   //下载
+  //   final taskId = await FlutterDownloader.enqueue(
+  //       url: downLoadUrl + '/app-release.apk',
+  //       savedDir: path,
+  //       showNotification: true,
+  //       openFileFromNotification: true);
+  //   FlutterDownloader.registerCallback((id, status, progress) {
+  //     // 当下载完成时，调用安装
+  //     if (taskId == id && status == DownloadTaskStatus.complete) {
+  //       _installApk();
+  //     }
+  //   });
+  // }
+
+  
+  // 安装
+  // Future<Null> _installApk() async {
+  //   // XXXXX为项目名
+  //   const platform = const MethodChannel(XXXXX);
+  //   try {
+  //     final path = await _apkLocalPath;
+  //     // 调用app地址
+  //     await platform.invokeMethod('install', {'path': path + '/app-release.apk'});
+  //   } on PlatformException catch (_) {}
+  // }
 }
