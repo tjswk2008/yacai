@@ -9,7 +9,11 @@ import 'package:flutter_app/splash.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:package_info/package_info.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'package:flutter/services.dart';
+import 'dart:async';
+// import 'package:open_file/open_file.dart';
 
 class SettingView extends StatefulWidget {
   @override
@@ -314,10 +318,10 @@ class SettingViewState extends State<SettingView> {
                   ),
                   Divider(),
                   new InkWell(
-                    onTap: () {
+                    onTap: () async {
                       if(newestVersion != version) {
-                        _login();
-
+                        // await _checkPermission();
+                        executeDownload();
                       }
                     },
                     child: new Container(
@@ -370,39 +374,43 @@ class SettingViewState extends State<SettingView> {
   }
 
   // 获取安装地址
-  // Future<String> get _apkLocalPath async {
-  //   final directory = await getExternalStorageDirectory();
-  //   return directory.path;
-  // }
+  Future<String> get _apkLocalPath async {
+    final directory = await getExternalStorageDirectory();
+    return directory.path;
+  }
 
 
   // 下载
-  // Future<void> executeDownload() async {
-  //   final path = await _apkLocalPath;
-  //   String downLoadUrl = Platform.isAndroid ? 'http://192.168.140.56:8080/public' : 'http://192.168.2.101:8080/public';
-  //   //下载
-  //   final taskId = await FlutterDownloader.enqueue(
-  //       url: downLoadUrl + '/app-release.apk',
-  //       savedDir: path,
-  //       showNotification: true,
-  //       openFileFromNotification: true);
-  //   FlutterDownloader.registerCallback((id, status, progress) {
-  //     // 当下载完成时，调用安装
-  //     if (taskId == id && status == DownloadTaskStatus.complete) {
-  //       _installApk();
-  //     }
-  //   });
-  // }
+  Future<void> executeDownload() async {
+    final path = await _apkLocalPath;
+    String downLoadUrl = Platform.isAndroid ? 'http://192.168.140.56:8080/public' : 'http://192.168.2.101:8080/public';
+    //下载
+    final taskId = await FlutterDownloader.enqueue(
+        url: downLoadUrl + '/app-release.apk',
+        savedDir: path,
+        showNotification: true,
+        openFileFromNotification: true);
+    FlutterDownloader.registerCallback((id, status, progress) {
+      // 当下载完成时，调用安装
+      if (taskId == id && status == DownloadTaskStatus.complete) {
+        // _installApk();
+        // OpenFile.open(path + '/app-release.apk');
+      } else if (status == DownloadTaskStatus.failed) {
+        //下载出错
+        print(status.toString());
+      }
+    });
+  }
 
-  
+
   // 安装
-  // Future<Null> _installApk() async {
-  //   // XXXXX为项目名
-  //   const platform = const MethodChannel(XXXXX);
-  //   try {
-  //     final path = await _apkLocalPath;
-  //     // 调用app地址
-  //     await platform.invokeMethod('install', {'path': path + '/app-release.apk'});
-  //   } on PlatformException catch (_) {}
-  // }
+  Future<Null> _installApk() async {
+    // XXXXX为项目名
+    const platform = const MethodChannel("com.heruijun.flutterapp");
+    try {
+      final path = await _apkLocalPath;
+      // 调用app地址
+      await platform.invokeMethod('install', {'path': path + '/app-release.apk'});
+    } on PlatformException catch (_) {}
+  }
 }

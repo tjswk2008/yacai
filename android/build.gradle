@@ -16,6 +16,16 @@ allprojects {
         google()
         jcenter()
     }
+    configurations.all {
+        resolutionStrategy {
+            eachDependency { details ->
+                if ('android.arch.core' == details.requested.group && 'runtime' == details.requested.name) {
+                    details.useVersion '1.1.1'
+                }
+
+            }
+        }
+    }
 }
 
 rootProject.buildDir = '../build'
