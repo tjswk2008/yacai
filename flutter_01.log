@@ -1,0 +1,102 @@
+Flutter crash report; please file at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter build apk
+
+## exception
+
+ProcessException: ProcessException: Process "/Users/andyliao/yacai/android/gradlew" exited abnormally:
+Downloading https://services.gradle.org/distributions/gradle-4.1-all.zip
+
+
+Exception in thread "main" java.io.IOException: Unable to tunnel through proxy. Proxy returns "HTTP/1.1 400 Bad Request"
+	at sun.net.www.protocol.http.HttpURLConnection.doTunneling(HttpURLConnection.java:2124)
+	at sun.net.www.protocol.https.AbstractDelegateHttpsURLConnection.connect(AbstractDelegateHttpsURLConnection.java:183)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1546)
+	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1474)
+	at sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(HttpsURLConnectionImpl.java:254)
+	at org.gradle.wrapper.Download.downloadInternal(Download.java:58)
+	at org.gradle.wrapper.Download.download(Download.java:44)
+	at org.gradle.wrapper.Install$1.call(Install.java:61)
+	at org.gradle.wrapper.Install$1.call(Install.java:48)
+	at org.gradle.wrapper.ExclusiveFileAccessManager.access(ExclusiveFileAccessManager.java:65)
+	at org.gradle.wrapper.Install.createDist(Install.java:48)
+	at org.gradle.wrapper.WrapperExecutor.execute(WrapperExecutor.java:128)
+	at org.gradle.wrapper.GradleWrapperMain.main(GradleWrapperMain.java:61)
+  Command: /Users/andyliao/yacai/android/gradlew -v
+
+```
+#0      runCheckedAsync (package:flutter_tools/src/base/process.dart:250:5)
+<asynchronous suspension>
+#1      _initializeGradle (package:flutter_tools/src/android/gradle.dart:210:9)
+<asynchronous suspension>
+#2      _ensureGradle (package:flutter_tools/src/android/gradle.dart:191:37)
+<asynchronous suspension>
+#3      buildGradleProject (package:flutter_tools/src/android/gradle.dart:321:31)
+<asynchronous suspension>
+#4      buildApk (package:flutter_tools/src/android/apk.dart:43:10)
+<asynchronous suspension>
+#5      BuildApkCommand.runCommand (package:flutter_tools/src/commands/build_apk.dart:45:11)
+<asynchronous suspension>
+#6      FlutterCommand.verifyThenRunCommand (package:flutter_tools/src/runner/flutter_command.dart:545:18)
+#7      _asyncThenWrapperHelper.<anonymous closure> (dart:async/runtime/libasync_patch.dart:77:64)
+#8      _rootRunUnary (dart:async/zone.dart:1132:38)
+#9      _CustomZone.runUnary (dart:async/zone.dart:1029:19)
+#10     _FutureListener.handleValue (dart:async/future_impl.dart:126:18)
+#11     Future._propagateToListeners.handleValueCallback (dart:async/future_impl.dart:639:45)
+#12     Future._propagateToListeners (dart:async/future_impl.dart:668:32)
+#13     Future._complete (dart:async/future_impl.dart:473:7)
+#14     _SyncCompleter.complete (dart:async/future_impl.dart:51:12)
+#15     _AsyncAwaitCompleter.complete.<anonymous closure> (dart:async/runtime/libasync_patch.dart:33:20)
+#16     _rootRun (dart:async/zone.dart:1124:13)
+#17     _CustomZone.run (dart:async/zone.dart:1021:19)
+#18     _CustomZone.bindCallback.<anonymous closure> (dart:async/zone.dart:947:23)
+#19     _microtaskLoop (dart:async/schedule_microtask.dart:41:21)
+#20     _startMicrotaskLoop (dart:async/schedule_microtask.dart:50:5)
+#21     _runPendingImmediateCallback (dart:isolate/runtime/libisolate_patch.dart:115:13)
+#22     _RawReceivePortImpl._handleMessage (dart:isolate/runtime/libisolate_patch.dart:172:5)
+```
+
+## flutter doctor
+
+```
+[32m[✓][39m Flutter (Channel stable, v1.2.1, on Mac OS X 10.14.3 18D109, locale
+    zh-Hans-CN)
+    [32m•[39m Flutter version 1.2.1 at /Users/andyliao/Downloads/flutter
+    [32m•[39m Framework revision 8661d8aecd (9 weeks ago), 2019-02-14 19:19:53 -0800
+    [32m•[39m Engine revision 3757390fa4
+    [32m•[39m Dart version 2.1.2 (build 2.1.2-dev.0.0 0a7dcf17eb)
+
+[33m[!][39m Android toolchain - develop for Android devices (Android SDK version
+    29.0.0-rc2)
+    [32m•[39m Android SDK at /Users/andyliao/Downloads/android-sdk-macosx
+    [32m•[39m Android NDK location not configured (optional; useful for native profiling
+      support)
+    [32m•[39m Platform android-28, build-tools 29.0.0-rc2
+    [32m•[39m ANDROID_HOME = /Users/andyliao/Downloads/android-sdk-macosx
+    [32m•[39m Java binary at: /Applications/Android
+      Studio.app/Contents/jre/jdk/Contents/Home/bin/java
+    [32m•[39m Java version OpenJDK Runtime Environment (build
+      1.8.0_152-release-1343-b01)
+    [33m![39m Some Android licenses not accepted.  To resolve this, run: flutter doctor
+      --android-licenses
+
+[32m[✓][39m iOS toolchain - develop for iOS devices (Xcode 10.1)
+    [32m•[39m Xcode at /Applications/Xcode.app/Contents/Developer
+    [32m•[39m Xcode 10.1, Build version 10B61
+    [32m•[39m ios-deploy 1.9.4
+    [32m•[39m CocoaPods version 1.5.3
+
+[32m[✓][39m Android Studio (version 3.4)
+    [32m•[39m Android Studio at /Applications/Android Studio.app/Contents
+    [32m•[39m Flutter plugin version 34.0.2
+    [32m•[39m Dart plugin version 183.5901
+    [32m•[39m Java version OpenJDK Runtime Environment (build
+      1.8.0_152-release-1343-b01)
+
+[33m[!][39m Connected device
+    [33m![39m No devices available
+
+[33m![39m Doctor found issues in 2 categories.
+```
