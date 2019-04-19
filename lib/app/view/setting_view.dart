@@ -395,6 +395,7 @@ class SettingViewState extends State<SettingView> {
       if (taskId == id && status == DownloadTaskStatus.complete) {
         // _installApk();
         // OpenFile.open(path + '/app-release.apk');
+        FlutterDownloader.open(taskId: id);
       } else if (status == DownloadTaskStatus.failed) {
         //下载出错
         print(status.toString());
