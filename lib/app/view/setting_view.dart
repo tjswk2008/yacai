@@ -11,9 +11,8 @@ import 'package:package_info/package_info.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import 'package:flutter/services.dart';
 import 'dart:async';
-// import 'package:open_file/open_file.dart';
+import 'package:open_file/open_file.dart';
 
 class SettingView extends StatefulWidget {
   @override
@@ -394,24 +393,12 @@ class SettingViewState extends State<SettingView> {
       // 当下载完成时，调用安装
       if (taskId == id && status == DownloadTaskStatus.complete) {
         // _installApk();
-        // OpenFile.open(path + '/app-release.apk');
-        FlutterDownloader.open(taskId: id);
+        OpenFile.open(path + '/app-release.apk');
+        // FlutterDownloader.open(taskId: id);
       } else if (status == DownloadTaskStatus.failed) {
         //下载出错
         print(status.toString());
       }
     });
-  }
-
-
-  // 安装
-  Future<Null> _installApk() async {
-    // XXXXX为项目名
-    const platform = const MethodChannel("com.heruijun.flutterapp");
-    try {
-      final path = await _apkLocalPath;
-      // 调用app地址
-      await platform.invokeMethod('install', {'path': path + '/app-release.apk'});
-    } on PlatformException catch (_) {}
   }
 }
