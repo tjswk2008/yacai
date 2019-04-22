@@ -50,7 +50,17 @@ class Api {
     String avatar,
     String userName
   ) {
-    return Dio().get('${serverAddr}user/addUser?name=$name&avatar=$avatar&gender=$gender&firstJobTime=$firstJobTime&wechatId=$wechatId&birthDay=$birthDay&summarize=$summarize&userName=$userName');
+    String url = '${serverAddr}user/addUser?name=$name&gender=$gender&firstJobTime=$firstJobTime&birthDay=$birthDay&userName=$userName';
+    if (avatar != null) {
+      url += '&avatar=$avatar';
+    }
+    if(wechatId != null) {
+      url += '&wechatId=$wechatId';
+    }
+    if(summarize != null) {
+      url += '&summarize=$summarize';
+    }
+    return Dio().get(url);
   }
 
   Future<Response<T>> saveJobStatus<T>(

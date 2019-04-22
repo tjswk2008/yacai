@@ -10,6 +10,11 @@ import 'package:flutter_app/app/view/company/company_list.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/splash.dart';
 import 'package:flutter_app/app/view/setting_view.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_easyrefresh/delivery_header.dart';
+import 'package:flutter_app/app/api/api.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_app/app/model/resume.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -22,6 +27,10 @@ class MineTabState extends State<MineTab> {
   String jobStatus = '';
   String userName = '';
   bool isRequesting = false;
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+      new GlobalKey<EasyRefreshState>();
+  GlobalKey<RefreshHeaderState> _headerKey =
+      new GlobalKey<RefreshHeaderState>();
 
   @override
   void initState() {
@@ -40,29 +49,40 @@ class MineTabState extends State<MineTab> {
       converter: (store) => store.state,
       builder: (context, appState) {
         return new Scaffold(
+          appBar: PreferredSize(
+            child: AppBar(elevation: 0.0,),
+            preferredSize: Size.fromHeight(0)
+          ),
           backgroundColor: new Color.fromARGB(255, 242, 242, 245),
           body: Stack(
             children: <Widget>[
-              new CustomScrollView(
-                slivers: <Widget>[
-                  new SliverAppBar(
-                    expandedHeight: 250*factor,
-                    flexibleSpace: new FlexibleSpaceBar(
-                      background: new Stack(
-                        fit: StackFit.expand,
-                        children: <Widget>[
-                          const DecoratedBox(
-                            decoration: const BoxDecoration(
-                              gradient: const LinearGradient(
-                                begin: const Alignment(0.0, -1.0),
-                                end: const Alignment(0.0, -0.4),
-                                colors: const <Color>[
-                                  const Color(0x00000000), const Color(0x00000000)],
-                              ),
-                            ),
+              SafeArea(
+                child: EasyRefresh(
+                  key: _easyRefreshKey,
+                  refreshHeader: DeliveryHeader(
+                    key: _headerKey,
+                  ),
+                  onRefresh: () async {
+                    Response response = await Api().login(userName, null);
+                    Response resumeResponse = await Api().getUserInfo(response.data['id'], null);
+                    Resume resume = Resume.fromMap(resumeResponse.data['info']);
+                    StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                  },
+                  child: new Column(
+                    children: <Widget>[
+                      Container(
+                        height: 250*factor,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(0.0, -1.0),
+                            end: Alignment(0.0, -0.4),
+                            colors: <Color>[
+                              Theme.of(context).primaryColor,
+                              Theme.of(context).primaryColor
+                            ],
                           ),
-
-                          new GestureDetector(
+                        ),
+                        child: new GestureDetector(
                             onTap: () {
                               if(userName != '') return;
                               _login();
@@ -115,339 +135,337 @@ class MineTabState extends State<MineTab> {
                                 ),
                               ],
                             ),
-                          )
-                        ],
+                        )
                       ),
-                    ),
+                      Column(
+                        children: <Widget>[
+                          new InkWell(
+                            onTap: () {
+                              if(userName == '') {
+                                _login();
+                              } else {
+                                _navToResumeDetail();
+                              }
+                            },
+                            child: new Container(
+                              height: 70.0*factor,
+                              margin: EdgeInsets.only(top: 15.0*factor),
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 10.0*factor,
+                                      bottom: 10.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Row(
+                                      children: <Widget>[
+                                        new Icon(Icons.insert_drive_file, size: 30.0*factor, color: Theme.of(context).primaryColor),
+                                        new Padding(
+                                          padding: EdgeInsets.only(right: 15.0*factor),
+                                        ),
+                                        new Text('我的简历', style: TextStyle(fontSize: 24.0*factor),),
+                                      ],
+                                    ),
+                                  ),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                                  )
+                                  
+                                ],
+                              ),
+                            )
+                          ),
+                          
+                          new InkWell(
+                            onTap: () {
+                              if(userName == '') {
+                                _login();
+                              } else {
+                                _navToFavoriteList();
+                              }
+                            },
+                            child: new Container(
+                              height: 70.0*factor,
+                              margin: EdgeInsets.only(top: 15.0*factor),
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 10.0*factor,
+                                      bottom: 10.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Row(
+                                      children: <Widget>[
+                                        new Icon(Icons.favorite_border, size: 30.0*factor, color: Colors.red[400],),
+                                        new Padding(
+                                          padding: EdgeInsets.only(right: 15.0*factor),
+                                        ),
+                                        new Text('职位收藏', style: TextStyle(fontSize: 24.0*factor),),
+                                      ],
+                                    ),
+                                  ),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                                  )
+                                ],
+                              ),
+                            )
+                          ),
+
+                          new InkWell(
+                            onTap: () {
+                              if(userName == '') {
+                                _login();
+                              } else {
+                                _navToDeliveryList(4, '申请记录');
+                              }
+                            },
+                            child: new Container(
+                              height: 70.0*factor,
+                              margin: EdgeInsets.only(top: 15.0*factor),
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 10.0*factor,
+                                      bottom: 10.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Row(
+                                      children: <Widget>[
+                                        new Icon(Icons.email, size: 30.0*factor, color: Colors.orange[400],),
+                                        new Padding(
+                                          padding: EdgeInsets.only(right: 15.0*factor),
+                                        ),
+                                        new Text('申请记录', style: TextStyle(fontSize: 24.0*factor),),
+                                      ],
+                                    ),
+                                  ),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                                  )
+                                ],
+                              ),
+                            )
+                          ),
+
+                          new InkWell(
+                            onTap: () {
+                              if(userName == '') {
+                                _login();
+                              } else {
+                                _navToDeliveryList(6, '面试邀请');
+                              }
+                            },
+                            child: new Container(
+                              height: 70.0*factor,
+                              margin: EdgeInsets.only(top: 15.0*factor),
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 10.0*factor,
+                                      bottom: 10.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Row(
+                                      children: <Widget>[
+                                        new Icon(Icons.insert_invitation, size: 30.0*factor),
+                                        new Padding(
+                                          padding: EdgeInsets.only(right: 15.0*factor),
+                                        ),
+                                        new Text('面试邀请', style: TextStyle(fontSize: 24.0*factor),),
+                                      ],
+                                    ),
+                                  ),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                                  )
+                                ],
+                              ),
+                            )
+                          ),
+
+                          new InkWell(
+                            onTap: () {
+                              if(userName == '') {
+                                _login();
+                              } else {
+                                _navToViewerList();
+                              }
+                            },
+                            child: new Container(
+                              height: 70.0*factor,
+                              margin: EdgeInsets.only(top: 15.0*factor),
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 10.0*factor,
+                                      bottom: 10.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Row(
+                                      children: <Widget>[
+                                        new Icon(Icons.remove_red_eye, size: 30.0*factor, color: Theme.of(context).primaryColor,),
+                                        new Padding(
+                                          padding: EdgeInsets.only(right: 15.0*factor),
+                                        ),
+                                        new Text('谁看过我', style: TextStyle(fontSize: 24.0*factor),),
+                                      ],
+                                    ),
+                                  ),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                                  )
+                                ],
+                              ),
+                            )
+                          ),
+
+                          new InkWell(
+                            onTap: () {
+                              if(userName == '') {
+                                _login();
+                              } else {
+                                _navToShieldList();
+                              }
+                            },
+                            child: new Container(
+                              height: 70.0*factor,
+                              margin: EdgeInsets.only(top: 15.0*factor),
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 10.0*factor,
+                                      bottom: 10.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Row(
+                                      children: <Widget>[
+                                        new Icon(Icons.do_not_disturb_alt, size: 30.0*factor, color: Colors.red,),
+                                        new Padding(
+                                          padding: EdgeInsets.only(right: 15.0*factor),
+                                        ),
+                                        new Text('不让该公司看我的简历', style: TextStyle(fontSize: 24.0*factor),),
+                                      ],
+                                    ),
+                                  ),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                                  )
+                                ],
+                              ),
+                            )
+                          ),
+                          
+                          new InkWell(
+                            onTap: () {
+                              if(userName == '') {
+                                _login();
+                              } else {
+                                _navToSettingView();
+                              }
+                            },
+                            child: new Container(
+                              height: 70.0*factor,
+                              margin: EdgeInsets.only(top: 15.0*factor),
+                              decoration: new BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 10.0*factor,
+                                      bottom: 10.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Row(
+                                      children: <Widget>[
+                                        new Icon(Icons.settings, size: 30.0*factor),
+                                        new Padding(
+                                          padding: EdgeInsets.only(right: 15.0*factor),
+                                        ),
+                                        new Text('设置', style: TextStyle(fontSize: 24.0*factor),),
+                                      ],
+                                    ),
+                                  ),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 30.0*factor,),
+                                  )
+                                ],
+                              ),
+                            )
+                          ),
+                        ]
+                      )
+                    ],
                   ),
-
-                  new SliverList(
-                    delegate: new SliverChildListDelegate(<Widget>[
-                      new InkWell(
-                        onTap: () {
-                          if(userName == '') {
-                            _login();
-                          } else {
-                            _navToResumeDetail();
-                          }
-                        },
-                        child: new Container(
-                          height: 70.0*factor,
-                          margin: EdgeInsets.only(top: 15.0*factor),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  top: 10.0*factor,
-                                  bottom: 10.0*factor,
-                                  left: 25.0*factor,
-                                  right: 20.0*factor,
-                                ),
-                                child: new Row(
-                                  children: <Widget>[
-                                    new Icon(Icons.insert_drive_file, size: 30.0*factor, color: Theme.of(context).primaryColor),
-                                    new Padding(
-                                      padding: EdgeInsets.only(right: 15.0*factor),
-                                    ),
-                                    new Text('我的简历', style: TextStyle(fontSize: 24.0*factor),),
-                                  ],
-                                ),
-                              ),
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  right: 20.0*factor,
-                                ),
-                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
-                              )
-                              
-                            ],
-                          ),
-                        )
-                      ),
-                      
-                      new InkWell(
-                        onTap: () {
-                          if(userName == '') {
-                            _login();
-                          } else {
-                            _navToFavoriteList();
-                          }
-                        },
-                        child: new Container(
-                          height: 70.0*factor,
-                          margin: EdgeInsets.only(top: 15.0*factor),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  top: 10.0*factor,
-                                  bottom: 10.0*factor,
-                                  left: 25.0*factor,
-                                  right: 20.0*factor,
-                                ),
-                                child: new Row(
-                                  children: <Widget>[
-                                    new Icon(Icons.favorite_border, size: 30.0*factor, color: Colors.red[400],),
-                                    new Padding(
-                                      padding: EdgeInsets.only(right: 15.0*factor),
-                                    ),
-                                    new Text('职位收藏', style: TextStyle(fontSize: 24.0*factor),),
-                                  ],
-                                ),
-                              ),
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  right: 20.0*factor,
-                                ),
-                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
-                              )
-                            ],
-                          ),
-                        )
-                      ),
-
-                      new InkWell(
-                        onTap: () {
-                          if(userName == '') {
-                            _login();
-                          } else {
-                            _navToDeliveryList(4, '申请记录');
-                          }
-                        },
-                        child: new Container(
-                          height: 70.0*factor,
-                          margin: EdgeInsets.only(top: 15.0*factor),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  top: 10.0*factor,
-                                  bottom: 10.0*factor,
-                                  left: 25.0*factor,
-                                  right: 20.0*factor,
-                                ),
-                                child: new Row(
-                                  children: <Widget>[
-                                    new Icon(Icons.email, size: 30.0*factor, color: Colors.orange[400],),
-                                    new Padding(
-                                      padding: EdgeInsets.only(right: 15.0*factor),
-                                    ),
-                                    new Text('申请记录', style: TextStyle(fontSize: 24.0*factor),),
-                                  ],
-                                ),
-                              ),
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  right: 20.0*factor,
-                                ),
-                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
-                              )
-                            ],
-                          ),
-                        )
-                      ),
-
-                      new InkWell(
-                        onTap: () {
-                          if(userName == '') {
-                            _login();
-                          } else {
-                            _navToDeliveryList(6, '面试邀请');
-                          }
-                        },
-                        child: new Container(
-                          height: 70.0*factor,
-                          margin: EdgeInsets.only(top: 15.0*factor),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  top: 10.0*factor,
-                                  bottom: 10.0*factor,
-                                  left: 25.0*factor,
-                                  right: 20.0*factor,
-                                ),
-                                child: new Row(
-                                  children: <Widget>[
-                                    new Icon(Icons.insert_invitation, size: 30.0*factor),
-                                    new Padding(
-                                      padding: EdgeInsets.only(right: 15.0*factor),
-                                    ),
-                                    new Text('面试邀请', style: TextStyle(fontSize: 24.0*factor),),
-                                  ],
-                                ),
-                              ),
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  right: 20.0*factor,
-                                ),
-                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
-                              )
-                            ],
-                          ),
-                        )
-                      ),
-
-                      new InkWell(
-                        onTap: () {
-                          if(userName == '') {
-                            _login();
-                          } else {
-                            _navToViewerList();
-                          }
-                        },
-                        child: new Container(
-                          height: 70.0*factor,
-                          margin: EdgeInsets.only(top: 15.0*factor),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  top: 10.0*factor,
-                                  bottom: 10.0*factor,
-                                  left: 25.0*factor,
-                                  right: 20.0*factor,
-                                ),
-                                child: new Row(
-                                  children: <Widget>[
-                                    new Icon(Icons.remove_red_eye, size: 30.0*factor, color: Theme.of(context).primaryColor,),
-                                    new Padding(
-                                      padding: EdgeInsets.only(right: 15.0*factor),
-                                    ),
-                                    new Text('谁看过我', style: TextStyle(fontSize: 24.0*factor),),
-                                  ],
-                                ),
-                              ),
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  right: 20.0*factor,
-                                ),
-                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
-                              )
-                            ],
-                          ),
-                        )
-                      ),
-
-                      new InkWell(
-                        onTap: () {
-                          if(userName == '') {
-                            _login();
-                          } else {
-                            _navToShieldList();
-                          }
-                        },
-                        child: new Container(
-                          height: 70.0*factor,
-                          margin: EdgeInsets.only(top: 15.0*factor),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  top: 10.0*factor,
-                                  bottom: 10.0*factor,
-                                  left: 25.0*factor,
-                                  right: 20.0*factor,
-                                ),
-                                child: new Row(
-                                  children: <Widget>[
-                                    new Icon(Icons.do_not_disturb_alt, size: 30.0*factor, color: Colors.red,),
-                                    new Padding(
-                                      padding: EdgeInsets.only(right: 15.0*factor),
-                                    ),
-                                    new Text('不让该公司看我的简历', style: TextStyle(fontSize: 24.0*factor),),
-                                  ],
-                                ),
-                              ),
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  right: 20.0*factor,
-                                ),
-                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
-                              )
-                            ],
-                          ),
-                        )
-                      ),
-                      
-                      new InkWell(
-                        onTap: () {
-                          if(userName == '') {
-                            _login();
-                          } else {
-                            _navToSettingView();
-                          }
-                        },
-                        child: new Container(
-                          height: 70.0*factor,
-                          margin: EdgeInsets.only(top: 15.0*factor),
-                          decoration: new BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  top: 10.0*factor,
-                                  bottom: 10.0*factor,
-                                  left: 25.0*factor,
-                                  right: 20.0*factor,
-                                ),
-                                child: new Row(
-                                  children: <Widget>[
-                                    new Icon(Icons.settings, size: 30.0*factor),
-                                    new Padding(
-                                      padding: EdgeInsets.only(right: 15.0*factor),
-                                    ),
-                                    new Text('设置', style: TextStyle(fontSize: 24.0*factor),),
-                                  ],
-                                ),
-                              ),
-                              new Padding(
-                                padding: EdgeInsets.only(
-                                  right: 20.0*factor,
-                                ),
-                                child: new Icon(Icons.chevron_right, size: 30.0*factor,),
-                              )
-                            ],
-                          ),
-                        )
-                      ),
-                    ])
-                  )
-                ],
+                ),
               ),
 
               userName != '' ? new Positioned(
