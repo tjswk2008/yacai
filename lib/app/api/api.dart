@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'dart:io';
 class Api {
-  final String serverAddr = "http://192.168.140.56:3000/api/";
-  // final String serverAddr = "http://192.168.2.101:3000/api/";
+  // final String serverAddr = "http://192.168.140.56:3000/api/";
+  final String serverAddr = "http://192.168.2.101:3000/api/";
 
   // user interface
   Future<Response<T>> getResumeList<T>(String userName, int jobId, String timeReq, String academic, String salary, int mark, int page, int type) {
