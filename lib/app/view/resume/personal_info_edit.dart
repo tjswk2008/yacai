@@ -105,6 +105,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         ) : new Image.asset(
                           "assets/images/ic_avatar_default.png",
                           width: 90.0*factor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       )
                     ],

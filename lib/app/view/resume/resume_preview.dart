@@ -252,7 +252,7 @@ class ResumePreviewState extends State<ResumePreview>
                                 fontSize: 24.0*factor
                               )
                             ),
-                            new Text(resume.jobStatus, style: new TextStyle(
+                            new Text(resume.jobStatus == null ? '未选择' : resume.jobStatus, style: new TextStyle(
                                 fontSize: 24.0*factor
                               ))
                           ],

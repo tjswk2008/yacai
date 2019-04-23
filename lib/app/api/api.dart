@@ -2,7 +2,8 @@ import 'package:dio/dio.dart';
 import 'dart:io';
 class Api {
   // final String serverAddr = "http://192.168.140.56:3000/api/";
-  final String serverAddr = "http://192.168.2.101:3000/api/";
+  // final String serverAddr = "http://192.168.2.101:3000/api/";
+  final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://192.168.2.101:3000/api/";
 
   // user interface
   Future<Response<T>> getResumeList<T>(String userName, int jobId, String timeReq, String academic, String salary, int mark, int page, int type) {
@@ -50,9 +51,21 @@ class Api {
     String avatar,
     String userName
   ) {
-    String url = '${serverAddr}user/addUser?name=$name&gender=$gender&firstJobTime=$firstJobTime&birthDay=$birthDay&userName=$userName';
+    String url = '${serverAddr}user/addUser?userName=$userName';
+    if (name != null) {
+      url += '&name=$name';
+    }
+    if (firstJobTime != null) {
+      url += '&firstJobTime=$firstJobTime';
+    }
+    if (birthDay != null) {
+      url += '&birthDay=$birthDay';
+    }
     if (avatar != null) {
       url += '&avatar=$avatar';
+    }
+    if (gender != null) {
+      url += '&gender=$gender';
     }
     if(wechatId != null) {
       url += '&wechatId=$wechatId';

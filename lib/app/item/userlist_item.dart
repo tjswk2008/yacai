@@ -98,7 +98,7 @@ class UserListItemState extends State<UserListItem> {
                                   right: 10.0*factor,
                                 ),
                                 child: new Text(
-                                  personalInfo.gender,
+                                  personalInfo.gender == null ? '' : personalInfo.gender,
                                   textAlign: TextAlign.left,
                                   style: new TextStyle(
                                       fontSize: 22.0*factor, color: Colors.grey),
@@ -110,7 +110,7 @@ class UserListItemState extends State<UserListItem> {
                                   right: 10.0*factor,
                                 ),
                                 child: new Text(
-                                  yearsOffset(personalInfo.birthDay).toString() + "岁",
+                                  personalInfo.birthDay == null ? '' : yearsOffset(personalInfo.birthDay).toString() + "岁",
                                   style: new TextStyle(fontSize: 22.0*factor, color: Colors.red)
                                 ),
                               ),
@@ -121,6 +121,7 @@ class UserListItemState extends State<UserListItem> {
                       personalInfo.avatar == null ? new Image.asset(
                         "assets/images/ic_avatar_default.png",
                         width: 90.0*factor,
+                        color: Theme.of(context).primaryColor,
                       ) : new CircleAvatar(
                         radius: 45.0*factor,
                         backgroundImage: new NetworkImage(personalInfo.avatar)
@@ -143,9 +144,12 @@ class UserListItemState extends State<UserListItem> {
                         right: 10.0*factor,
                         bottom: 15.0*factor,
                       ),
-                      child: new Text(yearsOffset(personalInfo.firstJobTime).toString() + "年经验",
-                          style: new TextStyle(fontSize: 22*factor, color: new Color.fromARGB(
-                              255, 0, 215, 198))),
+                      child: new Text(
+                        personalInfo.firstJobTime == null ? '' : yearsOffset(personalInfo.firstJobTime).toString() + "年经验",
+                        style: new TextStyle(fontSize: 22*factor, color: new Color.fromARGB(
+                            255, 0, 215, 198)
+                          )
+                      ),
                     ),
                     new Padding(
                       padding: EdgeInsets.only(
