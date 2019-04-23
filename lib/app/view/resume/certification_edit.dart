@@ -235,68 +235,143 @@ class CertificationEditViewState extends State<CertificationEditView>
                 bottom: 30.0*factor,
                 left: 20.0*factor,
                 width: MediaQuery.of(context).size.width - 40*factor,
-                child: FlatButton(
-                  child: new Container(
-                    height: 70*factor,
-                    child: new Center(
-                      child: Text(
-                        "保存",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28.0*factor,
-                          letterSpacing: 40*factor
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    FlatButton(
+                      child: new Container(
+                        width: 200*factor,
+                        height: 70*factor,
+                        child: new Center(
+                          child: Text(
+                            "删除",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28.0*factor,
+                              letterSpacing: 40*factor
+                            ),
+                          ),
                         ),
                       ),
+                      color: Colors.orange,
+                      onPressed: () {
+                        if (isRequesting) return;
+                        showDialog<Null>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return new AlertDialog(
+                              content: Text("确认要删除么？", style: TextStyle(fontSize: 28*factor),),
+                              actions: <Widget>[
+                                new FlatButton(
+                                  child: new Text('确定', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      isRequesting = true;
+                                    });
+                                    // 发送给webview，让webview登录后再取回token
+                                    Api().deleteCertification(_certification.id)
+                                      .then((Response response) {
+                                        setState(() {
+                                          isRequesting = false;
+                                        });
+                                        if(response.data['code'] != 1) {
+                                          Scaffold.of(context).showSnackBar(new SnackBar(
+                                            content: new Text("删除失败！"),
+                                          ));
+                                          return;
+                                        }
+                                        Resume resume = state.resume;
+                                        resume.certificates.removeWhere((Certification certification) => certification.id == _certification.id);
+                                        StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                                        Navigator.pop(context);
+                                      })
+                                      .catchError((e) {
+                                        setState(() {
+                                          isRequesting = false;
+                                        });
+                                        print(e);
+                                      });
+                                  },
+                                ),
+                                new FlatButton(
+                                  child: new Text('取消', style: TextStyle(fontSize: 24*factor),),
+                                  onPressed: () {
+                                      Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     ),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () async {
-                    if (isRequesting) return;
-                    setState(() {
-                      isRequesting = true;
-                    });
-                    // 发送给webview，让webview登录后再取回token
-                    Api().saveCertification(
-                      _certification.name,
-                      _certification.industry,
-                      _certification.code,
-                      _certification.qualifiedTime,
-                      userName,
-                      _certification.id,
-                    )
-                      .then((Response response) {
+                    FlatButton(
+                      child: new Container(
+                        width: 200*factor,
+                        height: 70*factor,
+                        child: new Center(
+                          child: Text(
+                            "保存",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28.0*factor,
+                              letterSpacing: 40*factor
+                            ),
+                          ),
+                        ),
+                      ),
+                      color: Theme.of(context).primaryColor,
+                      onPressed: () {
+                        if (isRequesting) return;
                         setState(() {
-                          isRequesting = false;
+                          isRequesting = true;
                         });
-                        if(response.data['code'] != 1) {
-                          Scaffold.of(context).showSnackBar(new SnackBar(
-                            content: new Text("保存失败！"),
-                          ));
-                          return;
-                        }
-                        Resume resume = state.resume;
-                        if(_certification.id == null) {
-                          resume.certificates.add(Certification.fromMap(response.data['info']));
-                          StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-                        } else {
-                          for (var i = 0; i < resume.certificates.length; i++) {
-                            if(resume.certificates[i].id == _certification.id) {
-                              resume.certificates[i] = _certification;
-                              break;
+                        // 发送给webview，让webview登录后再取回token
+                        Api().saveCertification(
+                          _certification.name,
+                          _certification.industry,
+                          _certification.code,
+                          _certification.qualifiedTime,
+                          userName,
+                          _certification.id,
+                        )
+                          .then((Response response) {
+                            setState(() {
+                              isRequesting = false;
+                            });
+                            if(response.data['code'] != 1) {
+                              Scaffold.of(context).showSnackBar(new SnackBar(
+                                content: new Text("保存失败！"),
+                              ));
+                              return;
                             }
-                          }
-                          StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-                        }
-                        Navigator.pop(context, response.data['info']);
-                      })
-                      .catchError((e) {
-                        setState(() {
-                          isRequesting = false;
-                        });
-                        print(e);
-                      });
-                  }
-                ),
+                            Resume resume = state.resume;
+                            if(_certification.id == null) {
+                              resume.certificates.add(Certification.fromMap(response.data['info']));
+                              StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                            } else {
+                              for (var i = 0; i < resume.certificates.length; i++) {
+                                if(resume.certificates[i].id == _certification.id) {
+                                  resume.certificates[i] = _certification;
+                                  break;
+                                }
+                              }
+                              StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                            }
+                            Navigator.pop(context, response.data['info']);
+                          })
+                          .catchError((e) {
+                            setState(() {
+                              isRequesting = false;
+                            });
+                            print(e);
+                          });
+                      }
+                    ),
+                  ]
+                )
               )
             ]
           )

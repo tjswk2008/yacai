@@ -320,61 +320,160 @@ class EducationEditViewState extends State<EducationEditView>
                       contentPadding: EdgeInsets.all(15.0*factor)
                     ),
                   ),
-                  new Divider(),
-                  new Builder(builder: (ctx) {
-                    return new CommonButton(
-                      text: "保存",
-                      color: new Color.fromARGB(255, 0, 215, 198),
-                      onTap: () {
-                        if (isRequesting) return;
-                        setState(() {
-                          isRequesting = true;
-                        });
-                        // 发送给webview，让webview登录后再取回token
-                        Api().saveEducation(
-                          _education.name,
-                          _education.academic,
-                          _education.major,
-                          _education.startTime,
-                          _education.endTime,
-                          _education.detail,
-                          userName,
-                          _education.id,
-                        )
-                          .then((Response response) {
-                            setState(() {
-                              isRequesting = false;
-                            });
-                            if(response.data['code'] != 1) {
-                              Scaffold.of(ctx).showSnackBar(new SnackBar(
-                                content: new Text("保存失败！"),
-                              ));
-                              return;
-                            }
-                            Resume resume = state.resume;
-                            if(_education.id == null) {
-                              resume.educations.add(Education.fromMap(response.data['info']));
-                              StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-                            } else {
-                              for (var i = 0; i < resume.educations.length; i++) {
-                                if(resume.educations[i].id == _education.id) {
-                                  resume.educations[i] = _education;
-                                  break;
-                                }
-                              }
-                              StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-                            }
-                            Navigator.pop(context, response.data['info']);
-                          })
-                          .catchError((e) {
-                            setState(() {
-                              isRequesting = false;
-                            });
-                            print(e);
+                  Container(
+                    height: 50*factor,
+                  ),
+                  new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                        child: new Container(
+                          width: 200*factor,
+                          height: 70*factor,
+                          child: new Center(
+                            child: Text(
+                              "删除",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 28.0*factor,
+                                letterSpacing: 40*factor
+                              ),
+                            ),
+                          ),
+                        ),
+                        color: Colors.orange,
+                        onPressed: () {
+                          if (isRequesting) return;
+                          showDialog<Null>(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return new AlertDialog(
+                                content: Text("确认要删除么？", style: TextStyle(fontSize: 28*factor),),
+                                actions: <Widget>[
+                                  new FlatButton(
+                                    child: new Text('确定', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      setState(() {
+                                        isRequesting = true;
+                                      });
+                                      // 发送给webview，让webview登录后再取回token
+                                      Api().deleteEducation(_education.academic, _education.id, userName)
+                                        .then((Response response) {
+                                          setState(() {
+                                            isRequesting = false;
+                                          });
+                                          if(response.data['code'] != 1) {
+                                            Scaffold.of(context).showSnackBar(new SnackBar(
+                                              content: new Text("删除失败！"),
+                                            ));
+                                            return;
+                                          }
+                                          Resume resume = state.resume;
+                                          resume.educations.removeWhere((Education education) => education.id == _education.id);
+                                          if(_education.academic == resume.personalInfo.academic) {
+                                            resume.personalInfo.academic = resume.educations[0].academic;
+                                            resume.educations.forEach((Education education) {
+                                              if (education.academic > resume.personalInfo.academic) {
+                                                resume.personalInfo.academic = education.academic;
+                                              }
+                                            });
+                                          }
+                                          StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                                          Navigator.pop(context);
+                                        })
+                                        .catchError((e) {
+                                          setState(() {
+                                            isRequesting = false;
+                                          });
+                                          print(e);
+                                        });
+                                    },
+                                  ),
+                                  new FlatButton(
+                                    child: new Text('取消', style: TextStyle(fontSize: 24*factor),),
+                                    onPressed: () {
+                                        Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      ),
+                      FlatButton(
+                        child: new Container(
+                          width: 200*factor,
+                          height: 70*factor,
+                          child: new Center(
+                            child: Text(
+                              "保存",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 28.0*factor,
+                                letterSpacing: 40*factor
+                              ),
+                            ),
+                          ),
+                        ),
+                        color: Theme.of(context).primaryColor,
+                        onPressed: () {
+                          if (isRequesting) return;
+                          setState(() {
+                            isRequesting = true;
                           });
-                      }
-                    );
-                  })
+                          // 发送给webview，让webview登录后再取回token
+                          Api().saveEducation(
+                            _education.name,
+                            _education.academic,
+                            _education.major,
+                            _education.startTime,
+                            _education.endTime,
+                            _education.detail,
+                            userName,
+                            _education.id,
+                          )
+                            .then((Response response) {
+                              setState(() {
+                                isRequesting = false;
+                              });
+                              if(response.data['code'] != 1) {
+                                Scaffold.of(context).showSnackBar(new SnackBar(
+                                  content: new Text("保存失败！"),
+                                ));
+                                return;
+                              }
+                              Resume resume = state.resume;
+                              if(_education.academic > resume.personalInfo.academic) {
+                                resume.personalInfo.academic = _education.academic;
+                              }
+                              if(_education.id == null) {
+                                resume.educations.add(Education.fromMap(response.data['info']));
+                                StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                              } else {
+                                for (var i = 0; i < resume.educations.length; i++) {
+                                  if(resume.educations[i].id == _education.id) {
+                                    resume.educations[i] = _education;
+                                    break;
+                                  }
+                                }
+                                StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                              }
+                              
+                              Navigator.pop(context, response.data['info']);
+                            })
+                            .catchError((e) {
+                              setState(() {
+                                isRequesting = false;
+                              });
+                              print(e);
+                            });
+                        }
+                      ),
+                    ]
+                  )
                 ],
               ),
             )

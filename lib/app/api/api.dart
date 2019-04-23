@@ -117,6 +117,16 @@ class Api {
     return Dio().get(url);
   }
 
+  Future<Response<T>> deleteCompanyExperience<T>(int id) {
+    String url = '${serverAddr}user/deleteCompanyExperience';
+    return Dio().post(url, data: {'id': id});
+  }
+
+  Future<Response<T>> deleteProject<T>(int id) {
+    String url = '${serverAddr}user/deleteProject';
+    return Dio().post(url, data: {'id': id});
+  }
+
   Future<Response<T>> saveProject<T>(
     String name,
     String role,
@@ -137,6 +147,11 @@ class Api {
     return Dio().get(url);
   }
 
+  Future<Response<T>> deleteEducation<T>(int academic, int id, String userName) {
+    String url = '${serverAddr}user/deleteEducation';
+    return Dio().post(url, data: {'id': id, 'userName': userName, 'academic': academic});
+  }
+
   Future<Response<T>> saveEducation<T>(
     String name,
     int academic,
@@ -155,6 +170,11 @@ class Api {
       url += '&id=$id';
     }
     return Dio().get(url);
+  }
+
+  Future<Response<T>> deleteCertification<T>(int id) {
+    String url = '${serverAddr}user/deleteCertification';
+    return Dio().post(url, data: {'id': id});
   }
 
   Future<Response<T>> saveCertification<T>(
