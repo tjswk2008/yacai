@@ -39,7 +39,7 @@ class ResumeTabState extends State<ResumeTab> {
       totalPage = 1;
   
   static List<String> markers = [
-    "全部",
+    "标记状态",
     "有意向",
     "已电联",
   ];

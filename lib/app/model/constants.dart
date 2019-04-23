@@ -49,7 +49,6 @@ List<String> timeReqArr = <String>[
 
 List<String> academicArr = <String>[
   '学历不限',
-  '初中及以下',
   '中专/中技',
   '高中',
   '大专',
