@@ -306,8 +306,9 @@ class RegisterPageState extends State<RegisterPage> {
               padding: EdgeInsets.only(top: 36.0*factor),
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text('已有账号，前往', style: TextStyle(fontSize: 24.0*factor)),
+                  Text('已有账号，前往', style: TextStyle(fontSize: 26.0*factor)),
                   new InkWell(
                     onTap: () {
                       Navigator.of(context).push(new PageRouteBuilder(
@@ -326,11 +327,14 @@ class RegisterPageState extends State<RegisterPage> {
                           }
                       ));
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(width: factor, color: Colors.black))
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10*factor),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(bottom: BorderSide(width: factor, color: Colors.black))
+                        ),
+                        child: new Text('登录', style: TextStyle(fontSize: 28.0*factor)),
                       ),
-                      child: new Text('登陆', style: TextStyle(fontSize: 24.0*factor)),
                     )
                   ),
                 ],

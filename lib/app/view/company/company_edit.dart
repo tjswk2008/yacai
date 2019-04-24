@@ -370,16 +370,34 @@ class CompanyEditState extends State<CompanyEdit>
                           print(e);
                         });
                       },
-                      child: Container(
-                        width: 192*factor,
-                        height: 108*factor,
+                      child: company.imgs != null && company.imgs[index]['url'] != '' ? Stack(
+                        children: <Widget>[
+                          SizedBox.expand(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 2*factor,
+                                  color: Colors.grey
+                                )
+                              ),
+                              child: Image.network(company.imgs[index]['url'], width: 192*factor)
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: GestureDetector(
+                              child: Icon(Icons.close, size: 50*factor,),
+                            ),
+                          )
+                        ],
+                      ) : Container(
                         decoration: BoxDecoration(
                           border: Border.all(
                             width: 2*factor,
                             color: Colors.grey
                           )
                         ),
-                        child: company.imgs != null && company.imgs[index]['url'] != '' ? Image.network(company.imgs[index]['url'], width: 192*factor) : Icon(Icons.add, size: 50*factor)
+                        child: Icon(Icons.add, size: 50*factor)
                       ),
                     );
                   },
@@ -389,7 +407,6 @@ class CompanyEditState extends State<CompanyEdit>
                   height: 10*factor,
                 ),
                 new Divider(),
-                
                 
                 new Padding(
                   padding: EdgeInsets.only(bottom: 10.0*factor),

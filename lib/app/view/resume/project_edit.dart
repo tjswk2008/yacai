@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/model/resume.dart';
-import 'package:flutter_app/app/component/common_button.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/actions/actions.dart';

@@ -50,6 +50,8 @@ class _DropdownHeaderState extends DropdownState<DropdownHeader> {
     final Color unselectedColor = Theme.of(context).unselectedWidgetColor;
     final GetItemLabel getItemLabel = widget.getItemLabel;
 
+    double factor = MediaQuery.of(context).size.width/750;
+
     return new GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: new Padding(
@@ -65,11 +67,13 @@ class _DropdownHeaderState extends DropdownState<DropdownHeader> {
                       getItemLabel(title),
                       style: new TextStyle(
                         color: selected ? primaryColor : unselectedColor,
+                        fontSize: 24*factor
                       ),
                     ),
                     new Icon(
                       selected ? Icons.arrow_drop_up : Icons.arrow_drop_down,
                       color: selected ? primaryColor : unselectedColor,
+                      size: 34*factor,
                     )
                   ])))),
       onTap: () {

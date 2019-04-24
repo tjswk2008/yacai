@@ -108,10 +108,10 @@ class JobList extends State<JobsTab> {
                             border: new Border(
                                 right: Divider.createBorderSide(context))),
                         child: new Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
+                            padding: EdgeInsets.only(left: 15.0*factor),
                             child: new Row(
                               children: <Widget>[
-                                new Text(data['title']),
+                                new Text(data['title'], style: TextStyle(fontSize: 24*factor)),
                               ],
                             )));
                   }
@@ -128,11 +128,11 @@ class JobList extends State<JobsTab> {
                         children: <Widget>[
                           new Container(
                               color: Theme.of(context).primaryColor,
-                              width: 3.0,
-                              height: 20.0),
+                              width: 5.0*factor,
+                              height: 24.0*factor),
                           new Padding(
-                              padding: EdgeInsets.only(left: 12.0),
-                              child: new Text(data['title'])),
+                              padding: EdgeInsets.only(left: 15.0*factor),
+                              child: new Text(data['title'], style: TextStyle(fontSize: 24*factor))),
                         ],
                       )
                     )
@@ -146,10 +146,10 @@ class JobList extends State<JobsTab> {
                   return new SizedBox(
                     height: 80*factor,
                     child: new Padding(
-                      padding: new EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(26.0*factor),
                       child: new Text(
                         data,
-                        style: new TextStyle(color: color),
+                        style: new TextStyle(color: color, fontSize: 24*factor),
                       ),
                       
                     ),

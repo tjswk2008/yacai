@@ -3,7 +3,6 @@ import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:date_format/date_format.dart';
-import 'package:flutter_app/app/component/common_button.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/actions/actions.dart';
