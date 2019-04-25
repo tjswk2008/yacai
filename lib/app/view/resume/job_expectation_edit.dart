@@ -158,189 +158,82 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                         style: new TextStyle(fontSize: 26.0*factor),
                       ),
                     ),
-                    
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        new Row(
-                          children: <Widget>[
-                            CustomRadio<int, dynamic>(
-                              value: 1,
-                              groupValue: _jobExpect.type,
-                              animsBuilder: (AnimationController controller) => [
-                                CurvedAnimation(
-                                  parent: controller,
-                                  curve: Curves.easeInOut
-                                ),
-                                ColorTween(
-                                  begin: Colors.grey[600],
-                                  end: Colors.cyan[300]
-                                ).animate(controller),
-                                ColorTween(
-                                  begin: Colors.cyan[300],
-                                  end: Colors.grey[600]
-                                ).animate(controller),
-                              ],
-                              builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _jobExpect.type = value;
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 24.0*factor,
-                                    height: 24.0*factor,
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.all(10.0*factor),
-                                    padding: EdgeInsets.all(3.0*factor),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: _jobExpect.type == value ? Colors.cyan[300] : Colors.grey[600],
-                                        width: 1.0*factor
-                                      )
-                                    ),
-                                    child: _jobExpect.type == value ? Container(
-                                      width: 14.0*factor,
-                                      height: 14.0*factor,
+                    Container(
+                      height: 80*factor,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 3,
+                        itemBuilder: (BuildContext context, int index) {
+                          return new Row(
+                            children: <Widget>[
+                              CustomRadio<int, dynamic>(
+                                value: index + 1,
+                                groupValue: _jobExpect.type,
+                                animsBuilder: (AnimationController controller) => [
+                                  CurvedAnimation(
+                                    parent: controller,
+                                    curve: Curves.easeInOut
+                                  ),
+                                  ColorTween(
+                                    begin: Colors.grey[600],
+                                    end: Colors.cyan[300]
+                                  ).animate(controller),
+                                  ColorTween(
+                                    begin: Colors.cyan[300],
+                                    end: Colors.grey[600]
+                                  ).animate(controller),
+                                ],
+                                builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _jobExpect.type = value;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: 24.0*factor,
+                                      height: 24.0*factor,
                                       alignment: Alignment.center,
+                                      margin: EdgeInsets.only(
+                                        top: 10.0*factor,
+                                        bottom: 10*factor,
+                                        right: 10*factor,
+                                        left: 126*factor
+                                      ),
+                                      padding: EdgeInsets.all(3.0*factor),
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: animValues[1],
                                         border: Border.all(
-                                          color: animValues[2],
+                                          color: _jobExpect.type == value ? Colors.cyan[300] : Colors.grey[600],
                                           width: 1.0*factor
                                         )
                                       ),
-                                    ) : Container(),
-                                  )
-                                );
-                              },
-                            ),
-                            new Text('全职', style: new TextStyle(fontSize: 24.0*factor),),
-                          ]
-                        ),
-                        new Row(
-                          children: <Widget>[
-                            CustomRadio<int, dynamic>(
-                              value: 2,
-                              groupValue: _jobExpect.type,
-                              animsBuilder: (AnimationController controller) => [
-                                CurvedAnimation(
-                                  parent: controller,
-                                  curve: Curves.easeInOut
-                                ),
-                                ColorTween(
-                                  begin: Colors.grey[600],
-                                  end: Colors.cyan[300]
-                                ).animate(controller),
-                                ColorTween(
-                                  begin: Colors.cyan[300],
-                                  end: Colors.grey[600]
-                                ).animate(controller),
-                              ],
-                              builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _jobExpect.type = value;
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 24.0*factor,
-                                    height: 24.0*factor,
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.all(10.0*factor),
-                                    padding: EdgeInsets.all(3.0*factor),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: _jobExpect.type == value ? Colors.cyan[300] : Colors.grey[600],
-                                        width: 1.0*factor
-                                      )
-                                    ),
-                                    child: _jobExpect.type == value ? Container(
-                                      width: 14.0*factor,
-                                      height: 14.0*factor,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: animValues[1],
-                                        border: Border.all(
-                                          color: animValues[2],
-                                          width: 1.0*factor
-                                        )
-                                      ),
-                                    ) : Container(),
-                                  )
-                                );
-                              },
-                            ),
-                            new Text('兼职', style: new TextStyle(fontSize: 24.0*factor),),
-                          ]
-                        ),
-                        new Row(
-                          children: <Widget>[
-                            CustomRadio<int, dynamic>(
-                              value: 3,
-                              groupValue: _jobExpect.type,
-                              animsBuilder: (AnimationController controller) => [
-                                CurvedAnimation(
-                                  parent: controller,
-                                  curve: Curves.easeInOut
-                                ),
-                                ColorTween(
-                                  begin: Colors.grey[600],
-                                  end: Colors.cyan[300]
-                                ).animate(controller),
-                                ColorTween(
-                                  begin: Colors.cyan[300],
-                                  end: Colors.grey[600]
-                                ).animate(controller),
-                              ],
-                              builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _jobExpect.type = value;
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 24.0*factor,
-                                    height: 24.0*factor,
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.all(10.0*factor),
-                                    padding: EdgeInsets.all(3.0*factor),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: _jobExpect.type == value ? Colors.cyan[300] : Colors.grey[600],
-                                        width: 1.0*factor
-                                      )
-                                    ),
-                                    child: _jobExpect.type == value ? Container(
-                                      width: 14.0*factor,
-                                      height: 14.0*factor,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: animValues[1],
-                                        border: Border.all(
-                                          color: animValues[2],
-                                          width: 1.0*factor
-                                        )
-                                      ),
-                                    ) : Container(),
-                                  )
-                                );
-                              },
-                            ),
-                            new Text('实习', style: new TextStyle(fontSize: 24.0*factor),),
-                          ],
-                        )
-                      ],
+                                      child: _jobExpect.type == value ? Container(
+                                        width: 14.0*factor,
+                                        height: 14.0*factor,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: animValues[1],
+                                          border: Border.all(
+                                            color: animValues[2],
+                                            width: 1.0*factor
+                                          )
+                                        ),
+                                      ) : Container(),
+                                    )
+                                  );
+                                },
+                              ),
+                              new Text(jobTypeArr[index], style: new TextStyle(fontSize: 24.0*factor),),
+                            ]
+                          );
+                        },
+                        scrollDirection: Axis.horizontal,
+                        physics: NeverScrollableScrollPhysics(),
+                      ),
                     ),
+                    
                     new Divider(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

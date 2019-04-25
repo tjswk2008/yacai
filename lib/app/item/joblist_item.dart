@@ -37,7 +37,7 @@ class JobListItem extends StatelessWidget {
                           child: Row(
                             children: <Widget>[
                               new Text(job.name, style: new TextStyle(fontSize: 26.0*factor)),
-                              Padding(
+                              showCount ? Padding(
                                 padding: EdgeInsets.only(left: 10*factor),
                                 child: new Text(
                                   job.count == 0 ? '' : '(${job.count}份简历)',
@@ -46,7 +46,7 @@ class JobListItem extends StatelessWidget {
                                     color: Colors.green,
                                   )
                                 ),
-                              )
+                              ) : Container()
                             ],
                           )
                         ),

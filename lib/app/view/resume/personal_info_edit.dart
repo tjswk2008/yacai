@@ -29,6 +29,12 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
   bool isRequesting = false;
   String userName = '';
 
+  static List<String> genders = [
+    "男",
+    "女",
+    "其他",
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -163,188 +169,82 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                     ),
                   ),
                   
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      new Row(
-                        children: <Widget>[
-                          CustomRadio<String, dynamic>(
-                            value: '男',
-                            groupValue: personalInfo.gender,
-                            animsBuilder: (AnimationController controller) => [
-                              CurvedAnimation(
-                                parent: controller,
-                                curve: Curves.easeInOut
-                              ),
-                              ColorTween(
-                                begin: Colors.grey[600],
-                                end: Colors.cyan[300]
-                              ).animate(controller),
-                              ColorTween(
-                                begin: Colors.cyan[300],
-                                end: Colors.grey[600]
-                              ).animate(controller),
-                            ],
-                            builder: (BuildContext context, List<dynamic> animValues, Function updateState, String value) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    personalInfo.gender = value;
-                                  });
-                                },
-                                child: Container(
-                                  width: 24.0*factor,
-                                  height: 24.0*factor,
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.all(10.0*factor),
-                                  padding: EdgeInsets.all(3.0*factor),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: personalInfo.gender == value ? Colors.cyan[300] : Colors.grey[600],
-                                      width: 1.0*factor
-                                    )
-                                  ),
-                                  child: personalInfo.gender == value ? Container(
-                                    width: 14.0*factor,
-                                    height: 14.0*factor,
+                  Container(
+                    height: 80*factor,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 3,
+                      itemBuilder: (BuildContext context, int index) {
+                        return new Row(
+                          children: <Widget>[
+                            CustomRadio<String, dynamic>(
+                              value: genders[index],
+                              groupValue: personalInfo.gender,
+                              animsBuilder: (AnimationController controller) => [
+                                CurvedAnimation(
+                                  parent: controller,
+                                  curve: Curves.easeInOut
+                                ),
+                                ColorTween(
+                                  begin: Colors.grey[600],
+                                  end: Colors.cyan[300]
+                                ).animate(controller),
+                                ColorTween(
+                                  begin: Colors.cyan[300],
+                                  end: Colors.grey[600]
+                                ).animate(controller),
+                              ],
+                              builder: (BuildContext context, List<dynamic> animValues, Function updateState, String value) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      personalInfo.gender = value;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 24.0*factor,
+                                    height: 24.0*factor,
                                     alignment: Alignment.center,
+                                    margin: EdgeInsets.only(
+                                      top: 10.0*factor,
+                                      bottom: 10*factor,
+                                      right: 10*factor,
+                                      left: 146.5*factor
+                                    ),
+                                    padding: EdgeInsets.all(3.0*factor),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: animValues[1],
                                       border: Border.all(
-                                        color: animValues[2],
+                                        color: personalInfo.gender == value ? Colors.cyan[300] : Colors.grey[600],
                                         width: 1.0*factor
                                       )
                                     ),
-                                  ) : Container(),
-                                )
-                              );
-                            },
-                          ),
-                          new Text('男', style: new TextStyle(fontSize: 24.0*factor),),
-                        ]
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          CustomRadio<String, dynamic>(
-                            value: '女',
-                            groupValue: personalInfo.gender,
-                            animsBuilder: (AnimationController controller) => [
-                              CurvedAnimation(
-                                parent: controller,
-                                curve: Curves.easeInOut
-                              ),
-                              ColorTween(
-                                begin: Colors.grey[600],
-                                end: Colors.cyan[300]
-                              ).animate(controller),
-                              ColorTween(
-                                begin: Colors.cyan[300],
-                                end: Colors.grey[600]
-                              ).animate(controller),
-                            ],
-                            builder: (BuildContext context, List<dynamic> animValues, Function updateState, String value) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    personalInfo.gender = value;
-                                  });
-                                },
-                                child: Container(
-                                  width: 24.0*factor,
-                                  height: 24.0*factor,
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.all(10.0*factor),
-                                  padding: EdgeInsets.all(3.0*factor),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: personalInfo.gender == value ? Colors.cyan[300] : Colors.grey[600],
-                                      width: 1.0*factor
-                                    )
-                                  ),
-                                  child: personalInfo.gender == value ? Container(
-                                    width: 14.0*factor,
-                                    height: 14.0*factor,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: animValues[1],
-                                      border: Border.all(
-                                        color: animValues[2],
-                                        width: 1.0*factor
-                                      )
-                                    ),
-                                  ) : Container(),
-                                )
-                              );
-                            },
-                          ),
-                          new Text('女', style: new TextStyle(fontSize: 24.0*factor),),
-                        ]
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          CustomRadio<String, dynamic>(
-                            value: '其他',
-                            groupValue: personalInfo.gender,
-                            animsBuilder: (AnimationController controller) => [
-                              CurvedAnimation(
-                                parent: controller,
-                                curve: Curves.easeInOut
-                              ),
-                              ColorTween(
-                                begin: Colors.grey[600],
-                                end: Colors.cyan[300]
-                              ).animate(controller),
-                              ColorTween(
-                                begin: Colors.cyan[300],
-                                end: Colors.grey[600]
-                              ).animate(controller),
-                            ],
-                            builder: (BuildContext context, List<dynamic> animValues, Function updateState, String value) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    personalInfo.gender = value;
-                                  });
-                                },
-                                child: Container(
-                                  width: 24.0*factor,
-                                  height: 24.0*factor,
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.all(10.0*factor),
-                                  padding: EdgeInsets.all(3.0*factor),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: personalInfo.gender == value ? Colors.cyan[300] : Colors.grey[600],
-                                      width: 1.0*factor
-                                    )
-                                  ),
-                                  child: personalInfo.gender == value ? Container(
-                                    width: 14.0*factor,
-                                    height: 14.0*factor,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: animValues[1],
-                                      border: Border.all(
-                                        color: animValues[2],
-                                        width: 1.0*factor
-                                      )
-                                    ),
-                                  ) : Container(),
-                                )
-                              );
-                            },
-                          ),
-                          new Text('其他', style: new TextStyle(fontSize: 24.0*factor),),
-                        ],
-                      )
-                    ],
+                                    child: personalInfo.gender == value ? Container(
+                                      width: 14.0*factor,
+                                      height: 14.0*factor,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: animValues[1],
+                                        border: Border.all(
+                                          color: animValues[2],
+                                          width: 1.0*factor
+                                        )
+                                      ),
+                                    ) : Container(),
+                                  )
+                                );
+                              },
+                            ),
+                            new Text(genders[index], style: new TextStyle(fontSize: 24.0*factor),),
+                          ]
+                        );
+                      },
+                      scrollDirection: Axis.horizontal,
+                      physics: NeverScrollableScrollPhysics(),
+                    ),
                   ),
+                  
                   new Divider(),
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
