@@ -511,5 +511,15 @@ class Api {
   Future<Response<T>> checkAppVersion<T>() {
     return Dio().post(serverAddr + "upload/checkAppVersion");
   }
+
+  Future<Response<T>> deleteImage<T>(int id, String name) {
+    Map data = {
+      'id': id,
+    };
+    if (name != null) {
+      data['name'] = name;
+    }
+    return Dio().post(serverAddr + "upload/deleteImage", data: data);
+  }
   
 }

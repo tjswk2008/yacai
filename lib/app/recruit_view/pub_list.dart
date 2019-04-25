@@ -29,6 +29,9 @@ class PubTabState extends State<PubTab> {
   void initState() {
     super.initState();
     SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         userName = prefs.getString('userName');
       });

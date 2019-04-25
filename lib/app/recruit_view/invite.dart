@@ -188,69 +188,69 @@ class InviteState extends State<Invite> {
                       context: context,
                       barrierDismissible: false,
                       builder: (BuildContext context) {
-                          return new AlertDialog(
-                              content: Text("确认要拒绝邀请么？", style: TextStyle(fontSize: 28*factor),),
-                              actions: <Widget>[
-                                  new FlatButton(
-                                      child: new Text('取消', style: TextStyle(fontSize: 24*factor),),
-                                      onPressed: () {
-                                          Navigator.of(context).pop();
-                                      },
-                                  ),
-                                  new FlatButton(
-                                      child: new Text('确定', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
-                                      onPressed: () {
-                                          Navigator.of(context).pop();
-                                          setState(() {
-                                            isRequesting = true;
-                                          });
-                                          // 发送给webview，让webview登录后再取回token
+                        return new AlertDialog(
+                          content: Text("确认要拒绝邀请么？", style: TextStyle(fontSize: 28*factor),),
+                          actions: <Widget>[
+                            new FlatButton(
+                              child: new Text('取消', style: TextStyle(fontSize: 24*factor),),
+                              onPressed: () {
+                                  Navigator.of(context).pop();
+                              },
+                            ),
+                            new FlatButton(
+                              child: new Text('确定', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                              onPressed: () {
+                                  Navigator.of(context).pop();
+                                  setState(() {
+                                    isRequesting = true;
+                                  });
+                                  // 发送给webview，让webview登录后再取回token
 
-                                          Api().updateInvitation(widget.jobId, widget.userId, 2)
-                                            .then((Response response) {
-                                              setState(() {
-                                                isRequesting = false;
-                                              });
-                                              if(response.data['code'] != 1) {
-                                                Scaffold.of(context).showSnackBar(new SnackBar(
-                                                  content: new Text("提交失败！"),
-                                                ));
-                                                return;
-                                              } else {
-                                                showDialog<Null>(
-                                                  context: context,
-                                                  barrierDismissible: false,
-                                                  builder: (BuildContext context) {
-                                                      return new AlertDialog(
-                                                          content: Text("已拒绝面试邀请！", style: TextStyle(fontSize: 28*factor),),
-                                                          actions: <Widget>[
-                                                              new FlatButton(
-                                                                  child: new Text('知道了', style: TextStyle(fontSize: 24*factor),),
-                                                                  onPressed: () {
-                                                                      Navigator.of(context).pop();
-                                                                      setState(() {
-                                                                        accepted = 2;
-                                                                      });
-                                                                  },
-                                                              ),
-                                                          ],
-                                                      );
+                                  Api().updateInvitation(widget.jobId, widget.userId, 2)
+                                    .then((Response response) {
+                                      setState(() {
+                                        isRequesting = false;
+                                      });
+                                      if(response.data['code'] != 1) {
+                                        Scaffold.of(context).showSnackBar(new SnackBar(
+                                          content: new Text("提交失败！"),
+                                        ));
+                                        return;
+                                      } else {
+                                        showDialog<Null>(
+                                          context: context,
+                                          barrierDismissible: false,
+                                          builder: (BuildContext context) {
+                                            return new AlertDialog(
+                                              content: Text("已拒绝面试邀请！", style: TextStyle(fontSize: 28*factor),),
+                                              actions: <Widget>[
+                                                new FlatButton(
+                                                  child: new Text('知道了', style: TextStyle(fontSize: 24*factor),),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                    setState(() {
+                                                      accepted = 2;
+                                                    });
                                                   },
-                                                ).then((val) {
-                                                    print(val);
-                                                });
-                                              }
-                                            })
-                                            .catchError((e) {
-                                              setState(() {
-                                                isRequesting = false;
-                                              });
-                                              print(e);
-                                            });
-                                      },
-                                  ),
-                              ],
-                          );
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ).then((val) {
+                                            print(val);
+                                        });
+                                      }
+                                    })
+                                    .catchError((e) {
+                                      setState(() {
+                                        isRequesting = false;
+                                      });
+                                      print(e);
+                                    });
+                                },
+                            ),
+                          ],
+                        );
                       },
                     );
                     

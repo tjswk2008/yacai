@@ -12,6 +12,7 @@ import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -354,16 +355,27 @@ class CompanyEditState extends State<CompanyEdit>
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {
-                        ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
-                          return Api().upload(image, '${company.id}_detail$index${image.path.substring(image.path.lastIndexOf("."))}');
+                        ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
+                          return ImageCropper.cropImage(
+                            sourcePath: imageFile.path,
+                            ratioX: 0.16,
+                            ratioY: 0.09,
+                            maxWidth: 384,
+                            maxHeight: 216,
+                          );
+                        }).then((image) {
+                          return Api().upload(image, '${company.id}_detail${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
                         }).then((Response response) {
                           if(response.data['code'] != 1) {
                             return;
                           }
                           setState(() {
-                            company.imgs[index]['url'] = response.data['imgurl'];
-                            Map<String, String> item = {'url': ''};
-                            company.imgs.add(item);
+                            if(company.imgs[index]['url'] == '') {
+                              Map<String, String> item = {'url': ''};
+                              company.imgs.add(item);
+                            }
+                            // company.imgs[index]['url'] = response.data['imgurl'];
+                            company.imgs.replaceRange(index, index+1, [{'id': company.imgs[index]['id'], 'url': response.data['imgurl']}]);
                           });
                         })
                         .catchError((e) {
@@ -376,7 +388,7 @@ class CompanyEditState extends State<CompanyEdit>
                             child: Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  width: 2*factor,
+                                  width: factor,
                                   color: Colors.grey
                                 )
                               ),
@@ -386,14 +398,66 @@ class CompanyEditState extends State<CompanyEdit>
                           Align(
                             alignment: Alignment.topRight,
                             child: GestureDetector(
-                              child: Icon(Icons.close, size: 50*factor,),
+                              behavior: HitTestBehavior.opaque,
+                              child: Icon(Icons.close, size: 45*factor, color: Colors.red,),
+                              onTap: () {
+                                if (isRequesting) return;
+                                String imgName;
+                                RegExp exp = new RegExp(r"https:");
+                                if (!exp.hasMatch(company.imgs[index]['url'])) {
+                                  List<String> nameArr = company.imgs[index]['url'].split('/');
+                                  imgName = nameArr[nameArr.length - 1];
+                                  print(imgName);
+                                }
+                                showDialog<Null>(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) {
+                                    return new AlertDialog(
+                                      content: Text("确认要删除么？", style: TextStyle(fontSize: 28*factor),),
+                                      actions: <Widget>[
+                                        new FlatButton(
+                                          child: new Text('取消', style: TextStyle(fontSize: 24*factor),),
+                                          onPressed: () {
+                                              Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        new FlatButton(
+                                          child: new Text('确定', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                                          onPressed: () {
+                                              Navigator.of(context).pop();
+                                              setState(() {
+                                                isRequesting = true;
+                                              });
+                                              // 发送给webview，让webview登录后再取回token
+
+                                              Api().deleteImage(company.imgs[index]['id'], imgName)
+                                                .then((Response response) {
+                                                  if(response.data['code'] != 1) {
+                                                    return;
+                                                  }
+                                                  setState(() {
+                                                    company.imgs.removeAt(index);
+                                                  });
+                                                })
+                                                .catchError((e) {
+                                                  print(e);
+                                                });
+                                            },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                
+                              },
                             ),
                           )
                         ],
                       ) : Container(
                         decoration: BoxDecoration(
                           border: Border.all(
-                            width: 2*factor,
+                            width: factor,
                             color: Colors.grey
                           )
                         ),

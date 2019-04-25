@@ -21,7 +21,7 @@ class PostList extends State<MessageTab> {
   List<Post> _posts = [];
   List<Post> _originalPosts = [];
   String userName = '';
-  bool isRequesting = true;
+  bool isRequesting = false;
 
   @override
   void initState() {
@@ -166,6 +166,9 @@ class PostList extends State<MessageTab> {
     String user = prefs.getString('userName');
     Api().getPostList(user)
       .then((Response response) {
+        if (!mounted) {
+          return;
+        }
         setState(() {
           isRequesting = false;
           userName = user;
