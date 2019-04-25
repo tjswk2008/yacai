@@ -25,6 +25,7 @@ class Company {
   String reason; // 未通过认证原因
   List<Job> jobs;
   List<Map> imgs;
+  int willing; //招聘意向
 
   //构造函数
   Company({
@@ -50,7 +51,8 @@ class Company {
     this.verified,
     this.blocked,
     this.reason,
-    this.imgs = const <Map>[]
+    this.imgs = const <Map>[],
+    this.willing
   });
 
   static List<Company> fromJson(List list) {
@@ -98,7 +100,8 @@ class Company {
         verified: map['verified'],
         blocked: map['blocked'],
         reason: map['reason'],
-        imgs: convertToStringList(map['imgs'])
+        imgs: convertToStringList(map['imgs']),
+        willing: map['willing']
     );
   }
 }

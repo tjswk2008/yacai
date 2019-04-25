@@ -9,6 +9,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:custom_radio/custom_radio.dart';
 
 class Verification extends StatefulWidget {
 
@@ -25,6 +26,12 @@ class VerificationState extends State<Verification>
   Company company;
   bool isRequesting = false;
   String userName = '';
+
+  static List<String> willings = [
+    "全职",
+    "兼职/实习",
+    "全职+兼职/实习",
+  ];
 
   @override
   void initState() {
@@ -153,7 +160,90 @@ class VerificationState extends State<Verification>
                       ),
                     ),
                   ),
-                  
+                  new Padding(
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    child: new Text(
+                      '招聘意向：',
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(fontSize: 26.0*factor),
+                    ),
+                  ),
+                  Container(
+                    height: 80*factor,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 3,
+                      itemBuilder: (BuildContext context, int index) {
+                        return new Row(
+                          children: <Widget>[
+                            CustomRadio<int, dynamic>(
+                              value: index + 1,
+                              groupValue: company.willing,
+                              animsBuilder: (AnimationController controller) => [
+                                CurvedAnimation(
+                                  parent: controller,
+                                  curve: Curves.easeInOut
+                                ),
+                                ColorTween(
+                                  begin: Colors.grey[600],
+                                  end: Colors.cyan[300]
+                                ).animate(controller),
+                                ColorTween(
+                                  begin: Colors.cyan[300],
+                                  end: Colors.grey[600]
+                                ).animate(controller),
+                              ],
+                              builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      company.willing = value;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 24.0*factor,
+                                    height: 24.0*factor,
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.only(
+                                      top: 10.0*factor,
+                                      bottom: 10*factor,
+                                      right: 10*factor,
+                                      left: 72*factor
+                                    ),
+                                    padding: EdgeInsets.all(3.0*factor),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: company.willing == value ? Colors.cyan[300] : Colors.grey[600],
+                                        width: 1.0*factor
+                                      )
+                                    ),
+                                    child: company.willing == value ? Container(
+                                      width: 14.0*factor,
+                                      height: 14.0*factor,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: animValues[1],
+                                        border: Border.all(
+                                          color: animValues[2],
+                                          width: 1.0*factor
+                                        )
+                                      ),
+                                    ) : Container(),
+                                  )
+                                );
+                              },
+                            ),
+                            new Text(willings[index], style: new TextStyle(fontSize: 24.0*factor),),
+                          ]
+                        );
+                      },
+                      scrollDirection: Axis.horizontal,
+                      physics: NeverScrollableScrollPhysics(),
+                    ),
+                  ),
+                  Divider(),
                   new Padding(
                     padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
                     child: Text(
@@ -251,6 +341,7 @@ class VerificationState extends State<Verification>
                       style: new TextStyle(fontSize: 24.0*factor),
                     ),
                   ),
+                  
                   new Padding(
                     padding: EdgeInsets.only(left: 112*factor),
                     child: InkWell(
@@ -282,8 +373,37 @@ class VerificationState extends State<Verification>
                       ),
                     ),
                   ),
-
-                  company.verified == 2 ? Divider() : Container(height: 30*factor,),
+                  Divider(),
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 5*factor),
+                        child: Text('*', style: TextStyle(fontSize: 22*factor, color: Colors.red),),
+                      ),
+                      Text('提交资料表示您同意该用户', style: TextStyle(fontSize: 22*factor, color: Colors.grey),),
+                      new InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(new PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (BuildContext context, _, __) {
+                                // return new NewLoginPage();
+                              },
+                              transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                return new FadeTransition(
+                                  opacity: animation,
+                                  child: new SlideTransition(position: new Tween<Offset>(
+                                    begin: const Offset(0.0, 1.0),
+                                    end: Offset.zero,
+                                  ).animate(animation), child: child),
+                                );
+                              }
+                          ));
+                        },
+                        child: new Text('协议', style: TextStyle(fontSize: 22.0*factor, color: Colors.blue))
+                      )
+                    ]
+                  ),
+                  company.verified == 2 ? Divider() : Container(height: 20*factor,),
                   company.verified == 2 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -335,6 +455,7 @@ class VerificationState extends State<Verification>
                             company.idFront,
                             company.idBack,
                             company.license,
+                            company.willing,
                             company.id
                           );
 
@@ -362,7 +483,7 @@ class VerificationState extends State<Verification>
                   Padding(
                     padding: EdgeInsets.all(20*factor),
                     child: Center(
-                      child: Text('提交认证后请耐心等待审核', style: TextStyle(fontSize: 22*factor, color: Colors.grey),),
+                      child: Text('提交认证后请耐心等待审核, 刷新"我的"页面获取最新状态', style: TextStyle(fontSize: 22*factor, color: Colors.grey),),
                     ),
                   )
                 ],
