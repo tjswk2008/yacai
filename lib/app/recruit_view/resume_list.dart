@@ -39,15 +39,23 @@ class ResumeTabState extends State<ResumeTab> {
       totalPage = 1;
   
   static List<String> markers = [
-    "标记状态",
+    "全部标记状态",
     "有意向",
     "已电联",
+  ];
+
+  static List<String> invitations = [
+    "全部",
+    "已发送",
+    "已接受",
+    "已拒绝",
   ];
 
   String timeReq = timeReqArr[0];
   String academic = academicArr[0];
   String salary = salaryArr[0];
   int mark = 0;
+  int accepted;
 
   @override
   void initState() {
@@ -60,7 +68,7 @@ class ResumeTabState extends State<ResumeTab> {
 
     return new DropdownMenu(
         maxMenuHeight: 80 * factor * 10,
-        menus: [
+        menus: widget.type == 3 ? [
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
                 return new DropdownListMenu(
@@ -70,15 +78,15 @@ class ResumeTabState extends State<ResumeTab> {
                 );
               },
               height: 80 * factor * salaryArr.length),
-          // new DropdownMenuBuilder(
-          //     builder: (BuildContext context) {
-          //       return new DropdownListMenu(
-          //         selectedIndex: index2,
-          //         data: academicArr,
-          //         itemBuilder: buildCheckItem,
-          //       );
-          //     },
-          //     height: 80 * factor * academicArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  selectedIndex: index2,
+                  data: academicArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 80 * factor * academicArr.length),
           new DropdownMenuBuilder(
               builder: (BuildContext context) {
                 return new DropdownListMenu(
@@ -90,20 +98,10 @@ class ResumeTabState extends State<ResumeTab> {
               },
               height: 80 * factor * timeReqArr.length),
           new DropdownMenuBuilder(
-              builder: (BuildContext context) {
-                return new DropdownListMenu(
-                  itemExtent: 80 * factor,
-                  selectedIndex: index4,
-                  data: markers,
-                  itemBuilder: buildCheckItem,
-                );
-              },
-              height: 80 * factor * markers.length),
-          new DropdownMenuBuilder(
             builder: (BuildContext context) {
               return new DropdownTreeMenu(
                 selectedIndex: 0,
-                subSelectedIndex: [0],
+                subSelectedIndex: [0, 0],
                 itemExtent: 80*factor,
                 subBackground: Colors.white,
                 itemBuilder: (BuildContext context, dynamic data, bool selected, List<int> subIndexs) {
@@ -159,11 +157,50 @@ class ResumeTabState extends State<ResumeTab> {
                 getSubData: (dynamic data) {
                   return data['children'];
                 },
-                data: [{'title': '学历', 'children': academicArr}],
+                data: [{'title': '标记状态', 'children': markers}, {'title': '邀请函状态', 'children': invitations}],
               );
             },
-            height: 800.0*factor
+            height: 320.0*factor
           ),
+        ] : [
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  selectedIndex: index1,
+                  data: salaryArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 80 * factor * salaryArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  selectedIndex: index2,
+                  data: academicArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 80 * factor * academicArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  itemExtent: 80 * factor,
+                  selectedIndex: index3,
+                  data: timeReqArr,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 80 * factor * timeReqArr.length),
+          new DropdownMenuBuilder(
+              builder: (BuildContext context) {
+                return new DropdownListMenu(
+                  itemExtent: 80 * factor,
+                  selectedIndex: index4,
+                  data: markers,
+                  itemBuilder: buildCheckItem,
+                );
+              },
+              height: 80 * factor * markers.length),
         ]);
   }
 
@@ -172,7 +209,9 @@ class ResumeTabState extends State<ResumeTab> {
     return new DropdownHeader(
       onTap: onTap,
       height: 80*factor,
-      titles: [salaryArr[index1], timeReqArr[index3], markers[index4], '更多'],
+      titles: widget.type == 3 ? 
+        [salaryArr[index1], academicArr[index2], timeReqArr[index3], '更多选项'] : 
+        [salaryArr[index1], academicArr[index2], timeReqArr[index3], markers[index4]],
     );
   }
 
@@ -185,13 +224,23 @@ class ResumeTabState extends State<ResumeTab> {
             salary = data;
             break;
           case 1:
-            timeReq = data;
+            academic = data;
             break;
           case 2:
-            mark = index;
+            timeReq = data;
             break;
           case 3:
-            academic = data;
+            if(widget.type == 3) {
+              if(index == 1) {
+                if (subIndex != 0) {
+                  accepted = subIndex - 1;
+                }
+              } else {
+                mark = subIndex;
+              }
+            } else {
+              mark = index;
+            }
             break;
           default:
             break;
@@ -277,7 +326,7 @@ class ResumeTabState extends State<ResumeTab> {
       return;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Api().getResumeList(prefs.getString('userName'), widget.jobId, timeReq, academic, salary, mark, page, widget.type)
+    Api().getResumeList(prefs.getString('userName'), widget.jobId, timeReq, academic, salary, mark, accepted, page, widget.type)
       .then((Response response) {
         if (response.data['code'] == 1) {
           totalPage = response.data['total'] == 0 ? 1 : response.data['total'];

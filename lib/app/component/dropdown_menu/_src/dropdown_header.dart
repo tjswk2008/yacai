@@ -150,7 +150,7 @@ class _DropdownHeaderState extends DropdownState<DropdownHeader> {
           setState(() {
             _activeIndex = null;
             String label = widget.getItemLabel(controller.data);
-            if (_titles[controller.menuIndex] != '更多') {
+            if (_titles[controller.menuIndex] != '更多选项') {
               _titles[controller.menuIndex] = label;
             }
           });

@@ -151,7 +151,6 @@ class JobList extends State<JobsTab> {
                         data,
                         style: new TextStyle(color: color, fontSize: 24*factor),
                       ),
-                      
                     ),
                   );
                 },
@@ -176,7 +175,7 @@ class JobList extends State<JobsTab> {
     return new DropdownHeader(
       onTap: onTap,
       height: 80*factor,
-      titles: [salaryArr[index1], areaArr[index2], timeReqArr[index4], '更多'],
+      titles: [salaryArr[index1], areaArr[index2], timeReqArr[index4], '更多选项'],
     );
   }
 
