@@ -19,6 +19,7 @@ class Job {
   final int companyId; // 公司Id
   bool delivered;
   bool favorite;
+  int count; //邀请函数量
 
   Job({
     this.id,
@@ -38,7 +39,8 @@ class Job {
     @required this.detail,
     @required this.companyId,
     this.delivered,
-    this.favorite
+    this.favorite,
+    this.count
   });
 
   static List<Job> fromJson(List list) {
@@ -72,7 +74,8 @@ class Job {
         detail: map['detail'],
         companyId: map['companyId'],
         delivered: map['delivered'],
-        favorite: map['favorite']
+        favorite: map['favorite'],
+        count: map['count']
     );
   }
 }

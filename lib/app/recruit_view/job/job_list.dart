@@ -4,7 +4,9 @@ import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/app/recruit_view/resume_list.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-// import 'dart:developer';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_app/app/api/api.dart';
+import 'package:dio/dio.dart';
 
 class PubJobList extends StatefulWidget {
   PubJobList();
@@ -14,10 +16,21 @@ class PubJobList extends StatefulWidget {
 }
 
 class PubJobListState extends State<PubJobList> {
+  String userName;
+  List<Job> _jobs = [];
 
   @override
   void initState() {
     super.initState();
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        userName = prefs.getString('userName');
+      });
+      getJobList();
+    });
   }
 
   @override
@@ -43,8 +56,8 @@ class PubJobListState extends State<PubJobList> {
               style: TextStyle(fontSize: 30.0*factor, color: Colors.white)
             )
           ),
-          body: state.jobs != null && state.jobs.length != 0 ? new ListView.builder(
-            itemCount: state.jobs.length,
+          body: _jobs != null && _jobs.length != 0 ? new ListView.builder(
+            itemCount: _jobs.length,
             itemBuilder: buildJobItem
           ) : Center(
             child: Text('暂无投递记录', style: TextStyle(fontSize: 28*factor),),
@@ -55,13 +68,32 @@ class PubJobListState extends State<PubJobList> {
   }
 
   Widget buildJobItem(BuildContext context, int index) {
-    Job job = StoreProvider.of<AppState>(context).state.jobs[index];
+    Job job = _jobs[index];
 
     var jobItem = new InkWell(
         onTap: () => navToResumeList(job),
-        child: new JobListItem(job));
+        child: new JobListItem(job, true));
 
     return jobItem;
+  }
+
+  void getJobList() async {
+    if (userName == null) return;
+    Api().getRecruitJobList(userName)
+      .then((Response response) {
+        if(response.data['code'] != 1) {
+          Scaffold.of(context).showSnackBar(new SnackBar(
+            content: new Text("获取列表失败，请稍后重试~"),
+          ));
+          return;
+        }
+        setState(() {
+          _jobs = Job.fromJson(response.data['list']);
+        });
+      })
+     .catchError((e) {
+       print(e);
+     });
   }
 
   navToResumeList(Job job) {

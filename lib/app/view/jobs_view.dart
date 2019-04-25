@@ -317,7 +317,7 @@ class JobList extends State<JobsTab> {
 
     var jobItem = new InkWell(
         onTap: () => widget._type != 6 ? navJobDetail(job) : navToInvitation(job.id),
-        child: new JobListItem(job));
+        child: new JobListItem(job, false));
 
     return jobItem;
   }

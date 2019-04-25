@@ -407,7 +407,6 @@ class CompanyEditState extends State<CompanyEdit>
                                 if (!exp.hasMatch(company.imgs[index]['url'])) {
                                   List<String> nameArr = company.imgs[index]['url'].split('/');
                                   imgName = nameArr[nameArr.length - 1];
-                                  print(imgName);
                                 }
                                 showDialog<Null>(
                                   context: context,

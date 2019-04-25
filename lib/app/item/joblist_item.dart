@@ -4,8 +4,9 @@ import 'package:flutter_app/app/component/timeago/timeago.dart' as timeago;
 
 class JobListItem extends StatelessWidget {
   final Job job;
+  final bool showCount;
 
-  JobListItem(this.job);
+  JobListItem(this.job, this.showCount);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,21 @@ class JobListItem extends StatelessWidget {
                             top: 10.0*factor,
                             left: 20.0*factor,
                           ),
-                          child: new Text(job.name, style: new TextStyle(fontSize: 26.0*factor)),
+                          child: Row(
+                            children: <Widget>[
+                              new Text(job.name, style: new TextStyle(fontSize: 26.0*factor)),
+                              Padding(
+                                padding: EdgeInsets.only(left: 10*factor),
+                                child: new Text(
+                                  job.count == 0 ? '' : '(${job.count}份简历)',
+                                  style: TextStyle(
+                                    fontSize: 24.0*factor,
+                                    color: Colors.green,
+                                  )
+                                ),
+                              )
+                            ],
+                          )
                         ),
                         new Expanded(child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.end,

@@ -175,7 +175,7 @@ class PubTabState extends State<PubTab> {
 
     var jobItem = new InkWell(
         onTap: () => navJobDetail(job),
-        child: new JobListItem(job));
+        child: new JobListItem(job, false));
 
     return jobItem;
   }
@@ -184,6 +184,12 @@ class PubTabState extends State<PubTab> {
     if (userName == null) return;
     Api().getRecruitJobList(userName)
       .then((Response response) {
+        if(response.data['code'] != 1) {
+          Scaffold.of(context).showSnackBar(new SnackBar(
+            content: new Text("获取列表失败，请稍后重试~"),
+          ));
+          return;
+        }
         _jobs = Job.fromJson(response.data['list']);
         StoreProvider.of<AppState>(context).dispatch(SetJobsAction(_jobs));
       })

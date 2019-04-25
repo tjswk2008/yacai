@@ -45,7 +45,7 @@ class CompanyHotJob extends StatelessWidget {
               }
           ));
         },
-        child: new JobListItem(job));
+        child: new JobListItem(job, false));
 
     return jobItem;
   }
