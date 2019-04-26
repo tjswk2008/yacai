@@ -77,7 +77,6 @@ class MineTabState extends State<MineTab> {
                         size: '', // 公司规模
                         employee: '', // 公司人数
                         inc: '',
-                        willing: 1
                       );
                     } else {
                       company = Company.fromMap(resList[0].data['info']);

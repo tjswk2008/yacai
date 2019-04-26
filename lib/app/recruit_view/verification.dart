@@ -9,7 +9,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:custom_radio/custom_radio.dart';
+import 'package:flutter_app/app/model/constants.dart';
 
 class Verification extends StatefulWidget {
 
@@ -27,10 +27,10 @@ class VerificationState extends State<Verification>
   bool isRequesting = false;
   String userName = '';
 
-  static List<String> willings = [
-    "全职",
-    "兼职/实习",
-    "全职+兼职/实习",
+  static List<bool> willings = [
+    false,
+    false,
+    false,
   ];
 
   @override
@@ -38,6 +38,13 @@ class VerificationState extends State<Verification>
     super.initState();
     setState(() {
       company = widget._company;
+      if(company.willing != null) {
+        List<String> wills = company.willing.split(',');
+        wills.forEach((will) {
+          int index = int.parse(will);
+          willings.replaceRange(index - 1, index, [true]);
+        });
+      }
     });
     SharedPreferences.getInstance().then((SharedPreferences prefs) {
       setState(() {
@@ -70,16 +77,16 @@ class VerificationState extends State<Verification>
           ),
           body: new SingleChildScrollView(
             child: new Padding(
-              padding: EdgeInsets.all(10.0*factor),
+              padding: EdgeInsets.all(30.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(
-                    padding: EdgeInsets.only(top: 20*factor, bottom: 10.0*factor),
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       '法人姓名:',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new Padding(
@@ -98,7 +105,7 @@ class VerificationState extends State<Verification>
                           )
                         )
                       ),
-                      style: new TextStyle(fontSize: 20.0*factor),
+                      style: new TextStyle(fontSize: 26.0*factor),
                       onChanged: (val) {
                         setState(() {
                           company.corporator = val;
@@ -108,7 +115,7 @@ class VerificationState extends State<Verification>
                         hintText: "请输入法人姓名",
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080),
-                            fontSize: 20.0*factor
+                            fontSize: 26.0*factor
                         ),
                         border: new UnderlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor)
@@ -122,7 +129,7 @@ class VerificationState extends State<Verification>
                     child: new Text(
                       '身份证号码：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new Padding(
@@ -141,7 +148,7 @@ class VerificationState extends State<Verification>
                           )
                         )
                       ),
-                      style: new TextStyle(fontSize: 20.0*factor),
+                      style: new TextStyle(fontSize: 26.0*factor),
                       onChanged: (val) {
                         setState(() {
                           company.idCard = val;
@@ -151,7 +158,7 @@ class VerificationState extends State<Verification>
                         hintText: "请输入身份证",
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080),
-                            fontSize: 20.0*factor
+                            fontSize: 26.0*factor
                         ),
                         border: new UnderlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor)
@@ -165,7 +172,7 @@ class VerificationState extends State<Verification>
                     child: new Text(
                       '招聘意向：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   Container(
@@ -176,66 +183,28 @@ class VerificationState extends State<Verification>
                       itemBuilder: (BuildContext context, int index) {
                         return new Row(
                           children: <Widget>[
-                            CustomRadio<int, dynamic>(
-                              value: index + 1,
-                              groupValue: company.willing,
-                              animsBuilder: (AnimationController controller) => [
-                                CurvedAnimation(
-                                  parent: controller,
-                                  curve: Curves.easeInOut
-                                ),
-                                ColorTween(
-                                  begin: Colors.grey[600],
-                                  end: Colors.cyan[300]
-                                ).animate(controller),
-                                ColorTween(
-                                  begin: Colors.cyan[300],
-                                  end: Colors.grey[600]
-                                ).animate(controller),
-                              ],
-                              builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      company.willing = value;
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 24.0*factor,
-                                    height: 24.0*factor,
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.only(
-                                      top: 10.0*factor,
-                                      bottom: 10*factor,
-                                      right: 10*factor,
-                                      left: 72*factor
-                                    ),
-                                    padding: EdgeInsets.all(3.0*factor),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: company.willing == value ? Colors.cyan[300] : Colors.grey[600],
-                                        width: 1.0*factor
-                                      )
-                                    ),
-                                    child: company.willing == value ? Container(
-                                      width: 14.0*factor,
-                                      height: 14.0*factor,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: animValues[1],
-                                        border: Border.all(
-                                          color: animValues[2],
-                                          width: 1.0*factor
-                                        )
-                                      ),
-                                    ) : Container(),
-                                  )
-                                );
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  willings[index] = !willings[index];
+                                });
                               },
+                              child: Container(
+                                margin: EdgeInsets.only(right: 10*factor, left: 104*factor),
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: factor, color: willings[index] ? Theme.of(context).primaryColor : Colors.grey),
+                                  color: willings[index] ? Theme.of(context).primaryColor : Colors.transparent
+                                ),
+                                child: willings[index]
+                                  ? Icon(
+                                      Icons.check,
+                                      size: 32.0*factor,
+                                      color: Colors.white,
+                                    )
+                                  : Container(width: 32*factor, height: 32*factor,),
+                              )
                             ),
-                            new Text(willings[index], style: new TextStyle(fontSize: 24.0*factor),),
+                            Text(jobTypeArr[index], style: TextStyle(fontSize: 26*factor),)
                           ]
                         );
                       },
@@ -249,7 +218,7 @@ class VerificationState extends State<Verification>
                     child: Text(
                       '上传法人身份证:',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   Row(
@@ -338,7 +307,7 @@ class VerificationState extends State<Verification>
                     child: new Text(
                       '营业执照:',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   
@@ -378,9 +347,9 @@ class VerificationState extends State<Verification>
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(left: 5*factor),
-                        child: Text('*', style: TextStyle(fontSize: 22*factor, color: Colors.red),),
+                        child: Text('*', style: TextStyle(fontSize: 26*factor, color: Colors.red),),
                       ),
-                      Text('提交资料表示您同意该用户', style: TextStyle(fontSize: 22*factor, color: Colors.grey),),
+                      Text('提交资料表示您同意该用户', style: TextStyle(fontSize: 26*factor, color: Colors.grey),),
                       new InkWell(
                         onTap: () {
                           Navigator.of(context).push(new PageRouteBuilder(
@@ -399,7 +368,7 @@ class VerificationState extends State<Verification>
                               }
                           ));
                         },
-                        child: new Text('协议', style: TextStyle(fontSize: 22.0*factor, color: Colors.blue))
+                        child: new Text('协议', style: TextStyle(fontSize: 26.0*factor, color: Colors.blue))
                       )
                     ]
                   ),
@@ -412,7 +381,7 @@ class VerificationState extends State<Verification>
                         child: new Text(
                           '未通过原因:',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 26.0*factor),
                         ),
                       ),
                       new Row(
@@ -425,7 +394,7 @@ class VerificationState extends State<Verification>
                                 new Text(
                                   company.reason,
                                   style: new TextStyle(
-                                    fontSize: 24.0*factor,
+                                    fontSize: 26.0*factor,
                                     color: Colors.red
                                   ),
                                 )
@@ -449,6 +418,13 @@ class VerificationState extends State<Verification>
                           isRequesting = true;
                         });
                         try {
+                          List<int> willing = [];
+                          for (var i = 0; i < willings.length; i++) {
+                            if(willings[i]) {
+                              willing.add(i + 1);
+                            }
+                          }
+                          company.willing = willing.join(",");
                           Response response = await Api().verification(
                             company.corporator,
                             company.idCard,
@@ -483,7 +459,7 @@ class VerificationState extends State<Verification>
                   Padding(
                     padding: EdgeInsets.all(20*factor),
                     child: Center(
-                      child: Text('提交认证后请耐心等待审核, 刷新"我的"页面获取最新状态', style: TextStyle(fontSize: 22*factor, color: Colors.grey),),
+                      child: Text('提交认证后请耐心等待审核, 刷新"我的"页面获取最新状态', style: TextStyle(fontSize: 24*factor, color: Colors.grey),),
                     ),
                   )
                 ],

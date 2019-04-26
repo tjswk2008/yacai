@@ -416,7 +416,7 @@ class Api {
     String idFront,
     String idBack,
     String license,
-    int willing,
+    String willing,
     int id
   ) {
     return Dio().post('${serverAddr}company/verification', data: {

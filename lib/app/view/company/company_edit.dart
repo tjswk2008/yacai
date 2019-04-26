@@ -42,6 +42,7 @@ class CompanyEditState extends State<CompanyEdit>
   int start = 1;
   int end = 2;
   Company company;
+  String userName;
   List<String> areas = areaArr.sublist(1);
   List<String> employees = employeeArr.sublist(1);
   List<String> companyTypes = companyTypeArr.sublist(1);
@@ -51,10 +52,17 @@ class CompanyEditState extends State<CompanyEdit>
     super.initState();
     setState(() {
       company = widget._company;
-      if (company.imgs != null && company.imgs[company.imgs.length - 1]['url'] != '') {
+      if (company.imgs == null || company.imgs.length == 0) {
+        company.imgs = [{'url': ''}];
+      } else if (company.imgs != null && company.imgs[company.imgs.length - 1]['url'] != '') {
         Map<String, String> item = {'url': ''};
         company.imgs.add(item);
       }
+    });
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        userName = prefs.getString('userName');
+      });
     });
   }
 
@@ -91,14 +99,14 @@ class CompanyEditState extends State<CompanyEdit>
                   child: new Text(
                     '公司名称：',
                     textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 26.0*factor),
+                    style: new TextStyle(fontSize: 28.0*factor),
                   ),
                 ),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 16.0*factor),
                   child: TypeAheadField(
+                    hideOnEmpty: true,
                     textFieldConfiguration: TextFieldConfiguration(
-                      autofocus: true,
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
                           text: company.name,
@@ -110,7 +118,7 @@ class CompanyEditState extends State<CompanyEdit>
                           )
                         )
                       ),
-                      style: TextStyle(fontSize: 20.0*factor),
+                      style: TextStyle(fontSize: 26.0*factor),
                       decoration: new InputDecoration(
                         hintText: "请输入公司名称",
                         hintStyle: new TextStyle(
@@ -135,7 +143,13 @@ class CompanyEditState extends State<CompanyEdit>
                     },
                     onSuggestionSelected: (suggestion) {
                       setState(() {
-                       company.name = suggestion['name'];
+                       company = Company.fromMap(suggestion);
+                       if (company.imgs == null || company.imgs.length == 0) {
+                          company.imgs = [{'url': ''}];
+                        } else if (company.imgs != null && company.imgs[company.imgs.length - 1]['url'] != '') {
+                          Map<String, String> item = {'url': ''};
+                          company.imgs.add(item);
+                        }
                       });
                     },
                   )
@@ -145,7 +159,7 @@ class CompanyEditState extends State<CompanyEdit>
                   child: new Text(
                     '公司位置：',
                     textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 26.0*factor),
+                    style: new TextStyle(fontSize: 28.0*factor),
                   ),
                 ),
                 new InkWell(
@@ -160,12 +174,12 @@ class CompanyEditState extends State<CompanyEdit>
                       data: areas,
                     );
                   },
-                  child: Text(company.province == null ? '请选择地址' : '上海市 ${company.area}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                  child: Text((company.province == null || company.province == '') && (company.area == null || company.area == '') ? '请选择地址' : '上海市 ${company.area}', style: TextStyle(fontSize: 26.0*factor, color: Colors.grey),),
                 ),
                 new Padding(
                   padding: EdgeInsets.only(bottom: 36.0*factor),
                   child: new TextField(
-                    style: TextStyle(fontSize: 20.0*factor),
+                    style: TextStyle(fontSize: 26.0*factor),
                     controller: TextEditingController.fromValue(
                       TextEditingValue(
                         text: company.location,
@@ -202,7 +216,7 @@ class CompanyEditState extends State<CompanyEdit>
                       child: new Text(
                         '公司性质：',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                        style: new TextStyle(fontSize: 28.0*factor),
                       ),
                     ),
                     new Padding(
@@ -225,7 +239,7 @@ class CompanyEditState extends State<CompanyEdit>
                             data: companyTypes,
                           );
                         },
-                        child: new Text(company.type == null ? '请选择' : company.type, style: TextStyle(fontSize: 22.0*factor),),
+                        child: new Text(company.type == null || company.type == '' ? '请选择' : company.type, style: TextStyle(fontSize: 26.0*factor),),
                       ) 
                     ),
                   ],
@@ -243,7 +257,7 @@ class CompanyEditState extends State<CompanyEdit>
                       child: new Text(
                         '公司人数：',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                        style: new TextStyle(fontSize: 28.0*factor),
                       ),
                     ),
                     new Padding(
@@ -266,7 +280,7 @@ class CompanyEditState extends State<CompanyEdit>
                             data: employees,
                           );
                         },
-                        child: new Text(company.employee == null ? '请选择' : company.employee, style: TextStyle(fontSize: 22.0*factor),),
+                        child: new Text(company.employee == null || company.employee == ''  ? '请选择' : company.employee, style: TextStyle(fontSize: 26.0*factor),),
                       ) 
                     ),
                   ],
@@ -283,13 +297,21 @@ class CompanyEditState extends State<CompanyEdit>
                     new Text(
                       '公司logo:',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
 
                     new InkWell(
                       onTap: () {
-                        ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
-                          return Api().upload(image, '${company.id}_company_logo${image.path.substring(image.path.lastIndexOf("."))}');
+                        ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
+                          return ImageCropper.cropImage(
+                            sourcePath: imageFile.path,
+                            ratioX: 1,
+                            ratioY: 1,
+                            maxWidth: 200,
+                            maxHeight: 200
+                          );
+                        }).then((image) {
+                          return Api().upload(image, '${userName}_company_logo${image.path.substring(image.path.lastIndexOf("."))}');
                         }).then((Response response) {
                           if(response.data['code'] != 1) {
                             return;
@@ -328,7 +350,7 @@ class CompanyEditState extends State<CompanyEdit>
                       child: new Text(
                         '详情图：',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 26.0*factor),
+                        style: new TextStyle(fontSize: 28.0*factor),
                       ),
                     ),
                     Padding(
@@ -336,7 +358,7 @@ class CompanyEditState extends State<CompanyEdit>
                       child: new Text(
                         '(为了更好地显示效果，请上传16:9的图片)',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 22.0*factor, color: Colors.red),
+                        style: new TextStyle(fontSize: 24.0*factor, color: Colors.red),
                       ),
                     ),
                   ],
@@ -364,7 +386,7 @@ class CompanyEditState extends State<CompanyEdit>
                             maxHeight: 216,
                           );
                         }).then((image) {
-                          return Api().upload(image, '${company.id}_detail${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
+                          return Api().upload(image, '${userName}_company_detail${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
                         }).then((Response response) {
                           if(response.data['code'] != 1) {
                             return;
@@ -476,7 +498,7 @@ class CompanyEditState extends State<CompanyEdit>
                   child: new Text(
                     '详情描述：',
                     textAlign: TextAlign.left,
-                    style: new TextStyle(fontSize: 26.0*factor),
+                    style: new TextStyle(fontSize: 28.0*factor),
                   ),
                 ),
                 new Padding(
@@ -484,7 +506,7 @@ class CompanyEditState extends State<CompanyEdit>
                   child: new TextField(
                     keyboardType: TextInputType.multiline,
                     maxLines: 10,
-                    style: TextStyle(fontSize: 24.0*factor),
+                    style: TextStyle(fontSize: 26.0*factor),
                     controller: TextEditingController.fromValue(
                       TextEditingValue(
                         text: company.inc,
@@ -528,8 +550,6 @@ class CompanyEditState extends State<CompanyEdit>
                         isRequesting = true;
                       });
                       try {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-
                         Response response = await Api().saveCompanyInfo(
                           company.name,
                           '上海市',
@@ -541,7 +561,7 @@ class CompanyEditState extends State<CompanyEdit>
                           company.inc,
                           company.logo,
                           company.imgs.sublist(0, company.imgs.length - 1),
-                          prefs.getString('userName'),
+                          userName,
                           company.id
                         );
 
@@ -549,6 +569,12 @@ class CompanyEditState extends State<CompanyEdit>
                           isRequesting = false;
                         });
                         if(response.data['code'] != 1) {
+                          if(response.data['code'] == -20) {
+                            Scaffold.of(ctx).showSnackBar(new SnackBar(
+                              content: new Text(response.data['msg']),
+                            ));
+                            return;
+                          }
                           Scaffold.of(ctx).showSnackBar(new SnackBar(
                             content: new Text("保存失败！"),
                           ));

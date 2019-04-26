@@ -216,7 +216,6 @@ class LoginWithMsgState extends State<LoginWithMsg> {
                             size: '', // 公司规模
                             employee: '', // 公司人数
                             inc: '',
-                            willing: 1
                           );
                         } else {
                           company = Company.fromMap(resList[0].data['info']);
