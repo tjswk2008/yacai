@@ -11,6 +11,7 @@ import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:custom_radio/custom_radio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class PersonalInfoEditView extends StatefulWidget {
 
@@ -88,7 +89,15 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
 
                       new InkWell(
                         onTap: () {
-                          ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+                          ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
+                            return ImageCropper.cropImage(
+                              sourcePath: imageFile.path,
+                              ratioX: 1,
+                              ratioY: 1,
+                              maxWidth: 200,
+                              maxHeight: 200,
+                            );
+                          }).then((image) {
                             return Api().upload(image, '${userName}_avatar${image.path.substring(image.path.lastIndexOf("."))}');
                           }).then((Response response) {
                             if(response.data['code'] != 1) {

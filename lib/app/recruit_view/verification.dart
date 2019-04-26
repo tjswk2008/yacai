@@ -10,6 +10,7 @@ import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/model/constants.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class Verification extends StatefulWidget {
 
@@ -213,13 +214,26 @@ class VerificationState extends State<Verification>
                     ),
                   ),
                   Divider(),
-                  new Padding(
-                    padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
-                    child: Text(
-                      '上传法人身份证:',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 28.0*factor),
-                    ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                        child: Text(
+                          '上传法人身份证:',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 28.0*factor),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10*factor, bottom: 20.0*factor),
+                        child: new Text(
+                          '(请上传16:9的图片)',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor, color: Colors.red),
+                        ),
+                      ),
+                    ],
                   ),
                   Row(
                     children: <Widget>[
@@ -229,7 +243,13 @@ class VerificationState extends State<Verification>
                             padding: EdgeInsets.only(left: 112*factor, right: 122*factor),
                             child: InkWell(
                               onTap: () {
-                                ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+                                ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
+                                  return ImageCropper.cropImage(
+                                    sourcePath: imageFile.path,
+                                    ratioX: 16,
+                                    ratioY: 9,
+                                  );
+                                }).then((image) {
                                   return Api().upload(image, '${company.id}_idFront${image.path.substring(image.path.lastIndexOf("."))}');
                                 }).then((Response response) {
                                   if(response.data['code'] != 1) {
@@ -267,7 +287,13 @@ class VerificationState extends State<Verification>
                         children: <Widget>[
                           InkWell(
                             onTap: () {
-                              ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+                              ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
+                                return ImageCropper.cropImage(
+                                  sourcePath: imageFile.path,
+                                  ratioX: 16,
+                                  ratioY: 9,
+                                );
+                              }).then((image) {
                                 return Api().upload(image, '${company.id}_idBack${image.path.substring(image.path.lastIndexOf("."))}');
                               }).then((Response response) {
                                 if(response.data['code'] != 1) {
@@ -302,20 +328,39 @@ class VerificationState extends State<Verification>
                     ],
                   ),
                   new Divider(),
-                  new Padding(
-                    padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
-                    child: new Text(
-                      '营业执照:',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 28.0*factor),
-                    ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                        child: new Text(
+                          '营业执照:',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 28.0*factor),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10*factor, bottom: 20.0*factor),
+                        child: new Text(
+                          '(请上传9:16的图片)',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor, color: Colors.red),
+                        ),
+                      ),
+                    ],
                   ),
                   
                   new Padding(
                     padding: EdgeInsets.only(left: 112*factor),
                     child: InkWell(
                       onTap: () {
-                        ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+                        ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
+                          return ImageCropper.cropImage(
+                            sourcePath: imageFile.path,
+                            ratioX: 9,
+                            ratioY: 16,
+                          );
+                        }).then((image) {
                           return Api().upload(image, '${company.id}_license${image.path.substring(image.path.lastIndexOf("."))}');
                         }).then((Response response) {
                           if(response.data['code'] != 1) {
@@ -329,9 +374,9 @@ class VerificationState extends State<Verification>
                           print(e);
                         });
                       },
-                      child: company.license != null ? Image.network(company.license, width: 192*factor,) : Container(
-                        width: 192*factor,
-                        height: 108*factor,
+                      child: company.license != null ? Image.network(company.license, width: 108*factor, height: 192*factor,) : Container(
+                        width: 108*factor,
+                        height: 192*factor,
                         decoration: BoxDecoration(
                           border: Border.all(
                             width: 2*factor,
