@@ -12,6 +12,8 @@ import 'package:flutter_app/actions/actions.dart';
 import 'package:custom_radio/custom_radio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:flutter_app/app/component/select.dart';
+import 'package:flutter_app/app/model/constants.dart';
 
 class PersonalInfoEditView extends StatefulWidget {
 
@@ -29,6 +31,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
   PersonalInfo personalInfo;
   bool isRequesting = false;
   String userName = '';
+  List<String> areas = areaArr.sublist(1);
 
   static List<String> genders = [
     "男",
@@ -218,7 +221,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                       top: 10.0*factor,
                                       bottom: 10*factor,
                                       right: 10*factor,
-                                      left: 146.5*factor
+                                      left: 140*factor
                                     ),
                                     padding: EdgeInsets.all(3.0*factor),
                                     decoration: BoxDecoration(
@@ -255,14 +258,101 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                   ),
                   
                   new Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                        child: new Text(
+                          '居住地：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
+                      ),
+                      new InkWell(
+                        onTap: () {
+                          YCPicker.showYCPicker(
+                            context,
+                            selectItem: (res) {
+                              setState(() {
+                                personalInfo.residenceArea = res;
+                              });
+                            },
+                            data: areas,
+                          );
+                        },
+                        child: Text(personalInfo.residenceArea == null ? '请选择' : '上海市 ${personalInfo.residenceArea}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                      ),
+                    ],
+                  ),
+                  new Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                        child: new Text(
+                          '籍贯：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
+                      ),
+                      new InkWell(
+                        onTap: () {
+                          YCPicker.showYCPicker(
+                            context,
+                            selectItem: (res) {
+                              setState(() {
+                                personalInfo.residenceArea = res;
+                              });
+                            },
+                            data: areas,
+                          );
+                        },
+                        child: Text(personalInfo.residenceArea == null ? '请选择' : '上海市 ${personalInfo.residenceArea}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                      ),
+                    ],
+                  ),
+                  new Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                        child: new Text(
+                          '婚姻状况：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
+                      ),
+                      new InkWell(
+                        onTap: () {
+                          YCPicker.showYCPicker(
+                            context,
+                            selectItem: (res) {
+                              setState(() {
+                                personalInfo.marriage = res;
+                              });
+                            },
+                            data: marriageArr,
+                          );
+                        },
+                        child: Text(personalInfo.residenceArea == null ? '请选择' : '上海市 ${personalInfo.residenceArea}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                      ),
+                    ],
+                  ),
+                  new Divider(),
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      new Text(
-                        '参加工作时间：',
-                        textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                        child: new Text(
+                          '参加工作时间：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
                       ),
 
                       new InkWell(
@@ -326,14 +416,58 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       ),
                     ),
                   ),
+                  new Padding(
+                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    child: new Text(
+                      '邮箱：',
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(fontSize: 24.0*factor),
+                    ),
+                  ),
+                  new Padding(
+                    padding: EdgeInsets.only(bottom: 16.0*factor),
+                    child: new TextField(
+                      controller: TextEditingController.fromValue(
+                        TextEditingValue(
+                          // 设置内容
+                          text: personalInfo.email == null ? '' : personalInfo.email,
+                          // 保持光标在最后
+                          selection: TextSelection.fromPosition(
+                            TextPosition(
+                              affinity: TextAffinity.downstream,
+                              offset: personalInfo.email == null ? 0 : personalInfo.email.length
+                            )
+                          )
+                        )
+                      ),
+                      style: TextStyle(fontSize: 20.0*factor),
+                      onChanged: (val) {
+                        setState(() {
+                          personalInfo.email = val;
+                        });
+                      },
+                      decoration: new InputDecoration(
+                        hintText: "请输入您的邮箱",
+                        hintStyle: new TextStyle(
+                            color: const Color(0xFF808080),
+                            fontSize: 20.0*factor
+                        ),
+                        border: new UnderlineInputBorder(),
+                        contentPadding: EdgeInsets.all(10.0*factor)
+                      ),
+                    ),
+                  ),
                   new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      new Text(
-                        '出生年月：',
-                        textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                        child: new Text(
+                          '出生年月：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 24.0*factor),
+                        ),
                       ),
 
                       new InkWell(
@@ -357,7 +491,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                   ),
                   new Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(top: 5*factor,bottom: 30.0*factor),
                     child: new Text(
                       '我的优势：',
                       textAlign: TextAlign.left,

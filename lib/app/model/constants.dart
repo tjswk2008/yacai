@@ -18,6 +18,12 @@ const List<String> areaArr = <String>[
   "崇明区"
 ];
 
+const List<String> marriageArr = <String>[
+  "未婚",
+  "已婚",
+  "保密",
+];
+
 const List<String> jobStatusArr = <String>[
   "离职-随时到岗",
   "在职-月内到岗",

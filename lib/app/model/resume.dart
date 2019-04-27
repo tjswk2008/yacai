@@ -228,6 +228,11 @@ class PersonalInfo {
   String wechatId; // 微信号
   String birthDay; // 出生年月
   String summarize; // 优势
+  String residenceArea; // 区县
+  String email; // 邮箱
+  String nativeProvince; // 籍贯-省
+  String nativeCity; // 籍贯-市
+  int marriage; //婚姻状况
   int academic; // 学历
   String school; // 学校
   int mark; // 招聘人员标记的状态
@@ -246,7 +251,12 @@ class PersonalInfo {
     this.academic,
     this.school,
     this.mark,
-    this.accepted
+    this.accepted,
+    this.residenceArea, // 区县
+    this.email, // 邮箱
+    this.nativeProvince, // 籍贯-省
+    this.nativeCity, // 籍贯-市
+    this.marriage
   });
 
   static List<PersonalInfo> fromList(List list) {
@@ -271,7 +281,12 @@ class PersonalInfo {
         academic: map['academic'],
         school: map['school'],
         mark: map['marker'],
-        accepted: map['accepted']
+        accepted: map['accepted'],
+        residenceArea: map['residenceArea'], // 区县
+        email: map['email'], // 邮箱
+        nativeProvince: map['nativeProvince'], // 籍贯-省
+        nativeCity: map['nativeCity'], // 籍贯-市
+        marriage: map['marriage'], 
     );
   }
 }
