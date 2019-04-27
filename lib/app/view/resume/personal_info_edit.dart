@@ -13,6 +13,7 @@ import 'package:custom_radio/custom_radio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter_app/app/component/select.dart';
+import 'package:flutter_app/app/component/location_picker/location_picker.dart';
 import 'package:flutter_app/app/model/constants.dart';
 
 class PersonalInfoEditView extends StatefulWidget {
@@ -87,7 +88,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       new Text(
                         '头像',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                        style: new TextStyle(fontSize: 28.0*factor),
                       ),
 
                       new InkWell(
@@ -134,7 +135,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                     child: new Text(
                       '姓名：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new Padding(
@@ -153,7 +154,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                           )
                         )
                       ),
-                      style: new TextStyle(fontSize: 20.0*factor),
+                      style: new TextStyle(fontSize: 26.0*factor),
                       onChanged: (val) {
                         setState(() {
                           personalInfo.name = val;
@@ -177,7 +178,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                     child: new Text(
                       '性别：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   
@@ -214,8 +215,8 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                     });
                                   },
                                   child: Container(
-                                    width: 24.0*factor,
-                                    height: 24.0*factor,
+                                    width: 28.0*factor,
+                                    height: 28.0*factor,
                                     alignment: Alignment.center,
                                     margin: EdgeInsets.only(
                                       top: 10.0*factor,
@@ -248,7 +249,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                 );
                               },
                             ),
-                            new Text(genders[index], style: new TextStyle(fontSize: 24.0*factor),),
+                            new Text(genders[index], style: new TextStyle(fontSize: 28.0*factor),),
                           ]
                         );
                       },
@@ -266,7 +267,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         child: new Text(
                           '居住地：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
                       new InkWell(
@@ -294,22 +295,29 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         child: new Text(
                           '籍贯：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
                       new InkWell(
                         onTap: () {
-                          YCPicker.showYCPicker(
+                          LocationPicker.showPicker(
                             context,
-                            selectItem: (res) {
+                            showTitleActions: true,
+                            initialProvince: '上海',
+                            initialCity: '上海',
+                            initialTown: null,
+                            onChanged: (p, c, t) {
+                              print('$p $c $t');
+                            },
+                            onConfirm: (p, c, t) {
                               setState(() {
-                                personalInfo.residenceArea = res;
+                                personalInfo.nativeProvince = p;
+                                personalInfo.nativeCity = c;
                               });
                             },
-                            data: areas,
                           );
                         },
-                        child: Text(personalInfo.residenceArea == null ? '请选择' : '上海市 ${personalInfo.residenceArea}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                        child: Text(personalInfo.nativeProvince == null ? '请选择' : '${personalInfo.nativeProvince} ${personalInfo.nativeCity}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
                       ),
                     ],
                   ),
@@ -322,7 +330,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         child: new Text(
                           '婚姻状况：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
                       new InkWell(
@@ -331,13 +339,13 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             context,
                             selectItem: (res) {
                               setState(() {
-                                personalInfo.marriage = res;
+                                personalInfo.marriage = marriageArr.indexOf(res);
                               });
                             },
                             data: marriageArr,
                           );
                         },
-                        child: Text(personalInfo.residenceArea == null ? '请选择' : '上海市 ${personalInfo.residenceArea}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                        child: Text(personalInfo.marriage == null ? '请选择' : marriageArr[personalInfo.marriage], style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
                       ),
                     ],
                   ),
@@ -351,7 +359,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         child: new Text(
                           '参加工作时间：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
 
@@ -370,17 +378,17 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             print(err);
                           });
                         },
-                        child: new Text(personalInfo.firstJobTime == null ? '请选择' : personalInfo.firstJobTime, style: TextStyle(fontSize: 24.0*factor),),
+                        child: new Text(personalInfo.firstJobTime == null ? '请选择' : personalInfo.firstJobTime, style: TextStyle(fontSize: 28.0*factor),),
                       )
                     ],
                   ),
                   new Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
                     child: new Text(
                       '微信号：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new Padding(
@@ -399,7 +407,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                           )
                         )
                       ),
-                      style: TextStyle(fontSize: 20.0*factor),
+                      style: TextStyle(fontSize: 26.0*factor),
                       onChanged: (val) {
                         setState(() {
                           personalInfo.wechatId = val;
@@ -417,11 +425,11 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                     ),
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
                     child: new Text(
                       '邮箱：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new Padding(
@@ -440,7 +448,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                           )
                         )
                       ),
-                      style: TextStyle(fontSize: 20.0*factor),
+                      style: TextStyle(fontSize: 26.0*factor),
                       onChanged: (val) {
                         setState(() {
                           personalInfo.email = val;
@@ -466,7 +474,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         child: new Text(
                           '出生年月：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
 
@@ -485,7 +493,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             print(err);
                           });
                         },
-                        child: new Text(personalInfo.birthDay == null ? '请选择' : personalInfo.birthDay, style: TextStyle(fontSize: 24.0*factor),),
+                        child: new Text(personalInfo.birthDay == null ? '请选择' : personalInfo.birthDay, style: TextStyle(fontSize: 28.0*factor),),
                       )
                     ],
                   ),
@@ -495,7 +503,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                     child: new Text(
                       '我的优势：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new TextField(
@@ -517,7 +525,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         personalInfo.summarize = val;
                       });
                     },
-                    style: TextStyle(fontSize: 20.0*factor),
+                    style: TextStyle(fontSize: 26.0*factor),
                     keyboardType: TextInputType.multiline,
                     maxLines: 5,
                     decoration: new InputDecoration(
