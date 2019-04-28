@@ -89,7 +89,7 @@ class LoginWithMsgState extends State<LoginWithMsg> {
                     right: 0,
                     bottom: 20*factor,
                     child: Container(
-                      height: 50*factor,
+                      height: 70*factor,
                       child: RaisedButton(
                         color: Colors.orange[400],
                         child: Text("发送验证码", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),

@@ -80,7 +80,7 @@ class PubTabState extends State<PubTab> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     new Padding(
-                      padding: EdgeInsets.only(top: 5.0*factor, right: 20.0*factor),
+                      padding: EdgeInsets.only(top: 25.0*factor, right: 25.0*factor),
                       child: Container(
                         height: 60*factor,
                         width: 175*factor,
@@ -130,7 +130,7 @@ class PubTabState extends State<PubTab> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   new Padding(
-                    padding: EdgeInsets.only(top: 5.0*factor, right: 20.0*factor),
+                    padding: EdgeInsets.only(top: 25.0*factor, right: 25.0*factor),
                     child: Container(
                       height: 60*factor,
                       width: 175*factor,
@@ -159,7 +159,6 @@ class PubTabState extends State<PubTab> {
                         },
                       ),
                     )
-                    
                   )
                 ],
               ),

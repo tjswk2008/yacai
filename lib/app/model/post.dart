@@ -56,6 +56,7 @@ class Answer{
   String answer; // 答复详情
   String answerBy; // 答复人
   String answerAt; // 答复时间
+  String avatar;
   int votes; // 点赞数
   int like;
   List<Commet> commets; // 追评
@@ -68,6 +69,7 @@ class Answer{
     this.votes,
     this.like,
     this.commets,
+    this.avatar
   });
 
   static List<Answer> fromList(List list) {
@@ -86,6 +88,7 @@ class Answer{
         answerAt: map['answerAt'],
         votes: map['votes'],
         like: map['like'],
+        avatar: map['avatar']
     );
   }
 }

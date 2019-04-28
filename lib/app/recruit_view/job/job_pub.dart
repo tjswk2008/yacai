@@ -370,7 +370,7 @@ class PubJobState extends State<PubJob>
                   ),
                   Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(top: 10.0*factor, bottom: 30*factor),
                     child: new Text(
                       '职位描述：',
                       textAlign: TextAlign.left,

@@ -105,7 +105,7 @@ class PostList extends State<MessageTab> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 new Padding(
-                  padding: EdgeInsets.only(top: 5.0*factor, right: 15.0*factor),
+                  padding: EdgeInsets.only(top: 25.0*factor, right: 25.0*factor),
                   child: new Container(
                     height: 60.0*factor,
                     width: 175.0*factor,

@@ -60,23 +60,23 @@ class ShieldListState extends State<ShieldList>
           ),
           body: new SingleChildScrollView(
             child: new Container(
-              padding: EdgeInsets.symmetric(vertical: 30.0*factor, horizontal: 10*factor),
+              padding: EdgeInsets.all(30.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
+                    padding: EdgeInsets.only(bottom: 30.0*factor),
                     child: Stack(
                       children: <Widget>[
                         TypeAheadField(
                           textFieldConfiguration: TextFieldConfiguration(
                             autofocus: true,
-                            style: TextStyle(fontSize: 20*factor),
+                            style: TextStyle(fontSize: 26*factor),
                             decoration: new InputDecoration(
                               hintText: "请输入公司名称",
                               hintStyle: new TextStyle(
                                   color: const Color(0xFF808080),
-                                  fontSize: 20.0*factor
+                                  fontSize: 26.0*factor
                               ),
                               border: new UnderlineInputBorder(
                                 borderSide: BorderSide(width: 1.0*factor)

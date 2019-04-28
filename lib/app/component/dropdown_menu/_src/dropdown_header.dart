@@ -55,7 +55,7 @@ class _DropdownHeaderState extends DropdownState<DropdownHeader> {
     return new GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: new Padding(
-          padding: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+          padding: new EdgeInsets.fromLTRB(0.0, 10.0*factor, 0.0, 10.0*factor),
           child: new DecoratedBox(
               decoration: new BoxDecoration(
                   border: new Border(left: Divider.createBorderSide(context))),
@@ -67,7 +67,7 @@ class _DropdownHeaderState extends DropdownState<DropdownHeader> {
                       getItemLabel(title),
                       style: new TextStyle(
                         color: selected ? primaryColor : unselectedColor,
-                        fontSize: 24*factor
+                        fontSize: 22*factor
                       ),
                     ),
                     new Icon(

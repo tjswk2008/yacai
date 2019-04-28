@@ -169,7 +169,7 @@ class VerificationState extends State<Verification>
                     ),
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.symmetric(vertical: 10.0*factor),
                     child: new Text(
                       '招聘意向：',
                       textAlign: TextAlign.left,
@@ -388,6 +388,7 @@ class VerificationState extends State<Verification>
                     ),
                   ),
                   Divider(),
+                  Container(height: 20*factor,),
                   Row(
                     children: <Widget>[
                       Padding(

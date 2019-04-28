@@ -9,7 +9,9 @@ import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/bezier_hour_glass_header.dart';
 import 'package:flutter_easyrefresh/bezier_bounce_footer.dart';
-// import 'dart:developer';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_app/app/model/app.dart';
+import 'package:flutter_app/app/model/company.dart';
 
 class ResumeTab extends StatefulWidget {
   final String _title;
@@ -217,6 +219,7 @@ class ResumeTabState extends State<ResumeTab> {
 
   Widget buildFixHeaderDropdownMenu() {
     double factor = MediaQuery.of(context).size.width/750;
+    Company company = StoreProvider.of<AppState>(context).state.company;
     return new DefaultDropdownMenuController(
       onSelected: ({int menuIndex, int index, int subIndex, dynamic data}) {
         switch (menuIndex) {
@@ -253,7 +256,9 @@ class ResumeTabState extends State<ResumeTab> {
           new Expanded(
             child: new Stack(
               children: <Widget>[
-                (_personalInfos.length != 0) ? new Padding(
+                (company.verified == null || company.verified == 0) ? Center(
+                  child: Text('您的公司尚未认证，请先前往认证', style: TextStyle(fontSize: 28*factor))
+                ) : _personalInfos.length != 0 ? new Padding(
                   padding: EdgeInsets.only(
                     top: 15.0*factor
                   ),

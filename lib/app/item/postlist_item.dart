@@ -27,17 +27,18 @@ class PostListItem extends StatelessWidget {
             children: <Widget>[
               new Padding(
                 padding: EdgeInsets.only(
-                  top: 10.0*factor,
-                  left: 10.0*factor,
-                  right: 10.0*factor,
-                  bottom: 15.0*factor,
+                  top: 20.0*factor,
+                  left: 20.0*factor,
+                  right: 20.0*factor,
+                  bottom: 20.0*factor,
                 ),
                 child: new RichText(
                   text: new TextSpan(
                     text: post.title,
                     style: new TextStyle(
-                        fontSize: 24.0*factor,
-                        color: Colors.black
+                        fontSize: 30.0*factor,
+                        color: Colors.black,
+                        fontFamily: 'fontello'
                     ),
                   ),
                 ),
@@ -46,7 +47,7 @@ class PostListItem extends StatelessWidget {
                 children: <Widget>[
                   new Padding(
                     padding: EdgeInsets.only(
-                      left: 10.0*factor,
+                      left: 20.0*factor,
                       right: 5.0*factor
                     ),
                     child: new Icon(Icons.favorite, color: Colors.red, size: 26.0*factor)
@@ -59,30 +60,30 @@ class PostListItem extends StatelessWidget {
                         post.votes.toString(),
                         style: new TextStyle(
                             fontSize: 22.0*factor,
-                            color: Colors.grey)),
+                            color: Colors.grey, fontFamily: 'fontello')),
                   ),
                   new Padding(
                     padding: EdgeInsets.only(
                       left: 10.0*factor,
-                      right: 3.0*factor
+                      right: 5.0*factor
                     ),
                     child: new Icon(Icons.face, color: Colors.lightBlue[300], size: 26.0*factor),
                   ),
                   new Text(post.viewers.toString(),
-                        style: new TextStyle(fontSize: 22.0*factor, color: Colors.grey)),
+                        style: new TextStyle(fontSize: 22.0*factor, color: Colors.grey, fontFamily: 'fontello')),
                 ],
               ),
 
               new Divider(),
               new Padding(
                 padding: EdgeInsets.only(
-                  left: 10.0*factor,
+                  left: 20.0*factor,
                   right: 10.0*factor,
                   bottom: 15.0*factor,
                 ),
                 child: new Text(
                   post.updateAt != post.askedAt ? '${timeago.format(DateTime.parse(post.updateAt), locale: 'zh_cn')}更新' : '${timeago.format(DateTime.parse(post.askedAt), locale: 'zh_cn')}创建',
-                  style: new TextStyle(fontSize: 22.0*factor)
+                  style: new TextStyle(fontSize: 22.0*factor, fontFamily: 'fontello')
                 )
               )
             ],

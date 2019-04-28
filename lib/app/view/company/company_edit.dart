@@ -494,7 +494,7 @@ class CompanyEditState extends State<CompanyEdit>
                 new Divider(),
                 
                 new Padding(
-                  padding: EdgeInsets.only(bottom: 10.0*factor),
+                  padding: EdgeInsets.only(bottom: 20.0*factor),
                   child: new Text(
                     '详情描述：',
                     textAlign: TextAlign.left,
