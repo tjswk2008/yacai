@@ -77,7 +77,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
           ),
           body: new SingleChildScrollView(
             child: new Padding(
-              padding: EdgeInsets.all(10.0*factor),
+              padding: EdgeInsets.all(30.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -222,7 +222,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                       top: 10.0*factor,
                                       bottom: 10*factor,
                                       right: 10*factor,
-                                      left: 140*factor
+                                      left: 120*factor
                                     ),
                                     padding: EdgeInsets.all(3.0*factor),
                                     decoration: BoxDecoration(
@@ -293,7 +293,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       new Padding(
                         padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
                         child: new Text(
-                          '籍贯：',
+                          '户口/国籍：',
                           textAlign: TextAlign.left,
                           style: new TextStyle(fontSize: 28.0*factor),
                         ),
@@ -307,7 +307,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             initialCity: '上海',
                             initialTown: null,
                             onChanged: (p, c, t) {
-                              print('$p $c $t');
+                              // print('$p $c $t');
                             },
                             onConfirm: (p, c, t) {
                               setState(() {
@@ -559,6 +559,11 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                           personalInfo.birthDay,
                           personalInfo.summarize,
                           personalInfo.avatar,
+                          personalInfo.residenceArea, // 区县
+                          personalInfo.email, // 邮箱
+                          personalInfo.nativeProvince, // 籍贯-省
+                          personalInfo.nativeCity, // 籍贯-市
+                          personalInfo.marriage,
                           userName
                         )
                           .then((Response response) {

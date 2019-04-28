@@ -52,9 +52,29 @@ class Api {
     String birthDay,
     String summarize,
     String avatar,
+    String residenceArea, // 区县
+    String email, // 邮箱
+    String nativeProvince, // 籍贯-省
+    String nativeCity, // 籍贯-市
+    int marriage,
     String userName
   ) {
     String url = '${serverAddr}user/addUser?userName=$userName';
+    if (residenceArea != null) {
+      url += '&residenceArea=$residenceArea';
+    }
+    if (email != null) {
+      url += '&email=$email';
+    }
+    if (nativeProvince != null) {
+      url += '&nativeProvince=$nativeProvince';
+    }
+    if (nativeCity != null) {
+      url += '&nativeCity=$nativeCity';
+    }
+    if (marriage != null) {
+      url += '&marriage=$marriage';
+    }
     if (name != null) {
       url += '&name=$name';
     }
@@ -211,6 +231,10 @@ class Api {
     return Dio().get(serverAddr + "user/register?account=$account&pwd=$pwd&role=$role");
   }
 
+  Future<Response<T>> refreshResume<T>(String account) {
+    return Dio().post(serverAddr + "user/refreshResume", data: {'account': account});
+  }
+
   Future<Response<T>> deleteUser<T>(String account) {
     String url = '${serverAddr}user/deleteUser';
     return Dio().post(url, data: {'account': account});
@@ -247,6 +271,10 @@ class Api {
   }
 
   // jobs interface
+  Future<Response<T>> refreshJob<T>(int id) {
+    return Dio().post(serverAddr + "jobs/refreshJob", data: {'id': id});
+  }
+
   Future<Response<T>> getJobList<T>(
     int type,
     String userName,

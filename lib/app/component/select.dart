@@ -188,7 +188,9 @@ class _YCPickerState extends State<_YCPickerWidget> {
                                 changed: (index) {
                                   setState(() {
                                     startIndex = index;
-                                    endController.jumpToItem(0);
+                                    if(endController != null) {
+                                      endController.jumpToItem(0);
+                                    }
                                   });
                                 },
                               )

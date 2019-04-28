@@ -58,6 +58,9 @@ class JobList extends State<JobsTab> {
     }).then((Response response) {
       userId = response.data['id'];
     });
+    if(!mounted) {
+      return;
+    }
     getJobList(1);
   }
 
@@ -350,6 +353,9 @@ class JobList extends State<JobsTab> {
       })
      .catchError((e) {
        print(e);
+       if(!mounted) {
+         return;
+       }
        setState(() {
           isRequesting = false;
         });

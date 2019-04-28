@@ -37,7 +37,13 @@ class JobDetailState extends State<JobDetail>
     setState(() {
       _job = widget._job;
     });
-    getCompanyDetail();
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      setState(() {
+        role = prefs.getInt('role');
+        userName = prefs.getString('userName');
+      });
+      return getCompanyDetail();
+    });
   }
 
   @override
@@ -61,7 +67,68 @@ class JobDetailState extends State<JobDetail>
           }
         ),
         title: new Text("职位详情",
-            style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
+            style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
+        ),
+        actions: <Widget>[
+          role == 2 ?new PopupMenuButton(
+            onSelected: (int value) async {
+              Response response = await Api().refreshJob(_job.id);
+              if(response.data['code'] != 1) {
+                showDialog<Null>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return new AlertDialog(
+                      content: Center(
+                        child: Text("刷新失败，请稍后重试~", style: TextStyle(fontSize: 28*factor),)
+                      ),
+                      actions: <Widget>[
+                        new FlatButton(
+                          child: new Text('知道了', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+                return;
+              }
+              showDialog<Null>(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return new AlertDialog(
+                    content: Text("刷新成功~", style: TextStyle(fontSize: 28*factor),),
+                    actions: <Widget>[
+                      new FlatButton(
+                        child: new Text('知道了', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            itemBuilder: (BuildContext context) =><PopupMenuItem<int>>[
+              new PopupMenuItem(
+                value: 1,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 25*factor),
+                        child: Icon(Icons.refresh, size: 28*factor,),
+                      ),
+                      Text("刷新职位", style: TextStyle(fontSize: 22*factor),)
+                    ],
+                  )
+              )
+            ]
+          ) : Container()
+        ],
       ),
       body: new Stack(
         children: <Widget>[
@@ -205,12 +272,7 @@ class JobDetailState extends State<JobDetail>
   }
 
   getCompanyDetail() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      role = prefs.getInt('role');
-      userName = prefs.getString('userName');
-    });
-    Api().getCompanyDetail(widget._job.companyId, prefs.getString('userName'))
+    Api().getCompanyDetail(widget._job.companyId, userName)
       .then((Response response) {
         setState(() {
           _company = Company.fromMap(response.data['data']);
