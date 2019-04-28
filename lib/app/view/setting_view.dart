@@ -383,6 +383,7 @@ class SettingViewState extends State<SettingView> {
   Future<void> executeDownload() async {
     final path = await _apkLocalPath;
     String downLoadUrl = Platform.isAndroid ? 'http://192.168.140.56:8080/public' : 'http://192.168.2.101:8080/public';
+    // String downLoadUrl = 'http://192.168.2.101:8080/public';
     //下载
     final taskId = await FlutterDownloader.enqueue(
         url: downLoadUrl + '/app-release.apk',
