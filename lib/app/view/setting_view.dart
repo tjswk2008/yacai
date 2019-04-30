@@ -382,6 +382,7 @@ class SettingViewState extends State<SettingView> {
   // 下载
   Future<void> executeDownload() async {
     final path = await _apkLocalPath;
+    double factor = MediaQuery.of(context).size.width/750;
     String downLoadUrl = Platform.isAndroid ? 'http://192.168.140.56:8080/public' : 'http://192.168.2.101:8080/public';
     // String downLoadUrl = 'http://192.168.2.101:8080/public';
     //下载
@@ -398,7 +399,10 @@ class SettingViewState extends State<SettingView> {
         // FlutterDownloader.open(taskId: id);
       } else if (status == DownloadTaskStatus.failed) {
         //下载出错
-        print(status.toString());
+        Scaffold.of(context).showSnackBar(new SnackBar(
+          content: new Text(status.toString(), style: TextStyle(fontSize: 22*factor),),
+        ));
+        // print(status.toString());
       }
     });
   }

@@ -72,23 +72,22 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
           ),
           body: new SingleChildScrollView(
             child: new Padding(
-              padding: EdgeInsets.all(10.0*factor),
+              padding: EdgeInsets.all(30.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(bottom: 20.0*factor),
                     child: new Text(
                       '公司名：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
-                        autofocus: true,
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
                             text: _companyExperience.cname,
@@ -100,7 +99,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                             )
                           )
                         ),
-                        style: TextStyle(fontSize: 20*factor),
+                        style: TextStyle(fontSize: 26*factor),
                         decoration: new InputDecoration(
                           hintText: "请输入公司名",
                           hintStyle: new TextStyle(
@@ -135,17 +134,17 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       new Padding(
-                        padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                        padding: EdgeInsets.symmetric(vertical: 20.0*factor),
                         child: new Text(
                           '职位名称：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
                       new Padding(
                         padding: EdgeInsets.only(
                           top: 20.0*factor,
-                          bottom: 10.0*factor,
+                          bottom: 20.0*factor,
                           left: 10.0*factor,
                           right: 20.0*factor
                         ),
@@ -173,11 +172,11 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(top: 10*factor, bottom: 10*factor),
+                        padding: EdgeInsets.symmetric(vertical: 20*factor),
                         child: new Text(
                           '开始时间：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
 
@@ -196,7 +195,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                             print(err);
                           });
                         },
-                        child: new Text(_companyExperience.startTime, style: TextStyle(fontSize: 24*factor),),
+                        child: new Text(_companyExperience.startTime, style: TextStyle(fontSize: 28*factor),),
                       )
                     ],
                   ),
@@ -206,11 +205,11 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(top: 10*factor, bottom: 10*factor),
+                        padding: EdgeInsets.symmetric(vertical: 20*factor),
                         child: new Text(
                           '结束时间：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
 
@@ -236,7 +235,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                             print(err);
                           });
                         },
-                        child: new Text(_companyExperience.endTime == null ? '至今' : _companyExperience.endTime, style: TextStyle(fontSize: 24*factor),),
+                        child: new Text(_companyExperience.endTime == null ? '至今' : _companyExperience.endTime, style: TextStyle(fontSize: 28*factor),),
                       )
                     ],
                   ),
@@ -246,7 +245,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                     child: new Text(
                       '工作内容：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new TextField(
@@ -268,17 +267,17 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                         _companyExperience.detail = val;
                       });
                     },
-                    style: TextStyle(fontSize: 20.0*factor),
+                    style: TextStyle(fontSize: 26.0*factor),
                     decoration: new InputDecoration(
                       hintText: "请输入您的工作内容",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080),
-                          fontSize: 20.0*factor
+                          fontSize: 26.0*factor
                       ),
                       border: new OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                       ),
-                      contentPadding: EdgeInsets.all(10.0*factor)
+                      contentPadding: EdgeInsets.all(20.0*factor)
                     ),
                   ),
                   new Divider(),
@@ -287,13 +286,13 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                     child: new Text(
                       '工作业绩：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new TextField(
                     keyboardType: TextInputType.multiline,
                     maxLines: 5,
-                    style: TextStyle(fontSize: 20.0*factor),
+                    style: TextStyle(fontSize: 26.0*factor),
                     controller: TextEditingController.fromValue(
                       TextEditingValue(
                         text: _companyExperience.performance == null ? '' : _companyExperience.performance,
@@ -314,12 +313,12 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       hintText: "请输入您的工作业绩",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080),
-                          fontSize: 20.0*factor
+                          fontSize: 26.0*factor
                       ),
                       border: new OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
                       ),
-                      contentPadding: EdgeInsets.all(10.0*factor)
+                      contentPadding: EdgeInsets.all(20.0*factor)
                     ),
                   ),
                   Container(
