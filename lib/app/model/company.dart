@@ -76,32 +76,61 @@ class Company {
     return [{'url': ''}];
   }
 
+  static Company copy(Company company) {
+    return new Company(
+      id: company.id,
+      logo: company.logo,
+      name: company.name,
+      location: company.location,
+      type: company.type,
+      size: company.size,
+      employee: company.employee,
+      province: company.province,
+      city: company.city,
+      area: company.area,
+      hot: company.hot,
+      count: company.count,
+      inc: company.inc,
+      jobs: company.jobs,
+      idBack: company.idBack, // 身份证背面照
+      idFront: company.idFront, // 身份证正面照
+      corporator: company.corporator, // 法人姓名
+      idCard: company.idCard, // 法人身份证号码
+      license: company.license,
+      verified: company.verified,
+      blocked: company.blocked,
+      reason: company.reason,
+      imgs: company.imgs,
+      willing: company.willing
+    );
+  }
+
   static Company fromMap(Map map) {
     return new Company(
-        id: map['id'],
-        logo: map['logo'],
-        name: map['name'],
-        location: map['location'],
-        type: map['type'],
-        size: map['size'],
-        employee: map['employee'],
-        province: map['province'],
-        city: map['city'],
-        area: map['area'],
-        hot: map['hot'],
-        count: map['count'],
-        inc: map['inc'],
-        jobs: Job.fromJson(map['jobs']),
-        idBack: map['idBack'], // 身份证背面照
-        idFront: map['idFront'], // 身份证正面照
-        corporator: map['corporator'], // 法人姓名
-        idCard: map['idCard'], // 法人身份证号码
-        license: map['license'],
-        verified: map['verified'],
-        blocked: map['blocked'],
-        reason: map['reason'],
-        imgs: convertToStringList(map['imgs']),
-        willing: map['willing']
+      id: map['id'],
+      logo: map['logo'],
+      name: map['name'],
+      location: map['location'],
+      type: map['type'],
+      size: map['size'],
+      employee: map['employee'],
+      province: map['province'],
+      city: map['city'],
+      area: map['area'],
+      hot: map['hot'],
+      count: map['count'],
+      inc: map['inc'],
+      jobs: Job.fromJson(map['jobs']),
+      idBack: map['idBack'], // 身份证背面照
+      idFront: map['idFront'], // 身份证正面照
+      corporator: map['corporator'], // 法人姓名
+      idCard: map['idCard'], // 法人身份证号码
+      license: map['license'],
+      verified: map['verified'],
+      blocked: map['blocked'],
+      reason: map['reason'],
+      imgs: convertToStringList(map['imgs']),
+      willing: map['willing']
     );
   }
 }

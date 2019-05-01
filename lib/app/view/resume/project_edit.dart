@@ -34,7 +34,7 @@ class ProjectEditViewState extends State<ProjectEditView>
   void initState() {
     super.initState();
     setState(() {
-      _project = widget._project;
+      _project = Project.copy(widget._project);
     });
     SharedPreferences.getInstance().then((SharedPreferences prefs) {
       setState(() {
@@ -63,6 +63,7 @@ class ProjectEditViewState extends State<ProjectEditView>
               iconSize: 40*factor,
               tooltip: MaterialLocalizations.of(context).backButtonTooltip,
               onPressed: () {
+                _project = null;
                 Navigator.maybePop(context);
               }
             ),
@@ -71,7 +72,7 @@ class ProjectEditViewState extends State<ProjectEditView>
           ),
           body: new SingleChildScrollView(
             child: new Padding(
-              padding: EdgeInsets.all(10.0*factor),
+              padding: EdgeInsets.all(30.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -80,7 +81,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                     child: new Text(
                       '项目名：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new Padding(
@@ -97,7 +98,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                           )
                         )
                       ),
-                      style: TextStyle(fontSize: 20.0*factor),
+                      style: TextStyle(fontSize: 26.0*factor),
                       onChanged: (val) {
                         setState(() {
                           _project.name = val;
@@ -107,7 +108,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                         hintText: "请输入项目名",
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080),
-                            fontSize: 20.0*factor
+                            fontSize: 26.0*factor
                         ),
                         border: new UnderlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor)
@@ -124,7 +125,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                         child: new Text(
                           '角色名称：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
                       new Padding(
@@ -147,7 +148,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                               data: titleArr,
                             );
                           },
-                          child: new Text(_project.role == null || _project.role == '' ? '请选择' : _project.role, style: TextStyle(fontSize: 22.0*factor),),
+                          child: new Text(_project.role == null || _project.role == '' ? '请选择' : _project.role, style: TextStyle(fontSize: 26.0*factor),),
                         ) 
                       ),
                     ],
@@ -163,7 +164,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                         child: new Text(
                           '开始时间：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
 
@@ -182,7 +183,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                             print(err);
                           });
                         },
-                        child: new Text(_project.startTime, style: TextStyle(fontSize: 24.0*factor),),
+                        child: new Text(_project.startTime, style: TextStyle(fontSize: 28.0*factor),),
                       )
                     ],
                   ),
@@ -196,7 +197,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                         child: new Text(
                           '结束时间：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
 
@@ -222,7 +223,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                             print(err);
                           });
                         },
-                        child: new Text(_project.endTime == null ? '至今' : _project.endTime, style: new TextStyle(fontSize: 24.0*factor),),
+                        child: new Text(_project.endTime == null ? '至今' : _project.endTime, style: new TextStyle(fontSize: 28.0*factor),),
                       )
                     ],
                   ),
@@ -232,13 +233,13 @@ class ProjectEditViewState extends State<ProjectEditView>
                     child: new Text(
                       '项目描述：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new TextField(
                     keyboardType: TextInputType.multiline,
                     maxLines: 5,
-                    style: new TextStyle(fontSize: 20.0*factor),
+                    style: new TextStyle(fontSize: 26.0*factor),
                     controller: TextEditingController.fromValue(
                       TextEditingValue(
                         text: _project.detail,
@@ -259,7 +260,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                       hintText: "请输入项目描述",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080),
-                          fontSize: 20.0*factor
+                          fontSize: 26.0*factor
                       ),
                       border: new OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
@@ -273,7 +274,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                     child: new Text(
                       '项目业绩：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new TextField(
@@ -295,12 +296,12 @@ class ProjectEditViewState extends State<ProjectEditView>
                         _project.performance = val;
                       });
                     },
-                    style: TextStyle(fontSize: 20.0*factor),
+                    style: TextStyle(fontSize: 26.0*factor),
                     decoration: new InputDecoration(
                       hintText: "请输入您的项目业绩",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080),
-                          fontSize: 20.0*factor
+                          fontSize: 26.0*factor
                       ),
                       border: new OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6.0*factor))

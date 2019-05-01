@@ -51,7 +51,7 @@ class CompanyEditState extends State<CompanyEdit>
   void initState() {
     super.initState();
     setState(() {
-      company = widget._company;
+      company = Company.copy(widget._company);
       if (company.imgs == null || company.imgs.length == 0) {
         company.imgs = [{'url': ''}];
       } else if (company.imgs != null && company.imgs[company.imgs.length - 1]['url'] != '') {
@@ -82,6 +82,7 @@ class CompanyEditState extends State<CompanyEdit>
             iconSize: 40*factor,
             tooltip: MaterialLocalizations.of(context).backButtonTooltip,
             onPressed: () {
+              company = null;
               Navigator.maybePop(context);
             }
           ),

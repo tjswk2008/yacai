@@ -59,6 +59,18 @@ class Education{
     return _educations;
   }
 
+  static Education copy(Education education) {
+    return new Education(
+      id: education.id,
+      name: education.name,
+      academic: education.academic,
+      startTime: education.startTime,
+      endTime: education.endTime,
+      major: education.major,
+      detail: education.detail
+    );
+  }
+
   static Education fromMap(Map map) {
     return new Education(
         id: map['id'],
@@ -93,6 +105,16 @@ class Certification{
       _certifications.add(Certification.fromMap(value));
     }
     return _certifications;
+  }
+
+  static Certification copy(Certification certification) {
+    return new Certification(
+      id: certification.id,
+      name: certification.name,
+      industry: certification.industry,
+      qualifiedTime: certification.qualifiedTime,
+      code: certification.code
+    );
   }
 
   static Certification fromMap(Map map) {
@@ -131,6 +153,18 @@ class Project{
       _projects.add(Project.fromMap(value));
     }
     return _projects;
+  }
+
+  static Project copy(Project project) {
+    return new Project(
+      id: project.id,
+      name: project.name,
+      role: project.role,
+      startTime: project.startTime,
+      endTime: project.endTime,
+      detail: project.detail,
+      performance: project.performance
+    );
   }
 
   static Project fromMap(Map map) {
@@ -175,6 +209,19 @@ class CompanyExperience{
     return _companyExperiences;
   }
 
+  static CompanyExperience copy(CompanyExperience companyExperience) {
+    return new CompanyExperience(
+      id: companyExperience.id,
+      cname: companyExperience.cname,
+      industry: companyExperience.industry,
+      startTime: companyExperience.startTime,
+      endTime: companyExperience.endTime,
+      jobTitle: companyExperience.jobTitle,
+      detail: companyExperience.detail,
+      performance: companyExperience.performance
+    );
+  }
+
   static CompanyExperience fromMap(Map map) {
     return new CompanyExperience(
         id: map['id'],
@@ -205,6 +252,17 @@ class JobExpect{
     this.city,
     this.salary
   });
+
+  static JobExpect copy(JobExpect jobExpect) {
+    return new JobExpect(
+      id: jobExpect.id,
+      type: jobExpect.type,
+      jobTitle: jobExpect.jobTitle,
+      industry: jobExpect.industry,
+      city: jobExpect.city,
+      salary: jobExpect.salary
+    );
+  }
 
   static JobExpect fromMap(Map map) {
     return new JobExpect(
@@ -265,6 +323,29 @@ class PersonalInfo {
       _personalInfos.add(PersonalInfo.fromMap(value));
     }
     return _personalInfos;
+  }
+
+  static PersonalInfo copy(PersonalInfo personalInfo) {
+    return new PersonalInfo(
+      id: personalInfo.id,
+      account: personalInfo.account,
+      name: personalInfo.name,
+      gender: personalInfo.gender,
+      firstJobTime: personalInfo.firstJobTime,
+      avatar: personalInfo.avatar,
+      wechatId: personalInfo.wechatId,
+      birthDay: personalInfo.birthDay,
+      summarize: personalInfo.summarize,
+      academic: personalInfo.academic,
+      school: personalInfo.school,
+      mark: personalInfo.mark,
+      accepted: personalInfo.accepted,
+      residenceArea: personalInfo.residenceArea, // 区县
+      email: personalInfo.email, // 邮箱
+      nativeProvince: personalInfo.nativeProvince, // 籍贯-省
+      nativeCity: personalInfo.nativeCity, // 籍贯-市
+      marriage: personalInfo.marriage,
+    );
   }
 
   static PersonalInfo fromMap(Map map) {

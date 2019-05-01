@@ -32,7 +32,7 @@ class CertificationEditViewState extends State<CertificationEditView>
   void initState() {
     super.initState();
     setState(() {
-     _certification = widget._certification; 
+     _certification = Certification.copy(widget._certification); 
     });
     SharedPreferences.getInstance().then((SharedPreferences prefs) {
       setState(() {
@@ -61,6 +61,7 @@ class CertificationEditViewState extends State<CertificationEditView>
               iconSize: 40*factor,
               tooltip: MaterialLocalizations.of(context).backButtonTooltip,
               onPressed: () {
+                _certification = null;
                 Navigator.maybePop(context);
               }
             ),
@@ -70,7 +71,7 @@ class CertificationEditViewState extends State<CertificationEditView>
           body: new Stack(
             children: <Widget>[
               new Padding(
-                padding: EdgeInsets.all(20.0*factor),
+                padding: EdgeInsets.all(30.0*factor),
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -79,13 +80,13 @@ class CertificationEditViewState extends State<CertificationEditView>
                       child: new Text(
                         '证书名称：',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                        style: new TextStyle(fontSize: 28.0*factor),
                       ),
                     ),
                     new Padding(
                       padding: EdgeInsets.only(bottom: 16.0*factor),
                       child: new TextField(
-                        style: TextStyle(fontSize: 20.0*factor),
+                        style: TextStyle(fontSize: 26.0*factor),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
                             text: _certification.name,
@@ -119,13 +120,13 @@ class CertificationEditViewState extends State<CertificationEditView>
                       child: new Text(
                         '颁发单位：',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                        style: new TextStyle(fontSize: 28.0*factor),
                       ),
                     ),
                     new Padding(
                       padding: EdgeInsets.only(bottom: 16.0*factor),
                       child: new TextField(
-                        style: TextStyle(fontSize: 20.0*factor),
+                        style: TextStyle(fontSize: 26.0*factor),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
                             text: _certification.industry,
@@ -159,13 +160,13 @@ class CertificationEditViewState extends State<CertificationEditView>
                       child: new Text(
                         '证书编号：',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                        style: new TextStyle(fontSize: 28.0*factor),
                       ),
                     ),
                     new Padding(
                       padding: EdgeInsets.only(bottom: 16.0*factor),
                       child: new TextField(
-                        style: TextStyle(fontSize: 20*factor),
+                        style: TextStyle(fontSize: 26*factor),
                         controller: TextEditingController.fromValue(
                           TextEditingValue(
                             text: _certification.code,
@@ -201,7 +202,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                           child: new Text(
                             '颁发时间：',
                             textAlign: TextAlign.left,
-                            style: new TextStyle(fontSize: 24.0*factor),
+                            style: new TextStyle(fontSize: 28.0*factor),
                           ),
                         ),
                         Padding(
@@ -221,7 +222,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                                 print(err);
                               });
                             },
-                            child: new Text(_certification.qualifiedTime, style: new TextStyle(fontSize: 24.0*factor),),
+                            child: new Text(_certification.qualifiedTime, style: new TextStyle(fontSize: 28.0*factor),),
                           ),
                         ),
                       ],

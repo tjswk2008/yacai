@@ -34,7 +34,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
   void initState() {
     super.initState();
     setState(() {
-     _jobExpect = widget._jobExpect; 
+     _jobExpect = JobExpect.copy(widget._jobExpect); 
     });
     SharedPreferences.getInstance().then((SharedPreferences prefs) {
       setState(() {
@@ -63,6 +63,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
               iconSize: 40*factor,
               tooltip: MaterialLocalizations.of(context).backButtonTooltip,
               onPressed: () {
+                _jobExpect = null;
                 Navigator.maybePop(context);
               }
             ),
@@ -72,7 +73,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
           body: new Stack(
             children: <Widget>[
               new Padding(
-                padding: EdgeInsets.all(10.0*factor),
+                padding: EdgeInsets.all(30.0*factor),
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -198,7 +199,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                                         top: 10.0*factor,
                                         bottom: 10*factor,
                                         right: 10*factor,
-                                        left: 126*factor
+                                        left: 115*factor
                                       ),
                                       padding: EdgeInsets.all(3.0*factor),
                                       decoration: BoxDecoration(

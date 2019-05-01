@@ -44,7 +44,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
   void initState() {
     super.initState();
     setState(() {
-      personalInfo = widget.personalInfo;
+      personalInfo = PersonalInfo.copy(widget.personalInfo);
     });
     SharedPreferences.getInstance().then((SharedPreferences prefs) {
       setState(() {
@@ -69,6 +69,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
               iconSize: 40*factor,
               tooltip: MaterialLocalizations.of(context).backButtonTooltip,
               onPressed: () {
+                personalInfo = null;
                 Navigator.maybePop(context);
               }
             ),
@@ -110,9 +111,6 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             setState(() {
                               personalInfo.avatar = response.data['imgurl'];
                             });
-                            Resume resume = state.resume;
-                            resume.personalInfo = personalInfo;
-                            StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
                           })
                           .catchError((e) {
                             print(e);

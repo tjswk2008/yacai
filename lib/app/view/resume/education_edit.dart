@@ -36,7 +36,7 @@ class EducationEditViewState extends State<EducationEditView>
   void initState() {
     super.initState();
     setState(() {
-     _education = widget._education; 
+     _education = Education.copy(widget._education); 
     });
     SharedPreferences.getInstance().then((SharedPreferences prefs) {
       setState(() {
@@ -65,6 +65,7 @@ class EducationEditViewState extends State<EducationEditView>
               iconSize: 40*factor,
               tooltip: MaterialLocalizations.of(context).backButtonTooltip,
               onPressed: () {
+                _education = null;
                 Navigator.maybePop(context);
               }
             ),
@@ -73,7 +74,7 @@ class EducationEditViewState extends State<EducationEditView>
           ),
           body: new SingleChildScrollView(
             child: new Padding(
-              padding: EdgeInsets.all(10.0*factor),
+              padding: EdgeInsets.all(30.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -82,7 +83,7 @@ class EducationEditViewState extends State<EducationEditView>
                     child: new Text(
                       '学校名称：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new Padding(
@@ -106,12 +107,12 @@ class EducationEditViewState extends State<EducationEditView>
                             )
                           )
                         ),
-                        style: TextStyle(fontSize: 20*factor),
+                        style: TextStyle(fontSize: 26*factor),
                         decoration: new InputDecoration(
                           hintText: "请输入学校名称",
                           hintStyle: new TextStyle(
                               color: const Color(0xFF808080),
-                              fontSize: 20.0*factor
+                              fontSize: 26.0*factor
                           ),
                           border: new UnderlineInputBorder(
                             borderSide: BorderSide(width: 1.0*factor)
@@ -144,7 +145,7 @@ class EducationEditViewState extends State<EducationEditView>
                         child: new Text(
                           '学历：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
                       new Padding(
@@ -178,13 +179,13 @@ class EducationEditViewState extends State<EducationEditView>
                     child: new Text(
                       '专业：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                     ),
                   ),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 16.0*factor),
                     child: new TextField(
-                      style: TextStyle(fontSize: 20.0*factor),
+                      style: TextStyle(fontSize: 26.0*factor),
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
                           text: _education.major,
@@ -205,7 +206,7 @@ class EducationEditViewState extends State<EducationEditView>
                         hintText: "请输入专业名称",
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080),
-                            fontSize: 20*factor
+                            fontSize: 26*factor
                         ),
                         border: new UnderlineInputBorder(),
                         contentPadding: EdgeInsets.all(10.0*factor)
@@ -219,7 +220,7 @@ class EducationEditViewState extends State<EducationEditView>
                       new Text(
                         '开始时间：',
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
+                        style: new TextStyle(fontSize: 28.0*factor),
                       ),
 
                       new InkWell(
@@ -290,7 +291,7 @@ class EducationEditViewState extends State<EducationEditView>
                   new TextField(
                     keyboardType: TextInputType.multiline,
                     maxLines: 5,
-                    style: new TextStyle(fontSize: 20.0*factor),
+                    style: new TextStyle(fontSize: 26.0*factor),
                     controller: TextEditingController.fromValue(
                       TextEditingValue(
                         text: _education.detail,
@@ -311,7 +312,7 @@ class EducationEditViewState extends State<EducationEditView>
                       hintText: "请输入在校经历",
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080),
-                          fontSize: 20.0*factor
+                          fontSize: 26.0*factor
                       ),
                       border: new OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(6.0*factor))

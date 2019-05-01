@@ -35,7 +35,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
   void initState() {
     super.initState();
     setState(() {
-      _companyExperience = widget._companyExperience;
+      _companyExperience = CompanyExperience.copy(widget._companyExperience);
     });
     SharedPreferences.getInstance().then((SharedPreferences prefs) {
       setState(() {
@@ -64,6 +64,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
               iconSize: 40*factor,
               tooltip: MaterialLocalizations.of(context).backButtonTooltip,
               onPressed: () {
+                _companyExperience = null;
                 Navigator.maybePop(context);
               }
             ),
