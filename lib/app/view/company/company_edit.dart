@@ -424,53 +424,9 @@ class CompanyEditState extends State<CompanyEdit>
                               behavior: HitTestBehavior.opaque,
                               child: Icon(Icons.close, size: 45*factor, color: Colors.red,),
                               onTap: () {
-                                if (isRequesting) return;
-                                String imgName;
-                                RegExp exp = new RegExp(r"https:");
-                                if (!exp.hasMatch(company.imgs[index]['url'])) {
-                                  List<String> nameArr = company.imgs[index]['url'].split('/');
-                                  imgName = nameArr[nameArr.length - 1];
-                                }
-                                showDialog<Null>(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (BuildContext context) {
-                                    return new AlertDialog(
-                                      content: Text("确认要删除么？", style: TextStyle(fontSize: 28*factor),),
-                                      actions: <Widget>[
-                                        new FlatButton(
-                                          child: new Text('取消', style: TextStyle(fontSize: 24*factor),),
-                                          onPressed: () {
-                                              Navigator.of(context).pop();
-                                          },
-                                        ),
-                                        new FlatButton(
-                                          child: new Text('确定', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
-                                          onPressed: () {
-                                              Navigator.of(context).pop();
-                                              setState(() {
-                                                isRequesting = true;
-                                              });
-                                              // 发送给webview，让webview登录后再取回token
-
-                                              Api().deleteImage(company.imgs[index]['id'], imgName)
-                                                .then((Response response) {
-                                                  if(response.data['code'] != 1) {
-                                                    return;
-                                                  }
-                                                  setState(() {
-                                                    company.imgs.removeAt(index);
-                                                  });
-                                                })
-                                                .catchError((e) {
-                                                  print(e);
-                                                });
-                                            },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                                setState(() {
+                                  company.imgs.removeAt(index);
+                                });
                                 
                               },
                             ),

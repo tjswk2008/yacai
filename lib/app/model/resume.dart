@@ -266,12 +266,12 @@ class JobExpect{
 
   static JobExpect fromMap(Map map) {
     return new JobExpect(
-        id: map['id'],
-        type: map['expectType'],
-        jobTitle: map['expectJobTitle'],
-        industry: map['expectIndustry'],
-        city: map['expectCity'],
-        salary: map['expectSalary']
+      id: map['id'],
+      type: map['expectType'],
+      jobTitle: map['expectJobTitle'],
+      industry: map['expectIndustry'],
+      city: map['expectCity'],
+      salary: map['expectSalary']
     );
   }
 }

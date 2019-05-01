@@ -91,7 +91,7 @@ class Company {
       hot: company.hot,
       count: company.count,
       inc: company.inc,
-      jobs: company.jobs,
+      jobs: company.jobs.sublist(0),
       idBack: company.idBack, // 身份证背面照
       idFront: company.idFront, // 身份证正面照
       corporator: company.corporator, // 法人姓名
@@ -100,7 +100,7 @@ class Company {
       verified: company.verified,
       blocked: company.blocked,
       reason: company.reason,
-      imgs: company.imgs,
+      imgs: company.imgs.sublist(0),
       willing: company.willing
     );
   }
