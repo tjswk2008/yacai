@@ -250,7 +250,7 @@ class VerificationState extends State<Verification>
                                     ratioY: 9,
                                   );
                                 }).then((image) {
-                                  return Api().upload(image, '${company.id}_idFront${image.path.substring(image.path.lastIndexOf("."))}');
+                                  return Api().upload(image, '${company.id}_idFront${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
                                 }).then((Response response) {
                                   if(response.data['code'] != 1) {
                                     return;
@@ -294,7 +294,7 @@ class VerificationState extends State<Verification>
                                   ratioY: 9,
                                 );
                               }).then((image) {
-                                return Api().upload(image, '${company.id}_idBack${image.path.substring(image.path.lastIndexOf("."))}');
+                                return Api().upload(image, '${company.id}_idBack${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
                               }).then((Response response) {
                                 if(response.data['code'] != 1) {
                                   return;
@@ -361,7 +361,7 @@ class VerificationState extends State<Verification>
                             ratioY: 16,
                           );
                         }).then((image) {
-                          return Api().upload(image, '${company.id}_license${image.path.substring(image.path.lastIndexOf("."))}');
+                          return Api().upload(image, '${company.id}_license${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
                         }).then((Response response) {
                           if(response.data['code'] != 1) {
                             return;

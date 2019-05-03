@@ -312,7 +312,7 @@ class CompanyEditState extends State<CompanyEdit>
                             maxHeight: 200
                           );
                         }).then((image) {
-                          return Api().upload(image, '${userName}_company_logo${image.path.substring(image.path.lastIndexOf("."))}');
+                          return Api().upload(image, '${userName}_company_logo${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
                         }).then((Response response) {
                           if(response.data['code'] != 1) {
                             return;

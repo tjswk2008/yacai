@@ -103,7 +103,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                               maxHeight: 200,
                             );
                           }).then((image) {
-                            return Api().upload(image, '${userName}_avatar${image.path.substring(image.path.lastIndexOf("."))}');
+                            return Api().upload(image, '${userName}_avatar${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
                           }).then((Response response) {
                             if(response.data['code'] != 1) {
                               return;

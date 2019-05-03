@@ -61,7 +61,7 @@ class CompanyExperienceViewState extends State<CompanyExperienceView>
             children: <Widget>[
               new Text(
                 widget._canBeViewed ? 
-                  widget._companyExperience.cname : '*' + widget._companyExperience.cname.substring(1, 2) + '*' + widget._companyExperience.cname.substring(3, widget._companyExperience.cname.length),
+                  widget._companyExperience.cname : widget._companyExperience.cname.length > 3 ? '*' + widget._companyExperience.cname.substring(1, 2) + '*' + widget._companyExperience.cname.substring(3, widget._companyExperience.cname.length) : '*',
                 style: new TextStyle(fontSize: 24.0*factor) ),
               new Text(
                 "${formatDate(DateTime.parse(widget._companyExperience.startTime), [yyyy, '-', mm, '-', dd])}-${widget._companyExperience.endTime == null ? '至今' : formatDate(DateTime.parse(widget._companyExperience.endTime), [yyyy, '-', mm, '-', dd])}",

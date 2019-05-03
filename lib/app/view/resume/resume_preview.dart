@@ -95,12 +95,12 @@ class ResumePreviewState extends State<ResumePreview>
           ),
           new Padding(
             padding: EdgeInsets.only(left: 10.0*factor),
-            child: new ListView.builder(
+            child: list.length != 0 ? new ListView.builder(
               physics: new NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: list.length,
               itemBuilder: itemBuilder
-            ),
+            ) : Container(),
           ),
           new Padding(
             padding: EdgeInsets.only(bottom: 15.0*factor),
@@ -300,7 +300,6 @@ class ResumePreviewState extends State<ResumePreview>
                               canBeViewed ? CompanyExperienceView(resume.companyExperiences[index], false, canBeViewed) : 
                                 index == 0 ? CompanyExperienceView(resume.companyExperiences[0], false, canBeViewed) : 
                                 Text('****', style: TextStyle(fontSize: 24*factor)),
-                              index == resume.companyExperiences.length - 1 ? new Container() : new Divider()
                             ],
                           );
                         }
