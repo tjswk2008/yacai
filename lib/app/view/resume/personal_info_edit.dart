@@ -544,6 +544,12 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       text: "保存",
                       color: new Color.fromARGB(255, 0, 215, 198),
                       onTap: () {
+                        if(personalInfo.name == null || personalInfo.name == '') {
+                          Scaffold.of(ctx).showSnackBar(new SnackBar(
+                            content: new Text("请填写姓名~"),
+                          ));
+                          return;
+                        }
                         if (isRequesting) return;
                         setState(() {
                           isRequesting = true;

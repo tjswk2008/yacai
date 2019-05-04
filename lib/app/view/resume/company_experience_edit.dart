@@ -414,6 +414,12 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                         ),
                         color: Theme.of(context).primaryColor,
                         onPressed: () {
+                          if(_companyExperience.cname == null || _companyExperience.cname == '') {
+                            Scaffold.of(context).showSnackBar(new SnackBar(
+                              content: new Text("请填写公司名~"),
+                            ));
+                            return;
+                          }
                           if (isRequesting) return;
                           setState(() {
                             isRequesting = true;
