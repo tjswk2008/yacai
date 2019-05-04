@@ -45,6 +45,12 @@ class VerificationState extends State<Verification>
           int index = int.parse(will);
           willings.replaceRange(index - 1, index, [true]);
         });
+      } else {
+        willings = [
+          false,
+          false,
+          false,
+        ];
       }
     });
     SharedPreferences.getInstance().then((SharedPreferences prefs) {

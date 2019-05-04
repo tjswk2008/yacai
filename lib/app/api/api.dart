@@ -421,7 +421,6 @@ class Api {
     String url = '${serverAddr}company/saveCompanyInfo';
     Map data = {
       'name': name,
-      'logo': logo,
       'province': province,
       'city': city,
       'area': area,
@@ -432,6 +431,9 @@ class Api {
       'userName': userName,
       'imgs': imgs
     };
+    if(logo != null) {
+      data['logo'] = logo;
+    }
     if(id != null) {
       data['id']=id;
     }
@@ -458,7 +460,7 @@ class Api {
     });
   }
 
-  Future getCompanySuggestions<T>(
+  Future getCompanySuggestions<List>(
     String pattern
   ) {
     return Dio().post('${serverAddr}company/getCompanySuggestions', data: {

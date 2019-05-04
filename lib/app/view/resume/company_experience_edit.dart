@@ -101,6 +101,11 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                           )
                         ),
                         style: TextStyle(fontSize: 26*factor),
+                        onChanged: (val) {
+                          setState(() {
+                            _companyExperience.cname = val;
+                          });
+                        },
                         decoration: new InputDecoration(
                           hintText: "请输入公司名",
                           hintStyle: new TextStyle(
@@ -126,7 +131,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       },
                       onSuggestionSelected: (suggestion) {
                         setState(() {
-                        _companyExperience.cname = suggestion['name'];
+                          _companyExperience.cname = suggestion['name'];
                         });
                       },
                     )

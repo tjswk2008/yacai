@@ -120,6 +120,29 @@ class CompanyEditState extends State<CompanyEdit>
                         )
                       ),
                       style: TextStyle(fontSize: 26.0*factor),
+                      onSubmitted: (val) async {
+                        Response response = await Api().getCompanySuggestions('');
+                        List companyMaps = response.data;
+                        int index = companyMaps.indexWhere((element) => element['name'] == val);
+                        if(index !=null && index >= 0) {
+                          setState(() {
+                            company = Company.fromMap(companyMaps[index]);
+                            if (company.imgs == null || company.imgs.length == 0) {
+                              company.imgs = [{'url': ''}];
+                            } else if (company.imgs != null && company.imgs[company.imgs.length - 1]['url'] != '') {
+                              Map<String, String> item = {'url': ''};
+                              company.imgs.add(item);
+                            }
+                          });
+                        } else {
+                          setState(() {
+                            company.name = val;
+                            company.id = null;
+                            company.imgs = [{'url': ''}];
+                            company.logo = null;
+                          });
+                        }
+                      },
                       decoration: new InputDecoration(
                         hintText: "请输入公司名称",
                         hintStyle: new TextStyle(
@@ -144,8 +167,8 @@ class CompanyEditState extends State<CompanyEdit>
                     },
                     onSuggestionSelected: (suggestion) {
                       setState(() {
-                       company = Company.fromMap(suggestion);
-                       if (company.imgs == null || company.imgs.length == 0) {
+                        company = Company.fromMap(suggestion);
+                        if (company.imgs == null || company.imgs.length == 0) {
                           company.imgs = [{'url': ''}];
                         } else if (company.imgs != null && company.imgs[company.imgs.length - 1]['url'] != '') {
                           Map<String, String> item = {'url': ''};
@@ -537,7 +560,17 @@ class CompanyEditState extends State<CompanyEdit>
                           ));
                           return;
                         }
-                        company.id = response.data['info']['id'];
+                        if(response.data['info']['id'] != null) {
+                          company.id = response.data['info']['id'];
+                          company.verified = null;
+                          company.idBack = null;
+                          company.idFront = null;
+                          company.license = null;
+                          company.willing = null;
+                          company.corporator = null;
+                          company.idCard = null;
+                        }
+                        
                         StoreProvider.of<AppState>(context).dispatch(SetCompanyAction(company));
                         Navigator.pop(context, response.data['info']);
                       } catch(e) {
