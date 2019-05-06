@@ -62,6 +62,9 @@ class ResumeTabState extends State<ResumeTab> {
   @override
   void initState() {
     super.initState();
+    if(!mounted) {
+      return;
+    }
     getResumeList(1);
   }
 
