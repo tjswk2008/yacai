@@ -300,6 +300,7 @@ class ResumePreviewState extends State<ResumePreview>
                               canBeViewed ? CompanyExperienceView(resume.companyExperiences[index], false, canBeViewed) : 
                                 index == 0 ? CompanyExperienceView(resume.companyExperiences[0], false, canBeViewed) : 
                                 Text('****', style: TextStyle(fontSize: 24*factor)),
+                              index == resume.companyExperiences.length - 1 ? new Container() : new Divider()
                             ],
                           );
                         }
