@@ -54,7 +54,7 @@ class CompanyInfo extends StatelessWidget {
                         right: 10.0*screenWidthInPt/750,
                         bottom: 10.0*screenWidthInPt/750,
                       ),
-                      child: new Text(company.location, style: new TextStyle(
+                      child: new Text('上海市 ${company.area} ${company.location}', style: new TextStyle(
                           fontSize: 24.0*screenWidthInPt/750, color: Colors.grey)),
                     ),
 
