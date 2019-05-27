@@ -68,6 +68,13 @@ class ResumeTabState extends State<ResumeTab> {
     getResumeList(1);
   }
 
+  @override
+  void dispose() {
+    currentPage = 1;
+    totalPage = 1;
+    super.dispose();
+  }
+
   DropdownMenu buildDropdownMenu() {
     double factor = MediaQuery.of(context).size.width/750;
 
@@ -251,6 +258,8 @@ class ResumeTabState extends State<ResumeTab> {
           default:
             break;
         }
+        currentPage = 1;
+        totalPage = 1;
         getResumeList(1);
       },
       child: new Column(
@@ -299,7 +308,7 @@ class ResumeTabState extends State<ResumeTab> {
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: new Color.fromARGB(255, 242, 242, 245),
       appBar: widget.jobId != null ? new AppBar(
         elevation: 0.0,
         leading: IconButton(

@@ -80,6 +80,10 @@ class CompanyDetailState extends State<CompanyDetail>
       });
     }
     return new Scaffold(
+        appBar: PreferredSize(
+          child: AppBar(elevation: 0.0,),
+          preferredSize: Size.fromHeight(0)
+        ),
         backgroundColor: new Color.fromARGB(255, 242, 242, 245),
         body: Container(
           height: MediaQuery.of(context).size.height,
@@ -91,7 +95,8 @@ class CompanyDetailState extends State<CompanyDetail>
                     children: <Widget>[
                       new SizedBox.fromSize(
                         size: Size.fromHeight(_kAppBarHeight),
-                        child: new IndicatorViewPager(_imagePages),
+                        child: _imagePages == null ? Center(child: Text('暂无图片', style: TextStyle(fontSize: 26.0*factor),)) :
+                          new IndicatorViewPager(_imagePages),
                       ),
 
                       new Container(
