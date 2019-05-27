@@ -383,8 +383,8 @@ class SettingViewState extends State<SettingView> {
   Future<void> executeDownload() async {
     final path = await _apkLocalPath;
     double factor = MediaQuery.of(context).size.width/750;
-    // String downLoadUrl = Platform.isAndroid ? 'http://192.168.140.56:8080/public' : 'http://192.168.2.101:8080/public';
-    // String downLoadUrl = 'http://192.168.43.204:8080/public';
+    // String downLoadUrl = Platform.isAndroid ? 'http://192.168.140.56:3000' : 'http://192.168.2.101:3000';
+    // String downLoadUrl = 'http://192.168.43.204:3000';
     String downLoadUrl = 'http://47.101.177.244:3000';
     
     //下载
