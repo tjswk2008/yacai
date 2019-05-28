@@ -17,16 +17,24 @@ class MessageTab extends StatefulWidget {
   PostList createState() => new PostList();
 }
 
-class PostList extends State<MessageTab> {
+class PostList extends State<MessageTab> with SingleTickerProviderStateMixin {
   List<Post> _posts = [];
   List<Post> _originalPosts = [];
   String userName = '';
   bool isRequesting = false;
+  TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = new TabController(vsync: this, length: 3);
     getPostList();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -34,122 +42,108 @@ class PostList extends State<MessageTab> {
     double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
       backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-      appBar: new AppBar(
-        elevation: 0.0,
-        title: new Text(widget._title,
-          style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
+      appBar: PreferredSize(
+        child: AppBar(
+          elevation: 0.0,
+          bottom: new TabBar(
+            indicatorColor: Colors.orange[400],
+            tabs: <Widget>[
+              new Tab(
+                child: new Text('专业问答',
+                  style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
+                ),
+              ),
+              new Tab(
+                child: new Text('求职经',
+                  style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
+                ),
+              ),
+              new Tab(
+                child: new Text('吐槽',
+                  style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
+                ),
+              ),
+            ],
+            controller: _tabController,
+          ),
         ),
-        actions: <Widget>[
-          new PopupMenuButton(
-            onSelected: (int value){
-               setState(() {
-                 if(value == 0) {
-                   _posts = _originalPosts;
-                 } else {
-                   _posts = [];
-                  for (var i = 0; i < _originalPosts.length; i++) {
-                    Post element = _originalPosts[i];
-                    if(element.type == value) {
-                      _posts.add(element);
-                    }
-                  }
-                 }
-               });
-            },
-            itemBuilder: (BuildContext context) =><PopupMenuItem<int>>[
-              new PopupMenuItem(
-                  value: 0,
-                  child: new Text("全部", style: TextStyle(fontSize: 22*factor),)
-              ),
-              new PopupMenuItem(
-                value: 1,
-                  child: new Text("财务/审计/税务", style: TextStyle(fontSize: 22*factor),)
-              ),
-              new PopupMenuItem(
-                value: 2,
-                  child: new Text("求职经", style: TextStyle(fontSize: 22*factor),)
-              ),
-              new PopupMenuItem(
-                value: 3,
-                  child: new Text("吐槽", style: TextStyle(fontSize: 22*factor),)
-              )
-            ]
-          )
+        preferredSize: Size.fromHeight(48.0)
+      ),
+      body: new TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          posts(),
+          posts(),
+          posts(),
         ],
       ),
-      body: isRequesting ? new Stack(
-        children: <Widget>[
-          Positioned.fill(
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(190, 0, 0, 0)
-              ),
+    );
+  }
+
+  Widget posts() {
+    double factor = MediaQuery.of(context).size.width/750;
+    return isRequesting ? new Stack(
+      children: <Widget>[
+        Positioned.fill(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: Color.fromARGB(190, 0, 0, 0)
             ),
           ),
-          Positioned.fill(
-            child: SpinKitHourGlass(
-              color: Theme.of(context).primaryColor,
-              size: 50*factor,
-              duration: Duration(milliseconds: 1800),
-            ),
-          )
-        ]
-      ) : new SingleChildScrollView(
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                new Padding(
-                  padding: EdgeInsets.only(top: 25.0*factor, right: 25.0*factor),
-                  child: new Container(
-                    height: 60.0*factor,
-                    width: 175.0*factor,
-                    child: RaisedButton(
-                      color: Colors.orange[400],
-                      child: Text("我要提问", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
-                      onPressed: () {
-                        if(userName == '') {
-                          _login();
-                          return;
-                        }
-                        Navigator.of(context).push(new PageRouteBuilder(
-                          opaque: false,
-                          pageBuilder: (BuildContext context, _, __) {
-                            return new AskQuestion();
-                          },
-                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                            return new FadeTransition(
-                              opacity: animation,
-                              child: new SlideTransition(position: new Tween<Offset>(
-                                begin: const Offset(0.0, 1.0),
-                                end: Offset.zero,
-                              ).animate(animation), child: child),
-                            );
-                          }
-                        )).then((result) {
-                          if(result == null) return;
-                          getPostList();
-                        });
-                      },
-                    ),
-                  ),
-                )
-              ],
-            ),
-            new ListView.builder(
-              shrinkWrap: true,
-              physics: new NeverScrollableScrollPhysics(),
-              itemCount: _posts.length,
-              itemBuilder: buildJobItem
-            ),
-          ],
         ),
-      ),
+        Positioned.fill(
+          child: SpinKitHourGlass(
+            color: Theme.of(context).primaryColor,
+            size: 50*factor,
+            duration: Duration(milliseconds: 1800),
+          ),
+        )
+      ]
+    ) : new Stack(
+      children: <Widget>[
+        new ListView.builder(
+          itemCount: _posts.length,
+          itemBuilder: buildJobItem
+        ),
+        Positioned(
+          bottom: 20*factor,
+          right: 20*factor,
+          child: FloatingActionButton(
+            backgroundColor: Colors.orange[400],
+            child: Icon(
+              Icons.add,
+              size: 40.0*factor,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              if(userName == '') {
+                _login();
+                return;
+              }
+              Navigator.of(context).push(new PageRouteBuilder(
+                opaque: false,
+                pageBuilder: (BuildContext context, _, __) {
+                  return new AskQuestion();
+                },
+                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                  return new FadeTransition(
+                    opacity: animation,
+                    child: new SlideTransition(position: new Tween<Offset>(
+                      begin: const Offset(0.0, 1.0),
+                      end: Offset.zero,
+                    ).animate(animation), child: child),
+                  );
+                }
+              )).then((result) {
+                if(result == null) return;
+                getPostList();
+              });
+            },
+          ),
+        )
+      ]
     );
   }
 
