@@ -53,7 +53,7 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
           new JobsTab(1, '全职'),
           new JobsTab(2, '兼职'),
           new JobsTab(3, '实习'),
-          new MessageTab('交流'),
+          new MessageTab(),
           mine
         ],
         controller: _controller,

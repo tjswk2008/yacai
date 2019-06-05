@@ -10,7 +10,6 @@ import 'package:flutter_app/actions/actions.dart';
 import 'package:package_info/package_info.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import 'dart:async';
 import 'package:open_file/open_file.dart';
 

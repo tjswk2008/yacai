@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/model/constants.dart';
+import 'package:flutter_app/util/util.dart';
 
 // 我要提问界面
 class AskQuestion extends StatefulWidget {
@@ -71,6 +72,7 @@ class AskQuestionState extends State<AskQuestion> {
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
+    YaCaiUtil.getInstance().init(context);
     var loadingView;
     if (isRequesting) {
       loadingView = new Center(
@@ -174,57 +176,7 @@ class AskQuestionState extends State<AskQuestion> {
                   ],
                 ),
                 Container(height: 40*factor,),
-                FlatButton(
-                  child: new Container(
-                    height: 70*factor,
-                    child: new Center(
-                      child: Text(
-                        "保存",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28.0*factor,
-                          letterSpacing: 40*factor
-                        ),
-                      ),
-                    ),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () async {
-                    if (isRequesting) return;
-                    // 拿到用户输入的账号密码
-                    String title = titleCtrl.text.trim();
-                    String detail = detailCtrl.text.trim();
-                    if (title.isEmpty || detail.isEmpty) {
-                      Scaffold.of(context).showSnackBar(new SnackBar(
-                        content: new Text("标题和详情不能为空！"),
-                      ));
-                      return;
-                    }
-                    setState(() {
-                      isRequesting = true;
-                    });
-                    // 发送给webview，让webview登录后再取回token
-                    Api().addPost(userName, title, detail, type)
-                      .then((Response response) {
-                        setState(() {
-                          isRequesting = false;
-                        });
-                        if(response.data['code'] != 1) {
-                          Scaffold.of(context).showSnackBar(new SnackBar(
-                            content: new Text("提交失败！"),
-                          ));
-                          return;
-                        }
-                        Navigator.pop(context, response.data['id']);
-                      })
-                      .catchError((e) {
-                        setState(() {
-                          isRequesting = false;
-                        });
-                        print(e);
-                      });
-                  }
-                ),
+                
                 new Expanded(
                   child: new Column(
                     children: <Widget>[
@@ -235,6 +187,49 @@ class AskQuestionState extends State<AskQuestion> {
                   )
                 )
               ],
+            ),
+          ),
+          Positioned(
+            bottom: 20*factor,
+            right: 20*factor,
+            child: FloatingActionButton(
+              mini: true,
+              child: Icon(
+                Icons.check,
+                size: 50.0*factor,
+                color: Colors.white,
+              ),
+              onPressed: () async {
+                if (isRequesting) return;
+                // 拿到用户输入的账号密码
+                String title = titleCtrl.text.trim();
+                String detail = detailCtrl.text.trim();
+                if (title.isEmpty || detail.isEmpty) {
+                  YaCaiUtil.getInstance().showMsg("请填写完整标题和详情哦~");
+                  return;
+                }
+                setState(() {
+                  isRequesting = true;
+                });
+                // 发送给webview，让webview登录后再取回token
+                Api().addPost(userName, title, detail, type)
+                  .then((Response response) {
+                    setState(() {
+                      isRequesting = false;
+                    });
+                    if(response.data['code'] != 1) {
+                      YaCaiUtil.getInstance().showMsg("提交失败~");
+                      return;
+                    }
+                    Navigator.pop(context, response.data['id']);
+                  })
+                  .catchError((e) {
+                    setState(() {
+                      isRequesting = false;
+                    });
+                    print(e);
+                  });
+              },
             ),
           )
         ],

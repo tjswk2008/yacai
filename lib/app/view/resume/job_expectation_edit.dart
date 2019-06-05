@@ -9,6 +9,7 @@ import 'package:flutter_app/app/model/constants.dart';
 import 'package:custom_radio/custom_radio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/component/select.dart';
+import 'package:flutter_app/util/util.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -51,6 +52,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
+    YaCaiUtil.getInstance().init(context);
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
@@ -279,26 +281,17 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                   ],
                 ),
               ),
-              new Positioned(
-                bottom: 30.0*factor,
-                left: 20.0*factor,
-                width: MediaQuery.of(context).size.width - 40*factor,
-                child: FlatButton(
-                  child: new Container(
-                    height: 70*factor,
-                    child: new Center(
-                      child: Text(
-                        "保存",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28.0*factor,
-                          letterSpacing: 40*factor
-                        ),
-                      ),
-                    ),
+              Positioned(
+                bottom: 20*factor,
+                right: 20*factor,
+                child: FloatingActionButton(
+                  mini: true,
+                  child: Icon(
+                    Icons.check,
+                    size: 50.0*factor,
+                    color: Colors.white,
                   ),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () async {
+                  onPressed: () {
                     if (isRequesting) return;
                     setState(() {
                       isRequesting = true;
@@ -317,9 +310,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                           isRequesting = false;
                         });
                         if(response.data['code'] != 1) {
-                          Scaffold.of(context).showSnackBar(new SnackBar(
-                            content: new Text("保存失败！"),
-                          ));
+                          YaCaiUtil.getInstance().showMsg("保存失败~");
                           return;
                         }
                         Resume resume = state.resume;
@@ -333,7 +324,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                         });
                         print(e);
                       });
-                  }
+                  },
                 ),
               )
             ]

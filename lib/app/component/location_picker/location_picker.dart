@@ -356,7 +356,7 @@ class _PickerState extends State<_PickerComponent> {
                           height: _kPickerItemHeight,
                           alignment: Alignment.center,
                           child: Text(
-                            "${text}",
+                            text,
                             style: TextStyle(
                                 color: Color(0xFF000046),
                                 fontSize: _pickerFontSize(text)),

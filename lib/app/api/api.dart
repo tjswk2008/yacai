@@ -370,8 +370,8 @@ class Api {
   }
 
   // post interface
-  Future<Response<T>> getPostList<T>(String userName) {
-    return Dio().get(serverAddr + "post/query?userName=" + userName);
+  Future<Response<T>> getPostList<T>(String userName, int type, int currentPage) {
+    return Dio().get('${serverAddr}post/query?userName=$userName&type=$type&currentPage=$currentPage');
   }
 
   Future<Response<T>> like<T>(String userName, int like, int postId, int answerId) {

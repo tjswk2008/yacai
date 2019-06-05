@@ -71,56 +71,46 @@ class PubTabState extends State<PubTab> {
                 ),
               )
             ],
-          ) : state.jobs != null && state.jobs.length != 0 ? new SingleChildScrollView(
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    new Padding(
-                      padding: EdgeInsets.only(top: 25.0*factor, right: 25.0*factor),
-                      child: Container(
-                        height: 60*factor,
-                        width: 175*factor,
-                        child: RaisedButton(
-                          color: Colors.orange[400],
-                          child: Text("发布职位", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
-                          onPressed: () {
-                            Navigator.of(context).push(new PageRouteBuilder(
-                              opaque: false,
-                              pageBuilder: (BuildContext context, _, __) {
-                                return new PubJob();
-                              },
-                              transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                return new FadeTransition(
-                                  opacity: animation,
-                                  child: new SlideTransition(position: new Tween<Offset>(
-                                    begin: const Offset(0.0, 1.0),
-                                    end: Offset.zero,
-                                  ).animate(animation), child: child),
-                                );
-                              }
-                            )).then((result) {
-                              if(result == null) return;
-                              getJobList();
-                            });
-                          },
-                        ),
-                      )
-                      
-                    )
-                  ],
+          ) : state.jobs != null && state.jobs.length != 0 ? new Stack(
+            children: <Widget>[
+              ListView.builder(
+                itemCount: state.jobs.length,
+                itemBuilder: buildJobItem
+              ),
+              Positioned(
+                bottom: 20*factor,
+                right: 20*factor,
+                child: FloatingActionButton(
+                  mini: true,
+                  backgroundColor: Colors.orange[400],
+                  child: Icon(
+                    Icons.add,
+                    size: 50.0*factor,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(new PageRouteBuilder(
+                      opaque: false,
+                      pageBuilder: (BuildContext context, _, __) {
+                        return new PubJob();
+                      },
+                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                        return new FadeTransition(
+                          opacity: animation,
+                          child: new SlideTransition(position: new Tween<Offset>(
+                            begin: const Offset(0.0, 1.0),
+                            end: Offset.zero,
+                          ).animate(animation), child: child),
+                        );
+                      }
+                    )).then((result) {
+                      if(result == null) return;
+                      getJobList();
+                    });
+                  },
                 ),
-                new ListView.builder(
-                  shrinkWrap: true,
-                  physics: new NeverScrollableScrollPhysics(),
-                  itemCount: state.jobs.length,
-                  itemBuilder: buildJobItem
-                )
-              ],
-            )
+              )
+            ]
           ) : Stack(
             children: <Widget>[
               Center(
