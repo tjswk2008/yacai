@@ -120,7 +120,7 @@ class MineTabState extends State<MineTab> {
                                               bottom: 10.0*factor,
                                             ),
                                             child: new Text(
-                                                userName == '' ? "点击头像登录" : userName,
+                                                userName == '' ? "点击头像登录" : appState.resume.personalInfo.name.isEmpty ? '快去编辑简历填写您的姓名吧' : appState.resume.personalInfo.name,
                                                 style: new TextStyle(
                                                     color: Colors.white, fontSize: 26.0*factor))
                                         ),

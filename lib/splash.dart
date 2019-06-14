@@ -12,6 +12,7 @@ import 'package:flutter_app/app/model/company.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/recruit.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluwx/fluwx.dart' as fluwx;
 
 class SplashPage extends StatefulWidget {
   @override
@@ -26,6 +27,7 @@ class SplashState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
+    fluwx.register(appId: "wx9d615d9c0472c7f4");
     checkLoginStatus();
   }
 

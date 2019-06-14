@@ -334,6 +334,7 @@ class JobList extends State<JobsTab> {
   }
 
   void getJobList(page) async {
+    currentPage = page;
     if(page > totalPage) {
       return;
     }

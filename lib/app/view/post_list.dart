@@ -68,7 +68,9 @@ class PostListState extends State<PostList> with SingleTickerProviderStateMixin 
       ]
     ) : new Stack(
       children: <Widget>[
-        EasyRefresh(
+        _posts.length == 0 ? Center(
+          child: Text("该板块还没有人发帖，快来抢沙发吧~", style: TextStyle(fontSize: 28*factor),),
+        ) : EasyRefresh(
           refreshHeader:BezierHourGlassHeader(
             key: _headerKey,
             backgroundColor: Theme.of(context).primaryColor,
@@ -138,6 +140,7 @@ class PostListState extends State<PostList> with SingleTickerProviderStateMixin 
   }
 
   void getPostList(int type, page) async {
+    currentPage = page;
     if(page > totalPage) {
       return;
     }

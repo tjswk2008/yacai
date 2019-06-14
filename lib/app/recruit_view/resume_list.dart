@@ -339,6 +339,7 @@ class ResumeTabState extends State<ResumeTab> {
   }
 
   void getResumeList(page) async {
+    currentPage = page;
     if(page > totalPage) {
       return;
     }
