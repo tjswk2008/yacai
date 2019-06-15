@@ -13,12 +13,11 @@ class JobListItem extends StatelessWidget {
     double factor = MediaQuery.of(context).size.width/750;
     timeago.setLocaleMessages("zh_cn", timeago.ZhCnMessages());
     return new Padding(
-      padding: EdgeInsets.only(left: 20.0*factor, right: 20*factor, top: 30*factor),
+      padding: EdgeInsets.only(bottom: 15*factor),
 
       child: new SizedBox(
-        child: new Card(
-          elevation: 2,
-          // color: Color(0xffeeeeee),
+        child: new Container(
+          color: Colors.white,
           child: new Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -36,7 +35,7 @@ class JobListItem extends StatelessWidget {
                           ),
                           child: Row(
                             children: <Widget>[
-                              new Text(job.name, style: new TextStyle(fontSize: 26.0*factor)),
+                              new Text(job.name, style: new TextStyle(fontSize: 30.0*factor, color: Colors.black, fontWeight: FontWeight.bold)),
                               showCount ? Padding(
                                 padding: EdgeInsets.only(left: 10*factor),
                                 child: new Text(

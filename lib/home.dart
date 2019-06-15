@@ -9,7 +9,7 @@ const int INDEX_COMPANY = 1;
 const int INDEX_STUDY = 2;
 const int INDEX_MESSAGE = 3;
 const int INDEX_MINE = 4;
-Color _kPrimaryColor = new Color.fromARGB(255, 0, 215, 198);
+
 
 class BossApp extends StatefulWidget {
   @override
@@ -47,6 +47,7 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     double screenWidthInPt = MediaQuery.of(context).size.width;
     double _kTabTextSize = 20.0 * screenWidthInPt/750;
+    Color _kPrimaryColor = Theme.of(context).primaryColor;
     return new Scaffold(
       body: new TabBarView(
         children: <Widget>[
@@ -110,7 +111,7 @@ void main() {
       theme: new ThemeData(
         primaryIconTheme: const IconThemeData(color: Colors.white),
         brightness: Brightness.light,
-        primaryColor: _kPrimaryColor,
+        primaryColor: new Color.fromRGBO(90, 169, 226, 1),
         accentColor: Colors.cyan[300],
       ),
       home: new BossApp()

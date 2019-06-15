@@ -200,10 +200,10 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                     ),
                                     ColorTween(
                                       begin: Colors.grey[600],
-                                      end: Colors.cyan[300]
+                                      end: Theme.of(context).primaryColor
                                     ).animate(controller),
                                     ColorTween(
-                                      begin: Colors.cyan[300],
+                                      begin: Theme.of(context).primaryColor,
                                       end: Colors.grey[600]
                                     ).animate(controller),
                                   ],
@@ -228,7 +228,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           border: Border.all(
-                                            color: personalInfo.gender == value ? Colors.cyan[300] : Colors.grey[600],
+                                            color: personalInfo.gender == value ? Theme.of(context).primaryColor : Colors.grey[600],
                                             width: 1.0*factor
                                           )
                                         ),

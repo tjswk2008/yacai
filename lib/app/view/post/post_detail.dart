@@ -224,7 +224,7 @@ class PostDetailState extends State<PostDetail>
                     new Builder(builder: (ctx) {
                       return new CommonButton(
                         text: "提交",
-                        color: new Color.fromARGB(255, 0, 215, 198),
+                        color: Theme.of(context).primaryColor,
                         onTap: () {
                           if(userName == '') {
                             _login();

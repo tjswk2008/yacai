@@ -9,7 +9,7 @@ const int INDEX_RESUME = 0;
 const int INDEX_PUB = 1;
 const int INDEX_MINE = 2;
 const int INDEX_JOB = 3;
-Color _kPrimaryColor = new Color.fromARGB(255, 0, 215, 198);
+
 
 class Recruit extends StatefulWidget {
   @override
@@ -45,6 +45,7 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
+    Color _kPrimaryColor = Theme.of(context).primaryColor;
     return new Scaffold(
       body: new TabBarView(
         children: <Widget>[
@@ -102,7 +103,7 @@ void main() {
       theme: new ThemeData(
         primaryIconTheme: const IconThemeData(color: Colors.white),
         brightness: Brightness.light,
-        primaryColor: _kPrimaryColor,
+        primaryColor: new Color.fromRGBO(90, 169, 226, 1),
         accentColor: Colors.cyan[300],
       ),
       home: new Recruit()

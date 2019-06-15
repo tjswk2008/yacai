@@ -162,7 +162,7 @@ class LoginWithMsgState extends State<LoginWithMsg> {
               new Builder(builder: (ctx) {
                 return new CommonButton(
                   text: "登录",
-                  color: new Color.fromARGB(255, 0, 215, 198),
+                  color: Theme.of(context).primaryColor,
                   onTap: () async {
                     if (isOnLogin) return;
                     // 拿到用户输入的账号密码

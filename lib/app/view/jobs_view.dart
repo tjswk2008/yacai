@@ -358,8 +358,8 @@ class JobList extends State<JobsTab> {
           });
         }
         setState(() {
-            isRequesting = false;
-          });
+          isRequesting = false;
+        });
       })
      .catchError((e) {
        print(e);

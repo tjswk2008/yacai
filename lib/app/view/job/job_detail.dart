@@ -223,7 +223,7 @@ class JobDetailState extends State<JobDetail>
                                   ),
                                 ),
                               ),
-                              color: _job.delivered ? Colors.grey[300] : new Color.fromARGB(255, 0, 215, 198),
+                              color: _job.delivered ? Colors.grey[300] : Theme.of(context).primaryColor,
                               onPressed: () async {
                                 if (isRequesting || _job.delivered) return;
                                 setState(() {

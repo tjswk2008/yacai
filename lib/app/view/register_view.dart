@@ -230,7 +230,7 @@ class RegisterPageState extends State<RegisterPage> {
             new Builder(builder: (ctx) {
               return new CommonButton(
                 text: "注册",
-                color: new Color.fromARGB(255, 0, 215, 198),
+                color: Theme.of(context).primaryColor,
                 onTap: () async {
                   if (isRequesting) return;
                   // 拿到用户输入的账号密码

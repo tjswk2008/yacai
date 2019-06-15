@@ -41,7 +41,10 @@ class JobBase extends StatelessWidget {
 
                   new Container(
                     child: new Text('${job.salaryLow}k-${job.salaryHigh}k', style: new TextStyle(
-                        fontSize: 26.0*screenWidthInPt/750, color: new Color.fromARGB(255, 0, 215, 198))),
+                        fontSize: 26.0*screenWidthInPt/750,
+                        color: Theme.of(context).primaryColor
+                      )
+                    ),
                   ),
                 ],
               ),

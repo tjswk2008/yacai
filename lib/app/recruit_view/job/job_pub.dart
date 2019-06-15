@@ -131,10 +131,10 @@ class PubJobState extends State<PubJob>
                                 ),
                                 ColorTween(
                                   begin: Colors.grey[600],
-                                  end: Colors.cyan[300]
+                                  end: Theme.of(context).primaryColor
                                 ).animate(controller),
                                 ColorTween(
-                                  begin: Colors.cyan[300],
+                                  begin: Theme.of(context).primaryColor,
                                   end: Colors.grey[600]
                                 ).animate(controller),
                               ],
@@ -159,7 +159,7 @@ class PubJobState extends State<PubJob>
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                        color: type == value ? Colors.cyan[300] : Colors.grey[600],
+                                        color: type == value ? Theme.of(context).primaryColor : Colors.grey[600],
                                         width: 1.0*factor
                                       )
                                     ),
@@ -400,7 +400,7 @@ class PubJobState extends State<PubJob>
                   new Builder(builder: (ctx) {
                     return new CommonButton(
                       text: "发布",
-                      color: new Color.fromARGB(255, 0, 215, 198),
+                      color: Theme.of(context).primaryColor,
                       onTap: () async {
                         if(state.company.verified == 0 || state.company.verified == null) {
                           Scaffold.of(ctx).showSnackBar(new SnackBar(

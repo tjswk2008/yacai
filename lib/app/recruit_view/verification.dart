@@ -463,7 +463,7 @@ class VerificationState extends State<Verification>
                   new Builder(builder: (ctx) {
                     return new CommonButton(
                       text: "提交",
-                      color: new Color.fromARGB(255, 0, 215, 198),
+                      color: Theme.of(context).primaryColor,
                       onTap: () async {
                         if (isRequesting) return;
                         setState(() {

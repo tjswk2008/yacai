@@ -523,7 +523,7 @@ class CompanyEditState extends State<CompanyEdit>
                 new Builder(builder: (ctx) {
                   return new CommonButton(
                     text: "保存",
-                    color: new Color.fromARGB(255, 0, 215, 198),
+                    color: Theme.of(context).primaryColor,
                     onTap: () async {
                       if (isRequesting) return;
                       setState(() {

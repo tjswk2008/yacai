@@ -12,7 +12,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'package:open_file/open_file.dart';
-import 'package:fluwx/fluwx.dart' as fluwx;
+// import 'package:fluwx/fluwx.dart' as fluwx;
 
 class SettingView extends StatefulWidget {
   @override
@@ -286,11 +286,11 @@ class SettingViewState extends State<SettingView> {
                       if(userName == '') {
                         _login();
                       } else {
-                        fluwx.share(fluwx.WeChatShareTextModel(
-                          text: "Y财，您的专业财务类求职app，请前往百度手机助手或苹果商店下载~",
-                          transaction: "transaction}",//仅在android上有效，下同。
-                          scene: fluwx.WeChatScene.SESSION
-                        ));
+                        // fluwx.share(fluwx.WeChatShareTextModel(
+                        //   text: "Y财，您的专业财务类求职app，请前往百度手机助手或苹果商店下载~",
+                        //   transaction: "transaction}",//仅在android上有效，下同。
+                        //   scene: fluwx.WeChatScene.SESSION
+                        // ));
                       }
                     },
                     child: new Container(
