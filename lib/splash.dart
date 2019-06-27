@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' as ui show window;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/role.dart';
@@ -34,6 +35,7 @@ class SplashState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(ui.window.physicalSize.height);
     double factor = MediaQuery.of(context).size.width/750;
     return new Material(
       // color: new Color.fromARGB(255, 0, 215, 198),
@@ -56,7 +58,8 @@ class SplashState extends State<SplashPage> {
             )
           ),
           Positioned(
-            top: 469*factor,
+            // top: 325*factor,
+            bottom: 462*factor,
             left: 166*factor,
             child: new Image.asset(
               'assets/images/duck.png',
@@ -65,7 +68,7 @@ class SplashState extends State<SplashPage> {
             ),
           ),
           Positioned(
-            top: 1131*factor,
+            bottom: 137*factor, //1131
             left: 302*factor,
             child: new Image.asset(
               'assets/images/yacai.png',
@@ -74,7 +77,7 @@ class SplashState extends State<SplashPage> {
             ),
           ),
           Positioned(
-            top: 1310*factor,
+            bottom: 20*factor, //1310
             left: 140*factor,
             child: new Image.asset(
               'assets/images/slogan.png',

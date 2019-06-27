@@ -39,7 +39,7 @@ class RoleState extends State<RolePage> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidthInPt = MediaQuery.of(context).size.width;
+    double factor = MediaQuery.of(context).size.width/750;
     return new Material(
       // color: new Color.fromARGB(255, 0, 215, 198),
       color: Theme.of(context).primaryColor,
@@ -51,7 +51,7 @@ class RoleState extends State<RolePage> {
               new Text("丫财",
                 style: new TextStyle(
                   color: Colors.white,
-                  fontSize: 60.0*screenWidthInPt/750,
+                  fontSize: 60.0*factor,
                   fontWeight: FontWeight.bold
                 ),
               ),
@@ -60,9 +60,9 @@ class RoleState extends State<RolePage> {
                 children: <Widget>[
                   new Padding(
                     padding: EdgeInsets.only(
-                      left: 65.0*screenWidthInPt/750,
-                      right: 65.0*screenWidthInPt/750,
-                      bottom: 40.0*screenWidthInPt/750
+                      left: 83.0*factor,
+                      right: 83.0*factor,
+                      bottom: 47.0*factor
                     ),
                     child: new InkWell(
                       onTap: () async {
@@ -85,21 +85,29 @@ class RoleState extends State<RolePage> {
                         ));
                       },
                       child: new Container(
-                        height: 70.0*screenWidthInPt/750,
+                        height: 66.0*factor,
                         decoration: new BoxDecoration(
-                          border: new Border.all(color: Colors.orange[50], width: 2.0*screenWidthInPt/750),
-                          borderRadius: new BorderRadius.all(new Radius.circular(6.0*screenWidthInPt/750))
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: new Color(0xFF593b51),
+                              offset: Offset(4.0*factor, 10.0*factor),
+                              blurRadius: 10.0*factor
+                            )
+                          ],
+                          // border: new Border.all(color: Colors.orange[50], width: 2.0*factor),
+                          borderRadius: new BorderRadius.all(new Radius.circular(6.0*factor))
                         ),
                         child: new Center(
-                          child: new Text('我是招聘者', style: new TextStyle(color: Colors.white, fontSize: 26.0*screenWidthInPt/750),),
+                          child: new Text('我是招聘者', style: new TextStyle(color: Color(0xFF5d5d5d), fontSize: 28.0*factor),),
                         ),
                       ),
                     ),
                   ),
                   new Padding(
                     padding: EdgeInsets.only(
-                      left: 65.0*screenWidthInPt/750,
-                      right: 65.0*screenWidthInPt/750,
+                      left: 83.0*factor,
+                      right: 83.0*factor,
                     ),
                     child: new InkWell(
                       onTap: () async {
@@ -110,13 +118,21 @@ class RoleState extends State<RolePage> {
                           Route route) => route == null);
                       },
                       child: new Container(
-                        height: 70.0*screenWidthInPt/750,
+                        height: 66.0*factor,
                         decoration: new BoxDecoration(
-                          border: new Border.all(color: Colors.orange[50], width: 2.0*screenWidthInPt/750),
-                          borderRadius: new BorderRadius.all(new Radius.circular(6.0*screenWidthInPt/750))
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: new Color(0xFF593b51),
+                              offset: Offset(4.0*factor, 10.0*factor),
+                              blurRadius: 10.0*factor
+                            )
+                          ],
+                          // border: new Border.all(color: Colors.orange[50], width: 2.0*factor),
+                          borderRadius: new BorderRadius.all(new Radius.circular(6.0*factor))
                         ),
                         child: new Center(
-                          child: new Text('我是求职者', style: new TextStyle(color: Colors.white, fontSize: 26.0*screenWidthInPt/750),),
+                          child: new Text('我是求职者', style: new TextStyle(color: Color(0xFF5d5d5d), fontSize: 28.0*factor),),
                         ),
                       ),
                     ),
@@ -145,7 +161,7 @@ class RoleState extends State<RolePage> {
             height: MediaQuery.of(context).size.height,
             child: SpinKitHourGlass(
               color: Theme.of(context).primaryColor,
-              size: 50*screenWidthInPt/750,
+              size: 50*factor,
               duration: Duration(milliseconds: 1800),
             ),
           )

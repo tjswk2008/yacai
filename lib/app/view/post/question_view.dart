@@ -194,6 +194,7 @@ class AskQuestionState extends State<AskQuestion> {
             right: 20*factor,
             child: FloatingActionButton(
               mini: true,
+              backgroundColor: Theme.of(context).primaryColor,
               child: Icon(
                 Icons.check,
                 size: 50.0*factor,
