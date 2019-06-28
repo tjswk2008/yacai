@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/view/register_view.dart';
+// import 'package:flutter_app/app/view/register_view.dart';
+import 'package:flutter_app/app/view/login_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,101 +46,140 @@ class RoleState extends State<RolePage> {
       color: Theme.of(context).primaryColor,
       child: Stack(
         children: <Widget>[
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              new Text("丫财",
-                style: new TextStyle(
-                  color: Colors.white,
-                  fontSize: 60.0*factor,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-              new Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  new Padding(
-                    padding: EdgeInsets.only(
-                      left: 83.0*factor,
-                      right: 83.0*factor,
-                      bottom: 47.0*factor
-                    ),
-                    child: new InkWell(
-                      onTap: () async {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        prefs.setInt('role', 2);
-                        Navigator.of(context).push(new PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (BuildContext context, _, __) {
-                              return new RegisterPage();
-                            },
-                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                              return new FadeTransition(
-                                opacity: animation,
-                                child: new SlideTransition(position: new Tween<Offset>(
-                                  begin: const Offset(0.0, 1.0),
-                                  end: Offset.zero,
-                                ).animate(animation), child: child),
-                              );
-                            }
-                        ));
-                      },
-                      child: new Container(
-                        height: 66.0*factor,
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: new Color(0xFF593b51),
-                              offset: Offset(4.0*factor, 10.0*factor),
-                              blurRadius: 10.0*factor
-                            )
-                          ],
-                          // border: new Border.all(color: Colors.orange[50], width: 2.0*factor),
-                          borderRadius: new BorderRadius.all(new Radius.circular(6.0*factor))
-                        ),
-                        child: new Center(
-                          child: new Text('我是招聘者', style: new TextStyle(color: Color(0xFF5d5d5d), fontSize: 28.0*factor),),
-                        ),
-                      ),
-                    ),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(
-                      left: 83.0*factor,
-                      right: 83.0*factor,
-                    ),
-                    child: new InkWell(
-                      onTap: () async {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        prefs.setInt('role', 1);
-                        Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
-                          builder: (BuildContext context) => new RegisterPage()), (
-                          Route route) => route == null);
-                      },
-                      child: new Container(
-                        height: 66.0*factor,
-                        decoration: new BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: new Color(0xFF593b51),
-                              offset: Offset(4.0*factor, 10.0*factor),
-                              blurRadius: 10.0*factor
-                            )
-                          ],
-                          // border: new Border.all(color: Colors.orange[50], width: 2.0*factor),
-                          borderRadius: new BorderRadius.all(new Radius.circular(6.0*factor))
-                        ),
-                        child: new Center(
-                          child: new Text('我是求职者', style: new TextStyle(color: Color(0xFF5d5d5d), fontSize: 28.0*factor),),
-                        ),
-                      ),
-                    ),
+          Positioned(
+            left: 276*factor,
+            top: 289*factor,
+            width: 199*factor,
+            height: 199*factor,
+            child: new Container(
+              height: 199*factor,
+              width: 199*factor,
+              decoration: new BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: new Color(0xFF593b51),
+                    offset: Offset(4.0*factor, 10.0*factor),
+                    blurRadius: 10.0*factor
                   )
-                ]
-              )
-            ],
+                ],
+              ),
+              child: new Image.asset(
+                'assets/images/logo.png',
+                width: 199*factor,
+                height: 199*factor,
+              ),
+            )
+          ),
+          Positioned(
+            left: 0,
+            bottom: 426*factor,
+            width: MediaQuery.of(context).size.width,
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                // new Text("丫财",
+                //   style: new TextStyle(
+                //     color: Colors.white,
+                //     fontSize: 60.0*factor,
+                //     fontWeight: FontWeight.bold
+                //   ),
+                // ),
+                new Column(
+                  children: <Widget>[
+                    new Padding(
+                      padding: EdgeInsets.only(
+                        left: 83.0*factor,
+                        right: 83.0*factor,
+                        bottom: 47.0*factor
+                      ),
+                      child: new InkWell(
+                        onTap: () async {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          prefs.setInt('role', 2);
+                          Navigator.of(context).push(new PageRouteBuilder(
+                              opaque: false,
+                              pageBuilder: (BuildContext context, _, __) {
+                                return new NewLoginPage();
+                              },
+                              transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                return new FadeTransition(
+                                  opacity: animation,
+                                  child: new SlideTransition(position: new Tween<Offset>(
+                                    begin: const Offset(0.0, 1.0),
+                                    end: Offset.zero,
+                                  ).animate(animation), child: child),
+                                );
+                              }
+                          ));
+                        },
+                        child: new Container(
+                          height: 66.0*factor,
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: new Color(0xFF593b51),
+                                offset: Offset(4.0*factor, 10.0*factor),
+                                blurRadius: 10.0*factor
+                              )
+                            ],
+                            // border: new Border.all(color: Colors.orange[50], width: 2.0*factor),
+                            borderRadius: new BorderRadius.all(new Radius.circular(6.0*factor))
+                          ),
+                          child: new Center(
+                            child: new Text('我是招聘者', style: new TextStyle(color: Color(0xFF5d5d5d), fontSize: 28.0*factor),),
+                          ),
+                        ),
+                      ),
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.only(
+                        left: 83.0*factor,
+                        right: 83.0*factor,
+                      ),
+                      child: new InkWell(
+                        onTap: () async {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          prefs.setInt('role', 1);
+                          Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
+                            builder: (BuildContext context) => new NewLoginPage()), (
+                            Route route) => route == null);
+                        },
+                        child: new Container(
+                          height: 66.0*factor,
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: new Color(0xFF593b51),
+                                offset: Offset(4.0*factor, 10.0*factor),
+                                blurRadius: 10.0*factor
+                              )
+                            ],
+                            // border: new Border.all(color: Colors.orange[50], width: 2.0*factor),
+                            borderRadius: new BorderRadius.all(new Radius.circular(6.0*factor))
+                          ),
+                          child: new Center(
+                            child: new Text('我是求职者', style: new TextStyle(color: Color(0xFF5d5d5d), fontSize: 28.0*factor),),
+                          ),
+                        ),
+                      ),
+                    )
+                  ]
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            left: 0,
+            bottom: 0,
+            width: MediaQuery.of(context).size.width,
+            height: 345*factor,
+            child: new Image.asset(
+              'assets/images/bottom.png',
+              width: MediaQuery.of(context).size.width,
+              height: 345*factor,
+            )
           ),
           isRequesting ? Positioned(
             left: 0,
@@ -154,7 +194,7 @@ class RoleState extends State<RolePage> {
               ),
             ),
           ) : Container(),
-          Positioned(
+          isRequesting ? Positioned(
             left: 0,
             top: 0,
             width: MediaQuery.of(context).size.width,
@@ -164,7 +204,7 @@ class RoleState extends State<RolePage> {
               size: 50*factor,
               duration: Duration(milliseconds: 1800),
             ),
-          )
+          ) : Container()
         ]
       )
       

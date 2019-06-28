@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' as prefix1;
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart' as prefix0;
 import './login_view_pwd.dart';
 import './login_view_msg.dart';
 
@@ -32,26 +34,11 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
 
   TabController _controller;
   VoidCallback onChanged;
-  Widget _tabContent;
   int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _tabContent = new LoginWithPwd();
-    _controller = new TabController(length: 2, vsync: this);
-    onChanged = () {
-      setState(() {
-        if (_currentIndex == 0) {
-          _tabContent = new LoginWithPwd();
-        } else {
-          _tabContent = new LoginWithMsg();
-        }
-        _currentIndex = this._controller.index;
-      });
-    };
-
-    _controller.addListener(onChanged);
   }
 
   @override
@@ -64,44 +51,29 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("登录", style: new TextStyle(color: Colors.white, fontSize: 30.0*factor)),
-        leading: IconButton(
-          icon: const BackButtonIcon(),
-          iconSize: 40*factor,
-          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-          onPressed: () {
-            Navigator.maybePop(context);
-          }
-        ),
-        iconTheme: new IconThemeData(color: Colors.white),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20*factor),
-        child: Column(
-          children: <Widget>[
-            new TabBar(
-              indicatorWeight: 3.0*factor,
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelStyle: new TextStyle(fontSize: 26.0*factor),
-              labelColor: Colors.black,
-              controller: _controller,
-              tabs: [
-                new Tab(child: Container(height: 50*factor, child: Text('密码登陆'),)),
-                new Tab(child: Container(height: 50*factor, child: Text('短信登陆'),)),
-              ],
-              indicatorColor: Theme
-                  .of(context)
-                  .primaryColor,
+    return new Material(
+      // color: new Color.fromARGB(255, 0, 215, 198),
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            left: 60.0*factor,
+            top: 66.0*factor,
+            height: 37*factor,
+            width: 630*factor,
+            child: Padding(
+              padding: EdgeInsets.only(left: 243*factor),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text('短信登录', style: TextStyle(fontSize: 36*factor, color: Color.fromRGBO(34, 24, 20, 1), textBaseline: TextBaseline.ideographic),),
+                  Text('密码登录', style: TextStyle(fontSize: 28*factor, color: Color.fromRGBO(90, 169, 226, 1)),),
+                ],
+              ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height - 185*factor - 60,
-              child: _tabContent,
-            ),
-          ],
-        ),
-      ),
+          )
+        ]
+      )
     );
   }
 }

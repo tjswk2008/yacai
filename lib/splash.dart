@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:ui' as ui show window;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/role.dart';
 
@@ -35,7 +33,6 @@ class SplashState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(ui.window.physicalSize.height);
     double factor = MediaQuery.of(context).size.width/750;
     return new Material(
       // color: new Color.fromARGB(255, 0, 215, 198),
