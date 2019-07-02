@@ -22,7 +22,7 @@ dependencies:
   path_provider: "^0.5.0+1"
   open_file: "1.1.1"
   image_cropper: "1.0.0"
-  fluwx: "^0.6.3"
+  # fluwx: "^0.6.3"
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +52,7 @@ flutter:
       - assets/images/yacai.png
       - assets/images/logo.png
       - assets/images/bottom.png
+      - assets/images/eye.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
