@@ -61,6 +61,8 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
       ),
       bottomNavigationBar: new Material(
         color: Colors.white,
+        elevation: 4.0,
+        shadowColor: Color(0xFF788db4),
         child: SafeArea(
           child: new TabBar(
             controller: _controller,

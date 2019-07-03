@@ -31,11 +31,11 @@ class JobListItem extends StatelessWidget {
                         new Padding(
                           padding: EdgeInsets.only(
                             top: 10.0*factor,
-                            left: 20.0*factor,
+                            left: 35.0*factor,
                           ),
                           child: Row(
                             children: <Widget>[
-                              new Text(job.name, style: new TextStyle(fontSize: 30.0*factor, color: Colors.black, fontWeight: FontWeight.bold)),
+                              new Text(job.name, style: new TextStyle(fontSize: 32.0*factor, color: Colors.black, fontWeight: FontWeight.bold)),
                               showCount ? Padding(
                                 padding: EdgeInsets.only(left: 10*factor),
                                 child: new Text(
@@ -54,11 +54,11 @@ class JobListItem extends StatelessWidget {
                           children: <Widget>[
                             new Padding(
                               padding: EdgeInsets.only(
-                                right: 20.0*factor,
+                                right: 47.0*factor,
                               ),
                               child: new Text(
                                   '${job.salaryLow}k-${job.salaryHigh}k',
-                                  style: new TextStyle(color: Colors.red, fontSize: 26.0*factor)),
+                                  style: new TextStyle(color: Theme.of(context).primaryColor, fontSize: 30.0*factor)),
                             ),
                           ],
                         ))
@@ -70,11 +70,11 @@ class JobListItem extends StatelessWidget {
                         job.cname,
                         textAlign: TextAlign.left,
                         style: new TextStyle(
-                            fontSize: 24.0*factor, color: Colors.grey),
+                            fontSize: 28.0*factor, color: Colors.grey),
                       ),
                       margin: EdgeInsets.only(
                           top: 10.0*factor,
-                          left: 20.0*factor,
+                          left: 35.0*factor,
                         ),
                     ),
 
@@ -92,11 +92,11 @@ class JobListItem extends StatelessWidget {
                         // ),
                         new Padding(
                           padding: EdgeInsets.only(
-                            left: 20.0*factor,
+                            left: 35.0*factor,
                             bottom: 15.0*factor,
                           ),
                           child: new Text("发布于 ${timeago.format(DateTime.parse(job.pubTime), locale: 'zh_cn')}",
-                            style: new TextStyle(fontSize: 24.0*factor))
+                            style: new TextStyle(fontSize: 28.0*factor))
                         )
                       ],
                     ),

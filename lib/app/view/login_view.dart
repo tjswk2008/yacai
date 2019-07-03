@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/model/resume.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/recruit.dart';
+import 'package:flutter_app/app/view/register_view.dart';
 
 // 新的登录界面
 class NewLoginPage extends StatefulWidget {
@@ -35,11 +37,15 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
   bool isLoadingCallbackPage = false;
   // 是否正在登录
   bool isOnLogin = false;
+  bool isRequesting = false;
+  String code;
 
   bool obscureText = true;
+  bool isLoginWithPwd = true;
 
   final usernameCtrl = new TextEditingController(text: '');
   final passwordCtrl = new TextEditingController(text: '');
+  final codeCtrl = new TextEditingController(text: '');
 
   TabController _controller;
   VoidCallback onChanged;
@@ -75,8 +81,27 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Text('密码登录', style: TextStyle(fontSize: 36*factor, color: Color.fromRGBO(34, 24, 20, 1), textBaseline: TextBaseline.ideographic),),
-                  Text('注册 ', style: TextStyle(fontSize: 28*factor, color: Color.fromRGBO(90, 169, 226, 1)),),
+                  Text(isLoginWithPwd ? '密码登录' : '短信登录', style: TextStyle(fontSize: 36*factor, color: Color.fromRGBO(34, 24, 20, 1), textBaseline: TextBaseline.ideographic),),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(new PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (BuildContext context, _, __) {
+                          return new RegisterPage();
+                        },
+                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                          return new FadeTransition(
+                            opacity: animation,
+                            child: new SlideTransition(position: new Tween<Offset>(
+                              begin: const Offset(0.0, 1.0),
+                              end: Offset.zero,
+                            ).animate(animation), child: child),
+                          );
+                        }
+                      ));
+                    },
+                    child: Text('注册 ', style: TextStyle(fontSize: 28*factor, color: Color.fromRGBO(90, 169, 226, 1)),),
+                  )
                 ],
               ),
             ),
@@ -112,23 +137,77 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
             // height: 358*factor,
             child: new Column(
               children: <Widget>[
-                TextField(
-                  controller: usernameCtrl,
-                  style: TextStyle(fontSize: 28.0*factor),
-                  decoration: new InputDecoration(
-                    hintText: "手机号",
-                    hintStyle: TextStyle(
-                        color: const Color(0xFF5d5d5d),
+                Stack(
+                  children: <Widget>[
+                    TextField(
+                      controller: usernameCtrl,
+                      style: TextStyle(fontSize: 28.0*factor),
+                      decoration: new InputDecoration(
+                        hintText: "手机号",
+                        hintStyle: TextStyle(
+                            color: const Color(0xFF5d5d5d),
+                        ),
+                        border: new OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 30.0*factor)
+                      ),
                     ),
-                    border: new OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 30.0*factor)
-                  ),
+                    isLoginWithPwd ? Container() : Positioned(
+                      right: 0,
+                      bottom: 20*factor,
+                      child: Container(
+                        height: 70*factor,
+                        child: RaisedButton(
+                          color: Colors.orange[400],
+                          child: Text("发送验证码", style: new TextStyle(fontSize: 26.0*factor, color: Colors.white),),
+                          onPressed: () async {
+                            if (isRequesting) return;
+                            // 拿到用户输入的账号密码
+                            String username = usernameCtrl.text.trim();
+                            if (username.isEmpty) {
+                              Scaffold.of(context).showSnackBar(new SnackBar(
+                                content: new Text("手机号码不能为空！", style: TextStyle(fontSize: 20.0*factor),),
+                              ));
+                              return;
+                            }
+                            if(!RegExp('^((13[0-9])|(15[^4])|(166)|(17[0-8])|(18[0-9])|(19[8-9])|(147,145))\\d{8}\$').hasMatch(username)){
+                              Scaffold.of(context).showSnackBar(new SnackBar(
+                                content: new Text("手机号码不正确！", style: TextStyle(fontSize: 20.0*factor),),
+                              ));
+                              return;
+                            }
+                            setState(() {
+                              isRequesting = true;
+                            });
+                            // 发送给webview，让webview登录后再取回token
+                            Response response = await Api().sendSms(username);
+                            try {
+                              setState(() {
+                                isRequesting = false;
+                              });
+                              if(response.data['code'] != 1) {
+                                Scaffold.of(context).showSnackBar(new SnackBar(
+                                  content: new Text("短信发送失败！", style: TextStyle(fontSize: 20.0*factor),),
+                                ));
+                                return;
+                              } else {
+                                code = response.data['sms'];
+                              }
+                            } catch(e) {
+                              setState(() {
+                                isRequesting = false;
+                              });
+                            }
+                          },
+                        ),
+                      )
+                    )
+                  ],
                 ),
                 new Stack(
                   children: <Widget>[
-                    TextField(
+                    isLoginWithPwd ? TextField(
                       controller: passwordCtrl,
                       style: TextStyle(fontSize: 28.0*factor),
                       obscureText: obscureText,
@@ -142,8 +221,22 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
                         ),
                         contentPadding: EdgeInsets.symmetric(vertical: 30.0*factor)
                       ),
+                    ) : TextField(
+                      controller: codeCtrl,
+                      style: TextStyle(fontSize: 28.0*factor),
+                      obscureText: obscureText,
+                      decoration: new InputDecoration(
+                        hintText: "请输入验证码",
+                        hintStyle: TextStyle(
+                            color: const Color(0xFF5d5d5d),
+                        ),
+                        border: new OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 30.0*factor)
+                      ),
                     ),
-                    Positioned(
+                    isLoginWithPwd ? Positioned(
                       right: 0,
                       bottom: 30*factor,
                       child: InkWell(
@@ -158,7 +251,7 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
                           height: 29*factor,
                         ),
                       )
-                    )
+                    ) : Container()
                   ],
                 ),
                 Container(height: 30*factor,),
@@ -167,16 +260,31 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
                     if (isOnLogin) return;
                     // 拿到用户输入的账号密码
                     String username = usernameCtrl.text.trim();
-                    String password = passwordCtrl.text.trim();
-                    if (username.isEmpty || password.isEmpty) {
-                      YaCaiUtil.getInstance().showMsg("账号和密码不能为空~");
-                      return;
+                    Response response;
+                    if(isLoginWithPwd) {
+                      String password = passwordCtrl.text.trim();
+                      if (username.isEmpty || password.isEmpty) {
+                        YaCaiUtil.getInstance().showMsg("账号和密码不能为空~");
+                        return;
+                      }
+                      setState(() {
+                        isOnLogin = true;
+                      });
+                      // 发送给webview，让webview登录后再取回token
+                      response = await Api().login(username, password);
+                    } else {
+                      String inputCode = codeCtrl.text.trim();
+                      if (username.isEmpty || inputCode.isEmpty) {
+                        YaCaiUtil.getInstance().showMsg("手机号和验证码不能为空~");
+                        return;
+                      }
+                      if (inputCode != code) {
+                        YaCaiUtil.getInstance().showMsg("验证码不正确~");
+                        return;
+                      }
+                      response = await Api().login(username, null);
                     }
-                    setState(() {
-                      isOnLogin = true;
-                    });
-                    // 发送给webview，让webview登录后再取回token
-                    Response response = await Api().login(username, password);
+
                     try {
                       setState(() {
                         isOnLogin = false;
@@ -245,7 +353,14 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
                 Container(height: 40*factor,),
                 Row(
                   children: <Widget>[
-                    Text('短信登录', style: TextStyle(fontSize: 28*factor, color: Color.fromRGBO(93, 93, 93, 1), textBaseline: TextBaseline.ideographic),),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isLoginWithPwd = !isLoginWithPwd;
+                        });
+                      },
+                      child: Text(isLoginWithPwd ? '短信登录' : '密码登陆', style: TextStyle(fontSize: 28*factor, color: Color.fromRGBO(93, 93, 93, 1), textBaseline: TextBaseline.ideographic),),
+                    ),
                   ],
                 )
               ],

@@ -121,7 +121,7 @@ class JobList extends State<JobsTab> {
                             padding: EdgeInsets.only(left: 15.0*factor),
                             child: new Row(
                               children: <Widget>[
-                                new Text(data['title'], style: TextStyle(fontSize: 24*factor)),
+                                new Text(data['title'], style: TextStyle(fontSize: 28*factor)),
                               ],
                             )));
                   }
@@ -139,10 +139,10 @@ class JobList extends State<JobsTab> {
                           new Container(
                               color: Theme.of(context).primaryColor,
                               width: 5.0*factor,
-                              height: 24.0*factor),
+                              height: 28.0*factor),
                           new Padding(
                               padding: EdgeInsets.only(left: 15.0*factor),
-                              child: new Text(data['title'], style: TextStyle(fontSize: 24*factor))),
+                              child: new Text(data['title'], style: TextStyle(fontSize: 28*factor))),
                         ],
                       )
                     )
@@ -159,7 +159,7 @@ class JobList extends State<JobsTab> {
                       padding: EdgeInsets.all(26.0*factor),
                       child: new Text(
                         data,
-                        style: new TextStyle(color: color, fontSize: 24*factor),
+                        style: new TextStyle(color: color, fontSize: 28*factor),
                       ),
                     ),
                   );
