@@ -52,6 +52,8 @@ flutter:
       - assets/images/yacai.png
       - assets/images/logo.png
       - assets/images/bottom.png
+      - assets/images/s-bottom.png
+      - assets/images/title.png
       - assets/images/eye.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
