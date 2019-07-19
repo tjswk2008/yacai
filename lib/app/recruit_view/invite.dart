@@ -40,22 +40,43 @@ class InviteState extends State<Invite> {
 
   int role = 1;
 
+  TextEditingController invitation = new TextEditingController(text: '');
+
   @override
   void initState() {
     super.initState();
     Api().getInvitation(widget.jobId, widget.userId).then((Response response) {
       if(response.data['code'] == 1) {
-        setState(() {
-          detail = response.data['info']['detail'];
-          accepted = response.data['info']['accepted'];
-        });
+        if(response.data['info'] != null) {
+          setState(() {
+            detail = response.data['info']['detail'];
+            accepted = response.data['info']['accepted'];
+          });
+        }
       }
+      setState(() {
+        invitation = TextEditingController.fromValue(
+          TextEditingValue(
+            // 设置内容
+            text: detail == null ? '' : detail,
+            // 保持光标在最后
+            selection: TextSelection.fromPosition(
+              TextPosition(
+                affinity: TextAffinity.downstream,
+                offset: detail == null ? 0 : detail.length
+              )
+            )
+          )
+        );
+      });
       return SharedPreferences.getInstance();
     }).then((SharedPreferences prefs) {
       setState(() {
         userName = prefs.getString('userName');
         role = prefs.getInt('role');
       });
+    }).catchError((e) {
+      print(e);
     });
   }
 
@@ -129,19 +150,7 @@ class InviteState extends State<Invite> {
                 ) : new TextField(
                     keyboardType: TextInputType.multiline,
                     maxLines: 20,
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        // 设置内容
-                        text: detail == null ? '' : detail,
-                        // 保持光标在最后
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: detail == null ? 0 : detail.length
-                          )
-                        )
-                      )
-                    ),
+                    controller: invitation,
                     style: new TextStyle(fontSize: 24.0*factor),
                     decoration: new InputDecoration(
                       hintText: "请填写邀请函内容",
@@ -364,7 +373,7 @@ class InviteState extends State<Invite> {
               onPressed: () async {
                 if (isRequesting) return;
                 // 拿到用户输入的账号密码
-                if (detail == '') {
+                if (invitation.text == '') {
                   Scaffold.of(context).showSnackBar(new SnackBar(
                     content: new Text("邀请函不能为空！"),
                   ));
@@ -375,7 +384,7 @@ class InviteState extends State<Invite> {
                 });
                 // 发送给webview，让webview登录后再取回token
 
-                Api().invite(userName, detail, widget.jobId, widget.userId)
+                Api().invite(userName, invitation.text, widget.jobId, widget.userId)
                   .then((Response response) {
                     setState(() {
                       isRequesting = false;
