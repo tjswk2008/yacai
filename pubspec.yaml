@@ -86,6 +86,9 @@ flutter:
      - family: fontello
        fonts:
          - asset: assets/fonts/fontello.ttf
+     - family: fangzheng
+       fonts:
+         - asset: assets/fonts/fangzheng.ttf
      - family: Dosis
        fonts:
          - asset: assets/fonts/Dosis/Dosis-Regular.ttf
