@@ -14,10 +14,10 @@ Widget buildCheckItem(BuildContext context, dynamic data, bool selected, List<in
             defaultGetItemLabel(data),
             style: selected
                 ? new TextStyle(
-                    fontSize: 24.0*factor,
+                    fontSize: 28.0*factor,
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w400)
-                : new TextStyle(fontSize: 24.0*factor),
+                : new TextStyle(fontSize: 28.0*factor),
           ),
           new Expanded(
               child: new Align(
@@ -26,7 +26,7 @@ Widget buildCheckItem(BuildContext context, dynamic data, bool selected, List<in
                 ? new Icon(
                     Icons.check,
                     color: Theme.of(context).primaryColor,
-                    size: 30*factor
+                    size: 34*factor
                   )
                 : null,
           )),

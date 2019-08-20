@@ -156,7 +156,7 @@ class JobList extends State<JobsTab> {
                   return new SizedBox(
                     height: 80*factor,
                     child: new Padding(
-                      padding: EdgeInsets.all(26.0*factor),
+                      padding: EdgeInsets.only(top: 26.0*factor, left: 20*factor),
                       child: new Text(
                         data,
                         style: new TextStyle(color: color, fontSize: 28*factor),
@@ -184,7 +184,7 @@ class JobList extends State<JobsTab> {
     double factor = MediaQuery.of(context).size.width/750;
     return new DropdownHeader(
       onTap: onTap,
-      height: 80*factor,
+      height: 100*factor,
       titles: [salaryArr[index1], areaArr[index2], timeReqArr[index4], '更多选项'],
     );
   }
@@ -228,7 +228,7 @@ class JobList extends State<JobsTab> {
               children: <Widget>[
                 (_jobs.length != 0) ? new Padding(
                   padding: EdgeInsets.only(
-                    top: 15.0*factor
+                    top: 0*factor
                   ),
                   child: EasyRefresh(
                     refreshHeader:BezierHourGlassHeader(
@@ -309,14 +309,9 @@ class JobList extends State<JobsTab> {
             ),
           )
         ]
-      ) : (widget._type == 4 || widget._type == 5 || widget._type == 6) ? ((_jobs.length != 0) ? new Padding(
-          padding: EdgeInsets.only(
-            top: 15.0*factor
-          ),
-          child: new ListView.builder(
-            itemCount: _jobs.length,
-            itemBuilder: buildJobItem
-          )
+      ) : (widget._type == 4 || widget._type == 5 || widget._type == 6) ? ((_jobs.length != 0) ? new ListView.builder(
+          itemCount: _jobs.length,
+          itemBuilder: buildJobItem
         ) : Center(
           child: Text('暂无记录', style: TextStyle(fontSize: 28*factor))
         )) : buildFixHeaderDropdownMenu() 

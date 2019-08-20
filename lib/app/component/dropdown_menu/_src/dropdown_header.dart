@@ -67,7 +67,7 @@ class _DropdownHeaderState extends DropdownState<DropdownHeader> {
                       getItemLabel(title),
                       style: new TextStyle(
                         color: selected ? primaryColor : unselectedColor,
-                        fontSize: 22*factor
+                        fontSize: 28*factor
                       ),
                     ),
                     new Icon(
@@ -102,6 +102,7 @@ class _DropdownHeaderState extends DropdownState<DropdownHeader> {
 
   @override
   Widget build(BuildContext context) {
+    double factor = MediaQuery.of(context).size.width/750;
     List<Widget> list = [];
 
     final int activeIndex = _activeIndex;
@@ -120,18 +121,28 @@ class _DropdownHeaderState extends DropdownState<DropdownHeader> {
 
     final Decoration decoration = new BoxDecoration(
       color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          color: Theme.of(context).primaryColor,
+          offset: Offset(0, 4.0*factor),
+          blurRadius: 4.0*factor
+        )
+      ],
       border: new Border(
         bottom: Divider.createBorderSide(context),
       ),
     );
 
-    return new DecoratedBox(
-      decoration: decoration,
-      child: new SizedBox(
-          child: new Row(
-            children: list,
-          ),
-          height: height),
+    return Container(
+      margin: EdgeInsets.only(bottom: 2.0*factor),
+      child: new DecoratedBox(
+        decoration: decoration,
+        child: new Container(
+            child: new Row(
+              children: list,
+            ),
+            height: height),
+      )
     );
   }
 

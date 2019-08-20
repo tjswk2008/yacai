@@ -166,7 +166,7 @@ class MineTabState extends State<MineTab> {
                                     ),
                                     child: new Row(
                                       children: <Widget>[
-                                        new Icon(Icons.insert_drive_file, size: 42.0*factor, color: Theme.of(context).primaryColor),
+                                        Image.asset('assets/images/resume.png', width: 42.0*factor),
                                         new Padding(
                                           padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
@@ -259,7 +259,7 @@ class MineTabState extends State<MineTab> {
                                     ),
                                     child: new Row(
                                       children: <Widget>[
-                                        new Icon(Icons.email, size: 42.0*factor, color: Theme.of(context).primaryColor),
+                                        Image.asset('assets/images/msg.png', width: 42.0*factor),
                                         new Padding(
                                           padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
@@ -443,7 +443,7 @@ class MineTabState extends State<MineTab> {
                                     ),
                                     child: new Row(
                                       children: <Widget>[
-                                        new Icon(Icons.settings, size: 42.0*factor, color: Theme.of(context).primaryColor),
+                                        Image.asset('assets/images/setting.png', width: 42.0*factor),
                                         new Padding(
                                           padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
