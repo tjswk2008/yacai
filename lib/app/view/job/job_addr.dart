@@ -13,7 +13,8 @@ class JobAddr extends StatelessWidget {
     double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Padding(
       padding: EdgeInsets.only(
-        left: 20.0*screenWidthInPt/750
+        left: 20.0*screenWidthInPt/750,
+        right: 20*screenWidthInPt/750
       ),
       child: new SizedBox(
         child: new Card(
@@ -24,11 +25,11 @@ class JobAddr extends StatelessWidget {
                 padding: EdgeInsets.only(
                   right: 15.0*screenWidthInPt/750,
                 ),
-                child: new Text('工作地点', style: new TextStyle(fontSize: 26.0*screenWidthInPt/750, fontWeight: FontWeight.bold))
+                child: new Text('工作地点', style: new TextStyle(fontSize: 30.0*screenWidthInPt/750, fontWeight: FontWeight.bold))
               ),
 
               new Expanded(
-                child: new Text('上海市 ${job.area} ${job.addrDetail}', style: new TextStyle(fontSize: 24.0*screenWidthInPt/750))
+                child: new Text('上海市 ${job.area} ${job.addrDetail}', style: new TextStyle(fontSize: 26.0*screenWidthInPt/750, height: 1.6))
               ),
             ],
           ),

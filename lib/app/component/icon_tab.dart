@@ -14,7 +14,7 @@ class IconTab extends StatefulWidget {
 
   final String text;
   final String icon;
-  final IconData iconData;
+  final Widget iconData;
   final Color color;
 
   @override
@@ -40,20 +40,20 @@ class IconTabState extends State<IconTab> {
             width: 50.0*factor,
           ) : new Container(
             height: 50.0*factor,
-            child: new Icon(widget.iconData, color: widget.color, size: 50.0*factor,),
+            child: widget.iconData,
           ),
-          margin: EdgeInsets.only(bottom: 3.0*factor),
+          margin: EdgeInsets.only(bottom: 10.0*factor),
         ),
         Text(widget.text,
           softWrap: false,
           overflow: TextOverflow.fade,
-          style: new TextStyle(color: widget.color, fontSize: 22.0*factor),
+          style: new TextStyle(color: widget.color, fontSize: 28.0*factor),
         )
       ]
     );
 
     return new SizedBox(
-      height: 100*factor,
+      height: 110*factor,
       child: new Center(
         child: label,
         widthFactor: 1.0,

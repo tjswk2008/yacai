@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_app/app/model/company.dart';
 import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/app/view/company/company_info.dart';
@@ -264,8 +265,7 @@ class JobDetailState extends State<JobDetail>
                   ),
                 ],
               )
-          ),
-
+          )
         ],
       )
     );

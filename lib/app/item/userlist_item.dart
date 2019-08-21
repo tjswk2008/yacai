@@ -119,7 +119,7 @@ class UserListItemState extends State<UserListItem> {
                         ],
                       ),
                       personalInfo.avatar == null ? new Image.asset(
-                        "assets/images/ic_avatar_default.png",
+                        "assets/images/avatar_default.png",
                         width: 90.0*factor,
                         color: Theme.of(context).primaryColor,
                       ) : new CircleAvatar(

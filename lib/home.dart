@@ -45,8 +45,8 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidthInPt = MediaQuery.of(context).size.width;
-    double _kTabTextSize = 20.0 * screenWidthInPt/750;
+    double factor = MediaQuery.of(context).size.width/750;
+    double _kTabTextSize = 20.0 * factor;
     Color _kPrimaryColor = Theme.of(context).primaryColor;
     return new Scaffold(
       body: new TabBarView(
@@ -70,35 +70,40 @@ class HomeState extends State<BossApp> with SingleTickerProviderStateMixin {
             labelStyle: new TextStyle(fontSize: _kTabTextSize),
             tabs: <IconTab>[
               new IconTab(
-                  iconData: Icons.business,
+                  color: _currentIndex == INDEX_JOB ? _kPrimaryColor : Colors.black,
                   text: "全职",
-                  color: _currentIndex == INDEX_JOB
-                      ? _kPrimaryColor
-                      : Colors.grey[900]),
+                  iconData: _currentIndex == INDEX_JOB
+                      ? Image.asset('assets/images/full_active.png', width: 50.0*factor)
+                      : Image.asset('assets/images/full.png', width: 50.0*factor)
+              ),
               new IconTab(
-                  iconData: Icons.business_center,
+                  color: _currentIndex == INDEX_COMPANY ? _kPrimaryColor : Colors.black,
                   text: "兼职",
-                  color: _currentIndex == INDEX_COMPANY
-                      ? _kPrimaryColor
-                      : Colors.grey[900]),
+                  iconData: _currentIndex == INDEX_COMPANY
+                      ? Image.asset('assets/images/parttime_active.png', width: 50.0*factor)
+                      : Image.asset('assets/images/parttime.png', width: 50.0*factor)
+              ),
               new IconTab(
-                  iconData: Icons.school,
+                  color: _currentIndex == INDEX_STUDY ? _kPrimaryColor : Colors.black,
                   text: "实习",
-                  color: _currentIndex == INDEX_STUDY
-                      ? _kPrimaryColor
-                      : Colors.grey[900]),
+                  iconData: _currentIndex == INDEX_STUDY
+                      ? Image.asset('assets/images/practice_active.png', width: 50.0*factor)
+                      : Image.asset('assets/images/practice.png', width: 50.0*factor)
+              ),
               new IconTab(
-                  iconData: Icons.content_paste,
+                  color: _currentIndex == INDEX_MESSAGE ? _kPrimaryColor : Colors.black,
                   text: "交流",
-                  color: _currentIndex == INDEX_MESSAGE
-                      ? _kPrimaryColor
-                      : Colors.grey[900]),
+                  iconData: _currentIndex == INDEX_MESSAGE
+                      ? Image.asset('assets/images/msg_active.png', width: 50.0*factor)
+                      : Image.asset('assets/images/msg.png', width: 50.0*factor)
+              ),
               new IconTab(
-                  iconData: Icons.person_outline,
+                  color: _currentIndex == INDEX_MINE ? _kPrimaryColor : Colors.black,
                   text: "我的",
-                  color: (_currentIndex == INDEX_MINE)
-                      ? _kPrimaryColor
-                      : Colors.grey[900]),
+                  iconData: (_currentIndex == INDEX_MINE)
+                      ? Image.asset('assets/images/mine_active.png', width: 50.0*factor)
+                      : Image.asset('assets/images/mine.png', width: 50.0*factor)
+              )
             ],
           ),
         )

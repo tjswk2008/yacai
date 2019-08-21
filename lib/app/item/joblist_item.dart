@@ -36,7 +36,7 @@ class JobListItem extends StatelessWidget {
                           ),
                           child: Row(
                             children: <Widget>[
-                              new Text(job.name, style: new TextStyle(fontFamily: 'fangzheng', fontSize: 34.0*factor, color: Colors.black, fontWeight: FontWeight.bold)),
+                              new Text(job.name, style: new TextStyle(fontSize: 34.0*factor, color: Colors.black)),
                               showCount ? Padding(
                                 padding: EdgeInsets.only(left: 20*factor),
                                 child: new Text(
@@ -84,18 +84,23 @@ class JobListItem extends StatelessWidget {
                     new Divider(),
                     new Row(
                       children: <Widget>[
-                        // new Padding(
-                        //   padding: EdgeInsets.only(
-                        //     left: 20.0*factor,
-                        //     right: 5.0*factor,
-                        //     bottom: 15.0*factor,
-                        //   ),
-                        //   child: new Text(job.username + " | " + job.title,
-                        //       style: new TextStyle(color: new Color.fromARGB(255, 0, 215, 198), fontSize: 24.0*factor)),
-                        // ),
                         new Padding(
                           padding: EdgeInsets.only(
                             left: 35.0*factor,
+                            bottom: 20.0*factor,
+                          ),
+                          child: (job.avatar == null || job.avatar == '') ? new Image.asset(
+                            "assets/images/avatar_default.png",
+                            width: 30.0*factor,
+                            color: Theme.of(context).primaryColor,
+                          ) : new CircleAvatar(
+                            radius: 15.0*factor,
+                            backgroundImage: new NetworkImage(job.avatar)
+                          ),
+                        ),
+                        new Padding(
+                          padding: EdgeInsets.only(
+                            left: 10.0*factor,
                             bottom: 20.0*factor,
                           ),
                           child: new Text("发布于 ${timeago.format(DateTime.parse(job.pubTime), locale: 'zh_cn')}",

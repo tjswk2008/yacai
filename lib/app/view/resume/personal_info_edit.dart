@@ -122,7 +122,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                               radius: 45.0*factor,
                               backgroundImage: new NetworkImage(personalInfo.avatar)
                             ) : new Image.asset(
-                              "assets/images/ic_avatar_default.png",
+                              "assets/images/avatar_default.png",
                               width: 90.0*factor,
                               color: Theme.of(context).primaryColor,
                             ),

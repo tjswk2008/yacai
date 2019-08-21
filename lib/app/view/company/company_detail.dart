@@ -108,7 +108,7 @@ class CompanyDetailState extends State<CompanyDetail>
                             new TabBar(
                               indicatorWeight: 3.0*factor,
                               indicatorSize: TabBarIndicatorSize.tab,
-                              labelStyle: new TextStyle(fontSize: 26.0*factor),
+                              labelStyle: new TextStyle(fontSize: 32.0*factor),
                               labelColor: Colors.black,
                               controller: _controller,
                               tabs: _tabs,

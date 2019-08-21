@@ -10,12 +10,12 @@ class JobBase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidthInPt = MediaQuery.of(context).size.width;
+    double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
       padding: EdgeInsets.only(
-        top: 15.0*screenWidthInPt/750,
-        left: 15.0*screenWidthInPt/750,
-        right: 15.0*screenWidthInPt/750,
+        top: 20.0*factor,
+        left: 20.0*factor,
+        right: 20.0*factor,
       ),
       child: new SizedBox(
         child: new Card(
@@ -23,7 +23,7 @@ class JobBase extends StatelessWidget {
           child: new Column(
             children: <Widget>[
               new Padding(
-                padding: EdgeInsets.only(top: 10.0*screenWidthInPt/750),
+                padding: EdgeInsets.only(top: 10.0*factor),
               ),
 
               new Row(
@@ -31,22 +31,26 @@ class JobBase extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   new Container(
-                    margin: EdgeInsets.only(bottom: 10.0*screenWidthInPt/750),
+                    margin: EdgeInsets.only(bottom: 10.0*factor),
                     child: new Text(
                       job.name,
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*screenWidthInPt/750),
+                      style: new TextStyle(fontSize: 34.0*factor, fontWeight: FontWeight.bold),
                     ),
                   ),
 
                   new Container(
                     child: new Text('${job.salaryLow}k-${job.salaryHigh}k', style: new TextStyle(
-                        fontSize: 26.0*screenWidthInPt/750,
+                        fontSize: 34.0*factor,
                         color: Theme.of(context).primaryColor
                       )
                     ),
                   ),
                 ],
+              ),
+
+              new Padding(
+                padding: EdgeInsets.only(top: 10.0*factor),
               ),
 
               new Row(
@@ -56,16 +60,30 @@ class JobBase extends StatelessWidget {
 
                   new Padding(
                     padding: EdgeInsets.only(
-                      right: 15.0*screenWidthInPt/750,
+                      right: 15.0*factor,
+                    ),
+                    child: new Icon(Icons.business, size: 32*factor, color: Colors.grey[600],),
+                  ),
+
+                  new Padding(
+                    padding: EdgeInsets.only(
+                      right: 15.0*factor,
                     ),
                     child: new Text(job.timereq, style: new TextStyle(
-                        fontSize: 22.0*screenWidthInPt/750, color: Colors.grey)),
+                        fontSize: 26.0*factor, color: Colors.grey)),
+                  ),
+
+                  new Padding(
+                    padding: EdgeInsets.only(
+                      right: 15.0*factor,
+                    ),
+                    child: new Icon(Icons.school, size: 32*factor, color: Colors.grey[600]),
                   ),
 
                   new Container(
                     child: new Text(
                         job.academic, style: new TextStyle(
-                        fontSize: 22.0*screenWidthInPt/750, color: Colors.grey)),
+                        fontSize: 26.0*factor, color: Colors.grey)),
                   ),
                 ],
               ),

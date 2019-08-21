@@ -43,7 +43,7 @@ class CompanyInfo extends StatelessWidget {
                       child: new Text(
                         company.name,
                         textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*screenWidthInPt/750),
+                        style: new TextStyle(fontSize: 30.0*screenWidthInPt/750),
                       ),
                       margin: EdgeInsets.only(top: 10.0*screenWidthInPt/750, bottom: 10.0*screenWidthInPt/750),
                     ),
@@ -55,7 +55,7 @@ class CompanyInfo extends StatelessWidget {
                         bottom: 10.0*screenWidthInPt/750,
                       ),
                       child: new Text('上海市 ${company.area} ${company.location}', style: new TextStyle(
-                          fontSize: 24.0*screenWidthInPt/750, color: Colors.grey)),
+                          fontSize: 28.0*screenWidthInPt/750, color: Colors.grey)),
                     ),
 
                     new Padding(
@@ -66,7 +66,7 @@ class CompanyInfo extends StatelessWidget {
                       ),
                       child: new Text(
                           company.type + " | " + company.employee, style: new TextStyle(
-                          fontSize: 22.0*screenWidthInPt/750, color: Colors.grey)),
+                          fontSize: 26.0*screenWidthInPt/750, color: Colors.grey)),
                     ),
                   ],
                 ),

@@ -113,7 +113,7 @@ class MineTabState extends State<MineTab> {
                                 ),
                                 child: appState.resume == null || appState.resume.personalInfo.avatar == ''
                                   ? new Image.asset(
-                                      "assets/images/ic_avatar_default.png",
+                                      "assets/images/avatar_default.png",
                                       width: 120.0*factor,
                                     )
                                   : new CircleAvatar(

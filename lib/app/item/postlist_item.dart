@@ -37,8 +37,7 @@ class PostListItem extends StatelessWidget {
                     text: post.title,
                     style: new TextStyle(
                         fontSize: 30.0*factor,
-                        color: Colors.black,
-                        fontFamily: 'fontello'
+                        color: Colors.black
                     ),
                   ),
                 ),
@@ -50,7 +49,7 @@ class PostListItem extends StatelessWidget {
                       left: 20.0*factor,
                       right: 5.0*factor
                     ),
-                    child: new Icon(Icons.favorite, color: Colors.red, size: 26.0*factor)
+                    child: new Icon(Icons.favorite, color: Colors.red, size: 30.0*factor)
                   ),
                   new Padding(
                     padding: EdgeInsets.only(
@@ -59,18 +58,18 @@ class PostListItem extends StatelessWidget {
                     child: new Text(
                         post.votes.toString(),
                         style: new TextStyle(
-                            fontSize: 22.0*factor,
-                            color: Colors.grey, fontFamily: 'fontello')),
+                            fontSize: 26.0*factor,
+                            color: Colors.grey)),
                   ),
                   new Padding(
                     padding: EdgeInsets.only(
                       left: 10.0*factor,
                       right: 5.0*factor
                     ),
-                    child: new Icon(Icons.face, color: Colors.lightBlue[300], size: 26.0*factor),
+                    child: new Icon(Icons.face, color: Colors.lightBlue[300], size: 30.0*factor),
                   ),
                   new Text(post.viewers.toString(),
-                        style: new TextStyle(fontSize: 22.0*factor, color: Colors.grey, fontFamily: 'fontello')),
+                        style: new TextStyle(fontSize: 26.0*factor, color: Colors.grey)),
                 ],
               ),
 
@@ -83,7 +82,7 @@ class PostListItem extends StatelessWidget {
                 ),
                 child: new Text(
                   post.updateAt != post.askedAt ? '${timeago.format(DateTime.parse(post.updateAt), locale: 'zh_cn')}更新' : '${timeago.format(DateTime.parse(post.askedAt), locale: 'zh_cn')}创建',
-                  style: new TextStyle(fontSize: 22.0*factor, fontFamily: 'fontello')
+                  style: new TextStyle(fontSize: 26.0*factor)
                 )
               )
             ],

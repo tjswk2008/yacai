@@ -46,7 +46,7 @@ flutter:
   #  - images/a_dot_ham.jpeg
 
   assets:
-      - assets/images/ic_avatar_default.png
+      - assets/images/avatar_default.png
       - assets/images/duck.png
       - assets/images/slogan.png
       - assets/images/yacai.png
@@ -56,8 +56,18 @@ flutter:
       - assets/images/title.png
       - assets/images/eye.png
       - assets/images/resume.png
-      - assets/images/msg.png
+      - assets/images/record.png
       - assets/images/setting.png
+      - assets/images/msg.png
+      - assets/images/msg_active.png
+      - assets/images/mine.png
+      - assets/images/mine_active.png
+      - assets/images/full.png
+      - assets/images/full_active.png
+      - assets/images/parttime.png
+      - assets/images/parttime_active.png
+      - assets/images/practice.png
+      - assets/images/practice_active.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

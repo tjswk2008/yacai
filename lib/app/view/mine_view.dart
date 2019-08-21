@@ -98,7 +98,7 @@ class MineTabState extends State<MineTab> {
                                   ),
                                   child: appState.resume == null || appState.resume.personalInfo.avatar == null || appState.resume.personalInfo.avatar == ''
                                     ? new Image.asset(
-                                        "assets/images/ic_avatar_default.png",
+                                        "assets/images/avatar_default.png",
                                         width: 120.0*factor,
                                       )
                                     : new CircleAvatar(
@@ -259,7 +259,7 @@ class MineTabState extends State<MineTab> {
                                     ),
                                     child: new Row(
                                       children: <Widget>[
-                                        Image.asset('assets/images/msg.png', width: 42.0*factor),
+                                        Image.asset('assets/images/record.png', width: 42.0*factor),
                                         new Padding(
                                           padding: EdgeInsets.only(right: 15.0*factor),
                                         ),

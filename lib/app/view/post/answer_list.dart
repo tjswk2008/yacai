@@ -60,7 +60,7 @@ class AnswerListState extends State<AnswerList>
                   padding: EdgeInsets.only(right: 20*factor),
                   child: answer.avatar == null || answer.avatar == ''
                     ? new Image.asset(
-                        "assets/images/ic_avatar_default.png",
+                        "assets/images/avatar_default.png",
                         color: Colors.grey,
                         width: 60.0*factor,
                       )
@@ -76,22 +76,17 @@ class AnswerListState extends State<AnswerList>
                     child: new Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        new Row(
-                          children: <Widget>[
-                            new Padding(
-                              padding: EdgeInsets.only(
-                                right: 10.0*factor,
-                                bottom: 10*factor
-                              ),
-                              child: Text(answer.answerBy, style: TextStyle(fontSize: 28.0*factor,fontFamily: 'fontello')),
-                            ),
-                          ],
+                        new Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 10*factor
+                          ),
+                          child: Text(answer.answerBy, style: TextStyle(fontSize: 30.0*factor)),
                         ),
                         Padding(
                           padding: EdgeInsets.only(bottom: 20*factor),
                           child: Text(
                             "回答于" + formatDate(DateTime.parse(answer.answerAt), [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]), 
-                            style: TextStyle(fontSize: 22*factor,fontFamily: 'fontello',color: Colors.grey),
+                            style: TextStyle(fontSize: 24*factor,color: Colors.grey),
                           ),
                         ),
                         new RichText(
@@ -99,7 +94,8 @@ class AnswerListState extends State<AnswerList>
                             text: answer.answer,
                             style: new TextStyle(
                                 fontSize: 26.0*factor,
-                                color: Colors.black,fontFamily: 'fontello'
+                                color: Colors.grey[700],
+                                height: 1.6
                             ),
                           ),
                         ),
@@ -148,7 +144,7 @@ class AnswerListState extends State<AnswerList>
                                             });
                                         }
                                       ),
-                                      new Text(answer.votes.toString(), style: TextStyle(fontSize: 28.0*factor,fontFamily: 'fontello')),
+                                      new Text(answer.votes.toString(), style: TextStyle(fontSize: 28.0*factor)),
                                     ],
                                   )
                                 ],

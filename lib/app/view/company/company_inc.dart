@@ -34,9 +34,9 @@ class CompanyInc extends StatelessWidget {
                             new Row(
                               children: <Widget>[
                                 new Container(
-                                  margin: EdgeInsets.only(bottom: 10.0*factor),
+                                  margin: EdgeInsets.only(bottom: 30.0*factor),
                                   child: new Text(
-                                      '公司介绍', style: new TextStyle(fontSize: 26.0*factor)),
+                                      '公司介绍', style: new TextStyle(fontSize: 30.0*factor)),
                                 )
                               ],
                             ),
@@ -44,8 +44,9 @@ class CompanyInc extends StatelessWidget {
                               text: new TextSpan(
                                 text: _companyInc,
                                 style: new TextStyle(
-                                    fontSize: 24.0*factor,
-                                    color: Colors.black
+                                    fontSize: 26.0*factor,
+                                    color: Colors.grey[700],
+                                    height: 1.6
                                 ),
                               ),
                             ),
