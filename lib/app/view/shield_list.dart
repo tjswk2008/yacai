@@ -65,23 +65,23 @@ class ShieldListState extends State<ShieldList>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 30.0*factor),
+                    padding: EdgeInsets.only(bottom: 40.0*factor),
                     child: Stack(
                       children: <Widget>[
                         TypeAheadField(
                           textFieldConfiguration: TextFieldConfiguration(
                             autofocus: true,
-                            style: TextStyle(fontSize: 26*factor),
+                            style: TextStyle(fontSize: 28*factor),
                             decoration: new InputDecoration(
-                              hintText: "请输入公司名称",
+                              hintText: "请输入您要屏蔽的公司",
                               hintStyle: new TextStyle(
                                   color: const Color(0xFF808080),
-                                  fontSize: 26.0*factor
+                                  fontSize: 28.0*factor
                               ),
                               border: new UnderlineInputBorder(
                                 borderSide: BorderSide(width: 1.0*factor)
                               ),
-                              contentPadding: EdgeInsets.all(10.0*factor)
+                              contentPadding: EdgeInsets.all(20.0*factor)
                             ),
                           ),
                           suggestionsCallback: (pattern) async {
@@ -135,7 +135,6 @@ class ShieldListState extends State<ShieldList>
                         )
                       ],
                     )
-                    
                   ),
                   list.length != 0 ? new ListView.builder(
                     shrinkWrap: true,
@@ -149,17 +148,17 @@ class ShieldListState extends State<ShieldList>
                           children: <Widget>[
                             new Padding(
                               padding: EdgeInsets.only(
-                                top: 10.0*factor,
-                                left: 15.0*factor,
-                                right: 15.0*factor,
+                                top: 20.0*factor,
+                                left: 20.0*factor,
+                                right: 20.0*factor,
                                 bottom: 0.0,
                               ),
                               child: company.logo != null ? new Image.network(
                                 company.logo,
-                                width: 100.0*factor,
-                                height: 100.0*factor,) : Container(
-                                  width: 100.0*factor,
-                                  height: 100.0*factor,
+                                width: 120.0*factor,
+                                height: 120.0*factor,) : Container(
+                                  width: 120.0*factor,
+                                  height: 120.0*factor,
                                 ),
                             ),
 
@@ -175,7 +174,7 @@ class ShieldListState extends State<ShieldList>
                                         child: new Text(
                                           company.name,
                                           textAlign: TextAlign.left,
-                                          style: new TextStyle(fontSize: 24.0*factor),
+                                          style: new TextStyle(fontSize: 32.0*factor),
                                         ),
                                         margin: EdgeInsets.only(top: 10.0*factor, bottom: 10.0*factor),
                                       ),
@@ -221,13 +220,12 @@ class ShieldListState extends State<ShieldList>
 
                                   new Padding(
                                     padding: EdgeInsets.only(
-                                      top: 10.0*factor,
                                       left: 0.0,
                                       right: 10.0*factor,
                                       bottom: 10.0*factor,
                                     ),
                                     child: new Text(company.location, style: new TextStyle(
-                                        fontSize: 22.0*factor, color: Colors.grey)),
+                                        fontSize: 26.0*factor, color: Colors.grey)),
                                   ),
 
                                   new Padding(
@@ -239,7 +237,7 @@ class ShieldListState extends State<ShieldList>
                                     ),
                                     child: new Text(
                                         '${company.type} | ${company.employee}', style: new TextStyle(
-                                        fontSize: 22.0*factor, color: Colors.grey)),
+                                        fontSize: 26.0*factor, color: Colors.grey)),
                                   )
                                 ],
                               ),

@@ -27,7 +27,7 @@ class YaCaiUtil {
               content: new SingleChildScrollView(
                   child: new ListBody(
                       children: <Widget>[
-                          new Text(msg, style: TextStyle(fontSize: 28*factor)),
+                          new Text(msg, style: TextStyle(fontSize: 28*factor, height: 1.6)),
                       ],
                   ),
               ),

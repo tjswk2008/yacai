@@ -63,7 +63,7 @@ class AskQuestionState extends State<AskQuestion> {
           ) : Border(),
         ),
         child: new Center(
-          child: new Text(postTypeArr[index], style: TextStyle(fontSize: 22.0*factor),),
+          child: new Text(postTypeArr[index], style: TextStyle(fontSize: 28.0*factor),),
         ),
       ),
     );
@@ -112,7 +112,7 @@ class AskQuestionState extends State<AskQuestion> {
                 new Container(height: 20.0*factor),
                 new Row(
                   children: <Widget>[
-                    new Text("分类：", style: new TextStyle(fontSize: 22.0*factor)),
+                    new Text("分类：", style: new TextStyle(fontSize: 28.0*factor)),
                     new Container(
                       height: 60*factor,
                       child: new ListView.builder(
@@ -129,17 +129,17 @@ class AskQuestionState extends State<AskQuestion> {
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text("标题：", style: new TextStyle(fontSize: 22.0*factor)),
+                    new Text("标题：", style: new TextStyle(fontSize: 28.0*factor)),
                     new Expanded(child: new TextField(
                       controller: titleCtrl,
                       keyboardType: TextInputType.multiline,
                       maxLines: 5,
-                      style: new TextStyle(fontSize: 22.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                       decoration: new InputDecoration(
                         hintText: "请输入标题",
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080),
-                            fontSize: 22.0*factor
+                            fontSize: 28.0*factor
                         ),
                         border: new OutlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor),
@@ -154,17 +154,17 @@ class AskQuestionState extends State<AskQuestion> {
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text("详情：", style: new TextStyle(fontSize: 22.0*factor)),
+                    new Text("详情：", style: new TextStyle(fontSize: 28.0*factor)),
                     new Expanded(child: new TextField(
                       keyboardType: TextInputType.multiline,
                       maxLines: 15,
                       controller: detailCtrl,
-                      style: new TextStyle(fontSize: 22.0*factor),
+                      style: new TextStyle(fontSize: 28.0*factor),
                       decoration: new InputDecoration(
                         hintText: "请详细描述您的问题",
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080),
-                            fontSize: 22.0*factor
+                            fontSize: 28.0*factor
                         ),
                         border: new OutlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor),

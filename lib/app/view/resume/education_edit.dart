@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_app/app/model/resume.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_app/app/model/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_app/app/component/select.dart';
+import 'package:flutter_app/app/component/text_area.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -72,411 +74,402 @@ class EducationEditViewState extends State<EducationEditView>
             title: new Text('教育经历',
                 style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
           ),
-          body: new SingleChildScrollView(
-            child: new Padding(
-              padding: EdgeInsets.all(30.0*factor),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
-                    child: new Text(
-                      '学校名称：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 28.0*factor),
-                    ),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
-                    child: TypeAheadField(
-                      textFieldConfiguration: TextFieldConfiguration(
-                        autofocus: true,
-                        onChanged: (val) {
-                          setState(() {
-                            _education.name = val;
-                          });
-                        },
-                        controller: TextEditingController.fromValue(
-                          TextEditingValue(
-                            text: _education.name,
-                            selection: TextSelection.fromPosition(
-                              TextPosition(
-                                affinity: TextAffinity.downstream,
-                                offset: _education.name.length
-                              )
-                            )
-                          )
-                        ),
-                        style: TextStyle(fontSize: 26*factor),
-                        decoration: new InputDecoration(
-                          hintText: "请输入学校名称",
-                          hintStyle: new TextStyle(
-                              color: const Color(0xFF808080),
-                              fontSize: 26.0*factor
-                          ),
-                          border: new UnderlineInputBorder(
-                            borderSide: BorderSide(width: 1.0*factor)
-                          ),
-                          contentPadding: EdgeInsets.all(10.0*factor)
-                        ),
-                      ),
-                      suggestionsCallback: (pattern) async {
-                        Response response = await Api().getSchoolSuggestions(pattern);
-                        return response.data;
-                      },
-                      itemBuilder: (context, suggestion) {
-                        return ListTile(
-                          leading: Icon(Icons.school),
-                          title: Text(suggestion['name']),
-                        );
-                      },
-                      onSuggestionSelected: (suggestion) {
-                        setState(() {
-                          _education.name = suggestion['name'];
-                        });
-                      },
-                    )
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          body: Stack(
+            fit: prefix0.StackFit.expand,
+            children: <Widget>[
+              new SingleChildScrollView(
+                child: new Padding(
+                  padding: EdgeInsets.all(50.0*factor),
+                  child: new Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       new Padding(
-                        padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                        padding: EdgeInsets.only(bottom: 10.0*factor),
                         child: new Text(
-                          '学历：',
+                          '学校名称：',
                           textAlign: TextAlign.left,
                           style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(
-                          top: 20.0*factor,
-                          bottom: 10.0*factor,
-                          left: 10.0*factor,
-                          right: 20.0*factor
-                        ),
-                        child: new InkWell(
-                          onTap: () {
-                            // _showJobStatus(context);
-                            YCPicker.showYCPicker(
-                              context,
-                              selectItem: (res) {
-                                setState(() {
-                                  _education.academic = academics.indexOf(res);
-                                });
-                              },
-                              data: academics,
+                        padding: EdgeInsets.only(bottom: 16.0*factor),
+                        child: TypeAheadField(
+                          textFieldConfiguration: TextFieldConfiguration(
+                            autofocus: true,
+                            onChanged: (val) {
+                              setState(() {
+                                _education.name = val;
+                              });
+                            },
+                            controller: TextEditingController.fromValue(
+                              TextEditingValue(
+                                text: _education.name,
+                                selection: TextSelection.fromPosition(
+                                  TextPosition(
+                                    affinity: TextAffinity.downstream,
+                                    offset: _education.name.length
+                                  )
+                                )
+                              )
+                            ),
+                            style: TextStyle(fontSize: 26*factor),
+                            decoration: new InputDecoration(
+                              hintText: "请输入学校名称",
+                              hintStyle: new TextStyle(
+                                  color: const Color(0xFF808080),
+                                  fontSize: 26.0*factor
+                              ),
+                              border: new UnderlineInputBorder(
+                                borderSide: BorderSide(width: 1.0*factor)
+                              ),
+                              contentPadding: EdgeInsets.only(
+                                top: 20.0*factor,
+                                bottom: 20.0*factor,
+                              )
+                            ),
+                          ),
+                          suggestionsCallback: (pattern) async {
+                            Response response = await Api().getSchoolSuggestions(pattern);
+                            return response.data;
+                          },
+                          itemBuilder: (context, suggestion) {
+                            return ListTile(
+                              leading: Icon(Icons.school),
+                              title: Text(suggestion['name']),
                             );
                           },
-                          child: new Text(_education.academic == null ? '请选择' : academics[_education.academic], style: TextStyle(fontSize: 22.0*factor),),
-                        ) 
+                          onSuggestionSelected: (suggestion) {
+                            setState(() {
+                              _education.name = suggestion['name'];
+                            });
+                          },
+                        )
                       ),
-                    ],
-                  ),
-                  new Divider(),
-                  new Padding(
-                    padding: EdgeInsets.only(top: 20*factor, bottom: 10.0*factor),
-                    child: new Text(
-                      '专业：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 28.0*factor),
-                    ),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
-                    child: new TextField(
-                      style: TextStyle(fontSize: 26.0*factor),
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          text: _education.major,
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: _education.major.length
+                      new Padding(
+                        padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                        child: new Text(
+                          '专业：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 28.0*factor),
+                        ),
+                      ),
+                      new Padding(
+                        padding: EdgeInsets.only(bottom: 16.0*factor),
+                        child: new TextField(
+                          style: TextStyle(fontSize: 26.0*factor),
+                          controller: TextEditingController.fromValue(
+                            TextEditingValue(
+                              text: _education.major,
+                              selection: TextSelection.fromPosition(
+                                TextPosition(
+                                  affinity: TextAffinity.downstream,
+                                  offset: _education.major.length
+                                )
+                              )
                             )
-                          )
-                        )
-                      ),
-                      onChanged: (val) {
-                        setState(() {
-                          _education.major = val;
-                        });
-                      },
-                      decoration: new InputDecoration(
-                        hintText: "请输入专业名称",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 26*factor
-                        ),
-                        border: new UnderlineInputBorder(),
-                        contentPadding: EdgeInsets.all(10.0*factor)
-                      ),
-                    ),
-                  ),
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      new Text(
-                        '开始时间：',
-                        textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 28.0*factor),
-                      ),
-
-                      new InkWell(
-                        onTap: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: DateTime.parse(_education.startTime),
-                            firstDate: DateTime.parse('1900-01-01'), // 减 30 天
-                            lastDate: new DateTime.now(),       // 加 30 天
-                          ).then((DateTime val) {
+                          ),
+                          onChanged: (val) {
                             setState(() {
-                              _education.startTime = formatDate(val, [yyyy, '-', mm, '-', dd]);
+                              _education.major = val;
                             });
-                          }).catchError((err) {
-                            print(err);
-                          });
-                        },
-                        child: new Text(_education.startTime, style: TextStyle(fontSize: 24*factor),),
-                      )
-                    ],
-                  ),
-                  new Divider(),
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      new Text(
-                        '结束时间：',
-                        textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 24.0*factor),
-                      ),
-
-                      new InkWell(
-                        onTap: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: DateTime.parse(
-                              _education.endTime == null ? formatDate(new DateTime.now(), [yyyy, '-', mm, '-', dd]) : _education.endTime
+                          },
+                          decoration: new InputDecoration(
+                            hintText: "请输入专业名称",
+                            hintStyle: new TextStyle(
+                                color: const Color(0xFF808080),
+                                fontSize: 26*factor
                             ),
-                            firstDate: DateTime.parse('1900-01-01'), // 减 30 天
-                            lastDate: new DateTime.now(),       // 加 30 天
-                          ).then((DateTime val) {
-                            setState(() {
-                              String currentDate = formatDate(new DateTime.now(), [yyyy, '-', mm, '-', dd]);
-                              if (formatDate(val, [yyyy, '-', mm, '-', dd]) == currentDate) {
-                                _education.endTime = null;
-                              } else {
-                                _education.endTime = formatDate(val, [yyyy, '-', mm, '-', dd]);
-                              }
-                            });
-                          }).catchError((err) {
-                            print(err);
-                          });
-                        },
-                        child: new Text(_education.endTime == null ? '至今' : _education.endTime, style: TextStyle(fontSize: 24*factor),),
-                      )
-                    ],
-                  ),
-                  new Divider(),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
-                    child: new Text(
-                      '在校经历：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 24.0*factor),
-                    ),
-                  ),
-                  new TextField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 5,
-                    style: new TextStyle(fontSize: 26.0*factor),
-                    controller: TextEditingController.fromValue(
-                      TextEditingValue(
-                        text: _education.detail,
-                        selection: TextSelection.fromPosition(
-                          TextPosition(
-                            affinity: TextAffinity.downstream,
-                            offset: _education.detail.length
-                          )
-                        )
-                      )
-                    ),
-                    onChanged: (val) {
-                      setState(() {
-                        _education.detail = val;
-                      });
-                    },
-                    decoration: new InputDecoration(
-                      hintText: "请输入在校经历",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080),
-                          fontSize: 26.0*factor
-                      ),
-                      border: new OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
-                      ),
-                      contentPadding: EdgeInsets.all(15.0*factor)
-                    ),
-                  ),
-                  Container(
-                    height: 50*factor,
-                  ),
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      FlatButton(
-                        child: new Container(
-                          width: 200*factor,
-                          height: 70*factor,
-                          child: new Center(
-                            child: Text(
-                              "删除",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 28.0*factor,
-                                letterSpacing: 40*factor
-                              ),
-                            ),
+                            border: new UnderlineInputBorder(),
+                            contentPadding: EdgeInsets.only(
+                              top: 20.0*factor,
+                              bottom: 20.0*factor,
+                            )
                           ),
                         ),
-                        color: Colors.orange,
-                        onPressed: () {
-                          if (isRequesting) return;
-                          showDialog<Null>(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) {
-                              return new AlertDialog(
-                                content: Text("确认要删除么？", style: TextStyle(fontSize: 28*factor),),
-                                actions: <Widget>[
-                                  new FlatButton(
-                                    child: new Text('确定', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      setState(() {
-                                        isRequesting = true;
-                                      });
-                                      // 发送给webview，让webview登录后再取回token
-                                      Api().deleteEducation(_education.academic, _education.id, userName)
-                                        .then((Response response) {
-                                          setState(() {
-                                            isRequesting = false;
-                                          });
-                                          if(response.data['code'] != 1) {
-                                            Scaffold.of(context).showSnackBar(new SnackBar(
-                                              content: new Text("删除失败！"),
-                                            ));
-                                            return;
-                                          }
-                                          Resume resume = state.resume;
-                                          resume.educations.removeWhere((Education education) => education.id == _education.id);
-                                          if(_education.academic == resume.personalInfo.academic) {
-                                            resume.personalInfo.academic = resume.educations[0].academic;
-                                            resume.educations.forEach((Education education) {
-                                              if (education.academic > resume.personalInfo.academic) {
-                                                resume.personalInfo.academic = education.academic;
-                                              }
-                                            });
-                                          }
-                                          StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-                                          Navigator.pop(context);
-                                        })
-                                        .catchError((e) {
-                                          setState(() {
-                                            isRequesting = false;
-                                          });
-                                          print(e);
-                                        });
-                                    },
-                                  ),
-                                  new FlatButton(
-                                    child: new Text('取消', style: TextStyle(fontSize: 24*factor),),
-                                    onPressed: () {
-                                        Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
+                      ),
+                      
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          new Padding(
+                            padding: EdgeInsets.only(top: 30.0*factor, bottom: 20.0*factor),
+                            child: new Text(
+                              '学历：',
+                              textAlign: TextAlign.left,
+                              style: new TextStyle(fontSize: 28.0*factor),
+                            ),
+                          ),
+                          new Padding(
+                            padding: EdgeInsets.only(
+                              top: 20.0*factor,
+                              bottom: 10.0*factor,
+                              left: 10.0*factor,
+                              right: 20.0*factor
+                            ),
+                            child: new InkWell(
+                              onTap: () {
+                                // _showJobStatus(context);
+                                YCPicker.showYCPicker(
+                                  context,
+                                  selectItem: (res) {
+                                    setState(() {
+                                      _education.academic = academics.indexOf(res);
+                                    });
+                                  },
+                                  data: academics,
+                                );
+                              },
+                              child: new Text(_education.academic == null ? '请选择' : academics[_education.academic], style: TextStyle(fontSize: 26.0*factor),),
+                            ) 
+                          ),
+                        ],
+                      ),
+                      new Divider(),
+                      
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          new Padding(
+                            padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
+                            child: new Text(
+                              '开始时间：',
+                              textAlign: TextAlign.left,
+                              style: new TextStyle(fontSize: 28.0*factor),
+                            ),
+                          ),
+                          new InkWell(
+                            onTap: () {
+                              showDatePicker(
+                                context: context,
+                                initialDate: DateTime.parse(_education.startTime),
+                                firstDate: DateTime.parse('1900-01-01'), // 减 30 天
+                                lastDate: new DateTime.now(),       // 加 30 天
+                              ).then((DateTime val) {
+                                setState(() {
+                                  _education.startTime = formatDate(val, [yyyy, '-', mm, '-', dd]);
+                                });
+                              }).catchError((err) {
+                                print(err);
+                              });
                             },
-                          );
-                        }
+                            child: new Text(_education.startTime, style: TextStyle(fontSize: 26*factor),),
+                          )
+                        ],
                       ),
-                      FlatButton(
-                        child: new Container(
-                          width: 200*factor,
-                          height: 70*factor,
-                          child: new Center(
-                            child: Text(
-                              "保存",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 28.0*factor,
-                                letterSpacing: 40*factor
-                              ),
+                      new Divider(),
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          new Padding(
+                            padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
+                            child: new Text(
+                              '结束时间：',
+                              textAlign: TextAlign.left,
+                              style: new TextStyle(fontSize: 28.0*factor),
                             ),
                           ),
-                        ),
-                        color: Theme.of(context).primaryColor,
-                        onPressed: () {
-                          if (isRequesting) return;
-                          setState(() {
-                            isRequesting = true;
-                          });
-                          // 发送给webview，让webview登录后再取回token
-                          Api().saveEducation(
-                            _education.name,
-                            _education.academic,
-                            _education.major,
-                            _education.startTime,
-                            _education.endTime,
-                            _education.detail,
-                            userName,
-                            _education.id,
-                          )
-                            .then((Response response) {
-                              setState(() {
-                                isRequesting = false;
-                              });
-                              if(response.data['code'] != 1) {
-                                Scaffold.of(context).showSnackBar(new SnackBar(
-                                  content: new Text("保存失败！"),
-                                ));
-                                return;
-                              }
-                              Resume resume = state.resume;
-                              if(_education.academic > resume.personalInfo.academic) {
-                                resume.personalInfo.academic = _education.academic;
-                              }
-                              if(_education.id == null) {
-                                resume.educations.add(Education.fromMap(response.data['info']));
-                                StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-                              } else {
-                                for (var i = 0; i < resume.educations.length; i++) {
-                                  if(resume.educations[i].id == _education.id) {
-                                    resume.educations[i] = _education;
-                                    break;
+
+                          new InkWell(
+                            onTap: () {
+                              showDatePicker(
+                                context: context,
+                                initialDate: DateTime.parse(
+                                  _education.endTime == null ? formatDate(new DateTime.now(), [yyyy, '-', mm, '-', dd]) : _education.endTime
+                                ),
+                                firstDate: DateTime.parse('1900-01-01'), // 减 30 天
+                                lastDate: new DateTime.now(),       // 加 30 天
+                              ).then((DateTime val) {
+                                setState(() {
+                                  String currentDate = formatDate(new DateTime.now(), [yyyy, '-', mm, '-', dd]);
+                                  if (formatDate(val, [yyyy, '-', mm, '-', dd]) == currentDate) {
+                                    _education.endTime = null;
+                                  } else {
+                                    _education.endTime = formatDate(val, [yyyy, '-', mm, '-', dd]);
                                   }
-                                }
-                                StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-                              }
-                              
-                              Navigator.pop(context, response.data['info']);
-                            })
-                            .catchError((e) {
-                              setState(() {
-                                isRequesting = false;
+                                });
+                              }).catchError((err) {
+                                print(err);
                               });
-                              print(e);
-                            });
-                        }
+                            },
+                            child: new Text(_education.endTime == null ? '至今' : _education.endTime, style: TextStyle(fontSize: 26*factor),),
+                          )
+                        ],
                       ),
-                    ]
-                  )
-                ],
+                      new Divider(),
+                      new Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20.0*factor),
+                        child: new Text(
+                          '在校经历：',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 28.0*factor),
+                        ),
+                      ),
+                      TextArea(
+                        text: _education.detail,
+                        callback: (String val) {
+                          setState(() {
+                            _education.detail = val;
+                          });
+                        },
+                      ),
+                      prefix0.Divider()
+                    ],
+                  ),
+                )
               ),
-            )
+              Positioned(
+                right: 90*factor,
+                bottom: 40*factor,
+                child: RaisedButton(
+                  shape: new CircleBorder(
+                    side: new BorderSide(
+                        //设置 界面效果
+                        color: Theme.of(context).primaryColor,
+                        style: BorderStyle.none,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.close,
+                    size: 50.0*factor,
+                    color: Colors.white,
+                  ),
+                  color: Colors.orange,
+                  onPressed: () {
+                    if (isRequesting) return;
+                    showDialog<Null>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return new AlertDialog(
+                          content: Text("确认要删除么？", style: TextStyle(fontSize: 28*factor),),
+                          actions: <Widget>[
+                            new FlatButton(
+                              child: new Text('确定', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                setState(() {
+                                  isRequesting = true;
+                                });
+                                // 发送给webview，让webview登录后再取回token
+                                Api().deleteEducation(_education.academic, _education.id, userName)
+                                  .then((Response response) {
+                                    setState(() {
+                                      isRequesting = false;
+                                    });
+                                    if(response.data['code'] != 1) {
+                                      Scaffold.of(context).showSnackBar(new SnackBar(
+                                        content: new Text("删除失败！"),
+                                      ));
+                                      return;
+                                    }
+                                    Resume resume = state.resume;
+                                    resume.educations.removeWhere((Education education) => education.id == _education.id);
+                                    if(_education.academic == resume.personalInfo.academic) {
+                                      resume.personalInfo.academic = resume.educations[0].academic;
+                                      resume.educations.forEach((Education education) {
+                                        if (education.academic > resume.personalInfo.academic) {
+                                          resume.personalInfo.academic = education.academic;
+                                        }
+                                      });
+                                    }
+                                    StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                                    Navigator.pop(context);
+                                  })
+                                  .catchError((e) {
+                                    setState(() {
+                                      isRequesting = false;
+                                    });
+                                    print(e);
+                                  });
+                              },
+                            ),
+                            new FlatButton(
+                              child: new Text('取消', style: TextStyle(fontSize: 24*factor),),
+                              onPressed: () {
+                                  Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                ),
+              ),
+              Positioned(
+                right: 0*factor,
+                bottom: 40*factor,
+                child: RaisedButton(
+                  shape: new CircleBorder(
+                    side: new BorderSide(
+                        //设置 界面效果
+                        color: Colors.orange,
+                        style: BorderStyle.none,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.check,
+                    size: 50.0*factor,
+                    color: Colors.white,
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () {
+                    if (isRequesting) return;
+                    setState(() {
+                      isRequesting = true;
+                    });
+                    // 发送给webview，让webview登录后再取回token
+                    Api().saveEducation(
+                      _education.name,
+                      _education.academic,
+                      _education.major,
+                      _education.startTime,
+                      _education.endTime,
+                      _education.detail,
+                      userName,
+                      _education.id,
+                    )
+                      .then((Response response) {
+                        setState(() {
+                          isRequesting = false;
+                        });
+                        if(response.data['code'] != 1) {
+                          Scaffold.of(context).showSnackBar(new SnackBar(
+                            content: new Text("保存失败！"),
+                          ));
+                          return;
+                        }
+                        Resume resume = state.resume;
+                        if(_education.academic > resume.personalInfo.academic) {
+                          resume.personalInfo.academic = _education.academic;
+                        }
+                        if(_education.id == null) {
+                          resume.educations.add(Education.fromMap(response.data['info']));
+                          StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                        } else {
+                          for (var i = 0; i < resume.educations.length; i++) {
+                            if(resume.educations[i].id == _education.id) {
+                              resume.educations[i] = _education;
+                              break;
+                            }
+                          }
+                          StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
+                        }
+                        
+                        Navigator.pop(context, response.data['info']);
+                      })
+                      .catchError((e) {
+                        setState(() {
+                          isRequesting = false;
+                        });
+                        print(e);
+                      });
+                  }
+                ),
+              )
+            ],
           )
         );
       }

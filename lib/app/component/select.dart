@@ -144,7 +144,7 @@ class _YCPickerState extends State<_YCPickerWidget> {
                                     '取消',
                                     style: new TextStyle(
                                       color: Theme.of(context).primaryColor,
-                                      fontSize: 24*factor
+                                      fontSize: 34*factor
                                     ),
                                   ),
                                 ),
@@ -159,7 +159,7 @@ class _YCPickerState extends State<_YCPickerWidget> {
                                     '确定',
                                     style: new TextStyle(
                                       color: Theme.of(context).primaryColor,
-                                      fontSize: 24*factor
+                                      fontSize: 34*factor
                                     ),
                                   ),
                                 ),
@@ -179,7 +179,7 @@ class _YCPickerState extends State<_YCPickerWidget> {
                                     return new Align(
                                       child: new Text(
                                         v,
-                                        style:TextStyle(fontSize: 24*factor)
+                                        style:TextStyle(fontSize: 34*factor, height: 2, color: Colors.grey[700])
                                       ),
                                       alignment: Alignment.center,
                                     );
@@ -244,7 +244,7 @@ class _MyYCPickerState extends State<_MyYCPicker> {
           backgroundColor: Colors.white,
           scrollController: widget.controller,
           key: widget.key,
-          itemExtent: 50.0*factor,
+          itemExtent: 70.0*factor,
           onSelectedItemChanged: (index) {
             if (widget.changed != null) {
               widget.changed(index);

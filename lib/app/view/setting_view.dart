@@ -102,10 +102,10 @@ class SettingViewState extends State<SettingView> {
                         builder: (BuildContext context) {
                           return new AlertDialog(
                             title: Center(child: Text("注销确认", style: TextStyle(fontSize: 28*factor),),),
-                            content: Text("  确认要注销您的账号吗？注销后别人无法再预览或搜索查阅到您的信息，您也无法登陆我们的app", style: TextStyle(fontSize: 24*factor),),
+                            content: Text("  确认要注销您的账号吗？注销后别人无法再预览或搜索查阅到您的信息，您也无法登陆我们的app", style: TextStyle(fontSize: 28*factor, height: 1.6),),
                             actions: <Widget>[
                               new FlatButton(
-                                child: new Text('确定', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                                child: new Text('确定', style: TextStyle(fontSize: 28*factor, color: Colors.orange),),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   setState(() {
@@ -167,7 +167,7 @@ class SettingViewState extends State<SettingView> {
                                 },
                               ),
                               new FlatButton(
-                                child: new Text('取消', style: TextStyle(fontSize: 24*factor),),
+                                child: new Text('取消', style: TextStyle(fontSize: 28*factor),),
                                 onPressed: () {
                                     Navigator.of(context).pop();
                                 },
@@ -195,11 +195,11 @@ class SettingViewState extends State<SettingView> {
                                   padding: EdgeInsets.only(right: 15.0*factor),
                                   child: Icon(
                                     Icons.delete_forever,
-                                    size: 30.0*factor,
+                                    size: 34.0*factor,
                                     color: Colors.red
                                   ),
                                 ),
-                                new Text('注销账号', style: TextStyle(fontSize: 24.0*factor),),
+                                new Text('注销账号', style: TextStyle(fontSize: 28.0*factor),),
                               ],
                             ),
                           ),
@@ -229,11 +229,11 @@ class SettingViewState extends State<SettingView> {
                             ),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.lock_open, size: 30.0*factor, color: Theme.of(context).primaryColor,),
+                                new Icon(Icons.lock_open, size: 34.0*factor, color: Theme.of(context).primaryColor,),
                                 new Padding(
                                   padding: EdgeInsets.only(right: 15.0*factor),
                                 ),
-                                new Text('简历公开', style: TextStyle(fontSize: 24.0*factor),),
+                                new Text('简历公开', style: TextStyle(fontSize: 28.0*factor),),
                               ],
                             ),
                           ),
@@ -307,11 +307,11 @@ class SettingViewState extends State<SettingView> {
                             ),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.share, size: 30.0*factor, color: Colors.orange[400],),
+                                new Icon(Icons.share, size: 34.0*factor, color: Colors.orange[400],),
                                 new Padding(
                                   padding: EdgeInsets.only(right: 15.0*factor),
                                 ),
-                                new Text('丫财应用分享', style: TextStyle(fontSize: 24.0*factor),),
+                                new Text('丫财应用分享', style: TextStyle(fontSize: 28.0*factor),),
                               ],
                             ),
                           )
@@ -341,11 +341,11 @@ class SettingViewState extends State<SettingView> {
                             ),
                             child: new Row(
                               children: <Widget>[
-                                new Icon(Icons.system_update, size: 30.0*factor),
+                                new Icon(Icons.system_update, size: 34.0*factor),
                                 new Padding(
                                   padding: EdgeInsets.only(right: 15.0*factor),
                                 ),
-                                new Text('版本更新检查', style: TextStyle(fontSize: 24.0*factor),),
+                                new Text('版本更新检查', style: TextStyle(fontSize: 28.0*factor),),
                               ],
                             ),
                           ),
@@ -353,7 +353,7 @@ class SettingViewState extends State<SettingView> {
                             padding: EdgeInsets.only(
                               right: 45.0*factor,
                             ),
-                            child: Text(versionStr, style: TextStyle(fontSize: 26*factor),),
+                            child: Text(versionStr, style: TextStyle(fontSize: 28*factor, color: Colors.grey[600]),),
                           )
                         ],
                       ),

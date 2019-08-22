@@ -37,15 +37,15 @@ class YCSelectState extends State<YCSelect> {
             });
           },
           child: Container(
-            height: 46.0*factor,
+            height: 60.0*factor,
             width: widget.itemWidth,
             child: Row(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10*factor),
-                  child: Text(widget.items[widget.selectedIndex], style: TextStyle(fontSize: 22*factor),),
+                  padding: EdgeInsets.all(10*factor),
+                  child: Text(widget.items[widget.selectedIndex], style: TextStyle(fontSize: 26*factor),),
                 ),
-                Icon(isMenuOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down, size: 36*factor,),
+                Icon(isMenuOpen ? Icons.arrow_drop_up : Icons.arrow_drop_down, size: 40*factor,),
               ],
             ),
           ),
@@ -53,10 +53,10 @@ class YCSelectState extends State<YCSelect> {
         Stack(
           children: <Widget>[
             isMenuOpen ? Positioned(
-              top: 46.0*factor,
+              top: 60.0*factor,
               child: Container(
                 width: widget.itemWidth,
-                height: 46*widget.items.length*factor,
+                height: 70*widget.items.length*factor,
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: widget.items.length, itemBuilder: (BuildContext context, int index) {
@@ -68,7 +68,7 @@ class YCSelectState extends State<YCSelect> {
                         });
                       },
                       child: Container(
-                        height: 46.0*factor,
+                        height: 70.0*factor,
                         width: widget.itemWidth,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -79,7 +79,7 @@ class YCSelectState extends State<YCSelect> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text(widget.items[index], style: TextStyle(fontSize: 22*factor),),
+                            Text(widget.items[index], style: TextStyle(fontSize: 26*factor),),
                           ],
                         )
                       ),

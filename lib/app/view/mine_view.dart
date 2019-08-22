@@ -53,7 +53,7 @@ class MineTabState extends State<MineTab> {
             child: AppBar(elevation: 0.0,),
             preferredSize: Size.fromHeight(0)
           ),
-          backgroundColor: Colors.grey[50],
+          backgroundColor: Colors.grey[100],
           body: Stack(
             children: <Widget>[
               SafeArea(

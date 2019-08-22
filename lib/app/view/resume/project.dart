@@ -34,7 +34,7 @@ class ProjectViewState extends State<ProjectView>
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
-    TextStyle detailStyle = new TextStyle(fontSize: 22.0*factor, color: Colors.grey);
+    TextStyle detailStyle = new TextStyle(fontSize: 26.0*factor, color: Colors.grey);
     return new InkWell(
       onTap: () {
         if(!widget._editable) return;
@@ -57,21 +57,24 @@ class ProjectViewState extends State<ProjectView>
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Container(height: 20*factor,),
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new Text(widget._project.name, style: new TextStyle(fontSize: 24.0*factor) ),
+              new Text(widget._project.name, style: new TextStyle(fontSize: 28.0*factor) ),
               new Text(
                 "${formatDate(DateTime.parse(widget._project.startTime), [yyyy, '-', mm, '-', dd])}-${widget._project.endTime == null ? '至今' : formatDate(DateTime.parse(widget._project.endTime), [yyyy, '-', mm, '-', dd])}",
                 style: detailStyle
               ),
             ]
           ),
+          Container(height: 20*factor,),
           new Text(widget._project.role, style: detailStyle),
           new Padding(
-            padding: EdgeInsets.only(bottom: 5.0*factor),
+            padding: EdgeInsets.only(bottom: 20.0*factor),
           ),
-          new Text(widget._project.detail, style: new TextStyle(fontSize: 22.0*factor)),
+          new Text(widget._project.detail, style: new TextStyle(fontSize: 26.0*factor)),
+          Container(height: 20*factor,),
         ],
       ),
     );

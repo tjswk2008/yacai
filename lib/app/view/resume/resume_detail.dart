@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'dart:ui';
 import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_app/app/view/resume/personal_info.dart';
@@ -57,22 +58,19 @@ class ResumeDetailState extends State<ResumeDetail>
 
   Widget addExperience(double factor, String title, String btnName, List list, IndexedWidgetBuilder itemBuilder) {
     return new Padding(
-      padding: EdgeInsets.only(
-        top: 5.0*factor,
-        left: 10.0*factor,
-        right: 10.0*factor
-      ),
+      padding: EdgeInsets.all(30.0*factor),
       child: new Column(
         children: <Widget>[
           new Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               new Padding(
-                padding: EdgeInsets.only(bottom: 10.0*factor),
+                padding: EdgeInsets.only(bottom: 30.0*factor),
                 child: new Text(
                   title,
                   style: new TextStyle(
-                    fontSize: 24.0*factor
+                    fontSize: 28.0*factor,
+                    color: Colors.black
                   )
                 ),
               )
@@ -88,7 +86,7 @@ class ResumeDetailState extends State<ResumeDetail>
             ),
           ),
           new Padding(
-            padding: EdgeInsets.only(bottom: 15.0*factor),
+            padding: EdgeInsets.only(bottom: 30.0*factor),
           ),
           addButton(btnName, factor),
         ],
@@ -155,13 +153,13 @@ class ResumeDetailState extends State<ResumeDetail>
         ));
       },
       child: new Container(
-        height: 50.0*factor,
+        height: 70.0*factor,
         decoration: new BoxDecoration(
           border: new Border.all(color: const Color(0xffcccccc)),
-          borderRadius: new BorderRadius.all(new Radius.circular(3.0*factor))
+          borderRadius: new BorderRadius.all(new Radius.circular(6.0*factor))
         ),
         child: new Center(
-          child: new Text(text, style: new TextStyle(color: Colors.black, fontSize: 18.0*factor),),
+          child: new Text(text, style: new TextStyle(fontSize: 28.0*factor, color: Colors.grey[700]),),
         ),
       ),
     );
@@ -222,7 +220,7 @@ class ResumeDetailState extends State<ResumeDetail>
                             ),
                             actions: <Widget>[
                               new FlatButton(
-                                child: new Text('知道了', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                                child: new Text('知道了', style: TextStyle(fontSize: 26*factor, color: Colors.orange),),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -241,7 +239,7 @@ class ResumeDetailState extends State<ResumeDetail>
                           content: Text("刷新成功~", style: TextStyle(fontSize: 28*factor),),
                           actions: <Widget>[
                             new FlatButton(
-                              child: new Text('知道了', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                              child: new Text('知道了', style: TextStyle(fontSize: 26*factor, color: Colors.orange),),
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
@@ -290,27 +288,22 @@ class ResumeDetailState extends State<ResumeDetail>
                   padding: EdgeInsets.only(
                     left: 25.0*factor*factor,
                     right: 25.0*factor,
-                    top: 5.0*factor
+                    top: 20.0*factor
                   ),
                 ),
                 new Container(
-                  padding: EdgeInsets.only(
-                    left: 15.0*factor,
-                    right: 15.0*factor,
-                  ),
                   color: Colors.white,
                   child: new Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       new PersonalInfoView(appState.resume.personalInfo, true, true),
+                      Container(
+                        color: Colors.grey[100],
+                        height: 10*factor,
+                      ),
                       new Padding(
-                        padding: EdgeInsets.only(
-                          top: 5.0*factor,
-                          bottom: 5.0*factor,
-                          left: 10.0*factor,
-                          right: 10.0*factor
-                        ),
+                        padding: EdgeInsets.all(30.0*factor),
                         child: new InkWell(
                           onTap: () {
                             // _showJobStatus(context);
@@ -356,21 +349,21 @@ class ResumeDetailState extends State<ResumeDetail>
                               new Text(
                                 "求职状态",
                                 style: new TextStyle(
-                                  fontSize: 24.0*factor
+                                  fontSize: 28.0*factor,
+                                  color: Colors.black
                                 )
                               ),
-                              new Text(appState.resume.jobStatus == null ? '请选择' : appState.resume.jobStatus, style: TextStyle(fontSize: 22.0*factor),)
+                              new Text(appState.resume.jobStatus == null ? '请选择' : appState.resume.jobStatus, style: TextStyle(fontSize: 26.0*factor),)
                             ],
                           ),
                         ) 
                       ),
-                      new Divider(),
+                      Container(
+                        color: Colors.grey[100],
+                        height: 10*factor,
+                      ),
                       new Padding(
-                        padding: EdgeInsets.only(
-                          top: 5.0*factor,
-                          bottom: 5.0*factor,
-                          left: 10.0*factor
-                        ),
+                        padding: EdgeInsets.all(30.0*factor),
                         child: new Column(
                           children: <Widget>[
                             new Row(
@@ -379,13 +372,14 @@ class ResumeDetailState extends State<ResumeDetail>
                                 new Text(
                                   "求职期望",
                                   style: new TextStyle(
-                                    fontSize: 24.0*factor
+                                    fontSize: 28.0*factor,
+                                    color: Colors.black
                                   )
                                 ),
                               ],
                             ),
                             new Padding(
-                              padding: EdgeInsets.only(top: 20.0*factor),
+                              padding: EdgeInsets.only(top: 30.0*factor),
                             ),
                             new Padding(
                               padding: EdgeInsets.only(left: 10.0*factor),
@@ -394,7 +388,10 @@ class ResumeDetailState extends State<ResumeDetail>
                           ],
                         ),
                       ),
-                      new Divider(),
+                      Container(
+                        color: Colors.grey[100],
+                        height: 10*factor,
+                      ),
                       addExperience(
                         factor,
                         "工作经历：",
@@ -409,7 +406,10 @@ class ResumeDetailState extends State<ResumeDetail>
                           );
                         }
                       ),
-                      new Divider(),
+                      Container(
+                        color: Colors.grey[100],
+                        height: 10*factor,
+                      ),
                       addExperience(
                         factor,
                         "项目经历：",
@@ -424,7 +424,10 @@ class ResumeDetailState extends State<ResumeDetail>
                           );
                         }
                       ),
-                      new Divider(),
+                      Container(
+                        color: Colors.grey[100],
+                        height: 10*factor,
+                      ),
                       addExperience(
                         factor,
                         "教育经历：",
@@ -439,7 +442,10 @@ class ResumeDetailState extends State<ResumeDetail>
                           );
                         }
                       ),
-                      new Divider(),
+                      Container(
+                        color: Colors.grey[100],
+                        height: 10*factor,
+                      ),
                       addExperience(
                         factor,
                         "证书：",
