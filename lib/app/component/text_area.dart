@@ -29,7 +29,11 @@ class TextAreaState extends State<TextArea> {
           Container(
             width: 600*factor,
             margin: EdgeInsets.symmetric(vertical: 20*factor),
-            child: Text(widget.text, style: TextStyle(fontSize: 26.0*factor,), overflow: TextOverflow.ellipsis,),
+            child: Text(
+              widget.text == '' ? '请输入内容' : widget.text,
+              style: TextStyle(fontSize: 26.0*factor, color: widget.text == '' ? Colors.grey[400] : Colors.grey[700]),
+              overflow: TextOverflow.ellipsis
+            ),
           ),
           Icon(Icons.chevron_right, size: 32*factor)
         ],

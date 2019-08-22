@@ -8,13 +8,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/actions/actions.dart';
-import 'package:custom_radio/custom_radio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter_app/app/component/select.dart';
 import 'package:flutter_app/app/component/location_picker/location_picker.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/util/util.dart';
+import 'package:flutter_app/app/component/text_area.dart';
 
 class PersonalInfoEditView extends StatefulWidget {
 
@@ -80,7 +80,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
             children: <Widget>[
               new SingleChildScrollView(
                 child: new Padding(
-                  padding: EdgeInsets.all(30.0*factor),
+                  padding: EdgeInsets.all(50.0*factor),
                   child: new Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -131,7 +131,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 10.0*factor),
+                        padding: EdgeInsets.symmetric(vertical: 20.0*factor),
                         child: new Text(
                           '姓名：',
                           textAlign: TextAlign.left,
@@ -164,98 +164,49 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             hintText: "请输入您的姓名",
                             hintStyle: new TextStyle(
                                 color: const Color(0xFF808080),
-                                fontSize: 20.0*factor
                             ),
                             border: new UnderlineInputBorder(
                               borderSide: BorderSide(width: 1.0*factor)
                             ),
-                            contentPadding: EdgeInsets.all(10.0*factor)
+                            contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
                           ),
                         ),
                       ),
-                      new Padding(
-                        padding: EdgeInsets.only(bottom: 10.0*factor),
-                        child: new Text(
-                          '性别：',
-                          textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 28.0*factor),
-                        ),
-                      ),
-                      
-                      Container(
-                        height: 80*factor,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: 3,
-                          itemBuilder: (BuildContext context, int index) {
-                            return new Row(
-                              children: <Widget>[
-                                CustomRadio<String, dynamic>(
-                                  value: genders[index],
-                                  groupValue: personalInfo.gender,
-                                  animsBuilder: (AnimationController controller) => [
-                                    CurvedAnimation(
-                                      parent: controller,
-                                      curve: Curves.easeInOut
-                                    ),
-                                    ColorTween(
-                                      begin: Colors.grey[600],
-                                      end: Theme.of(context).primaryColor
-                                    ).animate(controller),
-                                    ColorTween(
-                                      begin: Theme.of(context).primaryColor,
-                                      end: Colors.grey[600]
-                                    ).animate(controller),
-                                  ],
-                                  builder: (BuildContext context, List<dynamic> animValues, Function updateState, String value) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          personalInfo.gender = value;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 28.0*factor,
-                                        height: 28.0*factor,
-                                        alignment: Alignment.center,
-                                        margin: EdgeInsets.only(
-                                          top: 10.0*factor,
-                                          bottom: 10*factor,
-                                          right: 10*factor,
-                                          left: 120*factor
-                                        ),
-                                        padding: EdgeInsets.all(3.0*factor),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: personalInfo.gender == value ? Theme.of(context).primaryColor : Colors.grey[600],
-                                            width: 1.0*factor
-                                          )
-                                        ),
-                                        child: personalInfo.gender == value ? Container(
-                                          width: 14.0*factor,
-                                          height: 14.0*factor,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: animValues[1],
-                                            border: Border.all(
-                                              color: animValues[2],
-                                              width: 1.0*factor
-                                            )
-                                          ),
-                                        ) : Container(),
-                                      )
-                                    );
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          new Padding(
+                            padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
+                            child: new Text(
+                              '性别：',
+                              textAlign: TextAlign.left,
+                              style: new TextStyle(fontSize: 28.0*factor),
+                            ),
+                          ),
+                          new Padding(
+                            padding: EdgeInsets.only(
+                              top: 20.0*factor,
+                              bottom: 20.0*factor,
+                              left: 10.0*factor,
+                              right: 20.0*factor
+                            ),
+                            child: new InkWell(
+                              onTap: () {
+                                // _showJobStatus(context);
+                                YCPicker.showYCPicker(
+                                  context,
+                                  selectItem: (res) {
+                                    setState(() {
+                                      personalInfo.gender =  res;
+                                    });
                                   },
-                                ),
-                                new Text(genders[index], style: new TextStyle(fontSize: 28.0*factor),),
-                              ]
-                            );
-                          },
-                          scrollDirection: Axis.horizontal,
-                          physics: NeverScrollableScrollPhysics(),
-                        ),
+                                  data: genderTypeArr,
+                                );
+                              },
+                              child: new Text(personalInfo.gender == null ? '请选择' : personalInfo.gender, style: TextStyle(fontSize: 26.0*factor),),
+                            ) 
+                          ),
+                        ],
                       ),
                       
                       new Divider(),
@@ -263,7 +214,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                            padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
                             child: new Text(
                               '居住地：',
                               textAlign: TextAlign.left,
@@ -282,7 +233,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                 data: areas,
                               );
                             },
-                            child: Text(personalInfo.residenceArea == null ? '请选择' : '上海市 ${personalInfo.residenceArea}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                            child: Text(personalInfo.residenceArea == null ? '请选择' : '上海市 ${personalInfo.residenceArea}', style: TextStyle(fontSize: 26.0*factor, color: Colors.grey),),
                           ),
                         ],
                       ),
@@ -291,7 +242,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                            padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
                             child: new Text(
                               '户口/国籍：',
                               textAlign: TextAlign.left,
@@ -317,7 +268,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                 },
                               );
                             },
-                            child: Text(personalInfo.nativeProvince == null ? '请选择' : '${personalInfo.nativeProvince} ${personalInfo.nativeCity}', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                            child: Text(personalInfo.nativeProvince == null ? '请选择' : '${personalInfo.nativeProvince} ${personalInfo.nativeCity}', style: TextStyle(fontSize: 26.0*factor, color: Colors.grey),),
                           ),
                         ],
                       ),
@@ -326,7 +277,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                            padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
                             child: new Text(
                               '婚姻状况：',
                               textAlign: TextAlign.left,
@@ -345,7 +296,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                 data: marriageArr,
                               );
                             },
-                            child: Text(personalInfo.marriage == null ? '请选择' : marriageArr[personalInfo.marriage], style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                            child: Text(personalInfo.marriage == null ? '请选择' : marriageArr[personalInfo.marriage], style: TextStyle(fontSize: 26.0*factor, color: Colors.grey),),
                           ),
                         ],
                       ),
@@ -355,7 +306,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                            padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
                             child: new Text(
                               '参加工作时间：',
                               textAlign: TextAlign.left,
@@ -378,13 +329,13 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                 print(err);
                               });
                             },
-                            child: new Text(personalInfo.firstJobTime == null ? '请选择' : personalInfo.firstJobTime, style: TextStyle(fontSize: 28.0*factor),),
+                            child: new Text(personalInfo.firstJobTime == null ? '请选择' : personalInfo.firstJobTime, style: TextStyle(fontSize: 26.0*factor),),
                           )
                         ],
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                        padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
                         child: new Text(
                           '微信号：',
                           textAlign: TextAlign.left,
@@ -417,15 +368,14 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             hintText: "请输入您的微信号",
                             hintStyle: new TextStyle(
                                 color: const Color(0xFF808080),
-                                fontSize: 20.0*factor
                             ),
                             border: new UnderlineInputBorder(),
-                            contentPadding: EdgeInsets.all(10.0*factor)
+                            contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
                           ),
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                        padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
                         child: new Text(
                           '邮箱：',
                           textAlign: TextAlign.left,
@@ -458,10 +408,9 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             hintText: "请输入您的邮箱",
                             hintStyle: new TextStyle(
                                 color: const Color(0xFF808080),
-                                fontSize: 20.0*factor
                             ),
                             border: new UnderlineInputBorder(),
-                            contentPadding: EdgeInsets.all(10.0*factor)
+                            contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
                           ),
                         ),
                       ),
@@ -470,7 +419,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                            padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
                             child: new Text(
                               '出生年月：',
                               textAlign: TextAlign.left,
@@ -493,60 +442,37 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                                 print(err);
                               });
                             },
-                            child: new Text(personalInfo.birthDay == null ? '请选择' : personalInfo.birthDay, style: TextStyle(fontSize: 28.0*factor),),
+                            child: new Text(personalInfo.birthDay == null ? '请选择' : personalInfo.birthDay, style: TextStyle(fontSize: 26.0*factor),),
                           )
                         ],
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.only(top: 5*factor,bottom: 30.0*factor),
+                        padding: EdgeInsets.only(top: 10*factor,bottom: 30.0*factor),
                         child: new Text(
                           '我的优势：',
                           textAlign: TextAlign.left,
                           style: new TextStyle(fontSize: 28.0*factor),
                         ),
                       ),
-                      new TextField(
-                        controller: TextEditingController.fromValue(
-                          TextEditingValue(
-                            // 设置内容
-                            text: personalInfo.summarize == null ? '' : personalInfo.summarize,
-                            // 保持光标在最后
-                            selection: TextSelection.fromPosition(
-                              TextPosition(
-                                affinity: TextAffinity.downstream,
-                                offset: personalInfo.summarize == null ? 0 : personalInfo.summarize.length
-                              )
-                            )
-                          )
-                        ),
-                        onChanged: (val) {
+                      TextArea(
+                        text: personalInfo.summarize,
+                        callback: (String val) {
                           setState(() {
                             personalInfo.summarize = val;
                           });
                         },
-                        style: TextStyle(fontSize: 26.0*factor),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        decoration: new InputDecoration(
-                          hintText: "请输入您的优势",
-                          hintStyle: new TextStyle(
-                              color: const Color(0xFF808080),
-                              fontSize: 20.0*factor
-                          ),
-                          border: new OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
-                          ),
-                          contentPadding: EdgeInsets.all(15.0*factor)
-                        ),
                       ),
+                      Divider(),
+                      Container(height: 80*factor,)
+
                     ],
                   ),
                 )
               ),
               Positioned(
-                bottom: 20*factor,
-                right: 20*factor,
+                bottom: 30*factor,
+                right: 50*factor,
                 child: FloatingActionButton(
                   mini: true,
                   backgroundColor: Theme.of(context).primaryColor,

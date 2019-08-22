@@ -5,6 +5,8 @@ import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/model/constants.dart';
 import 'package:flutter_app/util/util.dart';
+import 'package:flutter_app/app/component/select.dart';
+import 'package:flutter_app/app/component/text_area.dart';
 
 // 我要提问界面
 class AskQuestion extends StatefulWidget {
@@ -31,6 +33,8 @@ class AskQuestionState extends State<AskQuestion> {
 
   final titleCtrl = new TextEditingController(text: '');
   final detailCtrl = new TextEditingController(text: '');
+  String title = '';
+  String detail = '';
   String userName = '';
   int type = 1;
 
@@ -106,74 +110,73 @@ class AskQuestionState extends State<AskQuestion> {
       body: Stack(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(30.0*factor),
+            padding: EdgeInsets.all(50.0*factor),
             child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new Container(height: 20.0*factor),
-                new Row(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    new Text("分类：", style: new TextStyle(fontSize: 28.0*factor)),
-                    new Container(
-                      height: 60*factor,
-                      child: new ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: postTypeArr.length,
-                        itemBuilder: postTypeOption,
-                        scrollDirection: Axis.horizontal,
-                        physics: const ClampingScrollPhysics(),
+                    new Padding(
+                      padding: EdgeInsets.only(bottom: 20.0*factor),
+                      child: new Text(
+                        '分类：',
+                        textAlign: TextAlign.left,
+                        style: new TextStyle(fontSize: 28.0*factor),
                       ),
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.only(bottom: 16.0*factor),
+                      child: new InkWell(
+                        onTap: () {
+                          // _showJobStatus(context);
+                          YCPicker.showYCPicker(
+                            context,
+                            selectItem: (res) {
+                              setState(() {
+                                type =  postTypeArr.indexOf(res) + 1;
+                              });
+                            },
+                            data: postTypeArr,
+                          );
+                        },
+                        child: new Text(postTypeArr[type - 1], style: TextStyle(fontSize: 26.0*factor),),
+                      )
                     ),
                   ],
                 ),
+                Divider(),
                 new Container(height: 40.0*factor),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text("标题：", style: new TextStyle(fontSize: 28.0*factor)),
-                    new Expanded(child: new TextField(
-                      controller: titleCtrl,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 5,
-                      style: new TextStyle(fontSize: 28.0*factor),
-                      decoration: new InputDecoration(
-                        hintText: "请输入标题",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 28.0*factor
-                        ),
-                        border: new OutlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor),
-                          borderRadius: BorderRadius.all(Radius.circular(6*factor))
-                        ),
-                        contentPadding: EdgeInsets.all(20.0*factor)
-                      ),
-                    ))
+                    new Text("标题：", style: new TextStyle(fontSize: 28.0*factor))
                   ],
                 ),
+                TextArea(
+                  text: title,
+                  callback: (String val) {
+                    setState(() {
+                      title = val;
+                    });
+                  },
+                ),
+                Divider(),
                 new Container(height: 40.0*factor),
                 new Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text("详情：", style: new TextStyle(fontSize: 28.0*factor)),
-                    new Expanded(child: new TextField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 15,
-                      controller: detailCtrl,
-                      style: new TextStyle(fontSize: 28.0*factor),
-                      decoration: new InputDecoration(
-                        hintText: "请详细描述您的问题",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 28.0*factor
-                        ),
-                        border: new OutlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor),
-                          borderRadius: BorderRadius.all(Radius.circular(6*factor))
-                        ),
-                        contentPadding: EdgeInsets.all(20.0*factor)
-                      ),
-                    ))
+                    new Text("详情：", style: new TextStyle(fontSize: 28.0*factor))
                   ],
+                ),
+                TextArea(
+                  text: detail,
+                  callback: (String val) {
+                    setState(() {
+                      detail = val;
+                    });
+                  },
                 ),
                 Container(height: 40*factor,),
                 
@@ -203,8 +206,6 @@ class AskQuestionState extends State<AskQuestion> {
               onPressed: () async {
                 if (isRequesting) return;
                 // 拿到用户输入的账号密码
-                String title = titleCtrl.text.trim();
-                String detail = detailCtrl.text.trim();
                 if (title.isEmpty || detail.isEmpty) {
                   YaCaiUtil.getInstance().showMsg("请填写完整标题和详情哦~");
                   return;

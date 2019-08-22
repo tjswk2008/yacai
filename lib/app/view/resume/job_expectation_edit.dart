@@ -75,7 +75,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
           body: new Stack(
             children: <Widget>[
               new Padding(
-                padding: EdgeInsets.all(30.0*factor),
+                padding: EdgeInsets.all(50.0*factor),
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -83,17 +83,17 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new Padding(
-                          padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                          padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
                           child: new Text(
                             '期望职位：',
                             textAlign: TextAlign.left,
-                            style: new TextStyle(fontSize: 24.0*factor),
+                            style: new TextStyle(fontSize: 28.0*factor),
                           ),
                         ),
                         new Padding(
                           padding: EdgeInsets.only(
                             top: 20.0*factor,
-                            bottom: 10.0*factor,
+                            bottom: 20.0*factor,
                             left: 10.0*factor,
                             right: 20.0*factor
                           ),
@@ -110,7 +110,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                                 data: titleArr,
                               );
                             },
-                            child: new Text(_jobExpect.jobTitle == null ? '请选择' : _jobExpect.jobTitle, style: TextStyle(fontSize: 22.0*factor),),
+                            child: new Text(_jobExpect.jobTitle == null ? '请选择' : _jobExpect.jobTitle, style: TextStyle(fontSize: 26.0*factor),),
                           ) 
                         ),
                       ],
@@ -120,17 +120,17 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new Padding(
-                          padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                          padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
                           child: new Text(
                             '期望行业：',
                             textAlign: TextAlign.left,
-                            style: new TextStyle(fontSize: 24.0*factor),
+                            style: new TextStyle(fontSize: 28.0*factor),
                           ),
                         ),
                         new Padding(
                           padding: EdgeInsets.only(
                             top: 20.0*factor,
-                            bottom: 10.0*factor,
+                            bottom: 20.0*factor,
                             left: 10.0*factor,
                             right: 20.0*factor
                           ),
@@ -147,112 +147,58 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                                 data: companyTypeArr,
                               );
                             },
-                            child: new Text(_jobExpect.industry == null ? '请选择' : _jobExpect.industry, style: TextStyle(fontSize: 22.0*factor),),
+                            child: new Text(_jobExpect.industry == null ? '请选择' : _jobExpect.industry, style: TextStyle(fontSize: 26.0*factor),),
                           ) 
                         ),
                       ],
                     ),
                     new Divider(),
-                    new Padding(
-                      padding: EdgeInsets.only(bottom: 20.0*factor),
-                      child: new Text(
-                        '工作类型：',
-                        textAlign: TextAlign.left,
-                        style: new TextStyle(fontSize: 26.0*factor),
-                      ),
-                    ),
-                    Container(
-                      height: 80*factor,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 3,
-                        itemBuilder: (BuildContext context, int index) {
-                          return new Row(
-                            children: <Widget>[
-                              CustomRadio<int, dynamic>(
-                                value: index + 1,
-                                groupValue: _jobExpect.type,
-                                animsBuilder: (AnimationController controller) => [
-                                  CurvedAnimation(
-                                    parent: controller,
-                                    curve: Curves.easeInOut
-                                  ),
-                                  ColorTween(
-                                    begin: Colors.grey[600],
-                                    end: Colors.cyan[300]
-                                  ).animate(controller),
-                                  ColorTween(
-                                    begin: Colors.cyan[300],
-                                    end: Colors.grey[600]
-                                  ).animate(controller),
-                                ],
-                                builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _jobExpect.type = value;
-                                      });
-                                    },
-                                    child: Container(
-                                      width: 24.0*factor,
-                                      height: 24.0*factor,
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.only(
-                                        top: 10.0*factor,
-                                        bottom: 10*factor,
-                                        right: 10*factor,
-                                        left: 115*factor
-                                      ),
-                                      padding: EdgeInsets.all(3.0*factor),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: _jobExpect.type == value ? Colors.cyan[300] : Colors.grey[600],
-                                          width: 1.0*factor
-                                        )
-                                      ),
-                                      child: _jobExpect.type == value ? Container(
-                                        width: 14.0*factor,
-                                        height: 14.0*factor,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: animValues[1],
-                                          border: Border.all(
-                                            color: animValues[2],
-                                            width: 1.0*factor
-                                          )
-                                        ),
-                                      ) : Container(),
-                                    )
-                                  );
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        new Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20.0*factor),
+                          child: new Text(
+                            '工作类型：',
+                            textAlign: TextAlign.left,
+                            style: new TextStyle(fontSize: 28.0*factor),
+                          ),
+                        ),
+                        new Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16.0*factor),
+                          child: new InkWell(
+                            onTap: () {
+                              YCPicker.showYCPicker(
+                                context,
+                                selectItem: (res) {
+                                  setState(() {
+                                    _jobExpect.type = jobTypeArr.indexOf(res) + 1;
+                                  });
                                 },
-                              ),
-                              new Text(jobTypeArr[index], style: new TextStyle(fontSize: 24.0*factor),),
-                            ]
-                          );
-                        },
-                        scrollDirection: Axis.horizontal,
-                        physics: NeverScrollableScrollPhysics(),
-                      ),
+                                data: jobTypeArr,
+                              );
+                            },
+                            child: new Text(_jobExpect.type == null ? '请选择' : jobTypeArr[_jobExpect.type - 1], style: TextStyle(fontSize: 26.0*factor),),
+                          )
+                        ),
+                      ],
                     ),
-                    
                     new Divider(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new Padding(
-                          padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                          padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
                           child: new Text(
                             '薪资要求：',
                             textAlign: TextAlign.left,
-                            style: new TextStyle(fontSize: 24.0*factor),
+                            style: new TextStyle(fontSize: 28.0*factor),
                           ),
                         ),
                         new Padding(
                           padding: EdgeInsets.only(
                             top: 20.0*factor,
-                            bottom: 10.0*factor,
+                            bottom: 20.0*factor,
                             left: 10.0*factor,
                             right: 20.0*factor
                           ),
@@ -269,7 +215,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                                 data: salaryArr,
                               );
                             },
-                            child: new Text(_jobExpect.salary == null ? '请选择' : _jobExpect.salary, style: TextStyle(fontSize: 22.0*factor),),
+                            child: new Text(_jobExpect.salary == null ? '请选择' : _jobExpect.salary, style: TextStyle(fontSize: 26.0*factor),),
                           ) 
                         ),
                       ],
@@ -282,8 +228,8 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                 ),
               ),
               Positioned(
-                bottom: 20*factor,
-                right: 20*factor,
+                bottom: 40*factor,
+                right: 50*factor,
                 child: FloatingActionButton(
                   mini: true,
                   backgroundColor: Theme.of(context).primaryColor,

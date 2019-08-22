@@ -7,7 +7,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:date_format/date_format.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_app/app/component/text_area.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 

@@ -43,6 +43,12 @@ const List<String> jobTypeArr = <String>[
   "实习"
 ];
 
+const List<String> genderTypeArr = <String>[
+  "男",
+  "女",
+  "其他"
+];
+
 List<String> timeReqArr = <String>[
   '经验不限',
   '应届生',
