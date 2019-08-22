@@ -193,8 +193,8 @@ class AskQuestionState extends State<AskQuestion> {
             ),
           ),
           Positioned(
-            bottom: 20*factor,
-            right: 20*factor,
+            bottom: 50*factor,
+            right: 50*factor,
             child: FloatingActionButton(
               mini: true,
               backgroundColor: Theme.of(context).primaryColor,
@@ -235,8 +235,7 @@ class AskQuestionState extends State<AskQuestion> {
             ),
           )
         ],
-      )
-      
+      ),
     );
   }
 }

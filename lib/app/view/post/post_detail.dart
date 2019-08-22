@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'dart:ui';
 import 'package:flutter_app/app/model/post.dart';
 import 'package:flutter_app/app/view/post/answer_list.dart';
@@ -9,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:date_format/date_format.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/util/util.dart';
+import 'dart:io';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -212,8 +214,9 @@ class PostDetailState extends State<PostDetail>
             alignment: Alignment.bottomCenter,
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: 100*factor,
+              height: Platform.isAndroid ? 100*factor : 100*factor + 34,
               color: Colors.grey[200],
+              padding: prefix0.EdgeInsets.only(bottom: Platform.isAndroid ? 0 : 34),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[

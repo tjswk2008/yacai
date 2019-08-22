@@ -34,6 +34,7 @@ class MessageTabState extends State<MessageTab> with SingleTickerProviderStateMi
           elevation: 0.0,
           bottom: new TabBar(
             indicatorColor: Colors.orange[400],
+            indicatorWeight: 3*factor,
             tabs: <Widget>[
               new Tab(
                 child: new Text('专业问答',

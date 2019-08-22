@@ -239,12 +239,12 @@ class _MyYCPickerState extends State<_MyYCPicker> {
           bottom: 10.0*factor,
         ),
         alignment: Alignment.center,
-        height: 430.0*factor,
+        height: 400.0*factor,
         child: CupertinoPicker(
           backgroundColor: Colors.white,
           scrollController: widget.controller,
           key: widget.key,
-          itemExtent: 70.0*factor,
+          itemExtent: 80.0*factor,
           onSelectedItemChanged: (index) {
             if (widget.changed != null) {
               widget.changed(index);
@@ -269,7 +269,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = 600.0;
+    double maxHeight = 560.0;
 
     return new BoxConstraints(
       minWidth: constraints.maxWidth,
