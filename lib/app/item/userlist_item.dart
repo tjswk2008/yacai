@@ -45,11 +45,8 @@ class UserListItemState extends State<UserListItem> {
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
-      padding: EdgeInsets.only(
-        top: 10.0*factor,
-        left: 10.0*factor,
-        right: 10.0*factor,
-        bottom: 10.0*factor,
+      padding: EdgeInsets.all(
+        10.0*factor,
       ),
 
       child: new Card(
@@ -61,9 +58,9 @@ class UserListItemState extends State<UserListItem> {
                 onTap: () => navResumePreview(personalInfo.id),
                 child: new Padding(
                   padding: EdgeInsets.only(
-                    top: 20.0*factor,
-                    left: 20.0*factor,
-                    right: 10.0*factor,
+                    top: 30.0*factor,
+                    left: 30.0*factor,
+                    right: 30.0*factor,
                     bottom: 15.0*factor,
                   ),
                   child: new Row(
@@ -79,7 +76,7 @@ class UserListItemState extends State<UserListItem> {
                                 padding: EdgeInsets.only(right: 10*factor),
                                 child: Text(
                                   personalInfo.name,
-                                  style: new TextStyle(fontSize: 26.0*factor)
+                                  style: new TextStyle(fontSize: 28.0*factor)
                                 ),
                               ),
                               
@@ -101,7 +98,7 @@ class UserListItemState extends State<UserListItem> {
                                   personalInfo.gender == null ? '' : personalInfo.gender,
                                   textAlign: TextAlign.left,
                                   style: new TextStyle(
-                                      fontSize: 22.0*factor, color: Colors.grey),
+                                      fontSize: 24.0*factor, color: Colors.grey),
                                 )
                               ),
                               new Padding(
@@ -111,7 +108,7 @@ class UserListItemState extends State<UserListItem> {
                                 ),
                                 child: new Text(
                                   personalInfo.birthDay == null ? '' : yearsOffset(personalInfo.birthDay).toString() + "岁",
-                                  style: new TextStyle(fontSize: 22.0*factor, color: Colors.red)
+                                  style: new TextStyle(fontSize: 24.0*factor, color: Colors.red)
                                 ),
                               ),
                             ],
@@ -140,13 +137,13 @@ class UserListItemState extends State<UserListItem> {
                     new Padding(
                       padding: EdgeInsets.only(
                         top: 10.0*factor,
-                        left: 20.0*factor,
+                        left: 25.0*factor,
                         right: 10.0*factor,
-                        bottom: 15.0*factor,
+                        bottom: 20.0*factor,
                       ),
                       child: new Text(
                         personalInfo.firstJobTime == null ? '' : yearsOffset(personalInfo.firstJobTime).toString() + "年经验",
-                        style: new TextStyle(fontSize: 22*factor, color: new Color.fromARGB(
+                        style: new TextStyle(fontSize: 24*factor, color: new Color.fromARGB(
                             255, 0, 215, 198)
                           )
                       ),
@@ -154,9 +151,9 @@ class UserListItemState extends State<UserListItem> {
                     new Padding(
                       padding: EdgeInsets.only(
                         top: 10.0*factor,
-                        bottom: 15.0*factor,
+                        bottom: 20.0*factor,
                       ),
-                      child: new Text(personalInfo.academic != null ? academicArr[personalInfo.academic + 1] : '', style: new TextStyle(fontSize: 22*factor))
+                      child: new Text(personalInfo.academic != null ? academicArr[personalInfo.academic + 1] : '', style: new TextStyle(fontSize: 24*factor))
                     ),
                     personalInfo.school != null ? new Padding(
                       padding: EdgeInsets.only(
@@ -164,7 +161,7 @@ class UserListItemState extends State<UserListItem> {
                         right: 10.0*factor,
                         bottom: 15.0*factor,
                       ),
-                      child: new Text('(${personalInfo.school})', style: new TextStyle(fontSize: 22*factor))
+                      child: new Text('(${personalInfo.school})', style: new TextStyle(fontSize: 24*factor))
                     ) : Container(),
                   ],
                 ),
@@ -172,10 +169,10 @@ class UserListItemState extends State<UserListItem> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(right: 10*factor),
-                      child: Text('标记为:', style: TextStyle(fontSize: 22*factor),),
+                      child: Text('标记为:', style: TextStyle(fontSize: 24*factor),),
                     ),
                     InkWell(
-                      child: Text(personalInfo.mark == null ? MARKERS[0] : MARKERS[personalInfo.mark], style: TextStyle(fontSize: 22*factor),),
+                      child: Text(personalInfo.mark == null ? MARKERS[0] : MARKERS[personalInfo.mark], style: TextStyle(fontSize: 24*factor),),
                       onTap: () {
                         YCPicker.showYCPicker(
                           context,
@@ -204,11 +201,12 @@ class UserListItemState extends State<UserListItem> {
                         );
                       },
                     ),
-                    Container(width: 20*factor,)
+                    Container(width: 30*factor,)
                   ]
                 )
               ],
             ),
+            Container(height: 5*factor,)
           ],
         ),
       ),

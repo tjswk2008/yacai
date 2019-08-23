@@ -55,7 +55,7 @@ class MineTabState extends State<MineTab> {
             child: AppBar(elevation: 0.0,),
             preferredSize: Size.fromHeight(0)
           ),
-          backgroundColor: Color(0xFFEEEEEE),
+          backgroundColor: Colors.grey[100],
           body: Stack(
             children: <Widget>[
               SafeArea(
@@ -107,9 +107,9 @@ class MineTabState extends State<MineTab> {
                             children: [
                               new Padding(
                                 padding: EdgeInsets.only(
-                                  top: 60.0*factor,
-                                  left: 60.0*factor,
-                                  right: 60.0*factor,
+                                  top: 20.0*factor,
+                                  left: 30.0*factor,
+                                  right: 20.0*factor,
                                 ),
                                 child: appState.resume == null || appState.resume.personalInfo.avatar == ''
                                   ? new Image.asset(
@@ -130,12 +130,14 @@ class MineTabState extends State<MineTab> {
                                     children: [
                                       new Padding(
                                           padding: EdgeInsets.only(
-                                            top: 85.0*factor,
+                                            top: 40.0*factor,
+                                            left: 20*factor,
+                                            bottom: 20.0*factor,
                                           ),
                                           child: new Text(
                                               userName == '' ? "点击头像登录" : userName,
                                               style: new TextStyle(
-                                                  color: Colors.white, fontSize: 30.0*factor))
+                                                  color: Colors.white, fontSize: 36.0*factor))
                                       ),
                                       new Text(
                                           appState.resume == null || appState.resume.jobStatus == '' ? "" : appState.resume.jobStatus,
@@ -162,8 +164,8 @@ class MineTabState extends State<MineTab> {
                               }
                             },
                             child: new Container(
-                              height: 80.0*factor,
-                              margin: EdgeInsets.only(top: 10.0*factor, bottom: 10.0*factor),
+                              height: 100.0*factor,
+                              margin: EdgeInsets.only(top: 5.0*factor),
                               decoration: new BoxDecoration(
                                 color: Colors.white,
                               ),
@@ -172,18 +174,28 @@ class MineTabState extends State<MineTab> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   new Padding(
-                                    padding: EdgeInsets.all(20.0*factor),
+                                    padding: EdgeInsets.only(
+                                      top: 20.0*factor,
+                                      bottom: 20.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
                                     child: new Row(
                                       children: <Widget>[
-                                        new Icon(Icons.remove_red_eye, size: 32.0*factor, color: Theme.of(context).primaryColor,),
+                                        new Icon(Icons.remove_red_eye, size: 42.0*factor, color: Theme.of(context).primaryColor,),
                                         new Padding(
-                                          padding: EdgeInsets.only(right: 20.0*factor),
+                                          padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
-                                        new Text('简历查看记录', style: TextStyle(fontSize: 26.0*factor),),
+                                        new Text('简历查看记录', style: TextStyle(fontSize: 34.0*factor),),
                                       ],
                                     ),
                                   ),
-                                  new Icon(Icons.chevron_right, size: 32.0*factor,),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 42.0*factor, color: Theme.of(context).primaryColor),
+                                  )
                                 ],
                               ),
                             )
@@ -198,8 +210,8 @@ class MineTabState extends State<MineTab> {
                               }
                             },
                             child: new Container(
-                              height: 80.0*factor,
-                              margin: EdgeInsets.only(bottom: 10.0*factor),
+                              height: 100.0*factor,
+                              margin: EdgeInsets.only(top: 5.0*factor),
                               decoration: new BoxDecoration(
                                 color: Colors.white,
                               ),
@@ -208,18 +220,28 @@ class MineTabState extends State<MineTab> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   new Padding(
-                                    padding: EdgeInsets.all(20.0*factor),
+                                    padding: EdgeInsets.only(
+                                      top: 20.0*factor,
+                                      bottom: 20.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
                                     child: new Row(
                                       children: <Widget>[
-                                        new Icon(Icons.near_me, size: 32.0*factor, color: Colors.blue,),
+                                        new Icon(Icons.near_me, size: 42.0*factor, color: Colors.blue,),
                                         new Padding(
-                                          padding: EdgeInsets.only(right: 20.0*factor),
+                                          padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
-                                        new Text('投递记录', style: TextStyle(fontSize: 26.0*factor),),
+                                        new Text('投递记录', style: TextStyle(fontSize: 34.0*factor),),
                                       ],
                                     ),
                                   ),
-                                  new Icon(Icons.chevron_right, size: 32.0*factor,),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 42.0*factor, color: Theme.of(context).primaryColor),
+                                  )
                                 ],
                               ),
                             )
@@ -234,8 +256,8 @@ class MineTabState extends State<MineTab> {
                               }
                             },
                             child: new Container(
-                              height: 80.0*factor,
-                              margin: EdgeInsets.only(bottom: 10.0*factor),
+                              height: 100.0*factor,
+                              margin: EdgeInsets.only(top: 5.0*factor),
                               decoration: new BoxDecoration(
                                 color: Colors.white,
                               ),
@@ -244,18 +266,28 @@ class MineTabState extends State<MineTab> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   new Padding(
-                                    padding: EdgeInsets.all(20.0*factor),
+                                    padding: EdgeInsets.only(
+                                      top: 20.0*factor,
+                                      bottom: 20.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
                                     child: new Row(
                                       children: <Widget>[
-                                        new Icon(Icons.business, size: 32.0*factor),
+                                        new Icon(Icons.business, size: 42.0*factor, color: Theme.of(context).primaryColor),
                                         new Padding(
-                                          padding: EdgeInsets.only(right: 20.0*factor),
+                                          padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
-                                        new Text('填写企业资料', style: TextStyle(fontSize: 26.0*factor),),
+                                        new Text('填写企业资料', style: TextStyle(fontSize: 34.0*factor),),
                                       ],
                                     ),
                                   ),
-                                  new Icon(Icons.chevron_right, size: 32.0*factor,),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 42.0*factor, color: Theme.of(context).primaryColor),
+                                  )
                                 ],
                               ),
                             )
@@ -275,8 +307,8 @@ class MineTabState extends State<MineTab> {
                               }
                             },
                             child: new Container(
-                              height: 80.0*factor,
-                              margin: EdgeInsets.only(bottom: 10.0*factor),
+                              height: 100.0*factor,
+                              margin: EdgeInsets.only(top: 5.0*factor),
                               decoration: new BoxDecoration(
                                 color: Colors.white,
                               ),
@@ -285,20 +317,25 @@ class MineTabState extends State<MineTab> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   new Padding(
-                                    padding: EdgeInsets.all(20.0*factor),
+                                    padding: EdgeInsets.only(
+                                      top: 20.0*factor,
+                                      bottom: 20.0*factor,
+                                      left: 25.0*factor,
+                                      right: 20.0*factor,
+                                    ),
                                     child: new Row(
                                       children: <Widget>[
-                                        new Icon(Icons.verified_user, size: 32.0*factor, color: Colors.green,),
+                                        new Icon(Icons.verified_user, size: 42.0*factor, color: Theme.of(context).primaryColor),
                                         new Padding(
-                                          padding: EdgeInsets.only(right: 20.0*factor),
+                                          padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
-                                        new Text('企业认证', style: TextStyle(fontSize: 26.0*factor),),
+                                        new Text('企业认证', style: TextStyle(fontSize: 34.0*factor),),
                                         Padding(
                                           padding: EdgeInsets.only(left: 10*factor),
                                           child: new Text(
                                             appState.company == null || appState.company.verified == null || appState.company.verified == 0 ? '(未认证)' : appState.company.verified == 1 ? '(已认证)' : '(未通过)',
                                             style: TextStyle(
-                                              fontSize: 26.0*factor,
+                                              fontSize: 34.0*factor,
                                               color: appState.company != null && appState.company.verified == 1 ? Colors.green : Colors.red,
                                             )
                                           ),
@@ -306,7 +343,12 @@ class MineTabState extends State<MineTab> {
                                       ],
                                     ),
                                   ),
-                                  new Icon(Icons.chevron_right, size: 32.0*factor,),
+                                  new Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 20.0*factor,
+                                    ),
+                                    child: new Icon(Icons.chevron_right, size: 42.0*factor, color: Theme.of(context).primaryColor),
+                                  )
                                 ],
                               ),
                             )
@@ -321,23 +363,24 @@ class MineTabState extends State<MineTab> {
               ),
               
               userName != '' ? new Positioned(
-                bottom: 30.0*factor,
-                left: 20.0*factor,
-                width: MediaQuery.of(context).size.width - 40*factor,
+                bottom: 0.0*factor,
+                left: 0.0*factor,
+                width: MediaQuery.of(context).size.width,
                 child: FlatButton(
                   child: new Container(
-                    height: 70*factor,
+                    height: 90*factor,
                     child: new Center(
                       child: Text(
                         "退出登录",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28.0*factor,
+                          color: Colors.orange[400],
+                          fontSize: 36.0*factor,
+                          letterSpacing: 5*factor
                         ),
                       ),
                     ),
                   ),
-                  color: Colors.orange[400],
+                  color: Colors.white,
                   onPressed: () async {
                     if (isRequesting) return;
                     setState(() {

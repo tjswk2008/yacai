@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart' as prefix1;
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'dart:ui';
 import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter/cupertino.dart';
@@ -74,36 +76,33 @@ class ResumePreviewState extends State<ResumePreview>
 
   Widget addExperience(double factor, String title, String btnName, List list, IndexedWidgetBuilder itemBuilder) {
     return new Padding(
-      padding: EdgeInsets.only(
-        top: 5.0*factor
-      ),
+      padding: EdgeInsets.symmetric(vertical:40.0*factor, horizontal: 30*factor),
       child: new Column(
         children: <Widget>[
           new Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               new Padding(
-                padding: EdgeInsets.only(bottom: 10.0*factor),
+                padding: EdgeInsets.only(bottom: 30.0*factor),
                 child: new Text(
                   title,
                   style: new TextStyle(
-                    fontSize: 24.0*factor
+                    fontSize: 32.0*factor,
+                    fontWeight: prefix1.FontWeight.bold,
+                    color: Colors.grey[800]
                   )
                 ),
               )
             ],
           ),
+          list.length != 0 ? new ListView.builder(
+            physics: new NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: list.length,
+            itemBuilder: itemBuilder
+          ) : Container(),
           new Padding(
-            padding: EdgeInsets.only(left: 10.0*factor),
-            child: list.length != 0 ? new ListView.builder(
-              physics: new NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: list.length,
-              itemBuilder: itemBuilder
-            ) : Container(),
-          ),
-          new Padding(
-            padding: EdgeInsets.only(bottom: 15.0*factor),
+            padding: EdgeInsets.only(bottom: 30.0*factor),
           ),
         ],
       ),
@@ -163,6 +162,7 @@ class ResumePreviewState extends State<ResumePreview>
               new PopupMenuItem(
                   value: 0,
                   child: Row(
+                    mainAxisSize: prefix0.MainAxisSize.min,
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(right: 25*factor),
@@ -214,153 +214,157 @@ class ResumePreviewState extends State<ResumePreview>
             ),
           )
         ) : new SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(20*factor),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                new Padding(
-                  padding: EdgeInsets.only(
-                    left: 25.0*factor,
-                    right: 25.0*factor,
-                    top: 5.0*factor
-                  ),
-                ),
-                new Container(
-                  padding: EdgeInsets.only(
-                    left: 15.0*factor,
-                    right: 15.0*factor,
-                  ),
-                  color: Colors.white,
-                  child: new Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new PersonalInfoView(resume.personalInfo, false, canBeViewed),
-                      new Padding(
-                        padding: EdgeInsets.only(
-                          top: 5.0*factor,
-                          bottom: 5.0*factor
-                        ),
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              new Container(
+                color: Colors.white,
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new PersonalInfoView(resume.personalInfo, false, canBeViewed),
+                    Container(
+                      color: Colors.grey[100],
+                      height: 10*factor,
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.all(
+                        30.0*factor,
+                      ),
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          new Text(
+                            "求职状态：",
+                            style: new TextStyle(
+                              fontSize: 32.0*factor,
+                              color: Colors.grey[800],
+                              fontWeight: prefix0.FontWeight.bold
+                            )
+                          ),
+                          new Text(resume.jobStatus == null ? '未选择' : resume.jobStatus, style: new TextStyle(
+                              fontSize: 26.0*factor
+                            ))
+                        ],
+                      ), 
+                    ),
+                    Container(
+                      color: Colors.grey[100],
+                      height: 10*factor,
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.all(
+                        30.0*factor,
+                      ),
+                      child: new Column(
+                        children: <Widget>[
+                          new Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              new Text(
+                                "求职期望：",
+                                style: new TextStyle(
+                                  fontSize: 32.0*factor,
+                                  fontWeight: prefix0.FontWeight.bold,
+                                  color: Colors.grey[800]
+                                )
+                              ),
+                            ],
+                          ),
+                          new Padding(
+                            padding: EdgeInsets.only(top: 30.0*factor),
+                          ),
+                          JobExpectation(resume.jobExpect, false),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.grey[100],
+                      height: 10*factor,
+                    ),
+                    addExperience(
+                      factor,
+                      "工作经历：",
+                      "添加工作经历",
+                      resume.companyExperiences,
+                      (context, int index) {
+                        return new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            new Text(
-                              "求职状态",
-                              style: new TextStyle(
-                                fontSize: 24.0*factor
-                              )
-                            ),
-                            new Text(resume.jobStatus == null ? '未选择' : resume.jobStatus, style: new TextStyle(
-                                fontSize: 24.0*factor
-                              ))
+                            canBeViewed ? CompanyExperienceView(resume.companyExperiences[index], false, canBeViewed) : 
+                              index == 0 ? CompanyExperienceView(resume.companyExperiences[0], false, canBeViewed) : 
+                              Text('****', style: TextStyle(fontSize: 24*factor)),
+                            index == resume.companyExperiences.length - 1 ? new Container() : new Divider()
                           ],
-                        ), 
-                      ),
-                      new Divider(),
-                      new Padding(
-                        padding: EdgeInsets.only(
-                          top: 5.0*factor,
-                          bottom: 5.0*factor
-                        ),
-                        child: new Column(
+                        );
+                      }
+                    ),
+                    Container(
+                      color: Colors.grey[100],
+                      height: 10*factor,
+                    ),
+                    addExperience(
+                      factor,
+                      "项目经历：",
+                      "添加项目经历",
+                      resume.projects,
+                      (context, int index) {
+                        return new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            new Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                new Text(
-                                  "求职期望",
-                                  style: new TextStyle(
-                                    fontSize: 24.0*factor
-                                  )
-                                ),
-                              ],
-                            ),
-                            new Padding(
-                              padding: EdgeInsets.only(top: 20.0*factor),
-                            ),
-                            new Padding(
-                              padding: EdgeInsets.only(left: 10.0*factor),
-                              child: new JobExpectation(resume.jobExpect, false),
-                            ),
+                            canBeViewed ? ProjectView(resume.projects[index], false) : 
+                              index == 0 ? ProjectView(resume.projects[0], false) : 
+                              Text('****', style: TextStyle(fontSize: 24*factor)),
+                            index == resume.projects.length - 1 ? new Container() : new Divider()
                           ],
-                        ),
-                      ),
-                      new Divider(),
-                      addExperience(
-                        factor,
-                        "工作经历：",
-                        "添加工作经历",
-                        resume.companyExperiences,
-                        (context, int index) {
-                          return new Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              canBeViewed ? CompanyExperienceView(resume.companyExperiences[index], false, canBeViewed) : 
-                                index == 0 ? CompanyExperienceView(resume.companyExperiences[0], false, canBeViewed) : 
-                                Text('****', style: TextStyle(fontSize: 24*factor)),
-                              index == resume.companyExperiences.length - 1 ? new Container() : new Divider()
-                            ],
-                          );
-                        }
-                      ),
-                      new Divider(),
-                      addExperience(
-                        factor,
-                        "项目经历：",
-                        "添加项目经历",
-                        resume.projects,
-                        (context, int index) {
-                          return new Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              canBeViewed ? ProjectView(resume.projects[index], false) : 
-                                index == 0 ? ProjectView(resume.projects[0], false) : 
-                                Text('****', style: TextStyle(fontSize: 24*factor)),
-                              index == resume.projects.length - 1 ? new Container() : new Divider()
-                            ],
-                          );
-                        }
-                      ),
-                      new Divider(),
-                      addExperience(
-                        factor,
-                        "教育经历：",
-                        "添加教育经历",
-                        resume.educations,
-                        (context, int index) {
-                          return new Column(
-                            children: <Widget>[
-                              new EducationView(resume.educations[index], false),
-                              index == resume.educations.length - 1 ? new Container() : new Divider()
-                            ],
-                          );
-                        }
-                      ),
-                      new Divider(),
-                      addExperience(
-                        factor,
-                        "证书：",
-                        "添加证书",
-                        resume.certificates,
-                        (context, int index) {
-                          return new Column(
-                            children: <Widget>[
-                              new CertificationView(resume.certificates[index], false),
-                              index == resume.certificates.length - 1 ? new Container() : new Divider()
-                            ],
-                          );
-                        }
-                      ),
-                    ],
-                  ),
+                        );
+                      }
+                    ),
+                    Container(
+                      color: Colors.grey[100],
+                      height: 10*factor,
+                    ),
+                    addExperience(
+                      factor,
+                      "教育经历：",
+                      "添加教育经历",
+                      resume.educations,
+                      (context, int index) {
+                        return new Column(
+                          children: <Widget>[
+                            new EducationView(resume.educations[index], false),
+                            index == resume.educations.length - 1 ? new Container() : new Divider()
+                          ],
+                        );
+                      }
+                    ),
+                    Container(
+                      color: Colors.grey[100],
+                      height: 10*factor,
+                    ),
+                    addExperience(
+                      factor,
+                      "证书：",
+                      "添加证书",
+                      resume.certificates,
+                      (context, int index) {
+                        return new Column(
+                          children: <Widget>[
+                            new CertificationView(resume.certificates[index], false),
+                            index == resume.certificates.length - 1 ? new Container() : new Divider()
+                          ],
+                        );
+                      }
+                    ),
+                  ],
                 ),
-                new Padding(
-                  padding: EdgeInsets.only(bottom: 50.0*factor),
-                )
-              ],
-            ),
+              ),
+              new Padding(
+                padding: EdgeInsets.only(bottom: 50.0*factor),
+              )
+            ],
           )
         )
     );

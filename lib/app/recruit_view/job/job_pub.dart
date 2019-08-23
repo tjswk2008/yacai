@@ -14,6 +14,7 @@ import 'package:flutter_app/app/model/app.dart';
 import 'package:custom_radio/custom_radio.dart';
 import 'package:flutter_app/actions/actions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_app/app/component/text_area.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -30,12 +31,12 @@ class PubJobState extends State<PubJob>
 
   VoidCallback onChanged;
   final nameCtrl = new TextEditingController(text: '');
-  final detailCtrl = new TextEditingController(text: '');
   final addrCtrl = new TextEditingController(text: '');
   bool isRequesting = false;
   String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
   String timereq;
   String academic;
+  String detail = '';
   String province = '上海市';
   String city = '上海市';
   String area = '黄浦区';
@@ -76,7 +77,7 @@ class PubJobState extends State<PubJob>
           ),
           body: new SingleChildScrollView(
             child: new Padding(
-              padding: EdgeInsets.all(30.0*factor),
+              padding: EdgeInsets.all(50.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -85,14 +86,14 @@ class PubJobState extends State<PubJob>
                     child: new Text(
                       '职位名称：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*factor),
+                      style: new TextStyle(fontSize: 32.0*factor),
                     ),
                   ),
                   new Padding(
                     padding: EdgeInsets.only(bottom: 36.0*factor),
                     child: new TextField(
                       controller: nameCtrl,
-                      style: TextStyle(fontSize: 22*factor),
+                      style: TextStyle(fontSize: 26*factor),
                       decoration: new InputDecoration(
                         hintText: "请输入职位名称",
                         hintStyle: new TextStyle(
@@ -101,107 +102,56 @@ class PubJobState extends State<PubJob>
                         border: new UnderlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor)
                         ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
+                        contentPadding: EdgeInsets.symmetric(vertical: 30.0*factor)
                       ),
                     ),
                   ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
-                    child: new Text(
-                      '工作类型：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*factor),
-                    ),
-                  ),
-                  Container(
-                    height: 80*factor,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 3,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Row(
-                          children: <Widget>[
-                            CustomRadio<int, dynamic>(
-                              value: index + 1,
-                              groupValue: type,
-                              animsBuilder: (AnimationController controller) => [
-                                CurvedAnimation(
-                                  parent: controller,
-                                  curve: Curves.easeInOut
-                                ),
-                                ColorTween(
-                                  begin: Colors.grey[600],
-                                  end: Theme.of(context).primaryColor
-                                ).animate(controller),
-                                ColorTween(
-                                  begin: Theme.of(context).primaryColor,
-                                  end: Colors.grey[600]
-                                ).animate(controller),
-                              ],
-                              builder: (BuildContext context, List<dynamic> animValues, Function updateState, int value) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      type = value;
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 24.0*factor,
-                                    height: 24.0*factor,
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.only(
-                                      top: 10.0*factor,
-                                      bottom: 10*factor,
-                                      right: 10*factor,
-                                      left: 111*factor
-                                    ),
-                                    padding: EdgeInsets.all(3.0*factor),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: type == value ? Theme.of(context).primaryColor : Colors.grey[600],
-                                        width: 1.0*factor
-                                      )
-                                    ),
-                                    child: type == value ? Container(
-                                      width: 14.0*factor,
-                                      height: 14.0*factor,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: animValues[1],
-                                        border: Border.all(
-                                          color: animValues[2],
-                                          width: 1.0*factor
-                                        )
-                                      ),
-                                    ) : Container(),
-                                  )
-                                );
-                              },
-                            ),
-                            new Text(jobTypeArr[index], style: new TextStyle(fontSize: 24.0*factor),),
-                          ]
-                        );
-                      },
-                      scrollDirection: Axis.horizontal,
-                      physics: NeverScrollableScrollPhysics(),
-                    ),
+                  
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        new Padding(
+                          padding: EdgeInsets.only(bottom: 30.0*factor),
+                          child: new Text(
+                            '工作类型：',
+                            textAlign: TextAlign.left,
+                            style: new TextStyle(fontSize: 32.0*factor),
+                          ),
+                        ),
+                        new Padding(
+                          padding: EdgeInsets.only(top: 16.0*factor, bottom: 16*factor),
+                          child: new InkWell(
+                            onTap: () {
+                              YCPicker.showYCPicker(
+                                context,
+                                selectItem: (res) {
+                                  setState(() {
+                                    type = jobTypeArr.indexOf(res) + 1;
+                                  });
+                                },
+                                data: jobTypeArr,
+                              );
+                            },
+                            child: new Text(type == null ? '请选择' : jobTypeArr[type - 1], style: TextStyle(fontSize: 26.0*factor),),
+                          )
+                        ),
+                        
+                      ]
                   ),
                   new Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor, bottom: 10.0*factor),
+                        padding: EdgeInsets.only(top: 30*factor, bottom: 20.0*factor),
                         child: new Text(
                           '薪资待遇：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 26.0*factor),
+                          style: new TextStyle(fontSize: 32.0*factor),
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor, bottom: 10.0*factor),
+                        padding: EdgeInsets.only(top: 30*factor, bottom: 20.0*factor),
                         child: new InkWell(
                           onTap: () {
                             SalaryPicker.showSalaryPicker(
@@ -218,7 +168,7 @@ class PubJobState extends State<PubJob>
                               },
                             );
                           },
-                          child: Text('${salaryLow}k-${salaryHigh}k', style: TextStyle(fontSize: 24.0*factor, color: Colors.grey),),
+                          child: Text('${salaryLow}k-${salaryHigh}k', style: TextStyle(fontSize: 26.0*factor, color: Colors.grey),),
                         ),
                       ),
                     ],
@@ -228,11 +178,11 @@ class PubJobState extends State<PubJob>
                   ),
                   new Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(top: 20*factor,bottom: 10.0*factor),
+                    padding: EdgeInsets.only(top: 30*factor,bottom: 20.0*factor),
                     child: new Text(
                       '工作地点：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*factor),
+                      style: new TextStyle(fontSize: 32.0*factor),
                     ),
                   ),
                   new InkWell(
@@ -247,13 +197,13 @@ class PubJobState extends State<PubJob>
                         data: areas,
                       );
                     },
-                    child: Text('上海市 $area', style: TextStyle(fontSize: 22.0*factor, color: Colors.grey),),
+                    child: Text('上海市 $area', style: TextStyle(fontSize: 26.0*factor, color: Colors.grey),),
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 36.0*factor),
+                    padding: EdgeInsets.only(top: 10*factor, bottom: 36.0*factor),
                     child: new TextField(
                       controller: addrCtrl,
-                      style: TextStyle(fontSize: 22*factor),
+                      style: TextStyle(fontSize: 26*factor),
                       decoration: new InputDecoration(
                         hintText: "请输入详细地址",
                         hintStyle: new TextStyle(
@@ -262,7 +212,7 @@ class PubJobState extends State<PubJob>
                         border: new UnderlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor)
                         ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
+                        contentPadding: EdgeInsets.only(top: 5*factor, bottom: 20.0*factor)
                       ),
                     ),
                   ),
@@ -270,11 +220,11 @@ class PubJobState extends State<PubJob>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       new Padding(
-                        padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                        padding: EdgeInsets.only(top: 25.0*factor, bottom: 20.0*factor),
                         child: new Text(
                           '工作年限：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 32.0*factor),
                         ),
                       ),
                       new Padding(
@@ -297,7 +247,7 @@ class PubJobState extends State<PubJob>
                               data: timeReqArr,
                             );
                           },
-                          child: new Text(timereq == null ? '请选择' : timereq, style: TextStyle(fontSize: 22.0*factor),),
+                          child: new Text(timereq == null ? '请选择' : timereq, style: TextStyle(fontSize: 26.0*factor),),
                         ) 
                       ),
                     ],
@@ -310,11 +260,11 @@ class PubJobState extends State<PubJob>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       new Padding(
-                        padding: EdgeInsets.only(top: 20.0*factor, bottom: 10.0*factor),
+                        padding: EdgeInsets.only(top: 30.0*factor, bottom: 20.0*factor),
                         child: new Text(
                           '学历要求：',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor),
+                          style: new TextStyle(fontSize: 32.0*factor),
                         ),
                       ),
                       new Padding(
@@ -337,7 +287,7 @@ class PubJobState extends State<PubJob>
                               data: academicArr,
                             );
                           },
-                          child: new Text(academic == null ? '请选择' : academic, style: TextStyle(fontSize: 22.0*factor),),
+                          child: new Text(academic == null ? '请选择' : academic, style: TextStyle(fontSize: 26.0*factor),),
                         ) 
                       ),
                     ],
@@ -348,20 +298,20 @@ class PubJobState extends State<PubJob>
                   new Divider(),
                   new Container(
                     height: 50.0*factor,
-                    margin: EdgeInsets.only(bottom: 10.0*factor),
+                    margin: EdgeInsets.only(top: 30*factor, bottom: 20.0*factor),
                     child: new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        new Text('公司', style: TextStyle(fontSize: 22.0*factor),),
+                        new Text('公司：', style: TextStyle(fontSize: 32.0*factor),),
                         new InkWell(
                           onTap: () {
                             navCompanyEdit();
                           },
                           child: new Row(
                             children: <Widget>[
-                              new Text(state.company.name != '' ? state.company.name : '请填写公司信息', style: TextStyle(fontSize: 22.0*factor),),
-                              new Icon(Icons.chevron_right, size: 30.0*factor,),
+                              new Text(state.company.name != '' ? state.company.name : '请填写公司信息', style: TextStyle(fontSize: 26.0*factor),),
+                              new Icon(Icons.chevron_right, size: 34.0*factor,),
                             ],
                           ),
                         )
@@ -370,29 +320,20 @@ class PubJobState extends State<PubJob>
                   ),
                   Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(top: 10.0*factor, bottom: 30*factor),
+                    padding: EdgeInsets.only(top: 30.0*factor, bottom: 30*factor),
                     child: new Text(
                       '职位描述：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 26.0*factor),
+                      style: new TextStyle(fontSize: 32.0*factor),
                     ),
                   ),
-                  new TextField(
-                    controller: detailCtrl,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 10,
-                    style:TextStyle(fontSize: 24.0*factor),
-                    decoration: new InputDecoration(
-                      hintText: "请输入",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080)
-                      ),
-                      border: new OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0*factor),
-                        borderRadius: BorderRadius.all(Radius.circular(6*factor))
-                      ),
-                      contentPadding: EdgeInsets.all(15.0*factor)
-                    ),
+                  TextArea(
+                    text: detail,
+                    callback: (String val) {
+                      setState(() {
+                        detail = val;
+                      });
+                    },
                   ),
                   new Container(
                     height: 36*factor,
@@ -426,7 +367,7 @@ class PubJobState extends State<PubJob>
                             addrCtrl.text.trim(),
                             timereq,
                             academic,
-                            detailCtrl.text.trim(),
+                            detail,
                             type,
                             state.company.id,
                             userName,
