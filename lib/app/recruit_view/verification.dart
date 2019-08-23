@@ -84,16 +84,16 @@ class VerificationState extends State<Verification>
           ),
           body: new SingleChildScrollView(
             child: new Padding(
-              padding: EdgeInsets.all(30.0*factor),
+              padding: EdgeInsets.all(50.0*factor),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(bottom: 20.0*factor),
                     child: new Text(
                       '法人姓名:',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 28.0*factor),
+                      style: new TextStyle(fontSize: 32.0*factor),
                     ),
                   ),
                   new Padding(
@@ -121,22 +121,21 @@ class VerificationState extends State<Verification>
                       decoration: new InputDecoration(
                         hintText: "请输入法人姓名",
                         hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 26.0*factor
+                            color: const Color(0xFF808080)
                         ),
                         border: new UnderlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor)
                         ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
+                        contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
                       ),
                     ),
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(top: 20*factor, bottom: 10.0*factor),
+                    padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
                     child: new Text(
                       '身份证号码：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 28.0*factor),
+                      style: new TextStyle(fontSize: 32.0*factor),
                     ),
                   ),
                   new Padding(
@@ -170,16 +169,16 @@ class VerificationState extends State<Verification>
                         border: new UnderlineInputBorder(
                           borderSide: BorderSide(width: 1.0*factor)
                         ),
-                        contentPadding: EdgeInsets.all(10.0*factor)
+                        contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
                       ),
                     ),
                   ),
                   new Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.0*factor),
+                    padding: EdgeInsets.symmetric(vertical: 30.0*factor),
                     child: new Text(
                       '招聘意向：',
                       textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 28.0*factor),
+                      style: new TextStyle(fontSize: 32.0*factor),
                     ),
                   ),
                   Container(
@@ -197,7 +196,7 @@ class VerificationState extends State<Verification>
                                 });
                               },
                               child: Container(
-                                margin: EdgeInsets.only(right: 10*factor, left: 104*factor),
+                                margin: EdgeInsets.only(right: 10*factor),
                                 decoration: BoxDecoration(
                                   border: Border.all(width: factor, color: willings[index] ? Theme.of(context).primaryColor : Colors.grey),
                                   color: willings[index] ? Theme.of(context).primaryColor : Colors.transparent
@@ -211,7 +210,8 @@ class VerificationState extends State<Verification>
                                   : Container(width: 32*factor, height: 32*factor,),
                               )
                             ),
-                            Text(jobTypeArr[index], style: TextStyle(fontSize: 26*factor),)
+                            Text(jobTypeArr[index], style: TextStyle(fontSize: 26*factor),),
+                            Container(width: 180*factor,)
                           ]
                         );
                       },
@@ -224,29 +224,30 @@ class VerificationState extends State<Verification>
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                        padding: EdgeInsets.only(top: 30*factor, bottom: 50.0*factor),
                         child: Text(
                           '上传法人身份证:',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 28.0*factor),
+                          style: new TextStyle(fontSize: 32.0*factor),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 10*factor, bottom: 20.0*factor),
+                        padding: EdgeInsets.only(left: 10*factor, bottom: 53.0*factor),
                         child: new Text(
                           '(请上传16:9的图片)',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor, color: Colors.red),
+                          style: new TextStyle(fontSize: 26.0*factor, color: Colors.red),
                         ),
                       ),
                     ],
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Column(
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(left: 112*factor, right: 122*factor),
+                            padding: EdgeInsets.only(left: 0),
                             child: InkWell(
                               onTap: () {
                                 ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
@@ -269,16 +270,19 @@ class VerificationState extends State<Verification>
                                   print(e);
                                 });
                               },
-                              child: company.idFront != null ? Image.network(company.idFront, width: 192*factor,) : Container(
-                                width: 192*factor,
-                                height: 108*factor,
+                              child: company.idFront != null ? Image.network(company.idFront, width: 288*factor,) : Container(
+                                width: 288*factor,
+                                height: 162*factor,
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    width: 2*factor,
-                                    color: Colors.grey
-                                  )
+                                    width: factor,
+                                    color: Colors.orange[200]
+                                  ),
+                                  borderRadius: new BorderRadius.all(new Radius.circular(10*factor))
                                 ),
-                                child: Icon(Icons.add, size: 50*factor)
+                                child: Center(
+                                  child: Text("+", style: TextStyle(fontSize: 70*factor, color: Colors.grey[600]),),
+                                )
                               ),
                             ),
                           ),
@@ -313,16 +317,19 @@ class VerificationState extends State<Verification>
                                 print(e);
                               });
                             },
-                            child: company.idBack != null ? Image.network(company.idBack, width: 192*factor,) : Container(
-                              width: 192*factor,
-                              height: 108*factor,
+                            child: company.idBack != null ? Image.network(company.idBack, width: 288*factor,) : Container(
+                              width: 288*factor,
+                              height: 162*factor,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  width: 2*factor,
-                                  color: Colors.grey
-                                )
+                                  width: factor,
+                                  color: Colors.orange[200]
+                                ),
+                                borderRadius: new BorderRadius.all(new Radius.circular(10*factor))
                               ),
-                              child: Icon(Icons.add, size: 50*factor)
+                              child: Center(
+                                child: Text("+", style: TextStyle(fontSize: 70*factor, color: Colors.grey[600]),),
+                              )
                             ),
                           ),
                           new Padding(
@@ -333,31 +340,32 @@ class VerificationState extends State<Verification>
                       ),
                     ],
                   ),
+                  
                   new Divider(),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                        padding: EdgeInsets.only(top: 30*factor, bottom: 50.0*factor),
                         child: new Text(
                           '营业执照:',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 28.0*factor),
+                          style: new TextStyle(fontSize: 32.0*factor),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 10*factor, bottom: 20.0*factor),
+                        padding: EdgeInsets.only(left: 10*factor, bottom: 53.0*factor),
                         child: new Text(
                           '(请上传9:16的图片)',
                           textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 24.0*factor, color: Colors.red),
+                          style: new TextStyle(fontSize: 26.0*factor, color: Colors.red),
                         ),
                       ),
                     ],
                   ),
                   
                   new Padding(
-                    padding: EdgeInsets.only(left: 112*factor),
+                    padding: EdgeInsets.only(left: 0*factor),
                     child: InkWell(
                       onTap: () {
                         ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
@@ -380,21 +388,59 @@ class VerificationState extends State<Verification>
                           print(e);
                         });
                       },
-                      child: company.license != null ? Image.network(company.license, width: 108*factor, height: 192*factor,) : Container(
-                        width: 108*factor,
-                        height: 192*factor,
+                      child: company.license != null ? Image.network(company.license, width: 162*factor, height: 288*factor,) : Container(
+                        height: 288*factor,
+                        width: 162*factor,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            width: 2*factor,
-                            color: Colors.grey
-                          )
+                            width: factor,
+                            color: Colors.orange[200]
+                          ),
+                          borderRadius: new BorderRadius.all(new Radius.circular(10*factor))
                         ),
-                        child: Icon(Icons.add, size: 50*factor)
+                        child: Center(
+                          child: Text("+", style: TextStyle(fontSize: 70*factor, color: Colors.grey[600]),),
+                        )
                       ),
                     ),
                   ),
+                  Container(height: 30*factor,),
                   Divider(),
-                  Container(height: 20*factor,),
+                  company.verified == 2 ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 30*factor, bottom: 30.0*factor),
+                        child: new Text(
+                          '未通过原因:',
+                          textAlign: TextAlign.left,
+                          style: new TextStyle(fontSize: 32.0*factor),
+                        ),
+                      ),
+                      new Row(
+                        children: <Widget>[
+                          new Flexible(
+                            child: new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                new Text(
+                                  company.reason,
+                                  style: new TextStyle(
+                                    fontSize: 26.0*factor,
+                                    color: Colors.red
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(width: 20*factor,),
+                        ]
+                      ),
+                      Container(height: 20*factor,),
+                      Divider(),
+                      Container(height: 40*factor,),
+                    ],
+                  ) : Container(height: 30*factor,),
                   Row(
                     children: <Widget>[
                       Padding(
@@ -424,41 +470,7 @@ class VerificationState extends State<Verification>
                       )
                     ]
                   ),
-                  company.verified == 2 ? Divider() : Container(height: 20*factor,),
-                  company.verified == 2 ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
-                        child: new Text(
-                          '未通过原因:',
-                          textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 26.0*factor),
-                        ),
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          Container(width: 20*factor,),
-                          new Flexible(
-                            child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                new Text(
-                                  company.reason,
-                                  style: new TextStyle(
-                                    fontSize: 26.0*factor,
-                                    color: Colors.red
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(width: 20*factor,),
-                        ]
-                      ),
-                      Container(height: 30*factor,)
-                    ],
-                  ) : Container(),
+                  Container(height: 30*factor,),
                   
                   new Builder(builder: (ctx) {
                     return new CommonButton(
@@ -509,11 +521,12 @@ class VerificationState extends State<Verification>
                   }),
 
                   Padding(
-                    padding: EdgeInsets.all(20*factor),
+                    padding: EdgeInsets.symmetric(vertical: 30*factor),
                     child: Center(
                       child: Text('提交认证后请耐心等待审核, 刷新"我的"页面获取最新状态', style: TextStyle(fontSize: 24*factor, color: Colors.grey),),
                     ),
-                  )
+                  ),
+                  Container(height: 30*factor)
                 ],
               ),
             )

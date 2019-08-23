@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_app/app/component/text_area.dart';
 
 // 我要提问界面
 class Invite extends StatefulWidget {
@@ -36,11 +37,12 @@ class InviteState extends State<Invite> {
   String userName = '';
   int type = 1;
   String detail = '';
+  String invitation = '';
   int accepted = 0;
 
   int role = 1;
 
-  TextEditingController invitation = new TextEditingController(text: '');
+  // TextEditingController invitation = new TextEditingController(text: '');
 
   @override
   void initState() {
@@ -55,19 +57,7 @@ class InviteState extends State<Invite> {
         }
       }
       setState(() {
-        invitation = TextEditingController.fromValue(
-          TextEditingValue(
-            // 设置内容
-            text: detail == null ? '' : detail,
-            // 保持光标在最后
-            selection: TextSelection.fromPosition(
-              TextPosition(
-                affinity: TextAffinity.downstream,
-                offset: detail == null ? 0 : detail.length
-              )
-            )
-          )
-        );
+        invitation = detail == null ? '' : detail;
       });
       return SharedPreferences.getInstance();
     }).then((SharedPreferences prefs) {
@@ -118,7 +108,7 @@ class InviteState extends State<Invite> {
       ) : Stack(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(30.0*factor),
+            padding: EdgeInsets.all(50.0*factor),
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -126,71 +116,166 @@ class InviteState extends State<Invite> {
                 Row(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(bottom: 20*factor),
-                      child: new Text("邀请函：", style: new TextStyle(fontSize: 24.0*factor)),
+                      padding: EdgeInsets.only(bottom: 40*factor),
+                      child: new Text("邀请函：", style: new TextStyle(fontSize: 32.0*factor)),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 20*factor),
-                      child: accepted == 2 ? Text("(已拒绝邀请)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.red))
-                          : accepted == 1 ? Text("(已接受邀请)", style: new TextStyle(fontSize: 24.0*factor, color: Colors.green))
+                      padding: EdgeInsets.only(bottom: 40*factor),
+                      child: accepted == 2 ? Text("(已拒绝邀请)", style: new TextStyle(fontSize: 26.0*factor, color: Colors.red))
+                          : accepted == 1 ? Text("(已接受邀请)", style: new TextStyle(fontSize: 26.0*factor, color: Colors.green))
                           : Container(),
                     ),
                   ],
                 ),
                 
-                new Expanded(
-                  child: role == 1 ? RichText(
+                role == 1 ? new Expanded(
+                  child: RichText(
                   text: new TextSpan(
-                    text: detail,
-                    style: new TextStyle(
-                        fontSize: 24.0*factor,
-                        color: Colors.black
-                    ),
-                  ),
-                ) : new TextField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 20,
-                    controller: invitation,
-                    style: new TextStyle(fontSize: 24.0*factor),
-                    decoration: new InputDecoration(
-                      hintText: "请填写邀请函内容",
-                      hintStyle: new TextStyle(
-                          color: const Color(0xFF808080),
-                          fontSize: 22.0*factor
+                      text: detail,
+                      style: new TextStyle(
+                          fontSize: 26.0*factor,
+                          height: 1.6,
+                          color: Colors.black
                       ),
-                      border: new OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0*factor),
-                        borderRadius: BorderRadius.all(Radius.circular(6*factor))
-                      ),
-                      contentPadding: EdgeInsets.all(20.0*factor)
                     ),
                   )
-                )
+                ) : TextArea(
+                  text: invitation,
+                  callback: (String val) {
+                    setState(() {
+                      invitation = val;
+                    });
+                  },
+                ),
+                role == 1 ? Container() : Divider()
               ],
             ),
           ),
           Positioned(
             bottom: 30.0*factor,
-            left: 30.0*factor,
-            width: MediaQuery.of(context).size.width - 60*factor,
-            child: role == 1 ? (accepted == 0 ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            left: 50.0*factor,
+            width: 650*factor,
+            child: role == 1 ? (accepted == 0 ? Column(
               children: <Widget>[
                 FlatButton(
+                  padding: EdgeInsets.all(0),
                   child: new Container(
-                    width: 200*factor,
-                    height: 70*factor,
+                    width: 650*factor,
+                    decoration: BoxDecoration(
+                      border: new Border.all(
+                        color: Theme.of(context).primaryColor,
+                        width: factor
+                      ),
+                    ),
+                    height: 90*factor,
                     child: new Center(
                       child: Text(
-                        "拒绝邀请",
+                        "接受邀请",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 28.0*factor,
+                          fontSize: 36.0*factor,
                         ),
                       ),
                     ),
                   ),
-                  color: Colors.orange,
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () async {
+                    if (isRequesting) return;
+                    if (isRequesting) return;
+                    showDialog<Null>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                          return new AlertDialog(
+                              content: Text("确认要接受邀请么？", style: TextStyle(fontSize: 28*factor),),
+                              actions: <Widget>[
+                                  new FlatButton(
+                                    child: new Text('取消', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                                    onPressed: () {
+                                        Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  new FlatButton(
+                                    child: new Text('确定', style: TextStyle(fontSize: 24*factor),),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      setState(() {
+                                        isRequesting = true;
+                                      });
+                                      // 发送给webview，让webview登录后再取回token
+
+                                      Api().updateInvitation(widget.jobId, widget.userId, 1)
+                                        .then((Response response) {
+                                          setState(() {
+                                            isRequesting = false;
+                                          });
+                                          if(response.data['code'] != 1) {
+                                            Scaffold.of(context).showSnackBar(new SnackBar(
+                                              content: new Text("提交失败！"),
+                                            ));
+                                            return;
+                                          } else {
+                                            showDialog<Null>(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                  return new AlertDialog(
+                                                      content: Text("已接受面试邀请！", style: TextStyle(fontSize: 28*factor),),
+                                                      actions: <Widget>[
+                                                          new FlatButton(
+                                                              child: new Text('知道了', style: TextStyle(fontSize: 24*factor),),
+                                                              onPressed: () {
+                                                                  Navigator.of(context).pop();
+                                                                  setState(() {
+                                                                    accepted = 1;
+                                                                  });
+                                                              },
+                                                          ),
+                                                      ],
+                                                  );
+                                              },
+                                            ).then((val) {
+                                                print(val);
+                                            });
+                                          }
+                                        })
+                                        .catchError((e) {
+                                          setState(() {
+                                            isRequesting = false;
+                                          });
+                                          print(e);
+                                        });
+                                    },
+                                  ),
+                              ],
+                          );
+                      },
+                    );
+                  }
+                ),
+                Container(height: 40*factor,),
+                FlatButton(
+                  padding: EdgeInsets.all(0),
+                  child: new Container(
+                    width: 650*factor,
+                    height: 90*factor,
+                    decoration: BoxDecoration(
+                      border: new Border.all(
+                        color: Colors.orange[300],
+                        width: factor
+                      ),
+                    ),
+                    child: new Center(
+                      child: Text(
+                        "拒绝邀请",
+                        style: TextStyle(
+                          color: Colors.grey[800],
+                          fontSize: 36.0*factor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  color: Colors.white,
                   onPressed: () async {
                     if (isRequesting) return;
                     showDialog<Null>(
@@ -265,95 +350,6 @@ class InviteState extends State<Invite> {
                     
                   }
                 ),
-                FlatButton(
-                  child: new Container(
-                    width: 200*factor,
-                    height: 70*factor,
-                    child: new Center(
-                      child: Text(
-                        "接受邀请",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28.0*factor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () async {
-                    if (isRequesting) return;
-                    if (isRequesting) return;
-                    showDialog<Null>(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                          return new AlertDialog(
-                              content: Text("确认要接受邀请么？", style: TextStyle(fontSize: 28*factor),),
-                              actions: <Widget>[
-                                  new FlatButton(
-                                      child: new Text('取消', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
-                                      onPressed: () {
-                                          Navigator.of(context).pop();
-                                      },
-                                  ),
-                                  new FlatButton(
-                                      child: new Text('确定', style: TextStyle(fontSize: 24*factor),),
-                                      onPressed: () {
-                                          Navigator.of(context).pop();
-                                          setState(() {
-                                            isRequesting = true;
-                                          });
-                                          // 发送给webview，让webview登录后再取回token
-
-                                          Api().updateInvitation(widget.jobId, widget.userId, 1)
-                                            .then((Response response) {
-                                              setState(() {
-                                                isRequesting = false;
-                                              });
-                                              if(response.data['code'] != 1) {
-                                                Scaffold.of(context).showSnackBar(new SnackBar(
-                                                  content: new Text("提交失败！"),
-                                                ));
-                                                return;
-                                              } else {
-                                                showDialog<Null>(
-                                                  context: context,
-                                                  barrierDismissible: false,
-                                                  builder: (BuildContext context) {
-                                                      return new AlertDialog(
-                                                          content: Text("已接受面试邀请！", style: TextStyle(fontSize: 28*factor),),
-                                                          actions: <Widget>[
-                                                              new FlatButton(
-                                                                  child: new Text('知道了', style: TextStyle(fontSize: 24*factor),),
-                                                                  onPressed: () {
-                                                                      Navigator.of(context).pop();
-                                                                      setState(() {
-                                                                        accepted = 1;
-                                                                      });
-                                                                  },
-                                                              ),
-                                                          ],
-                                                      );
-                                                  },
-                                                ).then((val) {
-                                                    print(val);
-                                                });
-                                              }
-                                            })
-                                            .catchError((e) {
-                                              setState(() {
-                                                isRequesting = false;
-                                              });
-                                              print(e);
-                                            });
-                                      },
-                                  ),
-                              ],
-                          );
-                      },
-                    );
-                  }
-                ),
               ],
             ) : Container()): FlatButton(
               child: new Container(
@@ -373,7 +369,7 @@ class InviteState extends State<Invite> {
               onPressed: () async {
                 if (isRequesting) return;
                 // 拿到用户输入的账号密码
-                if (invitation.text == '') {
+                if (invitation == '') {
                   Scaffold.of(context).showSnackBar(new SnackBar(
                     content: new Text("邀请函不能为空！"),
                   ));
@@ -384,7 +380,7 @@ class InviteState extends State<Invite> {
                 });
                 // 发送给webview，让webview登录后再取回token
 
-                Api().invite(userName, invitation.text, widget.jobId, widget.userId)
+                Api().invite(userName, invitation, widget.jobId, widget.userId)
                   .then((Response response) {
                     setState(() {
                       isRequesting = false;
