@@ -31,8 +31,9 @@ class IconTabState extends State<IconTab> {
     double factor = MediaQuery.of(context).size.width/750;
     Widget label = new Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      // crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        Container(height: 5*factor,),
         new Container(
           child: widget.icon != null ? new Image(
             image: new AssetImage(widget.icon),
@@ -42,7 +43,7 @@ class IconTabState extends State<IconTab> {
             height: 50.0*factor,
             child: widget.iconData,
           ),
-          margin: EdgeInsets.only(bottom: 10.0*factor),
+          margin: EdgeInsets.only(bottom: 5.0*factor),
         ),
         Text(widget.text,
           softWrap: false,

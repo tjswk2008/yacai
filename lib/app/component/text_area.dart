@@ -31,7 +31,7 @@ class TextAreaState extends State<TextArea> {
             margin: EdgeInsets.symmetric(vertical: 20*factor),
             child: Text(
               widget.text == '' ? '请输入内容' : widget.text,
-              style: TextStyle(fontSize: 26.0*factor, color: widget.text == '' ? Colors.grey[400] : Colors.grey[700]),
+              style: TextStyle(fontSize: 26.0*factor, color: widget.text == '' ? Colors.grey[400] : Colors.grey[800]),
               overflow: TextOverflow.ellipsis
             ),
           ),

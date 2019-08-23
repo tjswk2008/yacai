@@ -125,7 +125,7 @@ class PostDetailState extends State<PostDetail>
                             text: _post.detail,
                             style: new TextStyle(
                                 fontSize: 26.0*factor,
-                                color: Colors.grey[700],
+                                color: Colors.grey[800],
                                 height: 1.6
                             ),
                           ),

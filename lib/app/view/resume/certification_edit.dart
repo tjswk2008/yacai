@@ -76,7 +76,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     new Padding(
-                      padding: EdgeInsets.only(bottom: 20.0*factor),
+                      padding: EdgeInsets.only(bottom: 30.0*factor),
                       child: new Text(
                         '证书名称：',
                         textAlign: TextAlign.left,
@@ -119,7 +119,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                       ),
                     ),
                     new Padding(
-                      padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                      padding: EdgeInsets.only(top: 30*factor, bottom: 30.0*factor),
                       child: new Text(
                         '颁发单位：',
                         textAlign: TextAlign.left,
@@ -162,7 +162,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                       ),
                     ),
                     new Padding(
-                      padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                      padding: EdgeInsets.only(top: 30*factor, bottom: 30.0*factor),
                       child: new Text(
                         '证书编号：',
                         textAlign: TextAlign.left,
@@ -207,7 +207,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20*factor),
+                          padding: EdgeInsets.symmetric(vertical: 30*factor),
                           child: new Text(
                             '颁发时间：',
                             textAlign: TextAlign.left,

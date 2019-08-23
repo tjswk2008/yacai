@@ -28,7 +28,7 @@ class CompanyInc extends StatelessWidget {
                   new Container(
                     color: Colors.white,
                     child: new Padding(
-                        padding: EdgeInsets.all(15.0*factor),
+                        padding: EdgeInsets.all(30.0*factor),
                         child: new Column(
                           children: <Widget>[
                             new Row(
@@ -45,7 +45,7 @@ class CompanyInc extends StatelessWidget {
                                 text: _companyInc,
                                 style: new TextStyle(
                                     fontSize: 26.0*factor,
-                                    color: Colors.grey[700],
+                                    color: Colors.grey[800],
                                     height: 1.6
                                 ),
                               ),

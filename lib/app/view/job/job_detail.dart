@@ -141,11 +141,20 @@ class JobDetailState extends State<JobDetail>
                     child: new Column(
                       children: <Widget>[
                         new JobBase(_job),
-                        new Divider(),
+                        Container(
+                          height: 5*factor,
+                          color: Colors.grey[100],
+                        ),
                         new JobDesc(_job),
-                        new Divider(),
+                        Container(
+                          height: 5*factor,
+                          color: Colors.grey[100],
+                        ),
                         new JobAddr(_job),
-                        new Divider(),
+                        Container(
+                          height: 5*factor,
+                          color: Colors.grey[100],
+                        ),
                         new InkWell(
                             onTap: () => navCompanyDetail(_company),
                             child: _company == null ? new Container() : new CompanyInfo(_company)
@@ -259,7 +268,8 @@ class JobDetailState extends State<JobDetail>
                               }
                             );
                           }),
-                        ) : Container()
+                        ) : Container(),
+                        prefix0.Container(height: 40*factor,)
                       ],
                     ),
                   ),

@@ -82,7 +82,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 20.0*factor),
+                        padding: EdgeInsets.only(bottom: 30.0*factor),
                         child: new Text(
                           '项目名：',
                           textAlign: TextAlign.left,
@@ -129,7 +129,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 30.0*factor, bottom: 10.0*factor),
+                            padding: EdgeInsets.only(top: 40.0*factor, bottom: 20.0*factor),
                             child: new Text(
                               '角色名称：',
                               textAlign: TextAlign.left,
@@ -168,7 +168,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(top: 20*factor, bottom: 20*factor),
+                            padding: EdgeInsets.only(top: 30*factor, bottom: 30*factor),
                             child: new Text(
                               '开始时间：',
                               textAlign: TextAlign.left,
@@ -201,7 +201,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(top: 20*factor, bottom: 20*factor),
+                            padding: EdgeInsets.only(top: 30*factor, bottom: 30*factor),
                             child: new Text(
                               '结束时间：',
                               textAlign: TextAlign.left,
@@ -237,7 +237,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20.0*factor),
+                        padding: EdgeInsets.symmetric(vertical: 30.0*factor),
                         child: new Text(
                           '项目描述：',
                           textAlign: TextAlign.left,
@@ -254,7 +254,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20.0*factor),
+                        padding: EdgeInsets.symmetric(vertical: 30.0*factor),
                         child: new Text(
                           '项目业绩：',
                           textAlign: TextAlign.left,

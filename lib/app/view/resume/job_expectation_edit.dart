@@ -83,7 +83,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new Padding(
-                          padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
+                          padding: EdgeInsets.only(top: 30.0*factor, bottom: 30.0*factor),
                           child: new Text(
                             '期望职位：',
                             textAlign: TextAlign.left,
@@ -92,8 +92,8 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                         ),
                         new Padding(
                           padding: EdgeInsets.only(
-                            top: 20.0*factor,
-                            bottom: 20.0*factor,
+                            top: 30.0*factor,
+                            bottom: 30.0*factor,
                             left: 10.0*factor,
                             right: 20.0*factor
                           ),
@@ -120,7 +120,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new Padding(
-                          padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
+                          padding: EdgeInsets.only(top: 30.0*factor, bottom: 30.0*factor),
                           child: new Text(
                             '期望行业：',
                             textAlign: TextAlign.left,
@@ -157,7 +157,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20.0*factor),
+                          padding: EdgeInsets.symmetric(vertical: 30.0*factor),
                           child: new Text(
                             '工作类型：',
                             textAlign: TextAlign.left,
@@ -165,7 +165,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                           ),
                         ),
                         new Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16.0*factor),
+                          padding: EdgeInsets.only(top: 16.0*factor, bottom: 16*factor, right: 20*factor),
                           child: new InkWell(
                             onTap: () {
                               YCPicker.showYCPicker(
@@ -188,7 +188,7 @@ class JobExpectationEditState extends State<JobExpectationEdit>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new Padding(
-                          padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
+                          padding: EdgeInsets.only(top: 30.0*factor, bottom: 30.0*factor),
                           child: new Text(
                             '薪资要求：',
                             textAlign: TextAlign.left,

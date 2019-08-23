@@ -179,7 +179,7 @@ class _YCPickerState extends State<_YCPickerWidget> {
                                     return new Align(
                                       child: new Text(
                                         v,
-                                        style:TextStyle(fontSize: 34*factor, height: 2, color: Colors.grey[700])
+                                        style:TextStyle(fontSize: 34*factor, height: 2, color: Colors.grey[800])
                                       ),
                                       alignment: Alignment.center,
                                     );

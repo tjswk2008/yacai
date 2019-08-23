@@ -30,13 +30,13 @@ class JobListItem extends StatelessWidget {
                       children: <Widget>[
                         new Padding(
                           padding: EdgeInsets.only(
-                            top: 20.0*factor,
+                            top: 30.0*factor,
                             bottom: 10*factor,
                             left: 35.0*factor,
                           ),
                           child: Row(
                             children: <Widget>[
-                              new Text(job.name, style: new TextStyle(fontSize: 34.0*factor, color: Colors.black)),
+                              new Text(job.name, style: new TextStyle(fontSize: 34.0*factor, color: Colors.grey[800], fontWeight: FontWeight.bold)),
                               showCount ? Padding(
                                 padding: EdgeInsets.only(left: 20*factor),
                                 child: new Text(
@@ -56,8 +56,8 @@ class JobListItem extends StatelessWidget {
                           children: <Widget>[
                             new Padding(
                               padding: EdgeInsets.only(
-                                right: 47.0*factor,
-                                top: 10*factor
+                                right: 35.0*factor,
+                                top: 20*factor
                               ),
                               child: new Text(
                                   '${job.salaryLow}k-${job.salaryHigh}k',

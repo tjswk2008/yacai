@@ -131,7 +131,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20.0*factor),
+                        padding: EdgeInsets.symmetric(vertical: 30.0*factor),
                         child: new Text(
                           '姓名：',
                           textAlign: TextAlign.left,
@@ -176,7 +176,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
+                            padding: EdgeInsets.only(top: 30.0*factor, bottom: 30.0*factor),
                             child: new Text(
                               '性别：',
                               textAlign: TextAlign.left,
@@ -214,7 +214,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
+                            padding: EdgeInsets.only(top: 30*factor,bottom: 30.0*factor),
                             child: new Text(
                               '居住地：',
                               textAlign: TextAlign.left,
@@ -242,7 +242,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
+                            padding: EdgeInsets.only(top: 30*factor,bottom: 30.0*factor),
                             child: new Text(
                               '户口/国籍：',
                               textAlign: TextAlign.left,
@@ -277,7 +277,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
+                            padding: EdgeInsets.only(top: 30*factor,bottom: 30.0*factor),
                             child: new Text(
                               '婚姻状况：',
                               textAlign: TextAlign.left,
@@ -306,7 +306,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
+                            padding: EdgeInsets.only(top: 30*factor,bottom: 30.0*factor),
                             child: new Text(
                               '参加工作时间：',
                               textAlign: TextAlign.left,
@@ -335,7 +335,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
+                        padding: EdgeInsets.only(top: 30*factor,bottom: 30.0*factor),
                         child: new Text(
                           '微信号：',
                           textAlign: TextAlign.left,
@@ -375,7 +375,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
+                        padding: EdgeInsets.only(top: 30*factor,bottom: 30.0*factor),
                         child: new Text(
                           '邮箱：',
                           textAlign: TextAlign.left,
@@ -419,7 +419,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor,bottom: 20.0*factor),
+                            padding: EdgeInsets.only(top: 30*factor,bottom: 30.0*factor),
                             child: new Text(
                               '出生年月：',
                               textAlign: TextAlign.left,
@@ -448,7 +448,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.only(top: 10*factor,bottom: 30.0*factor),
+                        padding: EdgeInsets.only(top: 20*factor,bottom: 30.0*factor),
                         child: new Text(
                           '我的优势：',
                           textAlign: TextAlign.left,

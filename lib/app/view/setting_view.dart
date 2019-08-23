@@ -82,8 +82,8 @@ class SettingViewState extends State<SettingView> {
           body: Container(
             padding: EdgeInsets.all(40.0*factor),
             child: Container(
-              height: 320*factor + 3*16,
-              padding: EdgeInsets.only(left: 30*factor),
+              height: 360*factor + 3*16,
+              padding: EdgeInsets.symmetric(horizontal: 30*factor),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(20*factor),)
@@ -178,7 +178,7 @@ class SettingViewState extends State<SettingView> {
                       );
                     },
                     child: new Container(
-                      height: 70.0*factor,
+                      height: 80.0*factor,
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -216,7 +216,7 @@ class SettingViewState extends State<SettingView> {
                       }
                     },
                     child: new Container(
-                      height: 70.0*factor,
+                      height: 80.0*factor,
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -239,9 +239,6 @@ class SettingViewState extends State<SettingView> {
                           ),
                           new Container(
                             height: 30*factor,
-                            padding: EdgeInsets.only(
-                              right: 20.0*factor,
-                            ),
                             child: Switch.adaptive(
                               value: isOpen == 1 ? true : false,
                               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -294,7 +291,7 @@ class SettingViewState extends State<SettingView> {
                       }
                     },
                     child: new Container(
-                      height: 70.0*factor,
+                      height: 80.0*factor,
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -328,7 +325,7 @@ class SettingViewState extends State<SettingView> {
                       }
                     },
                     child: new Container(
-                      height: 70.0*factor,
+                      height: 80.0*factor,
                       child: new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -349,12 +346,7 @@ class SettingViewState extends State<SettingView> {
                               ],
                             ),
                           ),
-                          new Padding(
-                            padding: EdgeInsets.only(
-                              right: 45.0*factor,
-                            ),
-                            child: Text(versionStr, style: TextStyle(fontSize: 28*factor, color: Colors.grey[600]),),
-                          )
+                          Text(versionStr, style: TextStyle(fontSize: 28*factor, color: Colors.grey[600]),)
                         ],
                       ),
                     )

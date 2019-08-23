@@ -148,9 +148,9 @@ class ShieldListState extends State<ShieldList>
                           children: <Widget>[
                             new Padding(
                               padding: EdgeInsets.only(
-                                top: 20.0*factor,
-                                left: 20.0*factor,
-                                right: 20.0*factor,
+                                top: 30.0*factor,
+                                left: 30.0*factor,
+                                right: 30.0*factor,
                                 bottom: 0.0,
                               ),
                               child: company.logo != null ? new Image.network(
@@ -233,7 +233,7 @@ class ShieldListState extends State<ShieldList>
                                       top: 10.0*factor,
                                       left: 0.0,
                                       right: 10.0*factor,
-                                      bottom: 10.0*factor,
+                                      bottom: 30.0*factor,
                                     ),
                                     child: new Text(
                                         '${company.type} | ${company.employee}', style: new TextStyle(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'dart:ui';
 import 'package:flutter_app/app/model/post.dart';
 import 'package:flutter_app/app/component/likebutton/like_button.dart';
@@ -52,6 +53,7 @@ class AnswerListState extends State<AnswerList>
         Answer answer = widget._answers[index];
         return Column(
           children: <Widget>[
+            prefix0.Container(height: 20*factor,),
             new Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -94,7 +96,7 @@ class AnswerListState extends State<AnswerList>
                             text: answer.answer,
                             style: new TextStyle(
                                 fontSize: 26.0*factor,
-                                color: Colors.grey[700],
+                                color: Colors.grey[800],
                                 height: 1.6
                             ),
                           ),

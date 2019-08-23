@@ -264,7 +264,7 @@ class JobList extends State<JobsTab> {
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
     return new Scaffold(
-      backgroundColor: new Color.fromARGB(255, 242, 242, 245),
+      backgroundColor: Colors.grey[200],
       appBar: (widget._type == 4 || widget._type == 5 || widget._type == 6) ? new AppBar(
         elevation: 0.0,
         leading: IconButton(

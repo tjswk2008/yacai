@@ -120,9 +120,9 @@ class MineTabState extends State<MineTab> {
                                               bottom: 20.0*factor,
                                             ),
                                             child: new Text(
-                                                userName == '' ? "点击头像登录" : appState.resume.personalInfo.name.isEmpty ? '快去编辑简历填写您的姓名吧' : appState.resume.personalInfo.name,
+                                                userName == '' ? "点击头像登录" : appState.resume.personalInfo.name == null ? '快去编辑简历填写您的姓名吧' : appState.resume.personalInfo.name,
                                                 style: new TextStyle(
-                                                    fontFamily: 'fangzheng', fontWeight: FontWeight.bold, color: Colors.white, fontSize: 34.0*factor))
+                                                    fontFamily: 'fangzheng', fontWeight: FontWeight.bold, color: Colors.white, fontSize: 36.0*factor))
                                         ),
                                         new Text(
                                             (appState.resume == null || appState.resume.jobStatus == null || appState.resume.jobStatus == '') ? "" : appState.resume.jobStatus,
@@ -259,9 +259,10 @@ class MineTabState extends State<MineTab> {
                                     ),
                                     child: new Row(
                                       children: <Widget>[
-                                        Image.asset('assets/images/record.png', width: 42.0*factor),
+                                        Container(width: 3*factor,),
+                                        Image.asset('assets/images/record.png', width: 36.0*factor),
                                         new Padding(
-                                          padding: EdgeInsets.only(right: 15.0*factor),
+                                          padding: EdgeInsets.only(right: 18.0*factor),
                                         ),
                                         new Text('申请记录', style: TextStyle(fontSize: 34.0*factor, fontFamily: 'fangzheng'),),
                                       ],
@@ -300,14 +301,14 @@ class MineTabState extends State<MineTab> {
                                     padding: EdgeInsets.only(
                                       top: 20.0*factor,
                                       bottom: 20.0*factor,
-                                      left: 25.0*factor,
+                                      left: 24.0*factor,
                                       right: 20.0*factor,
                                     ),
                                     child: new Row(
                                       children: <Widget>[
-                                        new Icon(Icons.insert_invitation, size: 42.0*factor, color: Theme.of(context).primaryColor),
+                                        new Icon(Icons.insert_invitation, size: 44.0*factor, color: Theme.of(context).primaryColor),
                                         new Padding(
-                                          padding: EdgeInsets.only(right: 15.0*factor),
+                                          padding: EdgeInsets.only(right: 14.0*factor),
                                         ),
                                         new Text('面试邀请', style: TextStyle(fontSize: 34.0*factor, fontFamily: 'fangzheng'),),
                                       ],
@@ -473,7 +474,7 @@ class MineTabState extends State<MineTab> {
                 width: MediaQuery.of(context).size.width,
                 child: FlatButton(
                   child: new Container(
-                    height: 80*factor,
+                    height: 90*factor,
                     child: new Center(
                       child: Text(
                         "退出登录",

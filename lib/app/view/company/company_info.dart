@@ -12,8 +12,8 @@ class CompanyInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidthInPt = MediaQuery.of(context).size.width;
     return new Padding(
-      padding: EdgeInsets.only(
-        left: 10.0*screenWidthInPt/750
+      padding: EdgeInsets.all(
+        30.0*screenWidthInPt/750
       ),
       child: new SizedBox(
         child: new Card(
@@ -23,7 +23,7 @@ class CompanyInfo extends StatelessWidget {
               new Padding(
                 padding: EdgeInsets.only(
                   left: 10.0*screenWidthInPt/750,
-                  right: 45.0*screenWidthInPt/750,
+                  right: 50.0*screenWidthInPt/750,
                 ),
                 child: company.logo != null ? new Image.network(
                   company.logo,

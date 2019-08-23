@@ -84,7 +84,7 @@ class EducationEditViewState extends State<EducationEditView>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 10.0*factor),
+                        padding: EdgeInsets.only(bottom: 30.0*factor),
                         child: new Text(
                           '学校名称：',
                           textAlign: TextAlign.left,
@@ -146,7 +146,7 @@ class EducationEditViewState extends State<EducationEditView>
                         )
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                        padding: EdgeInsets.only(top: 30*factor, bottom: 30.0*factor),
                         child: new Text(
                           '专业：',
                           textAlign: TextAlign.left,
@@ -192,7 +192,7 @@ class EducationEditViewState extends State<EducationEditView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 30.0*factor, bottom: 20.0*factor),
+                            padding: EdgeInsets.only(top: 40.0*factor, bottom: 30.0*factor),
                             child: new Text(
                               '学历：',
                               textAlign: TextAlign.left,
@@ -231,7 +231,7 @@ class EducationEditViewState extends State<EducationEditView>
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
+                            padding: EdgeInsets.only(top: 30.0*factor, bottom: 30.0*factor),
                             child: new Text(
                               '开始时间：',
                               textAlign: TextAlign.left,
@@ -263,7 +263,7 @@ class EducationEditViewState extends State<EducationEditView>
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.only(top: 20.0*factor, bottom: 20.0*factor),
+                            padding: EdgeInsets.only(top: 30.0*factor, bottom: 30.0*factor),
                             child: new Text(
                               '结束时间：',
                               textAlign: TextAlign.left,
@@ -299,7 +299,7 @@ class EducationEditViewState extends State<EducationEditView>
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20.0*factor),
+                        padding: EdgeInsets.symmetric(vertical: 30.0*factor),
                         child: new Text(
                           '在校经历：',
                           textAlign: TextAlign.left,

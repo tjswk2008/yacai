@@ -12,9 +12,8 @@ class JobDesc extends StatelessWidget {
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
-      padding: EdgeInsets.only(
-        left: 20.0*factor,
-        right: 20.0*factor
+      padding: EdgeInsets.all(
+        30.0*factor,
       ),
       child: new Container(
           color: Colors.white,
@@ -39,7 +38,7 @@ class JobDesc extends StatelessWidget {
                       text: job.detail,
                       style: new TextStyle(
                           fontSize: 26.0*factor,
-                          color: Colors.grey[700],
+                          color: Colors.grey[800],
                           height: 1.6
                       ),
                     ),

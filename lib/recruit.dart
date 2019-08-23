@@ -58,6 +58,7 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
       ),
       bottomNavigationBar: new Material(
         color: Colors.white,
+        elevation: 4.0,
         child: SafeArea(
           bottom: true,
           child: new TabBar(

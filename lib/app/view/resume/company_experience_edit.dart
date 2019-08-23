@@ -146,7 +146,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20.0*factor),
+                            padding: EdgeInsets.symmetric(vertical: 30.0*factor),
                             child: new Text(
                               '职位名称：',
                               textAlign: TextAlign.left,
@@ -155,8 +155,8 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                           ),
                           new Padding(
                             padding: EdgeInsets.only(
-                              top: 20.0*factor,
-                              bottom: 20.0*factor,
+                              top: 30.0*factor,
+                              bottom: 30.0*factor,
                               left: 10.0*factor,
                               right: 20.0*factor
                             ),
@@ -184,7 +184,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20*factor),
+                            padding: EdgeInsets.symmetric(vertical: 30*factor),
                             child: new Text(
                               '开始时间：',
                               textAlign: TextAlign.left,
@@ -217,7 +217,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20*factor),
+                            padding: EdgeInsets.symmetric(vertical: 30*factor),
                             child: new Text(
                               '结束时间：',
                               textAlign: TextAlign.left,
@@ -253,7 +253,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                        padding: EdgeInsets.only(top: 30*factor, bottom: 30.0*factor),
                         child: new Text(
                           '工作内容：',
                           textAlign: TextAlign.left,
@@ -270,7 +270,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                       ),
                       new Divider(),
                       new Padding(
-                        padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
+                        padding: EdgeInsets.only(top: 30*factor, bottom: 30.0*factor),
                         child: new Text(
                           '工作业绩：',
                           textAlign: TextAlign.left,

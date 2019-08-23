@@ -58,7 +58,7 @@ class ResumeDetailState extends State<ResumeDetail>
 
   Widget addExperience(double factor, String title, String btnName, List list, IndexedWidgetBuilder itemBuilder) {
     return new Padding(
-      padding: EdgeInsets.all(30.0*factor),
+      padding: EdgeInsets.symmetric(vertical:40.0*factor, horizontal: 30*factor),
       child: new Column(
         children: <Widget>[
           new Row(
@@ -69,21 +69,19 @@ class ResumeDetailState extends State<ResumeDetail>
                 child: new Text(
                   title,
                   style: new TextStyle(
-                    fontSize: 28.0*factor,
-                    color: Colors.black
+                    fontSize: 32.0*factor,
+                    color: Colors.grey[800],
+                    fontWeight: prefix0.FontWeight.bold
                   )
                 ),
               )
             ],
           ),
-          new Padding(
-            padding: EdgeInsets.only(left: 10.0*factor),
-            child: list == null ? Container() : new ListView.builder(
-              physics: new NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: list.length,
-              itemBuilder: itemBuilder
-            ),
+          list == null ? Container() : new ListView.builder(
+            physics: new NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: list.length,
+            itemBuilder: itemBuilder
           ),
           new Padding(
             padding: EdgeInsets.only(bottom: 30.0*factor),
@@ -159,7 +157,7 @@ class ResumeDetailState extends State<ResumeDetail>
           borderRadius: new BorderRadius.all(new Radius.circular(6.0*factor))
         ),
         child: new Center(
-          child: new Text(text, style: new TextStyle(fontSize: 28.0*factor, color: Colors.grey[700]),),
+          child: new Text(text, style: new TextStyle(fontSize: 28.0*factor, color: Colors.grey[800]),),
         ),
       ),
     );
@@ -303,7 +301,7 @@ class ResumeDetailState extends State<ResumeDetail>
                         height: 10*factor,
                       ),
                       new Padding(
-                        padding: EdgeInsets.all(30.0*factor),
+                        padding: EdgeInsets.symmetric(vertical:40.0*factor, horizontal: 30*factor),
                         child: new InkWell(
                           onTap: () {
                             // _showJobStatus(context);
@@ -347,10 +345,11 @@ class ResumeDetailState extends State<ResumeDetail>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               new Text(
-                                "求职状态",
+                                "求职状态：",
                                 style: new TextStyle(
-                                  fontSize: 28.0*factor,
-                                  color: Colors.black
+                                  fontSize: 32.0*factor,
+                                  fontWeight: prefix0.FontWeight.bold,
+                                  color: Colors.grey[800]
                                 )
                               ),
                               new Text(appState.resume.jobStatus == null ? '请选择' : appState.resume.jobStatus, style: TextStyle(fontSize: 26.0*factor),)
@@ -363,17 +362,18 @@ class ResumeDetailState extends State<ResumeDetail>
                         height: 10*factor,
                       ),
                       new Padding(
-                        padding: EdgeInsets.all(30.0*factor),
+                        padding: EdgeInsets.symmetric(vertical:40.0*factor, horizontal: 30*factor),
                         child: new Column(
                           children: <Widget>[
                             new Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 new Text(
-                                  "求职期望",
+                                  "求职期望：",
                                   style: new TextStyle(
-                                    fontSize: 28.0*factor,
-                                    color: Colors.black
+                                    fontSize: 32.0*factor,
+                                    fontWeight: prefix0.FontWeight.bold,
+                                    color: Colors.grey[800]
                                   )
                                 ),
                               ],
@@ -381,10 +381,7 @@ class ResumeDetailState extends State<ResumeDetail>
                             new Padding(
                               padding: EdgeInsets.only(top: 30.0*factor),
                             ),
-                            new Padding(
-                              padding: EdgeInsets.only(left: 10.0*factor),
-                              child: new JobExpectation(appState.resume.jobExpect, true),
-                            ),
+                            new JobExpectation(appState.resume.jobExpect, true),
                           ],
                         ),
                       ),

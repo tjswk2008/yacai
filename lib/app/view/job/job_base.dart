@@ -12,10 +12,8 @@ class JobBase extends StatelessWidget {
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
-      padding: EdgeInsets.only(
-        top: 20.0*factor,
-        left: 20.0*factor,
-        right: 20.0*factor,
+      padding: EdgeInsets.all(
+        30.0*factor
       ),
       child: new SizedBox(
         child: new Card(

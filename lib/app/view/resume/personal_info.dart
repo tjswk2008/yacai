@@ -50,7 +50,7 @@ class PersonalInfoViewState extends State<PersonalInfoView>
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
     return new Padding(
-      padding: EdgeInsets.only(top: 20.0*factor),
+      padding: EdgeInsets.only(top: 30.0*factor),
       child: new InkWell(
         onTap: () {
           if(!widget._editable) return;
@@ -96,7 +96,7 @@ class PersonalInfoViewState extends State<PersonalInfoView>
                                   widget.personalInfo.name : widget.personalInfo.name.length == 2 ? 
                                   widget.personalInfo.name.replaceRange(0, 1, '*') : '*' + widget.personalInfo.name.substring(1, 2) + '*' + widget.personalInfo.name.substring(3, widget.personalInfo.name.length),
                                 textAlign: TextAlign.left,
-                                style: new TextStyle(fontSize: 34.0*factor,fontWeight: FontWeight.bold, color: Colors.grey[700]),
+                                style: new TextStyle(fontSize: 34.0*factor,fontWeight: FontWeight.bold, color: Colors.grey[800]),
                               ),
                             ),
                             Padding(
@@ -134,7 +134,7 @@ class PersonalInfoViewState extends State<PersonalInfoView>
                                 height: 24*factor,
                                 width: factor,
                                 decoration: new BoxDecoration(
-                                  border: new Border(left: BorderSide(width: factor, color: Colors.grey[700]))
+                                  border: new Border(left: BorderSide(width: factor, color: Colors.grey[800]))
                                 ),
                               ),
                             ),
@@ -152,7 +152,7 @@ class PersonalInfoViewState extends State<PersonalInfoView>
                                 height: 24*factor,
                                 width: factor,
                                 decoration: new BoxDecoration(
-                                  border: new Border(left: BorderSide(width: factor, color: Colors.grey[700]))
+                                  border: new Border(left: BorderSide(width: factor, color: Colors.grey[800]))
                                 ),
                               ),
                             ),
@@ -190,12 +190,12 @@ class PersonalInfoViewState extends State<PersonalInfoView>
                         bottom: 10.0*factor,
                       ),
                       child: new Text(widget.personalInfo.summarize == null ? '优势' : widget.personalInfo.summarize, style: new TextStyle(
-                          fontSize: 26.0*factor, color: Colors.grey[700])),
+                          fontSize: 26.0*factor, color: Colors.grey[800])),
                     ),
                   ],
                 ),
 
-                Container(height: 20*factor,)
+                Container(height: 30*factor,)
               ],
             ),
           ),

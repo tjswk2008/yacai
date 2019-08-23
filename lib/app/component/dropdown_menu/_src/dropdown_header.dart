@@ -55,10 +55,11 @@ class _DropdownHeaderState extends DropdownState<DropdownHeader> {
     return new GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: new Padding(
-          padding: new EdgeInsets.fromLTRB(0.0, 10.0*factor, 0.0, 10.0*factor),
+          padding: new EdgeInsets.fromLTRB(10.0*factor, 10.0*factor, 0.0*factor, 10.0*factor),
           child: new DecoratedBox(
               decoration: new BoxDecoration(
-                  border: new Border(left: Divider.createBorderSide(context))),
+                border: new Border(right: Divider.createBorderSide(context, color: index == _titles.length - 1 ? Colors.transparent : Theme.of(context).dividerColor))
+              ),
               child: new Center(
                   child: new Row(
                       mainAxisSize: MainAxisSize.min,
@@ -121,20 +122,15 @@ class _DropdownHeaderState extends DropdownState<DropdownHeader> {
 
     final Decoration decoration = new BoxDecoration(
       color: Colors.white,
-      boxShadow: [
-        BoxShadow(
-          color: Theme.of(context).primaryColor,
-          offset: Offset(0, 4.0*factor),
-          blurRadius: 4.0*factor
-        )
-      ],
       border: new Border(
-        bottom: Divider.createBorderSide(context),
+        bottom: Divider.createBorderSide(context, color: Colors.grey[200]),
       ),
     );
 
     return Container(
       margin: EdgeInsets.only(bottom: 2.0*factor),
+      padding: EdgeInsets.only(left: 20*factor, right: 20*factor),
+      color: Colors.white,
       child: new DecoratedBox(
         decoration: decoration,
         child: new Container(
