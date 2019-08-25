@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_app/app/model/company.dart';
 import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/app/component/common_button.dart';
@@ -82,7 +83,7 @@ class PubJobState extends State<PubJob>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 10.0*factor),
+                    padding: EdgeInsets.only(bottom: 30.0*factor),
                     child: new Text(
                       '职位名称：',
                       textAlign: TextAlign.left,
@@ -90,7 +91,7 @@ class PubJobState extends State<PubJob>
                     ),
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 36.0*factor),
+                    padding: EdgeInsets.only(bottom: 0.0*factor),
                     child: new TextField(
                       controller: nameCtrl,
                       style: TextStyle(fontSize: 26*factor),
@@ -99,19 +100,17 @@ class PubJobState extends State<PubJob>
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080)
                         ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
+                        border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(vertical: 30.0*factor)
                       ),
                     ),
                   ),
-                  
+                  prefix0.Divider(),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         new Padding(
-                          padding: EdgeInsets.only(bottom: 30.0*factor),
+                          padding: EdgeInsets.symmetric(vertical: 30.0*factor),
                           child: new Text(
                             '工作类型：',
                             textAlign: TextAlign.left,

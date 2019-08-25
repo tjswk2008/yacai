@@ -139,7 +139,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 16.0*factor),
+                        padding: EdgeInsets.only(bottom: 8.0*factor),
                         child: new TextField(
                           controller: TextEditingController.fromValue(
                             TextEditingValue(
@@ -165,13 +165,12 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             hintStyle: new TextStyle(
                                 color: const Color(0xFF808080),
                             ),
-                            border: new UnderlineInputBorder(
-                              borderSide: BorderSide(width: 1.0*factor)
-                            ),
+                            border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
                           ),
                         ),
                       ),
+                      Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -343,7 +342,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 16.0*factor),
+                        padding: EdgeInsets.only(bottom: 8.0*factor),
                         child: new TextField(
                           controller: TextEditingController.fromValue(
                             TextEditingValue(
@@ -369,11 +368,12 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             hintStyle: new TextStyle(
                                 color: const Color(0xFF808080),
                             ),
-                            border: new UnderlineInputBorder(),
+                            border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
                           ),
                         ),
                       ),
+                      Divider(),
                       new Padding(
                         padding: EdgeInsets.only(top: 30*factor,bottom: 30.0*factor),
                         child: new Text(
@@ -383,7 +383,7 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 16.0*factor),
+                        padding: EdgeInsets.only(bottom: 8.0*factor),
                         child: new TextField(
                           controller: TextEditingController.fromValue(
                             TextEditingValue(
@@ -409,11 +409,12 @@ class PersonalInfoEditViewState extends State<PersonalInfoEditView>
                             hintStyle: new TextStyle(
                                 color: const Color(0xFF808080),
                             ),
-                            border: new UnderlineInputBorder(),
+                            border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
                           ),
                         ),
                       ),
+                      Divider(),
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
