@@ -78,7 +78,7 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
               ),
               new IconTab(
                   color: _currentIndex == INDEX_MINE ? _kPrimaryColor : Colors.grey[900],
-                  iconData: Icon(Icons.person_outline, size: 50.0*factor, color: _currentIndex == INDEX_MINE ? _kPrimaryColor : Colors.grey[900],),
+                  iconData: Icon(Icons.person, size: 50.0*factor, color: _currentIndex == INDEX_MINE ? _kPrimaryColor : Colors.grey[900],),
                   text: "我的"
               )
             ],
