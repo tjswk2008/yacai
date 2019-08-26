@@ -92,7 +92,7 @@ class EducationEditViewState extends State<EducationEditView>
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 16.0*factor),
+                        padding: EdgeInsets.only(bottom: 4.0*factor),
                         child: TypeAheadField(
                           textFieldConfiguration: TextFieldConfiguration(
                             autofocus: true,
@@ -119,9 +119,7 @@ class EducationEditViewState extends State<EducationEditView>
                                   color: const Color(0xFF808080),
                                   fontSize: 26.0*factor
                               ),
-                              border: new UnderlineInputBorder(
-                                borderSide: BorderSide(width: 1.0*factor)
-                              ),
+                              border: prefix0.InputBorder.none,
                               contentPadding: EdgeInsets.only(
                                 top: 20.0*factor,
                                 bottom: 20.0*factor,
@@ -145,6 +143,7 @@ class EducationEditViewState extends State<EducationEditView>
                           },
                         )
                       ),
+                      prefix0.Divider(),
                       new Padding(
                         padding: EdgeInsets.only(top: 30*factor, bottom: 30.0*factor),
                         child: new Text(
@@ -154,7 +153,7 @@ class EducationEditViewState extends State<EducationEditView>
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 16.0*factor),
+                        padding: EdgeInsets.only(bottom: 4.0*factor),
                         child: new TextField(
                           style: TextStyle(fontSize: 26.0*factor),
                           controller: TextEditingController.fromValue(
@@ -179,7 +178,7 @@ class EducationEditViewState extends State<EducationEditView>
                                 color: const Color(0xFF808080),
                                 fontSize: 26*factor
                             ),
-                            border: new UnderlineInputBorder(),
+                            border: prefix0.InputBorder.none,
                             contentPadding: EdgeInsets.only(
                               top: 20.0*factor,
                               bottom: 20.0*factor,
@@ -187,7 +186,7 @@ class EducationEditViewState extends State<EducationEditView>
                           ),
                         ),
                       ),
-                      
+                      prefix0.Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

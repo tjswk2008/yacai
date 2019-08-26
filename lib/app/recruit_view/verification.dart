@@ -97,7 +97,7 @@ class VerificationState extends State<Verification>
                     ),
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
+                    padding: EdgeInsets.only(bottom: 2*factor),
                     child: new TextField(
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
@@ -123,13 +123,12 @@ class VerificationState extends State<Verification>
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080)
                         ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
+                        border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
                       ),
                     ),
                   ),
+                  Divider(),
                   new Padding(
                     padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
                     child: new Text(
@@ -139,7 +138,7 @@ class VerificationState extends State<Verification>
                     ),
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(bottom: 16.0*factor),
+                    padding: EdgeInsets.only(bottom: 2*factor),
                     child: new TextField(
                       controller: TextEditingController.fromValue(
                         TextEditingValue(
@@ -166,13 +165,12 @@ class VerificationState extends State<Verification>
                             color: const Color(0xFF808080),
                             fontSize: 26.0*factor
                         ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
+                        border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
                       ),
                     ),
                   ),
+                  Divider(),
                   new Padding(
                     padding: EdgeInsets.symmetric(vertical: 30.0*factor),
                     child: new Text(

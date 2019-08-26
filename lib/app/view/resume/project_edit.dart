@@ -90,7 +90,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 16.0*factor),
+                        padding: EdgeInsets.only(bottom: 4.0*factor),
                         child: new TextField(
                           controller: TextEditingController.fromValue(
                             TextEditingValue(
@@ -115,9 +115,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                                 color: const Color(0xFF808080),
                                 fontSize: 26.0*factor
                             ),
-                            border: new UnderlineInputBorder(
-                              borderSide: BorderSide(width: 1.0*factor)
-                            ),
+                            border: prefix0.InputBorder.none,
                             contentPadding: EdgeInsets.only(
                               top: 20.0*factor,
                               bottom: 20.0*factor,
@@ -125,6 +123,7 @@ class ProjectEditViewState extends State<ProjectEditView>
                           ),
                         ),
                       ),
+                      prefix0.Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

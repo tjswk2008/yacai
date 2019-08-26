@@ -167,7 +167,7 @@ class PubJobState extends State<PubJob>
                               },
                             );
                           },
-                          child: Text('${salaryLow}k-${salaryHigh}k', style: TextStyle(fontSize: 26.0*factor, color: Colors.grey),),
+                          child: Text('${salaryLow}k-${salaryHigh}k', style: TextStyle(fontSize: 26.0*factor, color: Colors.grey[700]),),
                         ),
                       ),
                     ],
@@ -177,7 +177,7 @@ class PubJobState extends State<PubJob>
                   ),
                   new Divider(),
                   new Padding(
-                    padding: EdgeInsets.only(top: 30*factor,bottom: 20.0*factor),
+                    padding: EdgeInsets.only(top: 30*factor,bottom: 30.0*factor),
                     child: new Text(
                       '工作地点：',
                       textAlign: TextAlign.left,
@@ -196,10 +196,10 @@ class PubJobState extends State<PubJob>
                         data: areas,
                       );
                     },
-                    child: Text('上海市 $area', style: TextStyle(fontSize: 26.0*factor, color: Colors.grey),),
+                    child: Text('上海市 $area', style: TextStyle(fontSize: 26.0*factor, color: Colors.grey[700]),),
                   ),
                   new Padding(
-                    padding: EdgeInsets.only(top: 10*factor, bottom: 36.0*factor),
+                    padding: EdgeInsets.only(top: 20*factor, bottom: 10.0*factor),
                     child: new TextField(
                       controller: addrCtrl,
                       style: TextStyle(fontSize: 26*factor),
@@ -208,13 +208,12 @@ class PubJobState extends State<PubJob>
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080)
                         ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: 1.0*factor)
-                        ),
+                        border: prefix0.InputBorder.none,
                         contentPadding: EdgeInsets.only(top: 5*factor, bottom: 20.0*factor)
                       ),
                     ),
                   ),
+                  prefix0.Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[

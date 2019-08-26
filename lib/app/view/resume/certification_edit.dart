@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_app/app/model/resume.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
@@ -84,7 +85,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                       ),
                     ),
                     new Padding(
-                      padding: EdgeInsets.only(bottom: 16.0*factor),
+                      padding: EdgeInsets.only(bottom: 4.0*factor),
                       child: new TextField(
                         style: TextStyle(fontSize: 26.0*factor),
                         controller: TextEditingController.fromValue(
@@ -108,9 +109,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                           hintStyle: new TextStyle(
                               color: const Color(0xFF808080)
                           ),
-                          border: new UnderlineInputBorder(
-                            borderSide: BorderSide(width: factor)
-                          ),
+                          border: prefix0.InputBorder.none,
                           contentPadding: EdgeInsets.only(
                             top: 20.0*factor,
                             bottom: 20.0*factor,
@@ -118,6 +117,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                         ),
                       ),
                     ),
+                    prefix0.Divider(),
                     new Padding(
                       padding: EdgeInsets.only(top: 30*factor, bottom: 30.0*factor),
                       child: new Text(
@@ -127,7 +127,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                       ),
                     ),
                     new Padding(
-                      padding: EdgeInsets.only(bottom: 16.0*factor),
+                      padding: EdgeInsets.only(bottom: 4.0*factor),
                       child: new TextField(
                         style: TextStyle(fontSize: 26.0*factor),
                         controller: TextEditingController.fromValue(
@@ -151,9 +151,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                           hintStyle: new TextStyle(
                               color: const Color(0xFF808080)
                           ),
-                          border: new UnderlineInputBorder(
-                            borderSide: BorderSide(width: 1.0*factor)
-                          ),
+                          border: prefix0.InputBorder.none,
                           contentPadding: EdgeInsets.only(
                             top: 20.0*factor,
                             bottom: 20.0*factor,
@@ -161,6 +159,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                         ),
                       ),
                     ),
+                    prefix0.Divider(),
                     new Padding(
                       padding: EdgeInsets.only(top: 30*factor, bottom: 30.0*factor),
                       child: new Text(
@@ -170,7 +169,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                       ),
                     ),
                     new Padding(
-                      padding: EdgeInsets.only(bottom: 16.0*factor),
+                      padding: EdgeInsets.only(bottom: 4.0*factor),
                       child: new TextField(
                         style: TextStyle(fontSize: 26*factor),
                         controller: TextEditingController.fromValue(
@@ -194,7 +193,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                           hintStyle: new TextStyle(
                               color: const Color(0xFF808080)
                           ),
-                          border: new UnderlineInputBorder(),
+                          border: prefix0.InputBorder.none,
                           contentPadding: EdgeInsets.only(
                             top: 20.0*factor,
                             bottom: 20.0*factor,
@@ -202,12 +201,13 @@ class CertificationEditViewState extends State<CertificationEditView>
                         ),
                       ),
                     ),
+                    Divider(),
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 30*factor),
+                          padding: EdgeInsets.symmetric(vertical: 32*factor),
                           child: new Text(
                             '颁发时间：',
                             textAlign: TextAlign.left,

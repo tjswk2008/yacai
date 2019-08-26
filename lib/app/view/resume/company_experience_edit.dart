@@ -90,7 +90,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                         ),
                       ),
                       new Padding(
-                        padding: EdgeInsets.only(bottom: 16.0*factor),
+                        padding: EdgeInsets.only(bottom: 4.0*factor),
                         child: TypeAheadField(
                           textFieldConfiguration: TextFieldConfiguration(
                             controller: TextEditingController.fromValue(
@@ -115,9 +115,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                               hintStyle: new TextStyle(
                                   color: const Color(0xFF808080),
                               ),
-                              border: new UnderlineInputBorder(
-                                borderSide: BorderSide(width: 1.0*factor)
-                              ),
+                              border: InputBorder.none,
                               contentPadding: EdgeInsets.only(
                                 top: 20.0*factor,
                                 bottom: 20.0*factor,
@@ -142,6 +140,7 @@ class CompanyExperienceEditViewState extends State<CompanyExperienceEditView>
                           },
                         )
                       ),
+                      Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

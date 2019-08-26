@@ -108,7 +108,7 @@ class CompanyEditState extends State<CompanyEdit>
                   ),
                 ),
                 new Padding(
-                  padding: EdgeInsets.only(bottom: 16.0*factor),
+                  padding: EdgeInsets.only(bottom: 0*factor),
                   child: TypeAheadField(
                     hideOnEmpty: true,
                     textFieldConfiguration: TextFieldConfiguration(
@@ -152,9 +152,7 @@ class CompanyEditState extends State<CompanyEdit>
                         hintStyle: new TextStyle(
                             color: const Color(0xFF808080)
                         ),
-                        border: new UnderlineInputBorder(
-                          borderSide: BorderSide(width: factor)
-                        ),
+                        border: prefix0.InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(vertical: 30.0*factor)
                       ),
                     ),
@@ -182,6 +180,7 @@ class CompanyEditState extends State<CompanyEdit>
                     },
                   )
                 ),
+                prefix0.Divider(),
                 new Padding(
                   padding: EdgeInsets.only(top:30.0*factor, bottom: 30.0*factor),
                   child: new Text(
@@ -205,7 +204,7 @@ class CompanyEditState extends State<CompanyEdit>
                   child: Text((company.province == null || company.province == '') && (company.area == null || company.area == '') ? '请选择地址' : '上海市 ${company.area}', style: TextStyle(fontSize: 26.0*factor, color: Colors.grey[800]),),
                 ),
                 new Padding(
-                  padding: EdgeInsets.only(bottom: 36.0*factor),
+                  padding: EdgeInsets.only(top: 10*factor, bottom: 16.0*factor),
                   child: new TextField(
                     style: TextStyle(fontSize: 26.0*factor),
                     controller: TextEditingController.fromValue(
@@ -229,13 +228,12 @@ class CompanyEditState extends State<CompanyEdit>
                       hintStyle: new TextStyle(
                           color: const Color(0xFF808080)
                       ),
-                      border: new UnderlineInputBorder(
-                        borderSide: BorderSide(width: factor)
-                      ),
+                      border: prefix0.InputBorder.none,
                       contentPadding: EdgeInsets.only(top: 15*factor, bottom: 20.0*factor)
                     ),
                   ),
                 ),
+                prefix0.Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
