@@ -11,6 +11,7 @@ import 'package:date_format/date_format.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/util/util.dart';
 import 'dart:io';
+import 'package:flutter_app/app/model/resume.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -32,6 +33,7 @@ class PostDetailState extends State<PostDetail>
   final detailCtrl = new TextEditingController(text: '');
   Post _post;
   String userName = '';
+  PersonalInfo personalInfo;
 
   @override
   void initState() {
@@ -39,11 +41,7 @@ class PostDetailState extends State<PostDetail>
     setState(() {
       _post = widget._post;
     });
-    SharedPreferences.getInstance().then((SharedPreferences prefs) {
-      setState(() {
-        userName = prefs.getString('userName');
-      });
-    });
+    initInfo();
   }
 
   @override
@@ -247,45 +245,49 @@ class PostDetailState extends State<PostDetail>
                     color: Theme.of(context).primaryColor,
                     onPressed: () {
                       if(userName == '') {
-                          _login();
-                          return;
-                        }
-                        if (isRequesting) return;
-                        // 拿到用户输入的账号密码
-                        String detail = detailCtrl.text.trim();
-                        if (detail.isEmpty) {
-                          YaCaiUtil.getInstance().showMsg("回复不能为空！");
-                          return;
-                        }
-                        setState(() {
-                          isRequesting = true;
-                        });
-                        // 发送给webview，让webview登录后再取回token
-                        Api().addAnswer(detail, userName, _post.id)
-                          .then((Response response) {
-                            if(response.data['code'] != 1) {
-                              YaCaiUtil.getInstance().showMsg("提交失败！");
-                              return;
-                            }
-                            _post.answers.add(
-                              new Answer(
-                                answer: detail,// 答复详情
-                                answerBy: userName,// 答复人
-                                answerAt: formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]),// 答复时间
-                                votes: 0 // 点赞数
-                              )
-                            );
-                            setState(() {
-                              isRequesting = false;
-                              // _post = _post;
-                            });
-                          })
-                          .catchError((e) {
-                            setState(() {
-                              isRequesting = false;
-                            });
-                            print(e);
+                        _login();
+                        return;
+                      } else if (personalInfo.nickname == null || personalInfo.nickname == '') {
+                        YaCaiUtil.getInstance().showMsg("请先前往“我的”页面，点击头像填写您的昵称~");
+                        return;
+                      }
+                      if (isRequesting) return;
+                      // 拿到用户输入的账号密码
+                      String detail = detailCtrl.text.trim();
+                      if (detail.isEmpty) {
+                        YaCaiUtil.getInstance().showMsg("回复不能为空！");
+                        return;
+                      }
+                      setState(() {
+                        isRequesting = true;
+                      });
+                      // 发送给webview，让webview登录后再取回token
+                      Api().addAnswer(detail, userName, _post.id)
+                        .then((Response response) {
+                          if(response.data['code'] != 1) {
+                            YaCaiUtil.getInstance().showMsg("提交失败！");
+                            return;
+                          }
+                          _post.answers.add(
+                            new Answer(
+                              answer: detail,// 答复详情
+                              answerBy: personalInfo.nickname,// 答复人
+                              answerAt: formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]),// 答复时间
+                              votes: 0 // 点赞数
+                            )
+                          );
+                          setState(() {
+                            isRequesting = false;
+                            // _post = _post;
                           });
+                          YaCaiUtil.getInstance().showMsg("提交成功！");
+                        })
+                        .catchError((e) {
+                          setState(() {
+                            isRequesting = false;
+                          });
+                          print(e);
+                        });
                     },
                   )
                 ],
@@ -295,6 +297,15 @@ class PostDetailState extends State<PostDetail>
         ],
       )
     );
+  }
+
+  initInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('userName');
+    });
+    Response response = await Api().getUserBaseInfo(prefs.getString('userName'));
+    personalInfo = PersonalInfo.fromMap(response.data['info']);
   }
 
   _login() {

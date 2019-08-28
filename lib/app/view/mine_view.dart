@@ -15,6 +15,7 @@ import 'package:flutter_easyrefresh/delivery_header.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/model/resume.dart';
+import 'package:flutter_app/app/view/user_edit.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -31,15 +32,12 @@ class MineTabState extends State<MineTab> {
       new GlobalKey<EasyRefreshState>();
   GlobalKey<RefreshHeaderState> _headerKey =
       new GlobalKey<RefreshHeaderState>();
+  PersonalInfo personalInfo;
 
   @override
   void initState() {
     super.initState();
-    SharedPreferences.getInstance().then((SharedPreferences prefs) {
-      setState(() {
-        userName = prefs.getString('userName');
-      });
-    });
+    initInfo();
   }
 
   @override
@@ -70,72 +68,75 @@ class MineTabState extends State<MineTab> {
                   },
                   child: new Column(
                     children: <Widget>[
-                      Container(
-                        height: 250*factor,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment(0.0, -1.0),
-                            end: Alignment(0.0, -0.4),
-                            colors: <Color>[
-                              Theme.of(context).primaryColor,
-                              Theme.of(context).primaryColor
-                            ],
-                          ),
-                        ),
-                        child: new GestureDetector(
-                            onTap: () {
-                              if(userName != '') return;
-                              _login();
-                            },
-                            child: new Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                new Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 20.0*factor,
-                                    left: 30.0*factor,
-                                    right: 20.0*factor,
-                                  ),
-                                  child: appState.resume == null || appState.resume.personalInfo.avatar == null || appState.resume.personalInfo.avatar == ''
-                                    ? new Image.asset(
-                                        "assets/images/avatar_default.png",
-                                        width: 120.0*factor,
-                                      )
-                                    : new CircleAvatar(
-                                      radius: 60.0*factor,
-                                      backgroundImage: new NetworkImage(appState.resume.personalInfo.avatar)
-                                    )
-                                ),
-
-                                new Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    new Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        new Padding(
-                                            padding: EdgeInsets.only(
-                                              top: 20.0*factor,
-                                              bottom: 20.0*factor,
-                                            ),
-                                            child: new Text(
-                                                userName == '' ? "点击头像登录" : appState.resume.personalInfo.name == null ? '快去编辑简历填写您的姓名吧' : appState.resume.personalInfo.name,
-                                                style: new TextStyle(
-                                                    fontFamily: 'fangzheng', fontWeight: FontWeight.bold, color: Colors.white, fontSize: 36.0*factor))
-                                        ),
-                                        new Text(
-                                            (appState.resume == null || appState.resume.jobStatus == null || appState.resume.jobStatus == '') ? "" : appState.resume.jobStatus,
-                                            style: new TextStyle(
-                                                fontFamily: 'fangzheng', color: Colors.white, fontSize: 30.0*factor)
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                      InkWell(
+                        onTap: () {
+                          if(userName != '') {
+                            _setUserInfo();
+                          } else {
+                            _login();
+                          }
+                        },
+                        child: Container(
+                          height: 250*factor,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment(0.0, -1.0),
+                              end: Alignment(0.0, -0.4),
+                              colors: <Color>[
+                                Theme.of(context).primaryColor,
+                                Theme.of(context).primaryColor
                               ],
                             ),
-                        )
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              new Padding(
+                                padding: EdgeInsets.only(
+                                  top: 20.0*factor,
+                                  left: 30.0*factor,
+                                  right: 20.0*factor,
+                                ),
+                                child: appState.resume == null || appState.resume.personalInfo.avatar == null || appState.resume.personalInfo.avatar == ''
+                                  ? new Image.asset(
+                                      "assets/images/avatar_default.png",
+                                      width: 120.0*factor,
+                                    )
+                                  : new CircleAvatar(
+                                    radius: 60.0*factor,
+                                    backgroundImage: new NetworkImage(appState.resume.personalInfo.avatar)
+                                  )
+                              ),
+
+                              new Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  new Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      new Padding(
+                                          padding: EdgeInsets.only(
+                                            top: 20.0*factor,
+                                            bottom: 20.0*factor,
+                                          ),
+                                          child: new Text(
+                                              userName == '' ? "点击头像登录" : appState.resume.personalInfo.name == null ? '快去编辑简历填写您的姓名吧' : appState.resume.personalInfo.name,
+                                              style: new TextStyle(
+                                                  fontFamily: 'fangzheng', fontWeight: FontWeight.bold, color: Colors.white, fontSize: 36.0*factor))
+                                      ),
+                                      new Text(
+                                          (appState.resume == null || appState.resume.jobStatus == null || appState.resume.jobStatus == '') ? "" : appState.resume.jobStatus,
+                                          style: new TextStyle(
+                                              fontFamily: 'fangzheng', color: Colors.white, fontSize: 30.0*factor)
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        ),
                       ),
                       Column(
                         children: <Widget>[
@@ -517,12 +518,41 @@ class MineTabState extends State<MineTab> {
     );
   }
 
+  initInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('userName');
+    });
+    Response response = await Api().getUserBaseInfo(prefs.getString('userName'));
+    personalInfo = PersonalInfo.fromMap(response.data['info']);
+  }
+
   _login() {
     Navigator
       .of(context)
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
       }));
+  }
+
+  _setUserInfo() {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new UserEditView(personalInfo);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    )).then((onValue) => {
+      initInfo()
+    });
   }
 
   _navToSettingView() {

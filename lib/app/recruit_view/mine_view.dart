@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_app/app/view/login_view.dart';
 import 'package:flutter_app/app/recruit_view/job/job_list.dart';
 import 'package:dio/dio.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/splash.dart';
 import 'package:flutter_app/app/recruit_view/resume_list.dart';
+import 'package:flutter_app/app/view/user_edit.dart';
 
 class MineTab extends StatefulWidget {
   @override
@@ -31,16 +33,12 @@ class MineTabState extends State<MineTab> {
       new GlobalKey<EasyRefreshState>();
   GlobalKey<RefreshHeaderState> _headerKey =
       new GlobalKey<RefreshHeaderState>();
-  
+  PersonalInfo personalInfo;
 
   @override
   void initState() {
     super.initState();
-    SharedPreferences.getInstance().then((SharedPreferences prefs) {
-      setState(() {
-        userName = prefs.getString('userName');
-      });
-    });
+    initInfo();
   }
 
   @override
@@ -85,24 +83,28 @@ class MineTabState extends State<MineTab> {
                   },
                   child: Column(
                     children: <Widget>[
-                      new Container(
-                        height: _appBarHeight,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment(0.0, -1.0),
-                            end: Alignment(0.0, -0.4),
-                            colors: <Color>[
-                              Theme.of(context).primaryColor,
-                              Theme.of(context).primaryColor
-                            ],
-                          ),
-                        ),
-                        child: new GestureDetector(
-                          onTap: () {
-                            if(userName != '') return;
+                      InkWell(
+                        onTap: () {
+                          if(userName != '') {
+                            _setUserInfo();
+                          } else {
                             _login();
-                          },
-                          child: new Row(
+                          }
+                        },
+                        child: Container(
+                          height: _appBarHeight,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment(0.0, -1.0),
+                              end: Alignment(0.0, -0.4),
+                              colors: <Color>[
+                                Theme.of(context).primaryColor,
+                                Theme.of(context).primaryColor
+                              ],
+                            ),
+                          ),
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               new Padding(
@@ -411,12 +413,39 @@ class MineTabState extends State<MineTab> {
     );
   }
 
+  initInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('userName');
+    });
+    Response response = await Api().getUserBaseInfo(prefs.getString('userName'));
+    personalInfo = PersonalInfo.fromMap(response.data['info']);
+  }
+
   _login() {
     Navigator
       .of(context)
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
       }));
+  }
+
+  _setUserInfo() {
+    Navigator.of(context).push(new PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return new UserEditView(personalInfo);
+        },
+        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+          return new FadeTransition(
+            opacity: animation,
+            child: new SlideTransition(position: new Tween<Offset>(
+              begin: const Offset(0.0, 1.0),
+              end: Offset.zero,
+            ).animate(animation), child: child),
+          );
+        }
+    ));
   }
 
   _navToViewerList() {

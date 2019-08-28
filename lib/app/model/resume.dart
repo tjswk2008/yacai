@@ -295,6 +295,7 @@ class PersonalInfo {
   String school; // 学校
   int mark; // 招聘人员标记的状态
   int accepted; // 邀请函状态 1. 已接受邀请 0. 未接受 2. 已拒绝
+  String nickname;
 
   PersonalInfo({
     this.id,
@@ -314,7 +315,8 @@ class PersonalInfo {
     this.email, // 邮箱
     this.nativeProvince, // 籍贯-省
     this.nativeCity, // 籍贯-市
-    this.marriage
+    this.marriage,
+    this.nickname
   });
 
   static List<PersonalInfo> fromList(List list) {
@@ -345,6 +347,7 @@ class PersonalInfo {
       nativeProvince: personalInfo.nativeProvince, // 籍贯-省
       nativeCity: personalInfo.nativeCity, // 籍贯-市
       marriage: personalInfo.marriage,
+      nickname: personalInfo.nickname
     );
   }
 
@@ -367,7 +370,8 @@ class PersonalInfo {
         email: map['email'], // 邮箱
         nativeProvince: map['nativeProvince'], // 籍贯-省
         nativeCity: map['nativeCity'], // 籍贯-市
-        marriage: map['marriage'], 
+        marriage: map['marriage'],
+        nickname: map['nickname'],
     );
   }
 }

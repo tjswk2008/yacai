@@ -45,6 +45,25 @@ class Api {
     );
   }
 
+  Future<Response<T>> savePersonalBaseInfo<T>(
+    String name,
+    String nickname, // 昵称
+    String avatar, // 头像
+    String userName
+  ) {
+    String url = '${serverAddr}user/addUserBase?userName=$userName';
+    if (name != null) {
+      url += '&name=$name';
+    }
+    if (avatar != null) {
+      url += '&avatar=$avatar';
+    }
+    if (nickname != null) {
+      url += '&nickname=$nickname';
+    }
+    return Dio().get(url);
+  }
+
   Future<Response<T>> savePersonalInfo<T>(
     String name,
     String gender,
@@ -251,6 +270,11 @@ class Api {
     if(userName != null) {
       url += '&userName=$userName';
     }
+    return Dio().get(url);
+  }
+
+  Future<Response<T>> getUserBaseInfo<T>(String userName) {
+    String url = "${serverAddr}user/queryBase?userName=$userName";
     return Dio().get(url);
   }
 
