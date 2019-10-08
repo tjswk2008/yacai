@@ -464,7 +464,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.heruijun.flutterApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yacai.recruit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -486,7 +486,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.heruijun.flutterApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yacai.recruit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
