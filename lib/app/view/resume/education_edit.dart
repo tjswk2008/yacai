@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_app/app/component/select.dart';
 import 'package:flutter_app/app/component/text_area.dart';
+import 'package:flutter_app/util/util.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -55,6 +56,7 @@ class EducationEditViewState extends State<EducationEditView>
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
+    YaCaiUtil.getInstance().init(context);
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, state) {
@@ -252,7 +254,7 @@ class EducationEditViewState extends State<EducationEditView>
                                 print(err);
                               });
                             },
-                            child: new Text(_education.startTime, style: TextStyle(fontSize: 26*factor),),
+                            child: new Text(formatDate(DateTime.parse(_education.startTime), [yyyy, '-', mm, '-', dd]), style: TextStyle(fontSize: 26*factor),),
                           )
                         ],
                       ),
@@ -292,7 +294,7 @@ class EducationEditViewState extends State<EducationEditView>
                                 print(err);
                               });
                             },
-                            child: new Text(_education.endTime == null ? '至今' : _education.endTime, style: TextStyle(fontSize: 26*factor),),
+                            child: new Text(_education.endTime == null ? '至今' : formatDate(DateTime.parse(_education.endTime), [yyyy, '-', mm, '-', dd]), style: TextStyle(fontSize: 26*factor),),
                           )
                         ],
                       ),
@@ -348,6 +350,10 @@ class EducationEditViewState extends State<EducationEditView>
                               child: new Text('确定', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
                               onPressed: () {
                                 Navigator.of(context).pop();
+                                if(state.resume.educations.length == 1) {
+                                  YaCaiUtil.getInstance().showMsg("请至少保留一个教育经历哦~");
+                                  return;
+                                }
                                 setState(() {
                                   isRequesting = true;
                                 });
@@ -358,9 +364,7 @@ class EducationEditViewState extends State<EducationEditView>
                                       isRequesting = false;
                                     });
                                     if(response.data['code'] != 1) {
-                                      Scaffold.of(context).showSnackBar(new SnackBar(
-                                        content: new Text("删除失败！"),
-                                      ));
+                                      YaCaiUtil.getInstance().showMsg("删除失败！");
                                       return;
                                     }
                                     Resume resume = state.resume;

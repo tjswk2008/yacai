@@ -3,8 +3,8 @@ import 'dart:io';
 class Api {
   // final String serverAddr = "http://192.168.140.56:3000/api/";
   // final String serverAddr = "http://192.168.43.204:3000/api/"; // 4G
-  final String serverAddr = "http://47.101.177.244:3000/api/"; //cloud
-  // final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://192.168.2.101:3000/api/";
+  // final String serverAddr = "http://47.101.177.244:3000/api/"; //cloud
+  final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://192.168.2.101:3000/api/";
 
   // user interface
   Future<Response<T>> getResumeList<T>(String userName, int jobId, String timeReq, String academic, String salary, int mark, int accepted, int page, int type) {
@@ -309,7 +309,8 @@ class Api {
     String salary,
     String area,
     String companyType,
-    int currentPage
+    int currentPage,
+    String keywords
   ) {
     String url = '${serverAddr}jobs/jobsList?type=$type&userName=$userName';
     if(timeReq != null) {
@@ -332,6 +333,9 @@ class Api {
     }
     if(currentPage != null) {
       url += '&currentPage=$currentPage';
+    }
+    if(keywords != null) {
+      url += '&keywords=$keywords';
     }
     
     return Dio().get(url);

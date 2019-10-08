@@ -65,7 +65,7 @@ class CertificationViewState extends State<CertificationView>
               new Row(
                 children: <Widget>[
                   new Text(widget._certification.name, style: new TextStyle(fontSize: 28.0*factor) ),
-                  new Text("(${widget._certification.code})", style: detailStyle),
+                  new Text(widget._certification.code == "" || widget._certification.code == null ? "" : "(${widget._certification.code})", style: detailStyle),
                 ],
               ),
               new Text(

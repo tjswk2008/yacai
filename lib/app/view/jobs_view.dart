@@ -12,6 +12,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/bezier_hour_glass_header.dart';
 import 'package:flutter_easyrefresh/bezier_bounce_footer.dart';
 import 'package:flutter_app/app/recruit_view/invite.dart';
+import 'package:flutter_app/app/view/search.dart';
 // import 'dart:developer';
 
 class JobsTab extends StatefulWidget {
@@ -33,6 +34,7 @@ class JobList extends State<JobsTab> {
   String employee;
   String salary = salaryArr[0];
   String companyType;
+  String keywords;
 
   int index1 = 0,
       index2 = 0,
@@ -280,7 +282,38 @@ class JobList extends State<JobsTab> {
       ) : new AppBar(
         elevation: 0.0,
         title: new Text(widget._title,
-            style: new TextStyle(fontSize: 32.0*factor, color: Colors.white)),
+          style: new TextStyle(fontSize: 32.0*factor, color: Colors.white)
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 30.0*factor),
+            child: InkWell(
+              child: Icon(Icons.search),
+              onTap: () {
+                Navigator.of(context).push(new PageRouteBuilder(
+                    opaque: false,
+                    pageBuilder: (BuildContext context, _, __) {
+                      return new Search();
+                    },
+                    transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                      return new FadeTransition(
+                        opacity: animation,
+                        child: new SlideTransition(position: new Tween<Offset>(
+                          begin: const Offset(0.0, 1.0),
+                          end: Offset.zero,
+                        ).animate(animation), child: child),
+                      );
+                    }
+                )).then((onValue) => {
+                  if(onValue != null) {
+                    keywords = onValue,
+                    getJobList(1)
+                  }
+                });
+              },
+            ),
+          )
+        ],
       ),
       body: isRequesting ? new Stack(
         children: <Widget>[
@@ -334,7 +367,7 @@ class JobList extends State<JobsTab> {
       return;
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Api().getJobList(widget._type, prefs.getString('userName'), timeReq, academic, employee, salary, area, companyType, page)
+    Api().getJobList(widget._type, prefs.getString('userName'), timeReq, academic, employee, salary, area, companyType, page, keywords)
       .then((Response response) {
         if (response.data['code'] == 1) {
           totalPage = response.data['total'] == 0 ? 1 : response.data['total'];

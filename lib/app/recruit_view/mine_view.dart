@@ -113,14 +113,14 @@ class MineTabState extends State<MineTab> {
                                   left: 30.0*factor,
                                   right: 20.0*factor,
                                 ),
-                                child: appState.resume == null || appState.resume.personalInfo.avatar == ''
+                                child: personalInfo == null || personalInfo.avatar == ''
                                   ? new Image.asset(
                                       "assets/images/avatar_default.png",
                                       width: 120.0*factor,
                                     )
                                   : new CircleAvatar(
                                     radius: 60.0*factor,
-                                    backgroundImage: new NetworkImage(appState.resume.personalInfo.avatar)
+                                    backgroundImage: new NetworkImage(personalInfo.avatar)
                                   )
                               ),
 

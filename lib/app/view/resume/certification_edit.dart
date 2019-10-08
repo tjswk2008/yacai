@@ -231,7 +231,7 @@ class CertificationEditViewState extends State<CertificationEditView>
                                 print(err);
                               });
                             },
-                            child: new Text(_certification.qualifiedTime, style: new TextStyle(fontSize: 26.0*factor),),
+                            child: new Text(formatDate(DateTime.parse(_certification.qualifiedTime), [yyyy, '-', mm, '-', dd]), style: new TextStyle(fontSize: 26.0*factor),),
                           ),
                         ),
                       ],
