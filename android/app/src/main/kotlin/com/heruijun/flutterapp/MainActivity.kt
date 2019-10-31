@@ -1,4 +1,4 @@
-package com.heruijun.flutterapp
+package com.yacai.recruit
 
 import android.os.Bundle
 

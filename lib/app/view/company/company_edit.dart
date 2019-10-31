@@ -16,6 +16,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter_app/util/util.dart';
 import 'package:flutter_app/app/component/text_area.dart';
+// import 'package:flutter_2d_amap/flutter_2d_amap.dart';
+
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -53,6 +55,14 @@ class CompanyEditState extends State<CompanyEdit>
   @override
   void initState() {
     super.initState();
+    // AMap2DView(
+    //   onPoiSearched: (result){
+    //     print(result);
+    //   },
+    //   onAMap2DViewCreated: (controller){
+    //     print('created');
+    //   },
+    // );
     setState(() {
       company = Company.copy(widget._company);
       if (company.imgs == null || company.imgs.length == 0) {

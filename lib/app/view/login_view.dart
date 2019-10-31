@@ -46,7 +46,6 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
   final passwordCtrl = new TextEditingController(text: '');
   final codeCtrl = new TextEditingController(text: '');
 
-  TabController _controller;
   VoidCallback onChanged;
 
   @override
@@ -56,8 +55,6 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
 
   @override
   void dispose() {
-    _controller.removeListener(onChanged);
-    _controller.dispose();
     super.dispose();
   }
 

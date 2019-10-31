@@ -217,7 +217,7 @@ class JobDetailState extends State<JobDetail>
                           }),
                         ) : Container(),
                         role == 1 ? Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0*factor),
+                          padding: EdgeInsets.all(20.0*factor),
                           child: new Builder(builder: (ctx) {
                             return new FlatButton(
                               child: new Container(
@@ -265,6 +265,30 @@ class JobDetailState extends State<JobDetail>
                                     });
                                     print(e);
                                   });
+                              }
+                            );
+                          }),
+                        ) : Container(),
+                        role == 1 ? Padding(
+                          padding: EdgeInsets.all(20.0*factor),
+                          child: new Builder(builder: (ctx) {
+                            return new FlatButton(
+                              child: new Container(
+                                height: 70*factor,
+                                child: new Center(
+                                  child: Text(
+                                    "继续沟通",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 28.0*factor,
+                                      letterSpacing: 5*factor
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              color: Theme.of(context).primaryColor,
+                              onPressed: () async {
+                                
                               }
                             );
                           }),

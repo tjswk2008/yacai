@@ -22,7 +22,21 @@ dependencies:
   path_provider: "^0.5.0+1"
   open_file: "1.1.1"
   image_cropper: "1.0.0"
-  # fluwx: "^0.6.3"
+  # bmap_core_fluttify: 0.0.2+954ed74
+  # flutter_2d_amap:
+  #   git:
+  #     url: https://github.com/simplezhli/flutter_2d_amap.git
+  # amap_core_fluttify: "0.0.6"
+  # amap_map_fluttify: "0.2.3+61475ac"
+  # amap_location_fluttify: "0.2.1+38df15a"
+  # amap_search_fluttify: "0.2.4+38df15a"
+  # fluwx: "^1.1.1"
+  # amap_base: 
+  #   git:
+  #     url: https://github.com/yohom/amap_base_flutter.git
+  #     ref: develop
+  #     path: base
+  # amap_base_map: 0.4.4+4
 
 dev_dependencies:
   flutter_test:
