@@ -22,6 +22,8 @@ dependencies:
   path_provider: "^0.5.0+1"
   open_file: "1.1.1"
   image_cropper: "1.0.0"
+  # permission: '0.1.5'
+  # permission_handler: "3.3.0"
   # bmap_core_fluttify: 0.0.2+954ed74
   # flutter_2d_amap:
   #   git:

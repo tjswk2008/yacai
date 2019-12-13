@@ -295,15 +295,7 @@ class JobList extends State<JobsTab> {
                     pageBuilder: (BuildContext context, _, __) {
                       return new Search();
                     },
-                    transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                      return new FadeTransition(
-                        opacity: animation,
-                        child: new SlideTransition(position: new Tween<Offset>(
-                          begin: const Offset(0.0, 1.0),
-                          end: Offset.zero,
-                        ).animate(animation), child: child),
-                      );
-                    }
+                    transitionsBuilder: _pageAnimation
                 )).then((onValue) => {
                   if(onValue != null) {
                     keywords = onValue,
@@ -348,6 +340,16 @@ class JobList extends State<JobsTab> {
         ) : Center(
           child: Text('暂无记录', style: TextStyle(fontSize: 28*factor))
         )) : buildFixHeaderDropdownMenu() 
+    );
+  }
+
+  Widget _pageAnimation(_, Animation<double> animation, __, Widget child) {
+    return new FadeTransition(
+      opacity: animation,
+      child: new SlideTransition(position: new Tween<Offset>(
+        begin: const Offset(0.0, 1.0),
+        end: Offset.zero,
+      ).animate(animation), child: child),
     );
   }
 
@@ -406,15 +408,7 @@ class JobList extends State<JobsTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new JobDetail(job);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 
@@ -424,15 +418,7 @@ class JobList extends State<JobsTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new Invite(jobId, userId);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 }

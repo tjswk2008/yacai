@@ -7,7 +7,7 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
@@ -16,13 +16,12 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:networkSecurityConfig="@xml/network_security_config"
         android:name="io.flutter.app.FlutterApplication"
         android:label="丫财"
         android:icon="@mipmap/ic_launcher">
-        <meta-data
+        <!-- <meta-data
                 android:name="com.amap.api.v2.apikey"
-                android:value="d9073b854c373b71917e823881989571"/>
+                android:value="d9073b854c373b71917e823881989571"/> -->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

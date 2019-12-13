@@ -7,6 +7,7 @@ import 'package:flutter_app/app/view/job/job_base.dart';
 import 'package:flutter_app/app/view/job/job_desc.dart';
 import 'package:flutter_app/app/view/job/job_addr.dart';
 import 'package:flutter_app/app/view/company/company_detail.dart';
+import 'package:flutter_app/app/view/communicate.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -288,7 +289,13 @@ class JobDetailState extends State<JobDetail>
                               ),
                               color: Theme.of(context).primaryColor,
                               onPressed: () async {
-                                
+                                Navigator.of(context).push(new PageRouteBuilder(
+                                    opaque: false,
+                                    pageBuilder: (BuildContext context, _, __) {
+                                      return new CommunicateView();
+                                    },
+                                    transitionsBuilder: _pageAnimation
+                                ));
                               }
                             );
                           }),
@@ -302,6 +309,16 @@ class JobDetailState extends State<JobDetail>
           )
         ],
       )
+    );
+  }
+
+  Widget _pageAnimation(_, Animation<double> animation, __, Widget child) {
+    return new FadeTransition(
+      opacity: animation,
+      child: new SlideTransition(position: new Tween<Offset>(
+        begin: const Offset(0.0, 1.0),
+        end: Offset.zero,
+      ).animate(animation), child: child),
     );
   }
 
@@ -323,15 +340,7 @@ class JobDetailState extends State<JobDetail>
         pageBuilder: (BuildContext context, _, __) {
           return new CompanyDetail(company);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 }

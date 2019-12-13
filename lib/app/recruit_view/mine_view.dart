@@ -430,21 +430,23 @@ class MineTabState extends State<MineTab> {
       }));
   }
 
+  Widget _pageAnimation(_, Animation<double> animation, __, Widget child) {
+    return new FadeTransition(
+      opacity: animation,
+      child: new SlideTransition(position: new Tween<Offset>(
+        begin: const Offset(0.0, 1.0),
+        end: Offset.zero,
+      ).animate(animation), child: child),
+    );
+  }
+
   _setUserInfo() {
     Navigator.of(context).push(new PageRouteBuilder(
         opaque: false,
         pageBuilder: (BuildContext context, _, __) {
           return new UserEditView(personalInfo);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 
@@ -454,15 +456,7 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new ResumeTab('简历查看列表', null, 2);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 
@@ -472,15 +466,7 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new CompanyEdit(company);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 
@@ -490,15 +476,7 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new Verification(company);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 
@@ -508,15 +486,7 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new PubJobList();
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 }

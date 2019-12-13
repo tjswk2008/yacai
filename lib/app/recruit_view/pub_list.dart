@@ -94,15 +94,7 @@ class PubTabState extends State<PubTab> {
                       pageBuilder: (BuildContext context, _, __) {
                         return new PubJob();
                       },
-                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                        return new FadeTransition(
-                          opacity: animation,
-                          child: new SlideTransition(position: new Tween<Offset>(
-                            begin: const Offset(0.0, 1.0),
-                            end: Offset.zero,
-                          ).animate(animation), child: child),
-                        );
-                      }
+                      transitionsBuilder: _pageAnimation
                     )).then((result) {
                       if(result == null) return;
                       getJobList();
@@ -133,15 +125,7 @@ class PubTabState extends State<PubTab> {
                             pageBuilder: (BuildContext context, _, __) {
                               return new PubJob();
                             },
-                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                              return new FadeTransition(
-                                opacity: animation,
-                                child: new SlideTransition(position: new Tween<Offset>(
-                                  begin: const Offset(0.0, 1.0),
-                                  end: Offset.zero,
-                                ).animate(animation), child: child),
-                              );
-                            }
+                            transitionsBuilder: _pageAnimation
                           )).then((result) {
                             if(result == null) return;
                             getJobList();
@@ -169,6 +153,16 @@ class PubTabState extends State<PubTab> {
     return jobItem;
   }
 
+  Widget _pageAnimation(_, Animation<double> animation, __, Widget child) {
+    return new FadeTransition(
+      opacity: animation,
+      child: new SlideTransition(position: new Tween<Offset>(
+        begin: const Offset(0.0, 1.0),
+        end: Offset.zero,
+      ).animate(animation), child: child),
+    );
+  }
+
   void getJobList() async {
     if (userName == null) return;
     Api().getRecruitJobList(userName)
@@ -193,15 +187,7 @@ class PubTabState extends State<PubTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new JobDetail(job);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 

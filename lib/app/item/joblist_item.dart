@@ -43,8 +43,7 @@ class JobListItem extends StatelessWidget {
                                   job.count == 0 ? '' : '(${job.count}份简历)',
                                   style: TextStyle(
                                     fontSize: 24.0*factor,
-                                    color: Colors.green,
-                                    fontFamily: 'fangzheng'
+                                    color: Colors.green
                                   )
                                 ),
                               ) : Container()
@@ -61,7 +60,7 @@ class JobListItem extends StatelessWidget {
                               ),
                               child: new Text(
                                   '${job.salaryLow}k-${job.salaryHigh}k',
-                                  style: new TextStyle(color: Theme.of(context).primaryColor, fontSize: 30.0*factor, fontFamily: 'fangzheng', )),
+                                  style: new TextStyle(color: Theme.of(context).primaryColor, fontSize: 30.0*factor)),
                             ),
                           ],
                         ))
@@ -72,8 +71,7 @@ class JobListItem extends StatelessWidget {
                       child: new Text(
                         job.cname,
                         textAlign: TextAlign.left,
-                        style: new TextStyle(
-                            fontFamily: 'fangzheng', fontSize: 28.0*factor, color: Colors.grey),
+                        style: new TextStyle(fontSize: 28.0*factor, color: Colors.grey),
                       ),
                       margin: EdgeInsets.only(
                           top: 10.0*factor,
@@ -104,7 +102,7 @@ class JobListItem extends StatelessWidget {
                             bottom: 20.0*factor,
                           ),
                           child: new Text("发布于 ${timeago.format(DateTime.parse(job.pubTime), locale: 'zh_cn')}",
-                            style: new TextStyle(fontFamily: 'fangzheng', fontSize: 28.0*factor))
+                            style: new TextStyle(fontSize: 28.0*factor))
                         )
                       ],
                     ),

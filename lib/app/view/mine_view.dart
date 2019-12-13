@@ -122,18 +122,17 @@ class MineTabState extends State<MineTab> {
                                           ),
                                           child: new Text(
                                               userName == '' ? "点击头像登录" : appState.resume.personalInfo.name == null ? '快去编辑简历填写您的姓名吧' : appState.resume.personalInfo.name,
-                                              style: new TextStyle(
-                                                  fontFamily: 'fangzheng', fontWeight: FontWeight.bold, color: Colors.white, fontSize: 36.0*factor))
+                                              style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 36.0*factor))
                                       ),
                                       new Text(
                                           (appState.resume == null || appState.resume.jobStatus == null || appState.resume.jobStatus == '') ? "" : appState.resume.jobStatus,
-                                          style: new TextStyle(
-                                              fontFamily: 'fangzheng', color: Colors.white, fontSize: 30.0*factor)
+                                          style: new TextStyle(color: Colors.white, fontSize: 30.0*factor)
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
+
                             ],
                           )
                         ),
@@ -171,7 +170,7 @@ class MineTabState extends State<MineTab> {
                                         new Padding(
                                           padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
-                                        new Text('我的简历', style: TextStyle(fontSize: 34.0*factor, fontFamily: 'fangzheng'),),
+                                        new Text('我的简历', style: TextStyle(fontSize: 34.0*factor),),
                                       ],
                                     ),
                                   ),
@@ -218,7 +217,7 @@ class MineTabState extends State<MineTab> {
                                         new Padding(
                                           padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
-                                        new Text('职位收藏', style: TextStyle(fontSize: 34.0*factor, fontFamily: 'fangzheng'),),
+                                        new Text('职位收藏', style: TextStyle(fontSize: 34.0*factor),),
                                       ],
                                     ),
                                   ),
@@ -265,7 +264,7 @@ class MineTabState extends State<MineTab> {
                                         new Padding(
                                           padding: EdgeInsets.only(right: 18.0*factor),
                                         ),
-                                        new Text('申请记录', style: TextStyle(fontSize: 34.0*factor, fontFamily: 'fangzheng'),),
+                                        new Text('申请记录', style: TextStyle(fontSize: 34.0*factor),),
                                       ],
                                     ),
                                   ),
@@ -311,7 +310,7 @@ class MineTabState extends State<MineTab> {
                                         new Padding(
                                           padding: EdgeInsets.only(right: 14.0*factor),
                                         ),
-                                        new Text('面试邀请', style: TextStyle(fontSize: 34.0*factor, fontFamily: 'fangzheng'),),
+                                        new Text('面试邀请', style: TextStyle(fontSize: 34.0*factor),),
                                       ],
                                     ),
                                   ),
@@ -357,7 +356,7 @@ class MineTabState extends State<MineTab> {
                                         new Padding(
                                           padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
-                                        new Text('谁看过我', style: TextStyle(fontSize: 34.0*factor, fontFamily: 'fangzheng'),),
+                                        new Text('谁看过我', style: TextStyle(fontSize: 34.0*factor),),
                                       ],
                                     ),
                                   ),
@@ -403,7 +402,7 @@ class MineTabState extends State<MineTab> {
                                         new Padding(
                                           padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
-                                        new Text('不让该公司看我的简历', style: TextStyle(fontSize: 34.0*factor, fontFamily: 'fangzheng'),),
+                                        new Text('不让该公司看我的简历', style: TextStyle(fontSize: 34.0*factor),),
                                       ],
                                     ),
                                   ),
@@ -449,7 +448,7 @@ class MineTabState extends State<MineTab> {
                                         new Padding(
                                           padding: EdgeInsets.only(right: 15.0*factor),
                                         ),
-                                        new Text('设置', style: TextStyle(fontSize: 34.0*factor, fontFamily: 'fangzheng'),),
+                                        new Text('设置', style: TextStyle(fontSize: 34.0*factor),),
                                       ],
                                     ),
                                   ),
@@ -482,7 +481,6 @@ class MineTabState extends State<MineTab> {
                         style: TextStyle(
                           color: Colors.orange[400],
                           fontSize: 36.0*factor,
-                          fontFamily: 'fangzheng',
                           letterSpacing: 5*factor
                         ),
                       ),
@@ -541,18 +539,20 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new UserEditView(personalInfo);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     )).then((onValue) => {
       initInfo()
     });
+  }
+
+  Widget _pageAnimation(_, Animation<double> animation, __, Widget child) {
+    return new FadeTransition(
+      opacity: animation,
+      child: new SlideTransition(position: new Tween<Offset>(
+        begin: const Offset(0.0, 1.0),
+        end: Offset.zero,
+      ).animate(animation), child: child),
+    );
   }
 
   _navToSettingView() {
@@ -561,15 +561,7 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new SettingView();
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 
@@ -579,15 +571,7 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new CompanyTab();
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 
@@ -597,15 +581,7 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new ResumeDetail();
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 
@@ -615,15 +591,7 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new ShieldList();
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 
@@ -633,15 +601,7 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new JobsTab(type, title);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 
@@ -651,15 +611,7 @@ class MineTabState extends State<MineTab> {
         pageBuilder: (BuildContext context, _, __) {
           return new JobsTab(5, '职位收藏');
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 }

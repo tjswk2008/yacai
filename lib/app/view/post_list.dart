@@ -111,15 +111,7 @@ class PostListState extends State<PostList> with SingleTickerProviderStateMixin 
                 pageBuilder: (BuildContext context, _, __) {
                   return new AskQuestion();
                 },
-                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                  return new FadeTransition(
-                    opacity: animation,
-                    child: new SlideTransition(position: new Tween<Offset>(
-                      begin: const Offset(0.0, 1.0),
-                      end: Offset.zero,
-                    ).animate(animation), child: child),
-                  );
-                }
+                transitionsBuilder: _pageAnimation
               )).then((result) {
                 if(result == null) return;
                 getPostList(widget._type, 1);
@@ -128,6 +120,16 @@ class PostListState extends State<PostList> with SingleTickerProviderStateMixin 
           ),
         )
       ]
+    );
+  }
+
+  Widget _pageAnimation(_, Animation<double> animation, __, Widget child) {
+    return new FadeTransition(
+      opacity: animation,
+      child: new SlideTransition(position: new Tween<Offset>(
+        begin: const Offset(0.0, 1.0),
+        end: Offset.zero,
+      ).animate(animation), child: child),
     );
   }
 
@@ -194,15 +196,7 @@ class PostListState extends State<PostList> with SingleTickerProviderStateMixin 
         pageBuilder: (BuildContext context, _, __) {
           return new PostDetail(post);
         },
-        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-          return new FadeTransition(
-            opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
-          );
-        }
+        transitionsBuilder: _pageAnimation
     ));
   }
 }

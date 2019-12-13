@@ -12,6 +12,8 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'package:open_file/open_file.dart';
+import 'package:flutter_app/util/util.dart';
+// import 'package:permission_handler/permission_handler.dart';
 // import 'package:fluwx/fluwx.dart' as fluwx;
 
 class SettingView extends StatefulWidget {
@@ -61,6 +63,7 @@ class SettingViewState extends State<SettingView> {
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
+    YaCaiUtil.getInstance().init(context);
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, appState) {
@@ -382,24 +385,35 @@ class SettingViewState extends State<SettingView> {
     // String downLoadUrl = Platform.isAndroid ? 'http://192.168.140.56:3000' : 'http://192.168.2.101:3000';
     // String downLoadUrl = 'http://192.168.43.204:3000';
     String downLoadUrl = 'http://47.101.177.244:3000';
+    // PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+    // if (permission != PermissionStatus.granted) {
+    //   Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    //   if(permissions[PermissionGroup.storage] != PermissionStatus.granted) {
+    //     YaCaiUtil.getInstance().showMsg('下载失败');
+    //     return;
+    //   }
+    // }
     
     //下载
     final taskId = await FlutterDownloader.enqueue(
         url: downLoadUrl + '/app-release.apk',
         savedDir: path,
         showNotification: true,
-        openFileFromNotification: true);
+        openFileFromNotification: true
+    );
     FlutterDownloader.registerCallback((id, status, progress) {
       // 当下载完成时，调用安装
+      print(progress);
       if (taskId == id && status == DownloadTaskStatus.complete) {
         // _installApk();
         OpenFile.open(path + '/app-release.apk');
         // FlutterDownloader.open(taskId: id);
       } else if (status == DownloadTaskStatus.failed) {
         //下载出错
-        Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text(status.toString(), style: TextStyle(fontSize: 22*factor),),
-        ));
+        YaCaiUtil.getInstance().showMsg('下载失败');
+        // Scaffold.of(context).showSnackBar(new SnackBar(
+        //   content: new Text(status.toString(), style: TextStyle(fontSize: 22*factor),),
+        // ));
         // print(status.toString());
       }
     });
