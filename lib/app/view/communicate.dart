@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/component/bubble_widget.dart';
 import 'package:flutter_app/app/model/communicate.dart';
@@ -46,6 +48,9 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
       ),
       body: new Builder(builder: (BuildContext context) {
         return new Column(children: <Widget>[
+          Container(
+            height: 30 * factor,
+          ),
           new Flexible(
             child: new ListView.builder(
               controller: _scrollController,
@@ -102,21 +107,23 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
               child: Text("提交", style: TextStyle(color: Colors.white, fontSize: 28*factor, letterSpacing: 10*factor, height: 1.9),),
             ),
             color: Theme.of(context).primaryColor,
-            onPressed: _submitMsg
+            onPressed: () {
+              _submitMsg(factor);
+            }
           )
         ],
       ),
     );
   }
 
-  void _submitMsg() async {
+  void _submitMsg(double factor) async {
     String text = _textController.text.trim();
     if (text == null || text == "") {
       return;
     }
     
     Map<String, dynamic> map = {
-      "fromUserName": "Andy",
+      "fromUserName": Random().nextBool() ? "Andy" : "Sandy",
       "fromSessionId": "0",
       "msgId": new DateTime.now().millisecondsSinceEpoch.toString(),
       "msg": text,
@@ -134,8 +141,9 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
     setState(() {
       _messageList.add(CommunicateModel.fromJson(map));
     });
+    var height = Platform.isAndroid ? 100*factor : 100*factor + 34;
     _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
+      _scrollController.position.maxScrollExtent + height,
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 300),
     );
@@ -144,27 +152,28 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
   }
 
   Widget _buildRow(CommunicateModel communicateModel) {
+    double factor = MediaQuery.of(context).size.width/750;
     //这个文本框长度并不能很好地自适应英文，还需要后期进行计算调整
     bool _isChoiceUser = communicateModel.fromUserName != "Sandy";
     //文本类型处理
     if(communicateModel.msgType == null||communicateModel.msgType ==1) {
       double bubbleWidth = communicateModel.msg.length * 25.0 > 260.0
-          ? 265
-          : communicateModel.msg.length * 30.0;
-      double bubbleHeight = 50.0;
+          ? 265 * 1.8 * factor
+          : communicateModel.msg.length * 30.0 * 1.8 * factor;
+      double bubbleHeight = 90.0 * factor;
       if (communicateModel.msg.length > 20 && communicateModel.msg.length < 30) {
-        bubbleHeight = 60.0 * 1.4;
+        bubbleHeight = 108.0 * 1.4 * factor;
       }
       if (communicateModel.msg.length > 30 && communicateModel.msg.length < 60) {
-        bubbleHeight = communicateModel.msg.length / 18 * 42.0;
+        bubbleHeight = communicateModel.msg.length / 10 * 42.0 * factor;
       }
       if (communicateModel.msg.length >= 60) {
-        bubbleHeight = communicateModel.msg.length / 18 * 33.0;
+        bubbleHeight = communicateModel.msg.length / 10 * 33.0 * factor;
       }
 
       return new GestureDetector(
         child: Padding(
-            padding: EdgeInsets.all(4.0),
+            padding: EdgeInsets.all(4 * 1.8 * factor),
             child: Container(
                 alignment:
                     _isChoiceUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -179,8 +188,9 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
                         : BubbleArrowDirection.left,
                     arrAngle: 65,
                     child: Text(communicateModel.msg,
-                        style: TextStyle(color: Colors.white, fontSize: 17.0))))),
+                        style: TextStyle(color: Colors.white, fontSize: 17.0 * 1.8 * factor, height: 1.5))))),
       );
     }
+    return Container();
   }
 }

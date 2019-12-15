@@ -6,7 +6,6 @@ import 'package:flutter_app/actions/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/app/model/constants.dart';
-import 'package:custom_radio/custom_radio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/component/select.dart';
 import 'package:flutter_app/util/util.dart';
