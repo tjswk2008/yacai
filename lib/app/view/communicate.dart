@@ -1,12 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app/model/job.dart';
 import 'package:flutter_app/app/component/bubble_widget.dart';
 import 'package:flutter_app/app/model/communicate.dart';
 import 'dart:io';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_app/app/model/app.dart';
 
 class CommunicateView extends StatefulWidget {
-  CommunicateView();
+  final Job _job;
+  CommunicateView(this._job);
   @override
   CommunicateViewState createState() => new CommunicateViewState();
 }
@@ -31,44 +35,49 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
-    return new Scaffold(
-      backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-      appBar: new AppBar(
-        elevation: 0.0,
-        leading: IconButton(
-          icon: const BackButtonIcon(),
-          iconSize: 40*factor,
-          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-          onPressed: () {
-            Navigator.maybePop(context);
-          }
-        ),
-        title: new Text("沟通详情",
-            style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
-      ),
-      body: new Builder(builder: (BuildContext context) {
-        return new Column(children: <Widget>[
-          Container(
-            height: 30 * factor,
-          ),
-          new Flexible(
-            child: new ListView.builder(
-              controller: _scrollController,
-              physics: BouncingScrollPhysics(),
-              itemCount: _messageList.length,
-              itemBuilder: (context, i) {
-                return _buildRow(_messageList[i]);
-              },
+    return StoreConnector<AppState, AppState>(
+      converter: (store) => store.state,
+      builder: (context, appState) {
+        return new Scaffold(
+          backgroundColor: new Color.fromARGB(255, 242, 242, 245),
+          appBar: new AppBar(
+            elevation: 0.0,
+            leading: IconButton(
+              icon: const BackButtonIcon(),
+              iconSize: 40*factor,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                Navigator.maybePop(context);
+              }
             ),
+            title: new Text("沟通详情",
+                style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
           ),
-          new Divider(height: 1.0),
-          new Container(
-            child: _buildComposer(context),
-            decoration:
-                new BoxDecoration(color: Color.fromRGBO(241, 243, 244, 0.9)),
-          ),
-        ]);
-      }),
+          body: new Builder(builder: (BuildContext context) {
+            return new Column(children: <Widget>[
+              Container(
+                height: 30 * factor,
+              ),
+              new Flexible(
+                child: new ListView.builder(
+                  controller: _scrollController,
+                  physics: BouncingScrollPhysics(),
+                  itemCount: _messageList.length,
+                  itemBuilder: (context, i) {
+                    return _buildRow(_messageList[i], widget._job.avatar, appState.resume.personalInfo.avatar);
+                  },
+                ),
+              ),
+              new Divider(height: 1.0),
+              new Container(
+                child: _buildComposer(context),
+                decoration:
+                    new BoxDecoration(color: Color.fromRGBO(241, 243, 244, 0.9)),
+              ),
+            ]);
+          }),
+        );
+      }
     );
   }
 
@@ -108,7 +117,7 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
             ),
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              _submitMsg(factor);
+              _submitMsg();
             }
           )
         ],
@@ -116,7 +125,7 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
     );
   }
 
-  void _submitMsg(double factor) async {
+  void _submitMsg() async {
     String text = _textController.text.trim();
     if (text == null || text == "") {
       return;
@@ -141,9 +150,8 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
     setState(() {
       _messageList.add(CommunicateModel.fromJson(map));
     });
-    var height = Platform.isAndroid ? 100*factor : 100*factor + 34;
     _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent + height,
+      _scrollController.position.maxScrollExtent,
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 300),
     );
@@ -151,7 +159,7 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
     // TODO: 发送到服务器
   }
 
-  Widget _buildRow(CommunicateModel communicateModel) {
+  Widget _buildRow(CommunicateModel communicateModel, String hunterAvatar, String avatar) {
     double factor = MediaQuery.of(context).size.width/750;
     //这个文本框长度并不能很好地自适应英文，还需要后期进行计算调整
     bool _isChoiceUser = communicateModel.fromUserName != "Sandy";
@@ -177,18 +185,43 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
             child: Container(
                 alignment:
                     _isChoiceUser ? Alignment.centerRight : Alignment.centerLeft,
-                child: BubbleWidget(
-                    bubbleWidth,
-                    bubbleHeight,
-                    _isChoiceUser
-                        ? Colors.green.withOpacity(0.7)
-                        : Color.fromRGBO(71, 71, 71, 0.9),
-                    _isChoiceUser
-                        ? BubbleArrowDirection.right
-                        : BubbleArrowDirection.left,
-                    arrAngle: 65,
-                    child: Text(communicateModel.msg,
-                        style: TextStyle(color: Colors.white, fontSize: 17.0 * 1.8 * factor, height: 1.5))))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    _isChoiceUser ? Container() : Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10 * factor),
+                      child: new CircleAvatar(
+                        radius: 30.0*factor,
+                        backgroundImage: new NetworkImage(hunterAvatar)
+                      ),
+                    ),
+                    BubbleWidget(
+                      bubbleWidth,
+                      bubbleHeight,
+                      _isChoiceUser
+                          ? Colors.green.withOpacity(0.7)
+                          : Color.fromRGBO(255, 255, 255, 0.9),
+                      _isChoiceUser
+                          ? BubbleArrowDirection.right
+                          : BubbleArrowDirection.left,
+                      arrAngle: 65,
+                      child: Text(
+                        communicateModel.msg,
+                        style: TextStyle(color: Colors.black, fontSize: 17.0 * 1.8 * factor, height: 1.5)
+                      )
+                    ),
+                    _isChoiceUser ? Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10 * factor),
+                      child: new CircleAvatar(
+                        radius: 30.0*factor,
+                        backgroundImage: new NetworkImage(avatar)
+                      ),
+                    ) : Container(),
+                  ]
+                )
+              ),
+        )
       );
     }
     return Container();

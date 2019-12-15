@@ -287,12 +287,12 @@ class JobDetailState extends State<JobDetail>
                                   ),
                                 ),
                               ),
-                              color: Theme.of(context).primaryColor,
+                              color: Colors.orange[400],
                               onPressed: () async {
                                 Navigator.of(context).push(new PageRouteBuilder(
                                     opaque: false,
                                     pageBuilder: (BuildContext context, _, __) {
-                                      return new CommunicateView();
+                                      return new CommunicateView(_job);
                                     },
                                     transitionsBuilder: _pageAnimation
                                 ));
