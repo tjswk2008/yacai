@@ -133,7 +133,7 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
     
     Map<String, dynamic> map = {
       "fromUserName": Random().nextBool() ? "Andy" : "Sandy",
-      "fromSessionId": "0",
+      "jobId": widget._job.id.toString(),
       "msgId": new DateTime.now().millisecondsSinceEpoch.toString(),
       "msg": text,
       "to": "Sandy",

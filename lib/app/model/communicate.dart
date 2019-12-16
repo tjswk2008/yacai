@@ -1,7 +1,7 @@
 class CommunicateModel {
   final String msg;//消息内容(如果内容是图片，这里就是URL)
   final String fromUserName;//发消息者
-  final String fromSessionId;//发消息者sessionId
+  final String jobId;//发消息者sessionId
   final String to;//接收者
   final String msgId;//消息唯一ID
   final int    msgType;//消息类型（1：文本内容，2：图片）
@@ -11,7 +11,7 @@ class CommunicateModel {
   CommunicateModel(
       {this.msg,
       this.fromUserName,
-      this.fromSessionId,
+      this.jobId,
       this.to,
       this.type,
       this.msgType,
@@ -22,7 +22,7 @@ class CommunicateModel {
       msgId: json["msgId"],
       msgType: json["msgType"],
       fromUserName: json['fromUserName'],
-      fromSessionId: json['fromSessionId'],
+      jobId: json['jobId'],
       to: json['to'],
       type: json['type'],
     );
@@ -36,8 +36,8 @@ class CommunicateModel {
         "\",\"msgId\":\"" +
         msgId +
         "\""
-            ",\"fromSessionId\":\"" +
-        fromSessionId +
+            ",\"jobId\":\"" +
+        jobId +
         "\",\"to\":\"" +
         to +
         "\",\"type\":" +
