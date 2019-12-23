@@ -107,12 +107,13 @@ class SplashState extends State<SplashPage> {
     String username = prefs.getString('userName');
     if (username != '' && username != null) {
       Response response = await Api().login(username, null);
-    
+      prefs.setInt('userId', response.data['id']);
       if (role == 1) {
         Response resumeResponse = await Api().getUserInfo(response.data['id'], null);
         Resume resume = Resume.fromMap(resumeResponse.data['info']);
         StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
       } else {
+        // role == 2
         List<Response> resList = await Future.wait([Api().getCompanyInfo(response.data['id']), Api().getRecruitJobList(username)]);
         StoreProvider.of<AppState>(context).dispatch(SetJobsAction(Job.fromJson(resList[1].data['list'])));
         Company company;

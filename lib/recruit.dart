@@ -3,6 +3,7 @@ import 'package:flutter_app/app/component/icon_tab.dart';
 import 'package:flutter_app/app/recruit_view/pub_list.dart';
 import 'package:flutter_app/app/recruit_view/resume_list.dart';
 import 'package:flutter_app/app/recruit_view/mine_view.dart';
+import 'package:flutter_app/app/recruit_view/msg_list.dart';
 import 'dart:io';
 // import 'package:amap_base/amap_base.dart';
 // import 'package:flutter_2d_amap/flutter_2d_amap.dart';
@@ -10,8 +11,8 @@ import 'dart:io';
 const double _kTabTextSize = 11.0;
 const int INDEX_RESUME = 0;
 const int INDEX_PUB = 1;
-const int INDEX_MINE = 2;
-const int INDEX_JOB = 3;
+const int INDEX_MSG = 2;
+const int INDEX_MINE = 3;
 
 
 class Recruit extends StatefulWidget {
@@ -28,7 +29,7 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller =
-        new TabController(initialIndex: _currentIndex, length: 3, vsync: this);
+        new TabController(initialIndex: _currentIndex, length: 4, vsync: this);
     onChanged = () {
       setState(() {
         _currentIndex = this._controller.index;
@@ -58,8 +59,8 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
         children: <Widget>[
           new ResumeTab('精英简历', null, 1),
           new PubTab('我的职位'),
+          new MsgList(),
           new MineTab(),
-          // new JobsTab(1, '全职'),
         ],
         controller: _controller,
       ),
@@ -82,6 +83,11 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
                   color: _currentIndex == INDEX_PUB ? _kPrimaryColor : Colors.grey[900],
                   iconData: Icon(Icons.work, size: 50.0*factor, color: _currentIndex == INDEX_PUB ? _kPrimaryColor : Colors.grey[900],),
                   text: "职位"
+              ),
+              new IconTab(
+                  color: _currentIndex == INDEX_MSG ? _kPrimaryColor : Colors.grey[900],
+                  iconData: Icon(Icons.message, size: 50.0*factor, color: _currentIndex == INDEX_MSG ? _kPrimaryColor : Colors.grey[900],),
+                  text: "消息"
               ),
               new IconTab(
                   color: _currentIndex == INDEX_MINE ? _kPrimaryColor : Colors.grey[900],

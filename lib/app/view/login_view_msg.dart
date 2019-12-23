@@ -199,7 +199,7 @@ class LoginWithMsgState extends State<LoginWithMsg> {
                       prefs.setInt('role', response.data['info']['role']);
                       prefs.setString('userName', username);
                       int role = prefs.getInt('role');
-
+                      prefs.setInt('userId', response.data['id']);
                       if (role == 1) {
                         Response resumeResponse = await Api().getUserInfo(response.data['id'], null);
                         Resume resume = Resume.fromMap(resumeResponse.data['info']);

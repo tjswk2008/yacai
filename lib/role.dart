@@ -220,7 +220,7 @@ class RoleState extends State<RolePage> {
     String username = prefs.getString('userName');
     if (username != '' && username != null) {
       Response response = await Api().login(username, null);
-    
+      prefs.setInt('userId', response.data['id']);
       if (role == 1) {
         Response resumeResponse = await Api().getUserInfo(response.data['id'], null);
         Resume resume = Resume.fromMap(resumeResponse.data['info']);

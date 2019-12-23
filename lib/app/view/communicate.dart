@@ -1,16 +1,20 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app/model/job.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app/app/component/bubble_widget.dart';
 import 'package:flutter_app/app/model/communicate.dart';
 import 'dart:io';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_app/app/model/app.dart';
+import 'package:device_info/device_info.dart';
+import 'package:flutter_app/app/api/api.dart';
+import 'package:dio/dio.dart';
 
 class CommunicateView extends StatefulWidget {
-  final Job _job;
-  CommunicateView(this._job);
+  final int _jobId;
+  final int _userId;
+  CommunicateView(this._jobId, this._userId);
   @override
   CommunicateViewState createState() => new CommunicateViewState();
 }
@@ -21,10 +25,15 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
   final TextEditingController _textController = new TextEditingController();
   ScrollController _scrollController = ScrollController();
   List<CommunicateModel> _messageList = <CommunicateModel>[];
+  String hunterAvatar = '';
+  String jobSeekerAvatar = '';
+  int hunterId;
+  int role;
 
   @override
   void initState() {
     super.initState();
+    getMsgList(widget._jobId);
   }
 
   @override
@@ -64,7 +73,7 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
                   physics: BouncingScrollPhysics(),
                   itemCount: _messageList.length,
                   itemBuilder: (context, i) {
-                    return _buildRow(_messageList[i], widget._job.avatar, appState.resume.personalInfo.avatar);
+                    return _buildRow(_messageList[i]);
                   },
                 ),
               ),
@@ -125,47 +134,107 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
     );
   }
 
+  void getMsgList(int jobId) async {
+    try {
+      
+      if (!mounted) {
+        return;
+      }
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      setState(() {
+        role = prefs.getInt('role');
+      });
+      List<Response> resList = await Future.wait([
+        Api().getConversationBySeekerId(jobId, widget._userId),
+        Api().getjob(jobId),
+        Api().getUserAvatar(widget._userId)
+      ]);
+      if (resList[0].data['code'] == 1) {
+        setState(() {
+          _messageList = CommunicateModel.fromJson(resList[0].data['data']);
+        });
+      }
+      if (resList[1].data['code'] == 1) {
+        setState(() {
+          hunterAvatar = resList[1].data['data'][0]['avatar'];
+          hunterId = resList[1].data['data'][0]['userId'];
+        });
+      }
+      if (resList[2].data['code'] == 1) {
+        setState(() {
+          jobSeekerAvatar = resList[2].data['info']['avatar'];
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<String> _getId() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else {
+      AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId; // unique ID on Android
+    }
+  }
+  
   void _submitMsg() async {
     String text = _textController.text.trim();
     if (text == null || text == "") {
       return;
     }
-    
-    Map<String, dynamic> map = {
-      "fromUserName": Random().nextBool() ? "Andy" : "Sandy",
-      "jobId": widget._job.id.toString(),
-      "msgId": new DateTime.now().millisecondsSinceEpoch.toString(),
-      "msg": text,
-      "to": "Sandy",
-      "type": 2
-    };
-    CommunicateModel communicateModel = CommunicateModel.fromJson(map);
-    List<String> list = [];
-    if (list == null) {
-      list = [];
-    } else if (list.length >= 100) {
-      list.removeAt(0);
+    if (isRequesting) {
+      return;
     }
-    list.add(communicateModel.toJsonString());
+    Map<String, dynamic> map = {
+      "jobSeekerId": widget._userId,
+      "jobId": widget._jobId,
+      "hunterId": hunterId,
+      "msg": text,
+      "role": role
+    };
+    if(_messageList.length == 0) {
+      map['sessionId'] = await _getId();
+    } else {
+      map['sessionId'] = _messageList[0].sessionId;
+    }
     setState(() {
-      _messageList.add(CommunicateModel.fromJson(map));
+      isRequesting = true;
     });
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      curve: Curves.easeOut,
-      duration: const Duration(milliseconds: 300),
-    );
-    _textController.clear();
-    // TODO: 发送到服务器
+    Api().saveMsg(map)
+      .then((Response response) {
+        if (response.data['code'] == 1) {
+          setState(() {
+            _messageList.add(CommunicateModel.fromMap(map));
+          });
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 300),
+          );
+          _textController.clear();
+        }
+        setState(() {
+          isRequesting = false;
+        });
+      })
+     .catchError((e) {
+       setState(() {
+          isRequesting = false;
+        });
+       print(e);
+     });
   }
 
-  Widget _buildRow(CommunicateModel communicateModel, String hunterAvatar, String avatar) {
+  Widget _buildRow(CommunicateModel communicateModel) {
     double factor = MediaQuery.of(context).size.width/750;
     //这个文本框长度并不能很好地自适应英文，还需要后期进行计算调整
-    bool _isChoiceUser = communicateModel.fromUserName != "Sandy";
+    bool _isChoiceUser = communicateModel.role == role;// communicateModel.jobSeekerId == personalInfo.id;
     //文本类型处理
-    if(communicateModel.msgType == null||communicateModel.msgType ==1) {
-      double bubbleWidth = communicateModel.msg.length * 25.0 > 260.0
+    double bubbleWidth = communicateModel.msg.length * 25.0 > 260.0
           ? 265 * 1.8 * factor
           : communicateModel.msg.length * 30.0 * 1.8 * factor;
       double bubbleHeight = 90.0 * factor;
@@ -181,49 +250,47 @@ class CommunicateViewState extends State<CommunicateView> with SingleTickerProvi
 
       return new GestureDetector(
         child: Padding(
-            padding: EdgeInsets.all(4 * 1.8 * factor),
-            child: Container(
-                alignment:
-                    _isChoiceUser ? Alignment.centerRight : Alignment.centerLeft,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    _isChoiceUser ? Container() : Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10 * factor),
-                      child: new CircleAvatar(
-                        radius: 30.0*factor,
-                        backgroundImage: new NetworkImage(hunterAvatar)
-                      ),
+          padding: EdgeInsets.all(4 * 1.8 * factor),
+          child: Container(
+              alignment:
+                  _isChoiceUser ? Alignment.centerRight : Alignment.centerLeft,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  _isChoiceUser ? Container() : Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10 * factor),
+                    child: new CircleAvatar(
+                      radius: 30.0*factor,
+                      backgroundImage: new NetworkImage(communicateModel.role == 2 ? hunterAvatar : jobSeekerAvatar)
                     ),
-                    BubbleWidget(
-                      bubbleWidth,
-                      bubbleHeight,
-                      _isChoiceUser
-                          ? Colors.green.withOpacity(0.7)
-                          : Color.fromRGBO(255, 255, 255, 0.9),
-                      _isChoiceUser
-                          ? BubbleArrowDirection.right
-                          : BubbleArrowDirection.left,
-                      arrAngle: 65,
-                      child: Text(
-                        communicateModel.msg,
-                        style: TextStyle(color: Colors.black, fontSize: 17.0 * 1.8 * factor, height: 1.5)
-                      )
+                  ),
+                  BubbleWidget(
+                    bubbleWidth,
+                    bubbleHeight,
+                    _isChoiceUser
+                        ? Colors.green.withOpacity(0.7)
+                        : Color.fromRGBO(255, 255, 255, 0.9),
+                    _isChoiceUser
+                        ? BubbleArrowDirection.right
+                        : BubbleArrowDirection.left,
+                    arrAngle: 65,
+                    child: Text(
+                      communicateModel.msg,
+                      style: TextStyle(color: Colors.black, fontSize: 17.0 * 1.8 * factor, height: 1.5)
+                    )
+                  ),
+                  _isChoiceUser ? Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10 * factor),
+                    child: new CircleAvatar(
+                      radius: 30.0*factor,
+                      backgroundImage: new NetworkImage(communicateModel.role == 2 ? hunterAvatar : jobSeekerAvatar)
                     ),
-                    _isChoiceUser ? Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10 * factor),
-                      child: new CircleAvatar(
-                        radius: 30.0*factor,
-                        backgroundImage: new NetworkImage(avatar)
-                      ),
-                    ) : Container(),
-                  ]
-                )
-              ),
-        )
-      );
-    }
-    return Container();
+                  ) : Container(),
+                ]
+              )
+            ),
+      )
+    );
   }
 }

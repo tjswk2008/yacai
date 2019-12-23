@@ -266,7 +266,7 @@ class RegisterPageState extends State<RegisterPage> {
                       return;
                     }
                     prefs.setString('userName', username);
-
+                    prefs.setInt('userId', response.data['id']);
                     if (role == 1) {
                       Response resumeResponse = await Api().getUserInfo(response.data['id'], null);
                       Resume resume = Resume.fromMap(resumeResponse.data['info']);

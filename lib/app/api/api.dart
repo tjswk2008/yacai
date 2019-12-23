@@ -3,8 +3,24 @@ import 'dart:io';
 class Api {
   // final String serverAddr = "http://192.168.140.56:3000/api/";
   // final String serverAddr = "http://192.168.43.204:3000/api/"; // 4G
-  // final String serverAddr = "http://47.101.177.244:3000/api/"; //cloud
-  final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://192.168.2.101:3000/api/";
+  final String serverAddr = "http://47.101.177.244:3000/api/"; //cloud
+  // final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://192.168.2.101:3000/api/";
+
+  Future<Response<T>> saveMsg<T>(Map map) {
+    return Dio().post('${serverAddr}conversation/saveMsg', data: map);
+  }
+
+  Future<Response<T>> getConversationBySeekerId<T>(int jobId, int jobSeekerId) {
+    return Dio().post('${serverAddr}conversation/getConversation', data: {
+      'jobId': jobId, 'jobSeekerId': jobSeekerId
+    });
+  }
+
+  Future<Response<T>> getConversationList<T>(int hunterId) {
+    return Dio().post('${serverAddr}conversation/getConversationListByhunterId', data: {
+      'hunterId': hunterId
+    });
+  }
 
   // user interface
   Future<Response<T>> getResumeList<T>(String userName, int jobId, String timeReq, String academic, String salary, int mark, int accepted, int page, int type) {
@@ -45,12 +61,7 @@ class Api {
     );
   }
 
-  Future<Response<T>> savePersonalBaseInfo<T>(
-    String name,
-    String nickname, // 昵称
-    String avatar, // 头像
-    String userName
-  ) {
+  Future<Response<T>> savePersonalBaseInfo<T>(String name, String nickname, String avatar, String userName) {
     String url = '${serverAddr}user/addUserBase?userName=$userName';
     if (name != null) {
       url += '&name=$name';
@@ -119,13 +130,16 @@ class Api {
     return Dio().get(url);
   }
 
-  Future<Response<T>> saveJobStatus<T>(
-    String jobStatus,
-    String userName
-  ) {
+  Future<Response<T>> saveJobStatus<T>(String jobStatus, String userName) {
     return Dio().post('${serverAddr}user/saveJobStatus', data: {
         'jobStatus': jobStatus,
         'userName':userName
+      });
+  }
+
+  Future<Response<T>> getUserAvatar<T>(int id) {
+    return Dio().post('${serverAddr}user/getUserAvatar', data: {
+        'id': id
       });
   }
 
@@ -298,6 +312,12 @@ class Api {
   // jobs interface
   Future<Response<T>> refreshJob<T>(int id) {
     return Dio().post(serverAddr + "jobs/refreshJob", data: {'id': id});
+  }
+
+  Future<Response<T>> getjob<T>(int id) {
+    return Dio().post('${serverAddr}jobs/getjob', data: {
+        'id': id
+      });
   }
 
   Future<Response<T>> getJobList<T>(

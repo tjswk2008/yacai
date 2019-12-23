@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Job {
   final int id;
+  final int userId; // 招聘者的ID
   final String name; // 职位名称
   final String cname; // 公司名字
   final int salaryLow; // 工资
@@ -24,6 +25,7 @@ class Job {
 
   Job({
     this.id,
+    this.userId,
     this.province,
     this.city,
     this.area,
@@ -60,6 +62,7 @@ class Job {
   static Job fromMap(Map map) {
     return new Job(
         id: map['id'],
+        userId: map['userId'],
         name: map['name'],
         cname: map['cname'],
         salaryLow: map['salaryLow'],

@@ -11,6 +11,8 @@ import 'package:flutter_app/app/view/communicate.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_app/app/model/app.dart';
 
 enum AppBarBehavior { normal, pinned, floating, snapping }
 
@@ -56,260 +58,266 @@ class JobDetailState extends State<JobDetail>
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.width/750;
-    return new Scaffold(
-      backgroundColor: Colors.white,
-      appBar: new AppBar(
-        elevation: 0.0,
-        leading: IconButton(
-          icon: const BackButtonIcon(),
-          iconSize: 40*factor,
-          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-          onPressed: () {
-            Navigator.maybePop(context);
-          }
-        ),
-        title: new Text("职位详情",
-            style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
-        ),
-        actions: <Widget>[
-          role == 2 ?new PopupMenuButton(
-            onSelected: (int value) async {
-              Response response = await Api().refreshJob(_job.id);
-              if(response.data['code'] != 1) {
-                showDialog<Null>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return new AlertDialog(
-                      content: Center(
-                        child: Text("刷新失败，请稍后重试~", style: TextStyle(fontSize: 28*factor),)
-                      ),
-                      actions: <Widget>[
-                        new FlatButton(
-                          child: new Text('知道了', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-                return;
+    return StoreConnector<AppState, AppState>(
+      converter: (store) => store.state,
+      builder: (context, appState) {
+        return new Scaffold(
+          backgroundColor: Colors.white,
+          appBar: new AppBar(
+            elevation: 0.0,
+            leading: IconButton(
+              icon: const BackButtonIcon(),
+              iconSize: 40*factor,
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: () {
+                Navigator.maybePop(context);
               }
-              showDialog<Null>(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return new AlertDialog(
-                    content: Text("刷新成功~", style: TextStyle(fontSize: 28*factor),),
-                    actions: <Widget>[
-                      new FlatButton(
-                        child: new Text('知道了', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
+            ),
+            title: new Text("职位详情",
+                style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)
+            ),
+            actions: <Widget>[
+              role == 2 ?new PopupMenuButton(
+                onSelected: (int value) async {
+                  Response response = await Api().refreshJob(_job.id);
+                  if(response.data['code'] != 1) {
+                    showDialog<Null>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return new AlertDialog(
+                          content: Center(
+                            child: Text("刷新失败，请稍后重试~", style: TextStyle(fontSize: 28*factor),)
+                          ),
+                          actions: <Widget>[
+                            new FlatButton(
+                              child: new Text('知道了', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                    return;
+                  }
+                  showDialog<Null>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return new AlertDialog(
+                        content: Text("刷新成功~", style: TextStyle(fontSize: 28*factor),),
+                        actions: <Widget>[
+                          new FlatButton(
+                            child: new Text('知道了', style: TextStyle(fontSize: 24*factor, color: Colors.orange),),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
                   );
                 },
-              );
-            },
-            itemBuilder: (BuildContext context) =><PopupMenuItem<int>>[
-              new PopupMenuItem(
-                value: 1,
-                  child: Row(
+                itemBuilder: (BuildContext context) =><PopupMenuItem<int>>[
+                  new PopupMenuItem(
+                    value: 1,
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 25*factor),
+                            child: Icon(Icons.refresh, size: 28*factor,),
+                          ),
+                          Text("刷新职位", style: TextStyle(fontSize: 22*factor),)
+                        ],
+                      )
+                  )
+                ]
+              ) : Container()
+            ],
+          ),
+          body: new Stack(
+            children: <Widget>[
+              new SingleChildScrollView(
+                  child: new Column(
                     children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 25*factor),
-                        child: Icon(Icons.refresh, size: 28*factor,),
+                      new Container(
+                        color: Colors.white,
+                        child: new Column(
+                          children: <Widget>[
+                            new JobBase(_job),
+                            Container(
+                              height: 5*factor,
+                              color: Colors.grey[100],
+                            ),
+                            new JobDesc(_job),
+                            Container(
+                              height: 5*factor,
+                              color: Colors.grey[100],
+                            ),
+                            new JobAddr(_job),
+                            Container(
+                              height: 5*factor,
+                              color: Colors.grey[100],
+                            ),
+                            new InkWell(
+                                onTap: () => navCompanyDetail(_company),
+                                child: _company == null ? new Container() : new CompanyInfo(_company)
+                            ),
+                            Container(
+                              height: 20*factor,
+                            ),
+                            role == 1 ? Padding(
+                              padding: EdgeInsets.all(20.0*factor),
+                              child: new Builder(builder: (ctx) {
+                                return new FlatButton(
+                                  child: new Container(
+                                    height: 70*factor,
+                                    child: new Center(
+                                      child: Text(
+                                        _job.favorite ? "取消收藏" : "收藏",
+                                        style: TextStyle(
+                                          color: _job.favorite ? Colors.black : Colors.white,
+                                          fontSize: 28.0*factor,
+                                          letterSpacing: _job.favorite ? 5*factor : 40*factor
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  color: _job.favorite ? Colors.grey[300] : Colors.orange[400],
+                                  onPressed: () async {
+                                    if (isRequesting) return;
+                                    setState(() {
+                                      isRequesting = true;
+                                    });
+                                    // 发送给webview，让webview登录后再取回token
+                                    Api().favorite(
+                                      userName,
+                                      _job.id,
+                                      _job.favorite
+                                    )
+                                      .then((Response response) {
+                                        setState(() {
+                                          isRequesting = false;
+                                        });
+                                        if(response.data['code'] != 1) {
+                                          Scaffold.of(ctx).showSnackBar(new SnackBar(
+                                            content: new Text("收藏失败！"),
+                                          ));
+                                          return;
+                                        } else {
+                                          setState(() {
+                                            _job.favorite = !_job.favorite;
+                                          });
+                                        }
+                                      })
+                                      .catchError((e) {
+                                        setState(() {
+                                          isRequesting = false;
+                                        });
+                                        print(e);
+                                      });
+                                  }
+                                );
+                              }),
+                            ) : Container(),
+                            role == 1 ? Padding(
+                              padding: EdgeInsets.all(20.0*factor),
+                              child: new Builder(builder: (ctx) {
+                                return new FlatButton(
+                                  child: new Container(
+                                    height: 70*factor,
+                                    child: new Center(
+                                      child: Text(
+                                        _job.delivered ? "已投递" : "投递",
+                                        style: TextStyle(
+                                          color: _job.delivered ? Colors.black : Colors.white,
+                                          fontSize: 28.0*factor,
+                                          letterSpacing: _job.delivered ? 5*factor : 40*factor
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  color: _job.delivered ? Colors.grey[300] : Theme.of(context).primaryColor,
+                                  onPressed: () async {
+                                    if (isRequesting || _job.delivered) return;
+                                    setState(() {
+                                      isRequesting = true;
+                                    });
+                                    // 发送给webview，让webview登录后再取回token
+                                    Api().deliver(
+                                      userName,
+                                      _job.id
+                                    )
+                                      .then((Response response) {
+                                        setState(() {
+                                          isRequesting = false;
+                                        });
+                                        if(response.data['code'] != 1) {
+                                          Scaffold.of(ctx).showSnackBar(new SnackBar(
+                                            content: new Text("投递失败！"),
+                                          ));
+                                          return;
+                                        } else {
+                                          setState(() {
+                                            _job.delivered = !_job.delivered;
+                                          });
+                                        }
+                                      })
+                                      .catchError((e) {
+                                        setState(() {
+                                          isRequesting = false;
+                                        });
+                                        print(e);
+                                      });
+                                  }
+                                );
+                              }),
+                            ) : Container(),
+                            role == 1 ? Padding(
+                              padding: EdgeInsets.all(20.0*factor),
+                              child: new Builder(builder: (ctx) {
+                                return new FlatButton(
+                                  child: new Container(
+                                    height: 70*factor,
+                                    child: new Center(
+                                      child: Text(
+                                        "继续沟通",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 28.0*factor,
+                                          letterSpacing: 5*factor
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  color: Colors.orange[400],
+                                  onPressed: () async {
+                                    Navigator.of(context).push(new PageRouteBuilder(
+                                        opaque: false,
+                                        pageBuilder: (BuildContext context, _, __) {
+                                          return new CommunicateView(_job.id, appState.resume.personalInfo.id);
+                                        },
+                                        transitionsBuilder: _pageAnimation
+                                    ));
+                                  }
+                                );
+                              }),
+                            ) : Container(),
+                            prefix0.Container(height: 40*factor,)
+                          ],
+                        ),
                       ),
-                      Text("刷新职位", style: TextStyle(fontSize: 22*factor),)
                     ],
                   )
               )
-            ]
-          ) : Container()
-        ],
-      ),
-      body: new Stack(
-        children: <Widget>[
-          new SingleChildScrollView(
-              child: new Column(
-                children: <Widget>[
-                  new Container(
-                    color: Colors.white,
-                    child: new Column(
-                      children: <Widget>[
-                        new JobBase(_job),
-                        Container(
-                          height: 5*factor,
-                          color: Colors.grey[100],
-                        ),
-                        new JobDesc(_job),
-                        Container(
-                          height: 5*factor,
-                          color: Colors.grey[100],
-                        ),
-                        new JobAddr(_job),
-                        Container(
-                          height: 5*factor,
-                          color: Colors.grey[100],
-                        ),
-                        new InkWell(
-                            onTap: () => navCompanyDetail(_company),
-                            child: _company == null ? new Container() : new CompanyInfo(_company)
-                        ),
-                        Container(
-                          height: 20*factor,
-                        ),
-                        role == 1 ? Padding(
-                          padding: EdgeInsets.all(20.0*factor),
-                          child: new Builder(builder: (ctx) {
-                            return new FlatButton(
-                              child: new Container(
-                                height: 70*factor,
-                                child: new Center(
-                                  child: Text(
-                                    _job.favorite ? "取消收藏" : "收藏",
-                                    style: TextStyle(
-                                      color: _job.favorite ? Colors.black : Colors.white,
-                                      fontSize: 28.0*factor,
-                                      letterSpacing: _job.favorite ? 5*factor : 40*factor
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              color: _job.favorite ? Colors.grey[300] : Colors.orange[400],
-                              onPressed: () async {
-                                if (isRequesting) return;
-                                setState(() {
-                                  isRequesting = true;
-                                });
-                                // 发送给webview，让webview登录后再取回token
-                                Api().favorite(
-                                  userName,
-                                  _job.id,
-                                  _job.favorite
-                                )
-                                  .then((Response response) {
-                                    setState(() {
-                                      isRequesting = false;
-                                    });
-                                    if(response.data['code'] != 1) {
-                                      Scaffold.of(ctx).showSnackBar(new SnackBar(
-                                        content: new Text("收藏失败！"),
-                                      ));
-                                      return;
-                                    } else {
-                                      setState(() {
-                                        _job.favorite = !_job.favorite;
-                                      });
-                                    }
-                                  })
-                                  .catchError((e) {
-                                    setState(() {
-                                      isRequesting = false;
-                                    });
-                                    print(e);
-                                  });
-                              }
-                            );
-                          }),
-                        ) : Container(),
-                        role == 1 ? Padding(
-                          padding: EdgeInsets.all(20.0*factor),
-                          child: new Builder(builder: (ctx) {
-                            return new FlatButton(
-                              child: new Container(
-                                height: 70*factor,
-                                child: new Center(
-                                  child: Text(
-                                    _job.delivered ? "已投递" : "投递",
-                                    style: TextStyle(
-                                      color: _job.delivered ? Colors.black : Colors.white,
-                                      fontSize: 28.0*factor,
-                                      letterSpacing: _job.delivered ? 5*factor : 40*factor
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              color: _job.delivered ? Colors.grey[300] : Theme.of(context).primaryColor,
-                              onPressed: () async {
-                                if (isRequesting || _job.delivered) return;
-                                setState(() {
-                                  isRequesting = true;
-                                });
-                                // 发送给webview，让webview登录后再取回token
-                                Api().deliver(
-                                  userName,
-                                  _job.id
-                                )
-                                  .then((Response response) {
-                                    setState(() {
-                                      isRequesting = false;
-                                    });
-                                    if(response.data['code'] != 1) {
-                                      Scaffold.of(ctx).showSnackBar(new SnackBar(
-                                        content: new Text("投递失败！"),
-                                      ));
-                                      return;
-                                    } else {
-                                      setState(() {
-                                        _job.delivered = !_job.delivered;
-                                      });
-                                    }
-                                  })
-                                  .catchError((e) {
-                                    setState(() {
-                                      isRequesting = false;
-                                    });
-                                    print(e);
-                                  });
-                              }
-                            );
-                          }),
-                        ) : Container(),
-                        role == 1 ? Padding(
-                          padding: EdgeInsets.all(20.0*factor),
-                          child: new Builder(builder: (ctx) {
-                            return new FlatButton(
-                              child: new Container(
-                                height: 70*factor,
-                                child: new Center(
-                                  child: Text(
-                                    "继续沟通",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 28.0*factor,
-                                      letterSpacing: 5*factor
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              color: Colors.orange[400],
-                              onPressed: () async {
-                                Navigator.of(context).push(new PageRouteBuilder(
-                                    opaque: false,
-                                    pageBuilder: (BuildContext context, _, __) {
-                                      return new CommunicateView(_job);
-                                    },
-                                    transitionsBuilder: _pageAnimation
-                                ));
-                              }
-                            );
-                          }),
-                        ) : Container(),
-                        prefix0.Container(height: 40*factor,)
-                      ],
-                    ),
-                  ),
-                ],
-              )
+            ],
           )
-        ],
-      )
+        );
+      }
     );
+    
   }
 
   Widget _pageAnimation(_, Animation<double> animation, __, Widget child) {
