@@ -7,10 +7,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/app/api/api.dart';
 import 'package:flutter_app/splash.dart';
 import 'package:flutter_app/actions/actions.dart';
-import 'package:package_info/package_info.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:async';
 import 'package:flutter_app/util/util.dart';
 // import 'package:permission_handler/permission_handler.dart';
 // import 'package:fluwx/fluwx.dart' as fluwx;
@@ -34,24 +30,10 @@ class SettingViewState extends State<SettingView> {
   @override
   void initState() {
     super.initState();
-    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-      version = packageInfo.version;
-      return Api().checkAppVersion();
-    })
-    .then((Response response) {
-      if (response.data['code'] == 1) {
-        newestVersion = response.data['version'];
-        if(newestVersion == version) {
-          setState(() {
-           versionStr = '已是最新版'; 
-          });
-        } else {
-          versionStr = '可升级到$newestVersion';
-        }
-      }
-      return SharedPreferences.getInstance();
-    })
-    .then((SharedPreferences prefs) {
+    setState(() {
+      versionStr = '已是最新版'; 
+    });
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
       setState(() {
         userName = prefs.getString('userName');
       });
@@ -321,10 +303,7 @@ class SettingViewState extends State<SettingView> {
                   Divider(),
                   new InkWell(
                     onTap: () async {
-                      if(newestVersion != version) {
-                        // await _checkPermission();
-                        executeDownload();
-                      }
+                      
                     },
                     child: new Container(
                       height: 80.0*factor,
@@ -368,52 +347,5 @@ class SettingViewState extends State<SettingView> {
       .push(new MaterialPageRoute(builder: (context) {
         return new NewLoginPage();
       }));
-  }
-
-  // 获取安装地址
-  Future<String> get _apkLocalPath async {
-    final directory = await getExternalStorageDirectory();
-    return directory.path;
-  }
-
-
-  // 下载
-  Future<void> executeDownload() async {
-    final path = await _apkLocalPath;
-    // String downLoadUrl = Platform.isAndroid ? 'http://192.168.140.56:3000' : 'http://192.168.2.101:3000';
-    // String downLoadUrl = 'http://192.168.43.204:3000';
-    String downLoadUrl = 'http://47.101.177.244:3000';
-    // PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
-    // if (permission != PermissionStatus.granted) {
-    //   Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-    //   if(permissions[PermissionGroup.storage] != PermissionStatus.granted) {
-    //     YaCaiUtil.getInstance().showMsg('下载失败');
-    //     return;
-    //   }
-    // }
-    
-    //下载
-    final taskId = await FlutterDownloader.enqueue(
-        url: downLoadUrl + '/app-release.apk',
-        savedDir: path,
-        showNotification: true,
-        openFileFromNotification: true
-    );
-    FlutterDownloader.registerCallback((id, status, progress) {
-      // 当下载完成时，调用安装
-      print(progress);
-      if (taskId == id && status == DownloadTaskStatus.complete) {
-        // _installApk();
-        // OpenFile.open(path + '/app-release.apk');
-        // FlutterDownloader.open(taskId: id);
-      } else if (status == DownloadTaskStatus.failed) {
-        //下载出错
-        YaCaiUtil.getInstance().showMsg('下载失败');
-        // Scaffold.of(context).showSnackBar(new SnackBar(
-        //   content: new Text(status.toString(), style: TextStyle(fontSize: 22*factor),),
-        // ));
-        // print(status.toString());
-      }
-    });
   }
 }

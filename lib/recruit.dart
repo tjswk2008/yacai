@@ -101,16 +101,3 @@ class HomeState extends State<Recruit> with SingleTickerProviderStateMixin {
     );
   }
 }
-
-void main() {
-  runApp(new MaterialApp(
-      title: "丫财",
-      theme: new ThemeData(
-        primaryIconTheme: const IconThemeData(color: Colors.white),
-        brightness: Brightness.light,
-        primaryColor: new Color.fromRGBO(90, 169, 226, 1),
-        accentColor: Colors.cyan[300],
-      ),
-      home: new Recruit()
-  ));
-}
