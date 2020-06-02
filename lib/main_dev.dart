@@ -9,7 +9,7 @@ import 'package:flutter_app/util/app_config.dart';
 
 void main() {
   // debugPaintSizeEnabled=true;
-  AppConfig.getInstance().init('http://47.101.177.244:3000');
+  AppConfig.getInstance().init('http://192.168.140.56:3000');
   final store = Store<AppState>(
     appReducer,
     initialState: AppState(userName: '')

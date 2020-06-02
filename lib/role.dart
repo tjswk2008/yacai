@@ -13,6 +13,7 @@ import 'package:flutter_app/app/model/company.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/recruit.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_app/util/dio.dart';
 // import 'package:fluwx/fluwx.dart' as fluwx;
 
 class RolePage extends StatefulWidget {
@@ -218,7 +219,9 @@ class RoleState extends State<RolePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int role = prefs.getInt('role');
     String username = prefs.getString('userName');
-    if (username != '' && username != null) {
+    String token = prefs.getString('token');
+    if (token != '' && token != null) {
+      DioUtil.getInstance().options.headers['x-token'] = prefs.getString('token');
       Response response = await Api().login(username, null);
       prefs.setInt('userId', response.data['id']);
       if (role == 1) {

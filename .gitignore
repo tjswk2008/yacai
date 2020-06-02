@@ -4,3 +4,4 @@ pubspec.lock
 .history
 .idea
 .flutter-plugins
+.dart_tool/

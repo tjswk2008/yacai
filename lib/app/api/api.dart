@@ -1,25 +1,26 @@
 import 'package:dio/dio.dart';
 import 'dart:io';
 import 'package:flutter_app/util/dio.dart';
+import 'package:flutter_app/util/app_config.dart';
 class Api {
   // final String serverAddr = "http://192.168.140.56:3000/api/";
   // final String serverAddr = "http://192.168.43.204:3000/api/"; // 4G
-  final String serverAddr = "http://47.101.177.244:3000/api/"; //cloud
+  final String serverAddr = '${AppConfig.getInstance().apiBaseUrl}/api/'; //cloud
   // final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://192.168.2.101:3000/api/";
   Dio dio = DioUtil.getInstance();
 
   Future<Response<T>> saveMsg<T>(Map map) {
-    return Dio().post('${serverAddr}conversation/saveMsg', data: map);
+    return dio.post('${serverAddr}conversation/saveMsg', data: map);
   }
 
   Future<Response<T>> getConversationBySeekerId<T>(int jobId, int jobSeekerId) {
-    return Dio().post('${serverAddr}conversation/getConversation', data: {
+    return dio.post('${serverAddr}conversation/getConversation', data: {
       'jobId': jobId, 'jobSeekerId': jobSeekerId
     });
   }
 
   Future<Response<T>> getConversationList<T>(int hunterId) {
-    return Dio().post('${serverAddr}conversation/getConversationListByhunterId', data: {
+    return dio.post('${serverAddr}conversation/getConversationListByhunterId', data: {
       'hunterId': hunterId
     });
   }
@@ -52,11 +53,11 @@ class Api {
     if(accepted != null) {
       url += '&accepted=$accepted';
     }
-    return Dio().get(url);
+    return dio.get(url);
   }
 
   Future<Response<T>> viewResume<T>(String userName, int userId, ) {
-    return Dio().post('${serverAddr}user/viewResume', data: {
+    return dio.post('${serverAddr}user/viewResume', data: {
         'userName': userName,
         'userId': userId,
       }
@@ -74,7 +75,7 @@ class Api {
     if (nickname != null) {
       url += '&nickname=$nickname';
     }
-    return Dio().get(url);
+    return dio.get(url);
   }
 
   Future<Response<T>> savePersonalInfo<T>(
@@ -129,18 +130,18 @@ class Api {
     if(summarize != null) {
       url += '&summarize=$summarize';
     }
-    return Dio().get(url);
+    return dio.get(url);
   }
 
   Future<Response<T>> saveJobStatus<T>(String jobStatus, String userName) {
-    return Dio().post('${serverAddr}user/saveJobStatus', data: {
+    return dio.post('${serverAddr}user/saveJobStatus', data: {
         'jobStatus': jobStatus,
         'userName':userName
       });
   }
 
   Future<Response<T>> getUserAvatar<T>(int id) {
-    return Dio().post('${serverAddr}user/getUserAvatar', data: {
+    return dio.post('${serverAddr}user/getUserAvatar', data: {
         'id': id
       });
   }
@@ -153,7 +154,7 @@ class Api {
     int type,
     String userName
   ) {
-    return Dio().get('${serverAddr}user/addUser?jobTitle=$jobTitle&industry=$industry&city=$city&type=$type&salary=$salary&userName=$userName');
+    return dio.get('${serverAddr}user/addUser?jobTitle=$jobTitle&industry=$industry&city=$city&type=$type&salary=$salary&userName=$userName');
   }
 
   Future<Response<T>> saveCompanyExperience<T>(
@@ -173,17 +174,17 @@ class Api {
     if(id != null) {
       url += '&id=$id';
     }
-    return Dio().get(url);
+    return dio.get(url);
   }
 
   Future<Response<T>> deleteCompanyExperience<T>(int id) {
     String url = '${serverAddr}user/deleteCompanyExperience';
-    return Dio().post(url, data: {'id': id});
+    return dio.post(url, data: {'id': id});
   }
 
   Future<Response<T>> deleteProject<T>(int id) {
     String url = '${serverAddr}user/deleteProject';
-    return Dio().post(url, data: {'id': id});
+    return dio.post(url, data: {'id': id});
   }
 
   Future<Response<T>> saveProject<T>(
@@ -203,12 +204,12 @@ class Api {
     if(id != null) {
       url += '&id=$id';
     }
-    return Dio().get(url);
+    return dio.get(url);
   }
 
   Future<Response<T>> deleteEducation<T>(int academic, int id, String userName) {
     String url = '${serverAddr}user/deleteEducation';
-    return Dio().post(url, data: {'id': id, 'userName': userName, 'academic': academic});
+    return dio.post(url, data: {'id': id, 'userName': userName, 'academic': academic});
   }
 
   Future<Response<T>> saveEducation<T>(
@@ -228,12 +229,12 @@ class Api {
     if(id != null) {
       url += '&id=$id';
     }
-    return Dio().get(url);
+    return dio.get(url);
   }
 
   Future<Response<T>> deleteCertification<T>(int id) {
     String url = '${serverAddr}user/deleteCertification';
-    return Dio().post(url, data: {'id': id});
+    return dio.post(url, data: {'id': id});
   }
 
   Future<Response<T>> saveCertification<T>(
@@ -248,54 +249,54 @@ class Api {
     if(id != null) {
       url += '&id=$id';
     }
-    return Dio().get(url);
+    return dio.get(url);
   }
 
   Future<Response<T>> getCompanyInfo<T>(int id) {
-    return Dio().get(serverAddr + "user/getCompanyInfo?id=" + id.toString());
+    return dio.get(serverAddr + "user/getCompanyInfo?id=" + id.toString());
   }
 
   Future<Response<T>> login<T>(String account, String pwd) {
-    String url = '${serverAddr}user/login?account=$account';
+    Map data = {'account': account};
     if(pwd != null) {
-      url += '&pwd=$pwd';
+      data['pwd'] = pwd;
     }
-    return Dio().get(url);
+    return dio.post('${serverAddr}user/login', data: data);
   }
 
   Future<Response<T>> register<T>(String account, String pwd, int role) {
-    return Dio().get(serverAddr + "user/register?account=$account&pwd=$pwd&role=$role");
+    return dio.get(serverAddr + "user/register?account=$account&pwd=$pwd&role=$role");
   }
 
   Future<Response<T>> refreshResume<T>(String account) {
-    return Dio().post(serverAddr + "user/refreshResume", data: {'account': account});
+    return dio.post(serverAddr + "user/refreshResume", data: {'account': account});
   }
 
   Future<Response<T>> deleteUser<T>(String account) {
     String url = '${serverAddr}user/deleteUser';
-    return Dio().post(url, data: {'account': account});
+    return dio.post(url, data: {'account': account});
   }
 
   Future<Response<T>> switchOpenStatus<T>(String account, int open) {
     String url = '${serverAddr}user/switchOpenStatus';
-    return Dio().post(url, data: {'account': account, 'isOpen': open});
+    return dio.post(url, data: {'account': account, 'isOpen': open});
   }
 
   Future<Response<T>> getUserInfo<T>(int id, String userName) {
-    String url = "${serverAddr}user/query?id=$id";
+    Map data = {'id': id};
     if(userName != null) {
-      url += '&userName=$userName';
+      data['userName'] = userName;
     }
-    return Dio().get(url);
+    return dio.post('${serverAddr}user/query', data: data);
   }
 
   Future<Response<T>> getUserBaseInfo<T>(String userName) {
     String url = "${serverAddr}user/queryBase?userName=$userName";
-    return Dio().get(url);
+    return dio.get(url);
   }
 
   Future<Response<T>> sendSms<T>(String phone) {
-    return Dio().post('${serverAddr}user/sendSms', data: {
+    return dio.post('${serverAddr}user/sendSms', data: {
         'phone': phone
       }
     );
@@ -303,7 +304,7 @@ class Api {
 
   // mark interface
   Future<Response<T>> mark<T>(String account, int userId, int marker) {
-    return Dio().post('${serverAddr}mark/edit', data: {
+    return dio.post('${serverAddr}mark/edit', data: {
         'account': account,
         'userId': userId,
         'marker':marker
@@ -313,11 +314,11 @@ class Api {
 
   // jobs interface
   Future<Response<T>> refreshJob<T>(int id) {
-    return Dio().post(serverAddr + "jobs/refreshJob", data: {'id': id});
+    return dio.post(serverAddr + "jobs/refreshJob", data: {'id': id});
   }
 
   Future<Response<T>> getjob<T>(int id) {
-    return Dio().post('${serverAddr}jobs/getjob', data: {
+    return dio.post('${serverAddr}jobs/getjob', data: {
         'id': id
       });
   }
@@ -360,15 +361,15 @@ class Api {
       url += '&keywords=$keywords';
     }
     
-    return Dio().get(url);
+    return dio.get(url);
   }
 
   Future<Response<T>> getRecruitJobList<T>(String userName) {
-    return Dio().get(serverAddr + "jobs/getRecruitJobList?userName=$userName");
+    return dio.get(serverAddr + "jobs/getRecruitJobList?userName=$userName");
   }
 
   Future<Response<T>> favorite<T>(String userName, int jobId, bool favorite) {
-    return Dio().post('${serverAddr}jobs/favorite', data: {
+    return dio.post('${serverAddr}jobs/favorite', data: {
         'userName': userName,
         'jobId': jobId,
         'favorite':favorite
@@ -392,7 +393,7 @@ class Api {
     int companyId,
     String userName,
   ) {
-    return Dio().post('${serverAddr}jobs/saveJobs', data: {
+    return dio.post('${serverAddr}jobs/saveJobs', data: {
         'name': name,
         'cname': cname,
         'salaryLow': salaryLow,
@@ -412,7 +413,7 @@ class Api {
   }
 
   Future<Response<T>> deliver<T>(String userName, int jobId, ) {
-    return Dio().post('${serverAddr}jobs/deliver', data: {
+    return dio.post('${serverAddr}jobs/deliver', data: {
         'userName': userName,
         'jobId': jobId,
       }
@@ -421,11 +422,11 @@ class Api {
 
   // post interface
   Future<Response<T>> getPostList<T>(String userName, int type, int currentPage) {
-    return Dio().get('${serverAddr}post/query?userName=$userName&type=$type&currentPage=$currentPage');
+    return dio.get('${serverAddr}post/query?userName=$userName&type=$type&currentPage=$currentPage');
   }
 
   Future<Response<T>> like<T>(String userName, int like, int postId, int answerId) {
-    return Dio().post(serverAddr + "post/like", data: postId != null ? {
+    return dio.post(serverAddr + "post/like", data: postId != null ? {
       'userName': userName,
       'postId': postId,
       'like': like
@@ -437,20 +438,20 @@ class Api {
   }
 
   Future<Response<T>> addPost<T>(String askedBy, String title, String detail, int type) {
-    return Dio().get('${serverAddr}post/addPost?askedBy=$askedBy&title=$title&detail=$detail&type=$type');
+    return dio.get('${serverAddr}post/addPost?askedBy=$askedBy&title=$title&detail=$detail&type=$type');
   }
 
   Future<Response<T>> addAnswer<T>(String detail, String answerBy, int postId, ) {
-    return Dio().get(serverAddr + "post/addAnswer?answerBy=" + answerBy + "&postId=" + postId.toString() + "&answer=" + detail);
+    return dio.get(serverAddr + "post/addAnswer?answerBy=" + answerBy + "&postId=" + postId.toString() + "&answer=" + detail);
   }
 
   // company interface
   Future<Response<T>> getCompanyDetail<T>(int companyId, String userName) {
-    return Dio().get('${serverAddr}company/query?id=$companyId&userName=$userName');
+    return dio.get('${serverAddr}company/query?id=$companyId&userName=$userName');
   }
 
   Future<Response<T>> getCompanyList<T>(String userName) {
-    return Dio().post(serverAddr + "company/getCompanyList", data: {
+    return dio.post(serverAddr + "company/getCompanyList", data: {
       'userName': userName
     });
   }
@@ -488,7 +489,7 @@ class Api {
     if(id != null) {
       data['id']=id;
     }
-    return Dio().post(url, data: data);
+    return dio.post(url, data: data);
   }
 
   Future<Response<T>> verification<T>(
@@ -500,7 +501,7 @@ class Api {
     String willing,
     int id
   ) {
-    return Dio().post('${serverAddr}company/verification', data: {
+    return dio.post('${serverAddr}company/verification', data: {
       'corporator': corporator,
       'idCard': idCard,
       'idFront': idFront,
@@ -514,7 +515,7 @@ class Api {
   Future getCompanySuggestions<List>(
     String pattern
   ) {
-    return Dio().post('${serverAddr}company/getCompanySuggestions', data: {
+    return dio.post('${serverAddr}company/getCompanySuggestions', data: {
       'pattern': pattern
     });
   }
@@ -523,7 +524,7 @@ class Api {
   Future getSchoolSuggestions<T>(
     String pattern
   ) {
-    return Dio().post('${serverAddr}education/getSchoolSuggestions', data: {
+    return dio.post('${serverAddr}education/getSchoolSuggestions', data: {
       'pattern': pattern
     });
   }
@@ -534,7 +535,7 @@ class Api {
     int companyId,
     int blocked
   ) {
-    return Dio().post('${serverAddr}block/addToBlockedList', data: {
+    return dio.post('${serverAddr}block/addToBlockedList', data: {
       'account': userName,
       'companyId': companyId,
       'blocked':blocked
@@ -544,7 +545,7 @@ class Api {
   Future getBlockedList<T>(
     String userName,
   ) {
-    return Dio().post('${serverAddr}block/getBlockedList', data: {
+    return dio.post('${serverAddr}block/getBlockedList', data: {
       'account': userName,
     });
   }
@@ -556,7 +557,7 @@ class Api {
     int jobId,
     int userId
   ) {
-    return Dio().post('${serverAddr}invite/invite', data: {
+    return dio.post('${serverAddr}invite/invite', data: {
       'userName': userName,
       'detail': detail,
       'jobId': jobId,
@@ -568,7 +569,7 @@ class Api {
     int jobId,
     int userId
   ) {
-    return Dio().post('${serverAddr}invite/getInvitation', data: {
+    return dio.post('${serverAddr}invite/getInvitation', data: {
       'jobId': jobId,
       'userId': userId
     });
@@ -579,7 +580,7 @@ class Api {
     int userId,
     int accepted
   ) {
-    return Dio().post('${serverAddr}invite/updateInvitation', data: {
+    return dio.post('${serverAddr}invite/updateInvitation', data: {
       'jobId': jobId,
       'userId': userId,
       'accepted': accepted
@@ -591,11 +592,11 @@ class Api {
     FormData formData = new FormData.fromMap({
       "file": await MultipartFile.fromFile(file.path,filename: fileName)
     });
-    return Dio().post(serverAddr + "upload/uploadFile", data: formData);
+    return dio.post(serverAddr + "upload/uploadFile", data: formData);
   }
 
   Future<Response<T>> checkAppVersion<T>() {
-    return Dio().post(serverAddr + "upload/checkAppVersion");
+    return dio.post(serverAddr + "upload/checkAppVersion");
   }
 
   Future<Response<T>> deleteImage<T>(int id, String name) {
@@ -605,7 +606,7 @@ class Api {
     if (name != null) {
       data['name'] = name;
     }
-    return Dio().post(serverAddr + "upload/deleteImage", data: data);
+    return dio.post(serverAddr + "upload/deleteImage", data: data);
   }
   
 }
