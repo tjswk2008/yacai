@@ -26,11 +26,6 @@ class ResumeTab extends StatefulWidget {
 class ResumeTabState extends State<ResumeTab> {
   List<PersonalInfo> _personalInfos = [];
 
-  GlobalKey<RefreshHeaderState> _headerKey =
-      new GlobalKey<RefreshHeaderState>();
-  GlobalKey<RefreshFooterState> _footerKey =
-      new GlobalKey<RefreshFooterState>();
-
   int index1 = 0,
       index2 = 0,
       index3 = 0,
@@ -275,18 +270,10 @@ class ResumeTabState extends State<ResumeTab> {
                     top: 15.0*factor
                   ),
                   child: EasyRefresh(
-                    refreshHeader:BezierHourGlassHeader(
-                      key: _headerKey,
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
-                    refreshFooter: BezierBounceFooter(
-                      key: _footerKey,
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
                     onRefresh: () {
                       getResumeList(1);
                     },
-                    loadMore: () async {
+                    onLoad: () async {
                       getResumeList(currentPage);
                     },
                     child: new ListView.builder(

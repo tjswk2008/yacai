@@ -13,6 +13,7 @@ import 'package:flutter_app/app/view/login_view.dart';
 import 'package:flutter_app/app/model/resume.dart';
 import 'package:flutter_app/app/model/company.dart';
 import 'package:flutter_app/app/model/job.dart';
+import 'package:flutter_app/util/dio.dart';
 
 // 新的登录界面
 class RegisterPage extends StatefulWidget {
@@ -267,6 +268,8 @@ class RegisterPageState extends State<RegisterPage> {
                     }
                     prefs.setString('userName', username);
                     prefs.setInt('userId', response.data['id']);
+                    DioUtil.getInstance().options.headers['x-token'] = response.data['token'];
+                    prefs.setString('token', response.data['token']);
                     if (role == 1) {
                       Response resumeResponse = await Api().getUserInfo(response.data['id'], null);
                       Resume resume = Resume.fromMap(resumeResponse.data['info']);

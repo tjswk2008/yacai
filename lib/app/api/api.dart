@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'dart:io';
+import 'package:flutter_app/util/dio.dart';
 class Api {
   // final String serverAddr = "http://192.168.140.56:3000/api/";
   // final String serverAddr = "http://192.168.43.204:3000/api/"; // 4G
   final String serverAddr = "http://47.101.177.244:3000/api/"; //cloud
   // final String serverAddr = Platform.isAndroid ? "http://192.168.140.56:3000/api/" : "http://192.168.2.101:3000/api/";
+  Dio dio = DioUtil.getInstance();
 
   Future<Response<T>> saveMsg<T>(Map map) {
     return Dio().post('${serverAddr}conversation/saveMsg', data: map);
@@ -585,9 +587,9 @@ class Api {
   }
 
   // upload interface
-  Future<Response<T>> upload<T>(File file, String fileName) {
-    FormData formData = new FormData.from({
-      "file": new UploadFileInfo(file, fileName)
+  Future<Response<T>> upload<T>(File file, String fileName) async {
+    FormData formData = new FormData.fromMap({
+      "file": await MultipartFile.fromFile(file.path,filename: fileName)
     });
     return Dio().post(serverAddr + "upload/uploadFile", data: formData);
   }

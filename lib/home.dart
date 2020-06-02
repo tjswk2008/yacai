@@ -13,7 +13,6 @@ const int INDEX_STUDY = 2;
 const int INDEX_MESSAGE = 3;
 const int INDEX_MINE = 4;
 
-
 class BossApp extends StatefulWidget {
   @override
   HomeState createState() => new HomeState();

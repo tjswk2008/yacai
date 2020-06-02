@@ -12,6 +12,7 @@ import 'package:flutter_app/app/model/company.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/recruit.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_app/util/dio.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -105,7 +106,9 @@ class SplashState extends State<SplashPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int role = prefs.getInt('role');
     String username = prefs.getString('userName');
-    if (username != '' && username != null) {
+    String token = prefs.getString('token');
+    if (token != '' && token != null) {
+      DioUtil.getInstance().options.headers['x-token'] = prefs.getString('token');
       Response response = await Api().login(username, null);
       prefs.setInt('userId', response.data['id']);
       if (role == 1) {

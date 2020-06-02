@@ -23,10 +23,6 @@ class MsgListState extends State<MsgList> with SingleTickerProviderStateMixin {
   bool isRequesting = false;
   int currentPage = 1,
       totalPage = 1;
-  GlobalKey<RefreshHeaderState> _headerKey =
-      new GlobalKey<RefreshHeaderState>();
-  GlobalKey<RefreshFooterState> _footerKey =
-      new GlobalKey<RefreshFooterState>();
 
   @override
   void initState() {
@@ -75,18 +71,10 @@ class MsgListState extends State<MsgList> with SingleTickerProviderStateMixin {
           _posts.length == 0 ? Center(
             child: Text("该板块还没有人发帖，快来抢沙发吧~", style: TextStyle(fontSize: 28*factor),),
           ) : EasyRefresh(
-            refreshHeader:BezierHourGlassHeader(
-              key: _headerKey,
-              backgroundColor: Theme.of(context).primaryColor,
-            ),
-            refreshFooter: BezierBounceFooter(
-              key: _footerKey,
-              backgroundColor: Theme.of(context).primaryColor,
-            ),
             onRefresh: () {
               getConversationList(1);
             },
-            loadMore: () async {
+            onLoad: () async {
               getConversationList(currentPage);
             },
             child: new ListView.builder(

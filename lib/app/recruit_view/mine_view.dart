@@ -29,10 +29,6 @@ class MineTabState extends State<MineTab> {
   String jobStatus = '';
   String userName = '';
   bool isRequesting = false;
-  GlobalKey<EasyRefreshState> _easyRefreshKey =
-      new GlobalKey<EasyRefreshState>();
-  GlobalKey<RefreshHeaderState> _headerKey =
-      new GlobalKey<RefreshHeaderState>();
   PersonalInfo personalInfo;
 
   @override
@@ -58,10 +54,6 @@ class MineTabState extends State<MineTab> {
             children: <Widget>[
               SafeArea(
                 child: EasyRefresh(
-                  key: _easyRefreshKey,
-                  refreshHeader: DeliveryHeader(
-                    key: _headerKey,
-                  ),
                   onRefresh: () async {
                     Response response = await Api().login(userName, null);
                     List<Response> resList = await Future.wait([Api().getCompanyInfo(response.data['id']), Api().getRecruitJobList(userName)]);

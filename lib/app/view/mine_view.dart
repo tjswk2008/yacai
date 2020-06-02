@@ -28,10 +28,6 @@ class MineTabState extends State<MineTab> {
   String jobStatus = '';
   String userName = '';
   bool isRequesting = false;
-  GlobalKey<EasyRefreshState> _easyRefreshKey =
-      new GlobalKey<EasyRefreshState>();
-  GlobalKey<RefreshHeaderState> _headerKey =
-      new GlobalKey<RefreshHeaderState>();
   PersonalInfo personalInfo;
 
   @override
@@ -56,10 +52,6 @@ class MineTabState extends State<MineTab> {
             children: <Widget>[
               SafeArea(
                 child: EasyRefresh(
-                  key: _easyRefreshKey,
-                  refreshHeader: DeliveryHeader(
-                    key: _headerKey,
-                  ),
                   onRefresh: () async {
                     Response response = await Api().login(userName, null);
                     Response resumeResponse = await Api().getUserInfo(response.data['id'], null);
@@ -495,6 +487,7 @@ class MineTabState extends State<MineTab> {
                     // 发送给webview，让webview登录后再取回token
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.setString('userName', '');
+                    prefs.setString('token', '');
                     setState(() {
                       isRequesting = false;
                       userName = '';

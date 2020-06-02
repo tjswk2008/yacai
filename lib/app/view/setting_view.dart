@@ -11,7 +11,6 @@ import 'package:package_info/package_info.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
-import 'package:open_file/open_file.dart';
 import 'package:flutter_app/util/util.dart';
 // import 'package:permission_handler/permission_handler.dart';
 // import 'package:fluwx/fluwx.dart' as fluwx;
@@ -405,7 +404,7 @@ class SettingViewState extends State<SettingView> {
       print(progress);
       if (taskId == id && status == DownloadTaskStatus.complete) {
         // _installApk();
-        OpenFile.open(path + '/app-release.apk');
+        // OpenFile.open(path + '/app-release.apk');
         // FlutterDownloader.open(taskId: id);
       } else if (status == DownloadTaskStatus.failed) {
         //下载出错

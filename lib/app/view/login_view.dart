@@ -13,6 +13,7 @@ import 'package:flutter_app/app/model/app.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/recruit.dart';
 import 'package:flutter_app/app/view/register_view.dart';
+import 'package:flutter_app/util/dio.dart';
 
 // 新的登录界面
 class NewLoginPage extends StatefulWidget {
@@ -178,6 +179,9 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
                             });
                             // 发送给webview，让webview登录后再取回token
                             Response response = await Api().sendSms(username);
+                            DioUtil.getInstance().options.headers['x-token'] = response.data['token'];
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.setString('token', response.data['token']);
                             try {
                               setState(() {
                                 isRequesting = false;
@@ -268,6 +272,9 @@ class NewLoginPageState extends State<NewLoginPage> with TickerProviderStateMixi
                       });
                       // 发送给webview，让webview登录后再取回token
                       response = await Api().login(username, password);
+                      DioUtil.getInstance().options.headers['x-token'] = response.data['token'];
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setString('token', response.data['token']);
                     } else {
                       String inputCode = codeCtrl.text.trim();
                       if (username.isEmpty || inputCode.isEmpty) {

@@ -47,11 +47,6 @@ class JobList extends State<JobsTab> {
 
   int userId;
 
-  GlobalKey<RefreshHeaderState> _headerKey =
-      new GlobalKey<RefreshHeaderState>();
-  GlobalKey<RefreshFooterState> _footerKey =
-      new GlobalKey<RefreshFooterState>();
-
   @override
   void initState() {
     super.initState();
@@ -233,18 +228,10 @@ class JobList extends State<JobsTab> {
                     top: 0*factor
                   ),
                   child: EasyRefresh(
-                    refreshHeader:BezierHourGlassHeader(
-                      key: _headerKey,
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
-                    refreshFooter: BezierBounceFooter(
-                      key: _footerKey,
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
                     onRefresh: () {
                       getJobList(1);
                     },
-                    loadMore: () async {
+                    onLoad: () async {
                       getJobList(currentPage);
                     },
                     child: new ListView.builder(
