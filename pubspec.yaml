@@ -14,7 +14,7 @@ dependencies:
   date_format: ^1.0.8
   image_picker: ^0.6.3+4
   flutter_spinkit: "^4.1.2"
-  flutter_typeahead: "^1.4.0"
+  flutter_typeahead: "^1.8.1"
   flutter_easyrefresh: "^2.0.9"
   package_info: "^0.4.0+14"
   flutter_downloader: "^1.4.1"
