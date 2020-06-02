@@ -89,8 +89,9 @@ class UserEditViewState extends State<UserEditView>
                               ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
                                 return ImageCropper.cropImage(
                                   sourcePath: imageFile.path,
-                                  ratioX: 1,
-                                  ratioY: 1,
+                                  aspectRatioPresets: [
+                                    CropAspectRatioPreset.square
+                                  ],
                                   maxWidth: 200,
                                   maxHeight: 200,
                                 );

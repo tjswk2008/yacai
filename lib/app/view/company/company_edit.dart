@@ -346,8 +346,9 @@ class CompanyEditState extends State<CompanyEdit>
                           ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
                             return ImageCropper.cropImage(
                               sourcePath: imageFile.path,
-                              ratioX: 1,
-                              ratioY: 1,
+                              aspectRatioPresets: [
+                                CropAspectRatioPreset.square,
+                              ],
                               maxWidth: 200,
                               maxHeight: 200
                             );
@@ -422,8 +423,9 @@ class CompanyEditState extends State<CompanyEdit>
                         ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
                           return ImageCropper.cropImage(
                             sourcePath: imageFile.path,
-                            ratioX: 0.16,
-                            ratioY: 0.09,
+                            aspectRatioPresets: [
+                              CropAspectRatioPreset.ratio16x9
+                            ],
                             maxWidth: 384,
                             maxHeight: 216,
                           );

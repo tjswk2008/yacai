@@ -13,14 +13,13 @@ dependencies:
   flutter_redux: ^0.6.0
   date_format: ^1.0.8
   image_picker: ^0.6.3+4
-  custom_radio: ^0.1.2
   flutter_spinkit: "^4.1.2"
   flutter_typeahead: "^1.4.0"
   flutter_easyrefresh: "^2.0.9"
   package_info: "^0.4.0+14"
   flutter_downloader: "^1.4.1"
   path_provider: "^1.6.1"
-  image_cropper: "1.0.0"
+  image_cropper: "^1.2.2"
   device_info: ^0.4.1+5
   steel_crypt: "^1.7.1+1"
   url_launcher: '^5.4.7'

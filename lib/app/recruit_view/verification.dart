@@ -39,7 +39,7 @@ class VerificationState extends State<Verification>
     super.initState();
     setState(() {
       company = widget._company;
-      if(company.willing != null) {
+      if(company.willing != null && company.willing != '') {
         List<String> wills = company.willing.split(',');
         wills.forEach((will) {
           int index = int.parse(will);
@@ -251,8 +251,9 @@ class VerificationState extends State<Verification>
                                 ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
                                   return ImageCropper.cropImage(
                                     sourcePath: imageFile.path,
-                                    ratioX: 16,
-                                    ratioY: 9,
+                                    aspectRatioPresets: [
+                                      CropAspectRatioPreset.ratio16x9
+                                    ],
                                   );
                                 }).then((image) {
                                   return Api().upload(image, '${company.id}_idFront${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
@@ -298,8 +299,9 @@ class VerificationState extends State<Verification>
                               ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
                                 return ImageCropper.cropImage(
                                   sourcePath: imageFile.path,
-                                  ratioX: 16,
-                                  ratioY: 9,
+                                  aspectRatioPresets: [
+                                    CropAspectRatioPreset.ratio16x9
+                                  ],
                                 );
                               }).then((image) {
                                 return Api().upload(image, '${company.id}_idBack${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
@@ -369,8 +371,10 @@ class VerificationState extends State<Verification>
                         ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
                           return ImageCropper.cropImage(
                             sourcePath: imageFile.path,
-                            ratioX: 9,
-                            ratioY: 16,
+                            aspectRatio: CropAspectRatio(
+                              ratioX: 9,
+                              ratioY: 16,
+                            )
                           );
                         }).then((image) {
                           return Api().upload(image, '${company.id}_license${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
