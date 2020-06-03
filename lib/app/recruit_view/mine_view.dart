@@ -383,6 +383,7 @@ class MineTabState extends State<MineTab> {
                     // 发送给webview，让webview登录后再取回token
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     prefs.setString('userName', '');
+                    prefs.setString('token', '');
                     setState(() {
                       isRequesting = false;
                       userName = '';
