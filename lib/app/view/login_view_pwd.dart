@@ -47,12 +47,12 @@ class LoginWithPwdState extends State<LoginWithPwd> {
 
   @override
   Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
+    double factor = MediaQuery.of(context).size.width / 750;
     var loadingView;
     if (isOnLogin) {
       loadingView = SpinKitHourGlass(
         color: Theme.of(context).primaryColor,
-        size: 50*factor,
+        size: 50 * factor,
         duration: Duration(milliseconds: 1800),
       );
     } else {
@@ -61,146 +61,168 @@ class LoginWithPwdState extends State<LoginWithPwd> {
     return new Stack(
       children: <Widget>[
         new Container(
-          padding: EdgeInsets.all(10.0*factor),
+          padding: EdgeInsets.all(10.0 * factor),
           child: new Column(
             children: <Widget>[
               // new Center(child: new Text("请使用帐号密码登录", style: new TextStyle(color: Colors.black, fontSize: 22.0*factor))),
-              new Container(height: 50.0*factor),
+              new Container(height: 50.0 * factor),
               new Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  new Text("用户名：", style: TextStyle(fontSize: 26.0*factor)),
-                  new Expanded(child: new TextField(
+                  new Text("用户名：", style: TextStyle(fontSize: 26.0 * factor)),
+                  new Expanded(
+                      child: new TextField(
                     controller: usernameCtrl,
-                    style: TextStyle(fontSize: 26.0*factor),
+                    style: TextStyle(fontSize: 26.0 * factor),
                     decoration: new InputDecoration(
-                      hintText: "帐号/注册邮箱",
-                      hintStyle: new TextStyle(
+                        hintText: "帐号/注册邮箱",
+                        hintStyle: new TextStyle(
                           color: const Color(0xFF808080),
-                      ),
-                      border: new OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0*factor),
-                        borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
-                      ),
-                      contentPadding: EdgeInsets.all(20.0*factor)
-                    ),
+                        ),
+                        border: new OutlineInputBorder(
+                            borderSide: BorderSide(width: 1.0 * factor),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6.0 * factor))),
+                        contentPadding: EdgeInsets.all(20.0 * factor)),
                   ))
                 ],
               ),
-              new Container(height: 30.0*factor),
+              new Container(height: 30.0 * factor),
               new Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  new Text("密　码：", style: TextStyle(fontSize: 26.0*factor),),
-                  new Expanded(child: new TextField(
+                  new Text(
+                    "密　码：",
+                    style: TextStyle(fontSize: 26.0 * factor),
+                  ),
+                  new Expanded(
+                      child: new TextField(
                     controller: passwordCtrl,
-                    style: TextStyle(fontSize: 26.0*factor),
+                    style: TextStyle(fontSize: 26.0 * factor),
                     obscureText: true,
                     decoration: new InputDecoration(
-                      hintText: "登录密码",
-                      hintStyle: new TextStyle(
+                        hintText: "登录密码",
+                        hintStyle: new TextStyle(
                           color: const Color(0xFF808080),
-                      ),
-                      border: new OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0*factor),
-                        borderRadius: BorderRadius.all(Radius.circular(6.0*factor))
-                      ),
-                      contentPadding: EdgeInsets.all(20.0*factor)
-                    ),
+                        ),
+                        border: new OutlineInputBorder(
+                            borderSide: BorderSide(width: 1.0 * factor),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(6.0 * factor))),
+                        contentPadding: EdgeInsets.all(20.0 * factor)),
                   ))
                 ],
               ),
-              new Container(height: 30.0*factor),
+              new Container(height: 30.0 * factor),
               new Builder(builder: (ctx) {
                 return new CommonButton(
-                  text: "登录",
-                  color: Theme.of(context).primaryColor,
-                  onTap: () async {
-                    if (isOnLogin) return;
-                    // 拿到用户输入的账号密码
-                    String username = usernameCtrl.text.trim();
-                    String password = passwordCtrl.text.trim();
-                    if (username.isEmpty || password.isEmpty) {
-                      Scaffold.of(ctx).showSnackBar(new SnackBar(
-                        content: new Text("账号和密码不能为空！", style: TextStyle(fontSize: 20.0*factor),),
-                      ));
-                      return;
-                    }
-                    setState(() {
-                      isOnLogin = true;
-                    });
-                    // 发送给webview，让webview登录后再取回token
-                    Response response = await Api().login(username, password);
-                    try {
-                      setState(() {
-                        isOnLogin = false;
-                      });
-                      if(response.data['code'] != 1) {
-                        Scaffold.of(ctx).showSnackBar(new SnackBar(
-                          content: new Text(response.data['msg'], style: TextStyle(fontSize: 20.0*factor),),
+                    text: "登录",
+                    color: Theme.of(context).primaryColor,
+                    onTap: () async {
+                      if (isOnLogin) return;
+                      // 拿到用户输入的账号密码
+                      String username = usernameCtrl.text.trim();
+                      String password = passwordCtrl.text.trim();
+                      if (username.isEmpty || password.isEmpty) {
+                        ScaffoldMessenger.of(ctx).showSnackBar(new SnackBar(
+                          content: new Text(
+                            "账号和密码不能为空！",
+                            style: TextStyle(fontSize: 20.0 * factor),
+                          ),
                         ));
                         return;
                       }
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      prefs.setInt('role', response.data['info']['role']);
-                      prefs.setString('userName', username);
-                      int role = prefs.getInt('role');
-                      prefs.setInt('userId', response.data['id']);
-                      if (role == 1) {
-                        Response resumeResponse = await Api().getUserInfo(response.data['id'], null);
-                        Resume resume = Resume.fromMap(resumeResponse.data['info']);
-                        StoreProvider.of<AppState>(context).dispatch(SetResumeAction(resume));
-                      } else {
-                        List<Response> resList = await Future.wait([Api().getCompanyInfo(response.data['id']), Api().getRecruitJobList(username)]);
-                        StoreProvider.of<AppState>(context).dispatch(SetJobsAction(Job.fromJson(resList[1].data['list'])));
-                        Company company;
-                        if (resList[0].data['info'] == null) {
-                          company = new Company(
-                            name: '', // 公司名称
-                            location: '', // 公司位置
-                            type: '', // 公司性质
-                            size: '', // 公司规模
-                            employee: '', // 公司人数
-                            inc: '',
-                          );
-                        } else {
-                          company = Company.fromMap(resList[0].data['info']);
-                        }
-                        StoreProvider.of<AppState>(context).dispatch(SetCompanyAction(company));
-                      }
-
-                      Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(
-                        builder: (BuildContext context) => role == 1 ? new BossApp() : new Recruit()), (
-                        Route route) => route == null);
-                    } catch(e) {
                       setState(() {
-                        isOnLogin = false;
+                        isOnLogin = true;
                       });
-                      Scaffold.of(ctx).showSnackBar(new SnackBar(
-                        content: new Text(e.message, style: TextStyle(fontSize: 24.0*factor),),
-                      ));
-                    }
-                  }
-                );
+                      // 发送给webview，让webview登录后再取回token
+                      Response response = await Api().login(username, password);
+                      try {
+                        setState(() {
+                          isOnLogin = false;
+                        });
+                        if (response.data['code'] != 1) {
+                          ScaffoldMessenger.of(ctx).showSnackBar(new SnackBar(
+                            content: new Text(
+                              response.data['msg'],
+                              style: TextStyle(fontSize: 20.0 * factor),
+                            ),
+                          ));
+                          return;
+                        }
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setInt('role', response.data['info']['role']);
+                        prefs.setString('userName', username);
+                        int role = prefs.getInt('role');
+                        prefs.setInt('userId', response.data['id']);
+                        if (role == 1) {
+                          Response resumeResponse = await Api()
+                              .getUserInfo(response.data['id'], null);
+                          Resume resume =
+                              Resume.fromMap(resumeResponse.data['info']);
+                          StoreProvider.of<AppState>(context)
+                              .dispatch(SetResumeAction(resume));
+                        } else {
+                          List<Response> resList = await Future.wait([
+                            Api().getCompanyInfo(response.data['id']),
+                            Api().getRecruitJobList(username)
+                          ]);
+                          StoreProvider.of<AppState>(context).dispatch(
+                              SetJobsAction(
+                                  Job.fromJson(resList[1].data['list'])));
+                          Company company;
+                          if (resList[0].data['info'] == null) {
+                            company = new Company(
+                              name: '', // 公司名称
+                              location: '', // 公司位置
+                              type: '', // 公司性质
+                              size: '', // 公司规模
+                              employee: '', // 公司人数
+                              inc: '',
+                            );
+                          } else {
+                            company = Company.fromMap(resList[0].data['info']);
+                          }
+                          StoreProvider.of<AppState>(context)
+                              .dispatch(SetCompanyAction(company));
+                        }
+
+                        Navigator.of(context).pushAndRemoveUntil(
+                            new MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    role == 1 ? new BossApp() : new Recruit()),
+                            (Route route) => route == null);
+                      } catch (e) {
+                        setState(() {
+                          isOnLogin = false;
+                        });
+                        ScaffoldMessenger.of(ctx).showSnackBar(new SnackBar(
+                          content: new Text(
+                            e.message,
+                            style: TextStyle(fontSize: 24.0 * factor),
+                          ),
+                        ));
+                      }
+                    });
               }),
-              
-              
             ],
           ),
         ),
-        isOnLogin ? Positioned(
-          left: 0,
-          top: 0,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              color: Color.fromARGB(190, 0, 0, 0)
-            ),
-          ),
-        ) : Container(),
+        isOnLogin
+            ? Positioned(
+                left: 0,
+                top: 0,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  decoration:
+                      BoxDecoration(color: Color.fromARGB(190, 0, 0, 0)),
+                ),
+              )
+            : Container(),
         Positioned(
           left: 0,
           top: 0,

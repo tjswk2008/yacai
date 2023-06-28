@@ -11,14 +11,14 @@ class YCPicker {
     ChangeData selectItem,
   }) {
     Navigator.push(
-        context,
-        new _YCPickerRoute(
-            selectItem: selectItem,
-            data: data,
-            theme: Theme.of(context, shadowThemeOnly: true),
-            barrierLabel:
-                MaterialLocalizations.of(context).modalBarrierDismissLabel),
-      );
+      context,
+      new _YCPickerRoute(
+          selectItem: selectItem,
+          data: data,
+          theme: Theme.of(context),
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel),
+    );
   }
 }
 
@@ -28,12 +28,7 @@ class _YCPickerRoute<T> extends PopupRoute<T> {
   final ChangeData selectItem;
   final List<String> data;
 
-  _YCPickerRoute({
-    this.theme,
-    this.barrierLabel,
-    this.selectItem,
-    this.data
-  });
+  _YCPickerRoute({this.theme, this.barrierLabel, this.selectItem, this.data});
 
   @override
   Duration get transitionDuration => Duration(milliseconds: 2000);
@@ -81,14 +76,11 @@ class _YCPickerWidget extends StatefulWidget {
   final ChangeData selectEnd;
 
   _YCPickerWidget(
-    {
-      Key key,
+      {Key key,
       @required this.route,
       this.data,
       this.selectItem,
-      this.selectEnd
-    }
-  );
+      this.selectEnd});
 
   @override
   State createState() {
@@ -100,8 +92,7 @@ class _YCPickerState extends State<_YCPickerWidget> {
   FixedExtentScrollController startController;
   FixedExtentScrollController endController;
   int startIndex = 0;
-  List start = new List();
-  
+  List start = [];
 
   @override
   void initState() {
@@ -114,7 +105,7 @@ class _YCPickerState extends State<_YCPickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
+    double factor = MediaQuery.of(context).size.width / 750;
     return new GestureDetector(
       child: new AnimatedBuilder(
         animation: widget.route.animation,
@@ -127,77 +118,77 @@ class _YCPickerState extends State<_YCPickerWidget> {
                   color: Colors.transparent,
                   child: new Container(
                     width: double.infinity,
-                    height: 520.0*factor,
+                    height: 520.0 * factor,
                     child: new Container(
-                      width: double.infinity,
-                      color: Colors.white,
-                      child: new Column(
-                        children: <Widget>[
-                          new Expanded(
-                            child: new Row(
-                              children: <Widget>[
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: new Text(
-                                    '取消',
-                                    style: new TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 34*factor
+                        width: double.infinity,
+                        color: Colors.white,
+                        child: new Column(
+                          children: <Widget>[
+                            new Expanded(
+                              child: new Row(
+                                children: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: new Text(
+                                      '取消',
+                                      style: new TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 34 * factor),
                                     ),
                                   ),
-                                ),
-                                FlatButton(
-                                  onPressed: () {
-                                    if (widget.selectItem != null) {
-                                      widget.selectItem(start[startIndex]);
-                                    }
-                                    Navigator.maybePop(context);
-                                  },
-                                  child: new Text(
-                                    '确定',
-                                    style: new TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 34*factor
+                                  TextButton(
+                                    onPressed: () {
+                                      if (widget.selectItem != null) {
+                                        widget.selectItem(start[startIndex]);
+                                      }
+                                      Navigator.maybePop(context);
+                                    },
+                                    child: new Text(
+                                      '确定',
+                                      style: new TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 34 * factor),
                                     ),
                                   ),
-                                ),
-                              ],
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                ],
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                              ),
+                              flex: 1,
                             ),
-                            flex: 1,
-                          ),
-                          new Row(
-                            children: <Widget>[
-                              new _MyYCPicker(
-                                key: Key('start'),
-                                controller: startController,
-                                createWidgetList: () {
-                                  return start.map((v) {
-                                    return new Align(
-                                      child: new Text(
-                                        v,
-                                        style:TextStyle(fontSize: 34*factor, height: 2, color: Colors.grey[800])
-                                      ),
-                                      alignment: Alignment.center,
-                                    );
-                                  }).toList();
-                                },
-                                changed: (index) {
-                                  setState(() {
-                                    startIndex = index;
-                                    if(endController != null) {
-                                      endController.jumpToItem(0);
-                                    }
-                                  });
-                                },
-                              )
-                            ],
-                          )
-                        ],
-                      )),
+                            new Row(
+                              children: <Widget>[
+                                new _MyYCPicker(
+                                  key: Key('start'),
+                                  controller: startController,
+                                  createWidgetList: () {
+                                    return start.map((v) {
+                                      return new Align(
+                                        child: new Text(v,
+                                            style: TextStyle(
+                                                fontSize: 34 * factor,
+                                                height: 2,
+                                                color: Colors.grey[800])),
+                                        alignment: Alignment.center,
+                                      );
+                                    }).toList();
+                                  },
+                                  changed: (index) {
+                                    setState(() {
+                                      startIndex = index;
+                                      if (endController != null) {
+                                        endController.jumpToItem(0);
+                                      }
+                                    });
+                                  },
+                                )
+                              ],
+                            )
+                          ],
+                        )),
                   ),
                 ),
               ),
@@ -215,8 +206,7 @@ class _MyYCPicker extends StatefulWidget {
   final FixedExtentScrollController controller;
   final ValueChanged<int> changed;
 
-  _MyYCPicker(
-      {this.createWidgetList, this.key, this.controller, this.changed});
+  _MyYCPicker({this.createWidgetList, this.key, this.controller, this.changed});
 
   @override
   State createState() {
@@ -229,22 +219,22 @@ class _MyYCPickerState extends State<_MyYCPicker> {
 
   @override
   Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
+    double factor = MediaQuery.of(context).size.width / 750;
     return new Expanded(
       child: new Container(
         padding: EdgeInsets.only(
-          left: 20.0*factor,
-          right: 20.0*factor,
-          top: 10.0*factor,
-          bottom: 10.0*factor,
+          left: 20.0 * factor,
+          right: 20.0 * factor,
+          top: 10.0 * factor,
+          bottom: 10.0 * factor,
         ),
         alignment: Alignment.center,
-        height: 400.0*factor,
+        height: 400.0 * factor,
         child: CupertinoPicker(
           backgroundColor: Colors.white,
           scrollController: widget.controller,
           key: widget.key,
-          itemExtent: 80.0*factor,
+          itemExtent: 80.0 * factor,
           onSelectedItemChanged: (index) {
             if (widget.changed != null) {
               widget.changed(index);

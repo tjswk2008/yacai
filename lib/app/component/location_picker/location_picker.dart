@@ -28,7 +28,7 @@ class LocationPicker {
           initialTown: initialTown,
           onChanged: onChanged,
           onConfirm: onConfirm,
-          theme: Theme.of(context, shadowThemeOnly: true),
+          theme: Theme.of(context),
           barrierLabel:
               MaterialLocalizations.of(context).modalBarrierDismissLabel,
         ));
@@ -381,7 +381,7 @@ class _PickerState extends State<_PickerComponent> {
         children: <Widget>[
           Container(
             height: _kPickerTitleHeight,
-            child: FlatButton(
+            child: TextButton(
               child: Text(
                 '取消',
                 style: TextStyle(
@@ -394,7 +394,7 @@ class _PickerState extends State<_PickerComponent> {
           ),
           Container(
             height: _kPickerTitleHeight,
-            child: FlatButton(
+            child: TextButton(
               child: Text(
                 '确定',
                 style: TextStyle(

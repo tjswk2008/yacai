@@ -4,7 +4,51 @@ import 'package:flutter/material.dart';
 typedef void ChangeData(int);
 typedef List<Widget> CreateWidgetList();
 
-List<int> data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 90, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800];
+List<int> data = [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  25,
+  30,
+  35,
+  40,
+  45,
+  50,
+  55,
+  60,
+  65,
+  70,
+  75,
+  80,
+  90,
+  100,
+  150,
+  200,
+  250,
+  300,
+  400,
+  500,
+  600,
+  700,
+  800
+];
 
 class SalaryPicker {
   static void showSalaryPicker(
@@ -13,14 +57,14 @@ class SalaryPicker {
     ChangeData selectEnd,
   }) {
     Navigator.push(
-        context,
-        new _SalaryPickerRoute(
-            selectStart: selectStart,
-            selectEnd: selectEnd,
-            theme: Theme.of(context, shadowThemeOnly: true),
-            barrierLabel:
-                MaterialLocalizations.of(context).modalBarrierDismissLabel),
-      );
+      context,
+      new _SalaryPickerRoute(
+          selectStart: selectStart,
+          selectEnd: selectEnd,
+          theme: Theme.of(context),
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel),
+    );
   }
 }
 
@@ -84,14 +128,11 @@ class _SalaryPickerWidget extends StatefulWidget {
   final ChangeData selectEnd;
 
   _SalaryPickerWidget(
-    {
-      Key key,
+      {Key key,
       @required this.route,
       this.data,
       this.selectStart,
-      this.selectEnd
-    }
-  );
+      this.selectEnd});
 
   @override
   State createState() {
@@ -103,10 +144,9 @@ class _SalaryPickerState extends State<_SalaryPickerWidget> {
   FixedExtentScrollController startController;
   FixedExtentScrollController endController;
   int startIndex = 0, endIndex = 0;
-  List start = new List();
-  List end = new List();
+  List start = [];
+  List end = [];
   List endSource;
-  
 
   @override
   void initState() {
@@ -123,7 +163,7 @@ class _SalaryPickerState extends State<_SalaryPickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
+    double factor = MediaQuery.of(context).size.width / 750;
     return new GestureDetector(
       child: new AnimatedBuilder(
         animation: widget.route.animation,
@@ -136,100 +176,97 @@ class _SalaryPickerState extends State<_SalaryPickerWidget> {
                   color: Colors.transparent,
                   child: new Container(
                     width: double.infinity,
-                    height: 520.0*factor,
+                    height: 520.0 * factor,
                     child: new Container(
-                      width: double.infinity,
-                      color: Colors.white,
-                      child: new Column(
-                        children: <Widget>[
-                          new Expanded(
-                            child: new Row(
+                        width: double.infinity,
+                        color: Colors.white,
+                        child: new Column(
+                          children: <Widget>[
+                            new Expanded(
+                              child: new Row(
+                                children: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: new Text(
+                                      '取消',
+                                      style: new TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 24 * factor),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      if (widget.selectStart != null) {
+                                        widget.selectStart(start[startIndex]);
+                                      }
+                                      if (widget.selectEnd != null) {
+                                        widget.selectEnd(end[endIndex]);
+                                      }
+                                      Navigator.pop(context);
+                                    },
+                                    child: new Text(
+                                      '确定',
+                                      style: new TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 24 * factor),
+                                    ),
+                                  ),
+                                ],
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                              ),
+                              flex: 1,
+                            ),
+                            new Row(
                               children: <Widget>[
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
+                                new _MySalaryPicker(
+                                  key: Key('start'),
+                                  controller: startController,
+                                  createWidgetList: () {
+                                    return start.map((v) {
+                                      return new Align(
+                                        child: new Text(v.toString() + 'K',
+                                            style: TextStyle(
+                                                fontSize: 24 * factor)),
+                                        alignment: Alignment.centerLeft,
+                                      );
+                                    }).toList();
                                   },
-                                  child: new Text(
-                                    '取消',
-                                    style: new TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 24*factor
-                                    ),
-                                  ),
+                                  changed: (index) {
+                                    setState(() {
+                                      startIndex = index;
+                                      endIndex = 0;
+                                      endController.jumpToItem(0);
+                                      end = endSource.sublist(index + 1);
+                                    });
+                                  },
                                 ),
-                                FlatButton(
-                                  onPressed: () {
-                                    if (widget.selectStart != null) {
-                                      widget.selectStart(start[startIndex]);
-                                    }
-                                    if (widget.selectEnd != null) {
-                                      widget.selectEnd(end[endIndex]);
-                                    }
-                                    Navigator.pop(context);
+                                new _MySalaryPicker(
+                                  key: Key('end'),
+                                  controller: endController,
+                                  createWidgetList: () {
+                                    return end.map((v) {
+                                      return new Align(
+                                        child: new Text(v.toString() + 'K',
+                                            style: TextStyle(
+                                                fontSize: 24 * factor)),
+                                        alignment: Alignment.centerLeft,
+                                      );
+                                    }).toList();
                                   },
-                                  child: new Text(
-                                    '确定',
-                                    style: new TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 24*factor
-                                    ),
-                                  ),
+                                  changed: (index) {
+                                    setState(() {
+                                      endIndex = index;
+                                    });
+                                  },
                                 ),
                               ],
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            ),
-                            flex: 1,
-                          ),
-                          new Row(
-                            children: <Widget>[
-                              new _MySalaryPicker(
-                                key: Key('start'),
-                                controller: startController,
-                                createWidgetList: () {
-                                  return start.map((v) {
-                                    return new Align(
-                                      child: new Text(
-                                        v.toString() + 'K',
-                                        style:TextStyle(fontSize: 24*factor)
-                                      ),
-                                      alignment: Alignment.centerLeft,
-                                    );
-                                  }).toList();
-                                },
-                                changed: (index) {
-                                  setState(() {
-                                    startIndex = index;
-                                    endIndex = 0;
-                                    endController.jumpToItem(0);
-                                    end = endSource.sublist(index + 1);
-                                  });
-                                },
-                              ),
-                              new _MySalaryPicker(
-                                key: Key('end'),
-                                controller: endController,
-                                createWidgetList: () {
-                                  return end.map((v) {
-                                    return new Align(
-                                      child: new Text(
-                                        v.toString() + 'K',
-                                        style:TextStyle(fontSize: 24*factor)
-                                      ),
-                                      alignment: Alignment.centerLeft,
-                                    );
-                                  }).toList();
-                                },
-                                changed: (index) {
-                                  setState(() {
-                                    endIndex = index;
-                                  });
-                                },
-                              ),
-                            ],
-                          )
-                        ],
-                      )),
+                            )
+                          ],
+                        )),
                   ),
                 ),
               ),
@@ -261,22 +298,22 @@ class _MySalaryPickerState extends State<_MySalaryPicker> {
 
   @override
   Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
+    double factor = MediaQuery.of(context).size.width / 750;
     return new Expanded(
       child: new Container(
         padding: EdgeInsets.only(
-          left: 20.0*factor,
-          right: 20.0*factor,
-          top: 10.0*factor,
-          bottom: 10.0*factor,
+          left: 20.0 * factor,
+          right: 20.0 * factor,
+          top: 10.0 * factor,
+          bottom: 10.0 * factor,
         ),
         alignment: Alignment.center,
-        height: 430.0*factor,
+        height: 430.0 * factor,
         child: CupertinoPicker(
           backgroundColor: Colors.white,
           scrollController: widget.controller,
           key: widget.key,
-          itemExtent: 50.0*factor,
+          itemExtent: 50.0 * factor,
           onSelectedItemChanged: (index) {
             if (widget.changed != null) {
               widget.changed(index);

@@ -127,7 +127,7 @@ class AnswerListState extends State<AnswerList>
                                           Api().like(userName, isLike ? 1 : 0, null, answer.id)
                                             .then((Response response) {
                                               if(response.data['code'] != 1) {
-                                                Scaffold.of(context).showSnackBar(new SnackBar(
+                                                ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                                                   content: new Text("点赞失败！"),
                                                 ));
                                                 return;

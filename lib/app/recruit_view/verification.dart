@@ -13,7 +13,6 @@ import 'package:flutter_app/app/model/constants.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class Verification extends StatefulWidget {
-
   final Company _company;
   Verification(this._company);
 
@@ -23,7 +22,6 @@ class Verification extends StatefulWidget {
 
 class VerificationState extends State<Verification>
     with TickerProviderStateMixin {
-
   Company company;
   bool isRequesting = false;
   String userName = '';
@@ -39,7 +37,7 @@ class VerificationState extends State<Verification>
     super.initState();
     setState(() {
       company = widget._company;
-      if(company.willing != null && company.willing != '') {
+      if (company.willing != null && company.willing != '') {
         List<String> wills = company.willing.split(',');
         wills.forEach((will) {
           int index = int.parse(will);
@@ -62,479 +60,546 @@ class VerificationState extends State<Verification>
 
   @override
   Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
-    
+    double factor = MediaQuery.of(context).size.width / 750;
+
     return StoreConnector<AppState, AppState>(
-      converter: (store) => store.state,
-      builder: (context, state) {
-        return new Scaffold(
-          backgroundColor: Colors.white,
-          appBar: new AppBar(
-            elevation: 0.0,
-            leading: IconButton(
-              icon: const BackButtonIcon(),
-              iconSize: 40*factor,
-              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-              onPressed: () {
-                Navigator.maybePop(context);
-              }
-            ),
-            title: new Text('企业认证',
-                style: new TextStyle(fontSize: 30.0*factor, color: Colors.white)),
-          ),
-          body: new SingleChildScrollView(
-            child: new Padding(
-              padding: EdgeInsets.all(50.0*factor),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 20.0*factor),
-                    child: new Text(
-                      '法人姓名:',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 32.0*factor),
-                    ),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 2*factor),
-                    child: new TextField(
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          // 设置内容
-                          text: company.corporator == null ? '' : company.corporator,
-                          // 保持光标在最后
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: company.corporator == null ? 0 : company.corporator.length
-                            )
-                          )
-                        )
-                      ),
-                      style: new TextStyle(fontSize: 26.0*factor),
-                      onChanged: (val) {
-                        setState(() {
-                          company.corporator = val;
-                        });
-                      },
-                      decoration: new InputDecoration(
-                        hintText: "请输入法人姓名",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080)
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
+        converter: (store) => store.state,
+        builder: (context, state) {
+          return new Scaffold(
+              backgroundColor: Colors.white,
+              appBar: new AppBar(
+                elevation: 0.0,
+                leading: IconButton(
+                    icon: const BackButtonIcon(),
+                    iconSize: 40 * factor,
+                    tooltip:
+                        MaterialLocalizations.of(context).backButtonTooltip,
+                    onPressed: () {
+                      Navigator.maybePop(context);
+                    }),
+                title: new Text('企业认证',
+                    style: new TextStyle(
+                        fontSize: 30.0 * factor, color: Colors.white)),
+              ),
+              body: new SingleChildScrollView(
+                  child: new Padding(
+                padding: EdgeInsets.all(50.0 * factor),
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Padding(
+                      padding: EdgeInsets.only(bottom: 20.0 * factor),
+                      child: new Text(
+                        '法人姓名:',
+                        textAlign: TextAlign.left,
+                        style: new TextStyle(fontSize: 32.0 * factor),
                       ),
                     ),
-                  ),
-                  Divider(),
-                  new Padding(
-                    padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
-                    child: new Text(
-                      '身份证号码：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 32.0*factor),
-                    ),
-                  ),
-                  new Padding(
-                    padding: EdgeInsets.only(bottom: 2*factor),
-                    child: new TextField(
-                      controller: TextEditingController.fromValue(
-                        TextEditingValue(
-                          // 设置内容
-                          text: company.idCard == null ? '' : company.idCard,
-                          // 保持光标在最后
-                          selection: TextSelection.fromPosition(
-                            TextPosition(
-                              affinity: TextAffinity.downstream,
-                              offset: company.idCard == null ? 0 : company.idCard.length
-                            )
-                          )
-                        )
-                      ),
-                      style: new TextStyle(fontSize: 26.0*factor),
-                      onChanged: (val) {
-                        setState(() {
-                          company.idCard = val;
-                        });
-                      },
-                      decoration: new InputDecoration(
-                        hintText: "请输入身份证",
-                        hintStyle: new TextStyle(
-                            color: const Color(0xFF808080),
-                            fontSize: 26.0*factor
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 20.0*factor)
+                    new Padding(
+                      padding: EdgeInsets.only(bottom: 2 * factor),
+                      child: new TextField(
+                        controller: TextEditingController.fromValue(
+                            TextEditingValue(
+                                // 设置内容
+                                text: company.corporator == null
+                                    ? ''
+                                    : company.corporator,
+                                // 保持光标在最后
+                                selection: TextSelection.fromPosition(
+                                    TextPosition(
+                                        affinity: TextAffinity.downstream,
+                                        offset: company.corporator == null
+                                            ? 0
+                                            : company.corporator.length)))),
+                        style: new TextStyle(fontSize: 26.0 * factor),
+                        onChanged: (val) {
+                          setState(() {
+                            company.corporator = val;
+                          });
+                        },
+                        decoration: new InputDecoration(
+                            hintText: "请输入法人姓名",
+                            hintStyle:
+                                new TextStyle(color: const Color(0xFF808080)),
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.symmetric(vertical: 20.0 * factor)),
                       ),
                     ),
-                  ),
-                  Divider(),
-                  new Padding(
-                    padding: EdgeInsets.symmetric(vertical: 30.0*factor),
-                    child: new Text(
-                      '招聘意向：',
-                      textAlign: TextAlign.left,
-                      style: new TextStyle(fontSize: 32.0*factor),
+                    Divider(),
+                    new Padding(
+                      padding: EdgeInsets.only(
+                          top: 20 * factor, bottom: 20.0 * factor),
+                      child: new Text(
+                        '身份证号码：',
+                        textAlign: TextAlign.left,
+                        style: new TextStyle(fontSize: 32.0 * factor),
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 80*factor,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 3,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Row(
-                          children: <Widget>[
+                    new Padding(
+                      padding: EdgeInsets.only(bottom: 2 * factor),
+                      child: new TextField(
+                        controller: TextEditingController.fromValue(
+                            TextEditingValue(
+                                // 设置内容
+                                text: company.idCard == null
+                                    ? ''
+                                    : company.idCard,
+                                // 保持光标在最后
+                                selection: TextSelection.fromPosition(
+                                    TextPosition(
+                                        affinity: TextAffinity.downstream,
+                                        offset: company.idCard == null
+                                            ? 0
+                                            : company.idCard.length)))),
+                        style: new TextStyle(fontSize: 26.0 * factor),
+                        onChanged: (val) {
+                          setState(() {
+                            company.idCard = val;
+                          });
+                        },
+                        decoration: new InputDecoration(
+                            hintText: "请输入身份证",
+                            hintStyle: new TextStyle(
+                                color: const Color(0xFF808080),
+                                fontSize: 26.0 * factor),
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.symmetric(vertical: 20.0 * factor)),
+                      ),
+                    ),
+                    Divider(),
+                    new Padding(
+                      padding: EdgeInsets.symmetric(vertical: 30.0 * factor),
+                      child: new Text(
+                        '招聘意向：',
+                        textAlign: TextAlign.left,
+                        style: new TextStyle(fontSize: 32.0 * factor),
+                      ),
+                    ),
+                    Container(
+                      height: 80 * factor,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 3,
+                        itemBuilder: (BuildContext context, int index) {
+                          return new Row(children: <Widget>[
                             InkWell(
-                              onTap: () {
-                                setState(() {
-                                  willings[index] = !willings[index];
-                                });
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(right: 10*factor),
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: factor, color: willings[index] ? Theme.of(context).primaryColor : Colors.grey),
-                                  color: willings[index] ? Theme.of(context).primaryColor : Colors.transparent
-                                ),
-                                child: willings[index]
-                                  ? Icon(
-                                      Icons.check,
-                                      size: 32.0*factor,
-                                      color: Colors.white,
-                                    )
-                                  : Container(width: 32*factor, height: 32*factor,),
-                              )
+                                onTap: () {
+                                  setState(() {
+                                    willings[index] = !willings[index];
+                                  });
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 10 * factor),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: factor,
+                                          color: willings[index]
+                                              ? Theme.of(context).primaryColor
+                                              : Colors.grey),
+                                      color: willings[index]
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.transparent),
+                                  child: willings[index]
+                                      ? Icon(
+                                          Icons.check,
+                                          size: 32.0 * factor,
+                                          color: Colors.white,
+                                        )
+                                      : Container(
+                                          width: 32 * factor,
+                                          height: 32 * factor,
+                                        ),
+                                )),
+                            Text(
+                              jobTypeArr[index],
+                              style: TextStyle(fontSize: 26 * factor),
                             ),
-                            Text(jobTypeArr[index], style: TextStyle(fontSize: 26*factor),),
-                            Container(width: 180*factor,)
-                          ]
-                        );
-                      },
-                      scrollDirection: Axis.horizontal,
-                      physics: NeverScrollableScrollPhysics(),
+                            Container(
+                              width: 180 * factor,
+                            )
+                          ]);
+                        },
+                        scrollDirection: Axis.horizontal,
+                        physics: NeverScrollableScrollPhysics(),
+                      ),
                     ),
-                  ),
-                  Divider(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      new Padding(
-                        padding: EdgeInsets.only(top: 30*factor, bottom: 50.0*factor),
-                        child: Text(
-                          '上传法人身份证:',
-                          textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 32.0*factor),
+                    Divider(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        new Padding(
+                          padding: EdgeInsets.only(
+                              top: 30 * factor, bottom: 50.0 * factor),
+                          child: Text(
+                            '上传法人身份证:',
+                            textAlign: TextAlign.left,
+                            style: new TextStyle(fontSize: 32.0 * factor),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10*factor, bottom: 53.0*factor),
-                        child: new Text(
-                          '(请上传16:9的图片)',
-                          textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 26.0*factor, color: Colors.red),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 10 * factor, bottom: 53.0 * factor),
+                          child: new Text(
+                            '(请上传16:9的图片)',
+                            textAlign: TextAlign.left,
+                            style: new TextStyle(
+                                fontSize: 26.0 * factor, color: Colors.red),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(children: <Widget>[
                           new Padding(
                             padding: EdgeInsets.only(left: 0),
                             child: InkWell(
                               onTap: () {
-                                ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
-                                  return ImageCropper.cropImage(
+                                ImagePicker.pickImage(
+                                        source: ImageSource.gallery)
+                                    .then((imageFile) {
+                                  return ImageCropper().cropImage(
                                     sourcePath: imageFile.path,
                                     aspectRatioPresets: [
                                       CropAspectRatioPreset.ratio16x9
                                     ],
                                   );
                                 }).then((image) {
-                                  return Api().upload(image, '${company.id}_idFront${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
+                                  return Api().upload(image,
+                                      '${company.id}_idFront${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
                                 }).then((Response response) {
-                                  if(response.data['code'] != 1) {
+                                  if (response.data['code'] != 1) {
                                     return;
                                   }
                                   setState(() {
                                     company.idFront = response.data['imgurl'];
                                   });
-                                })
-                                .catchError((e) {
+                                }).catchError((e) {
                                   print(e);
                                 });
                               },
-                              child: company.idFront != null ? Image.network(company.idFront, width: 288*factor,) : Container(
-                                width: 288*factor,
-                                height: 162*factor,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: factor,
-                                    color: Colors.orange[200]
-                                  ),
-                                  borderRadius: new BorderRadius.all(new Radius.circular(10*factor))
-                                ),
-                                child: Center(
-                                  child: Text("+", style: TextStyle(fontSize: 70*factor, color: Colors.grey[600]),),
-                                )
-                              ),
+                              child: company.idFront != null
+                                  ? Image.network(
+                                      company.idFront,
+                                      width: 288 * factor,
+                                    )
+                                  : Container(
+                                      width: 288 * factor,
+                                      height: 162 * factor,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              width: factor,
+                                              color: Colors.orange[200]),
+                                          borderRadius: new BorderRadius.all(
+                                              new Radius.circular(
+                                                  10 * factor))),
+                                      child: Center(
+                                        child: Text(
+                                          "+",
+                                          style: TextStyle(
+                                              fontSize: 70 * factor,
+                                              color: Colors.grey[600]),
+                                        ),
+                                      )),
                             ),
                           ),
-                          
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
-                            child: Text('正面照', style: TextStyle(fontSize: 26*factor)),
+                            padding: EdgeInsets.only(
+                                top: 20 * factor, bottom: 20.0 * factor),
+                            child: Text('正面照',
+                                style: TextStyle(fontSize: 26 * factor)),
                           ),
-                        ]
-                      ),
-                      Column(
-                        children: <Widget>[
+                        ]),
+                        Column(children: <Widget>[
                           InkWell(
                             onTap: () {
-                              ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
-                                return ImageCropper.cropImage(
+                              ImagePicker.pickImage(source: ImageSource.gallery)
+                                  .then((imageFile) {
+                                return ImageCropper().cropImage(
                                   sourcePath: imageFile.path,
                                   aspectRatioPresets: [
                                     CropAspectRatioPreset.ratio16x9
                                   ],
                                 );
                               }).then((image) {
-                                return Api().upload(image, '${company.id}_idBack${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
+                                return Api().upload(image,
+                                    '${company.id}_idBack${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
                               }).then((Response response) {
-                                if(response.data['code'] != 1) {
+                                if (response.data['code'] != 1) {
                                   return;
                                 }
                                 setState(() {
                                   company.idBack = response.data['imgurl'];
                                 });
-                              })
-                              .catchError((e) {
+                              }).catchError((e) {
                                 print(e);
                               });
                             },
-                            child: company.idBack != null ? Image.network(company.idBack, width: 288*factor,) : Container(
-                              width: 288*factor,
-                              height: 162*factor,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  width: factor,
-                                  color: Colors.orange[200]
-                                ),
-                                borderRadius: new BorderRadius.all(new Radius.circular(10*factor))
-                              ),
-                              child: Center(
-                                child: Text("+", style: TextStyle(fontSize: 70*factor, color: Colors.grey[600]),),
-                              )
-                            ),
+                            child: company.idBack != null
+                                ? Image.network(
+                                    company.idBack,
+                                    width: 288 * factor,
+                                  )
+                                : Container(
+                                    width: 288 * factor,
+                                    height: 162 * factor,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: factor,
+                                            color: Colors.orange[200]),
+                                        borderRadius: new BorderRadius.all(
+                                            new Radius.circular(10 * factor))),
+                                    child: Center(
+                                      child: Text(
+                                        "+",
+                                        style: TextStyle(
+                                            fontSize: 70 * factor,
+                                            color: Colors.grey[600]),
+                                      ),
+                                    )),
                           ),
                           new Padding(
-                            padding: EdgeInsets.only(top: 20*factor, bottom: 20.0*factor),
-                            child: Text('背面照', style: TextStyle(fontSize: 26*factor)),
+                            padding: EdgeInsets.only(
+                                top: 20 * factor, bottom: 20.0 * factor),
+                            child: Text('背面照',
+                                style: TextStyle(fontSize: 26 * factor)),
                           ),
-                        ]
-                      ),
-                    ],
-                  ),
-                  
-                  new Divider(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      new Padding(
-                        padding: EdgeInsets.only(top: 30*factor, bottom: 50.0*factor),
-                        child: new Text(
-                          '营业执照:',
-                          textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 32.0*factor),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10*factor, bottom: 53.0*factor),
-                        child: new Text(
-                          '(请上传9:16的图片)',
-                          textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 26.0*factor, color: Colors.red),
-                        ),
-                      ),
-                    ],
-                  ),
-                  
-                  new Padding(
-                    padding: EdgeInsets.only(left: 0*factor),
-                    child: InkWell(
-                      onTap: () {
-                        ImagePicker.pickImage(source: ImageSource.gallery).then((imageFile) {
-                          return ImageCropper.cropImage(
-                            sourcePath: imageFile.path,
-                            aspectRatio: CropAspectRatio(
-                              ratioX: 9,
-                              ratioY: 16,
-                            )
-                          );
-                        }).then((image) {
-                          return Api().upload(image, '${company.id}_license${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
-                        }).then((Response response) {
-                          if(response.data['code'] != 1) {
-                            return;
-                          }
-                          setState(() {
-                            company.license = response.data['imgurl'];
-                          });
-                        })
-                        .catchError((e) {
-                          print(e);
-                        });
-                      },
-                      child: company.license != null ? Image.network(company.license, width: 162*factor, height: 288*factor,) : Container(
-                        height: 288*factor,
-                        width: 162*factor,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: factor,
-                            color: Colors.orange[200]
-                          ),
-                          borderRadius: new BorderRadius.all(new Radius.circular(10*factor))
-                        ),
-                        child: Center(
-                          child: Text("+", style: TextStyle(fontSize: 70*factor, color: Colors.grey[600]),),
-                        )
-                      ),
+                        ]),
+                      ],
                     ),
-                  ),
-                  Container(height: 30*factor,),
-                  Divider(),
-                  company.verified == 2 ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 30*factor, bottom: 30.0*factor),
-                        child: new Text(
-                          '未通过原因:',
-                          textAlign: TextAlign.left,
-                          style: new TextStyle(fontSize: 32.0*factor),
-                        ),
-                      ),
-                      new Row(
-                        children: <Widget>[
-                          new Flexible(
-                            child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                new Text(
-                                  company.reason,
-                                  style: new TextStyle(
-                                    fontSize: 26.0*factor,
-                                    color: Colors.red
-                                  ),
-                                )
-                              ],
-                            ),
+                    new Divider(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        new Padding(
+                          padding: EdgeInsets.only(
+                              top: 30 * factor, bottom: 50.0 * factor),
+                          child: new Text(
+                            '营业执照:',
+                            textAlign: TextAlign.left,
+                            style: new TextStyle(fontSize: 32.0 * factor),
                           ),
-                          Container(width: 20*factor,),
-                        ]
-                      ),
-                      Container(height: 20*factor,),
-                      Divider(),
-                      Container(height: 40*factor,),
-                    ],
-                  ) : Container(height: 30*factor,),
-                  Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 5*factor),
-                        child: Text('*', style: TextStyle(fontSize: 26*factor, color: Colors.red),),
-                      ),
-                      Text('提交资料表示您同意该用户', style: TextStyle(fontSize: 26*factor, color: Colors.grey),),
-                      new InkWell(
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 10 * factor, bottom: 53.0 * factor),
+                          child: new Text(
+                            '(请上传9:16的图片)',
+                            textAlign: TextAlign.left,
+                            style: new TextStyle(
+                                fontSize: 26.0 * factor, color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.only(left: 0 * factor),
+                      child: InkWell(
                         onTap: () {
-                          Navigator.of(context).push(new PageRouteBuilder(
-                              opaque: false,
-                              pageBuilder: (BuildContext context, _, __) {
-                                // return new NewLoginPage();
-                              },
-                              transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                return new FadeTransition(
-                                  opacity: animation,
-                                  child: new SlideTransition(position: new Tween<Offset>(
-                                    begin: const Offset(0.0, 1.0),
-                                    end: Offset.zero,
-                                  ).animate(animation), child: child),
-                                );
-                              }
-                          ));
-                        },
-                        child: new Text('协议', style: TextStyle(fontSize: 26.0*factor, color: Colors.blue))
-                      )
-                    ]
-                  ),
-                  Container(height: 30*factor,),
-                  
-                  new Builder(builder: (ctx) {
-                    return new CommonButton(
-                      text: "提交",
-                      color: Theme.of(context).primaryColor,
-                      onTap: () async {
-                        if (isRequesting) return;
-                        setState(() {
-                          isRequesting = true;
-                        });
-                        try {
-                          List<int> willing = [];
-                          for (var i = 0; i < willings.length; i++) {
-                            if(willings[i]) {
-                              willing.add(i + 1);
+                          ImagePicker.pickImage(source: ImageSource.gallery)
+                              .then((imageFile) {
+                            return ImageCropper().cropImage(
+                                sourcePath: imageFile.path,
+                                aspectRatio: CropAspectRatio(
+                                  ratioX: 9,
+                                  ratioY: 16,
+                                ));
+                          }).then((image) {
+                            return Api().upload(image,
+                                '${company.id}_license${DateTime.now().microsecondsSinceEpoch}${image.path.substring(image.path.lastIndexOf("."))}');
+                          }).then((Response response) {
+                            if (response.data['code'] != 1) {
+                              return;
                             }
-                          }
-                          company.willing = willing.join(",");
-                          Response response = await Api().verification(
-                            company.corporator,
-                            company.idCard,
-                            company.idFront,
-                            company.idBack,
-                            company.license,
-                            company.willing,
-                            company.id
-                          );
-
-                          setState(() {
-                            isRequesting = false;
+                            setState(() {
+                              company.license = response.data['imgurl'];
+                            });
+                          }).catchError((e) {
+                            print(e);
                           });
-                          if(response.data['code'] != 1) {
-                            Scaffold.of(ctx).showSnackBar(new SnackBar(
-                              content: new Text(response.data['msg'] != null ? response.data['msg'] : "保存失败！"),
-                            ));
-                            return;
-                          }
-                          StoreProvider.of<AppState>(context).dispatch(SetCompanyAction(company));
-                          Navigator.pop(context, response.data['info']);
-                        } catch(e) {
-                          setState(() {
-                            isRequesting = false;
-                          });
-                          print(e);
-                        }
-                      }
-                    );
-                  }),
-
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 30*factor),
-                    child: Center(
-                      child: Text('提交认证后请耐心等待审核, 刷新"我的"页面获取最新状态', style: TextStyle(fontSize: 24*factor, color: Colors.grey),),
+                        },
+                        child: company.license != null
+                            ? Image.network(
+                                company.license,
+                                width: 162 * factor,
+                                height: 288 * factor,
+                              )
+                            : Container(
+                                height: 288 * factor,
+                                width: 162 * factor,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: factor,
+                                        color: Colors.orange[200]),
+                                    borderRadius: new BorderRadius.all(
+                                        new Radius.circular(10 * factor))),
+                                child: Center(
+                                  child: Text(
+                                    "+",
+                                    style: TextStyle(
+                                        fontSize: 70 * factor,
+                                        color: Colors.grey[600]),
+                                  ),
+                                )),
+                      ),
                     ),
-                  ),
-                  Container(height: 30*factor)
-                ],
-              ),
-            )
-          )
-        );
-      }
-    );
+                    Container(
+                      height: 30 * factor,
+                    ),
+                    Divider(),
+                    company.verified == 2
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 30 * factor, bottom: 30.0 * factor),
+                                child: new Text(
+                                  '未通过原因:',
+                                  textAlign: TextAlign.left,
+                                  style: new TextStyle(fontSize: 32.0 * factor),
+                                ),
+                              ),
+                              new Row(children: <Widget>[
+                                new Flexible(
+                                  child: new Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      new Text(
+                                        company.reason,
+                                        style: new TextStyle(
+                                            fontSize: 26.0 * factor,
+                                            color: Colors.red),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width: 20 * factor,
+                                ),
+                              ]),
+                              Container(
+                                height: 20 * factor,
+                              ),
+                              Divider(),
+                              Container(
+                                height: 40 * factor,
+                              ),
+                            ],
+                          )
+                        : Container(
+                            height: 30 * factor,
+                          ),
+                    Row(children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 5 * factor),
+                        child: Text(
+                          '*',
+                          style: TextStyle(
+                              fontSize: 26 * factor, color: Colors.red),
+                        ),
+                      ),
+                      Text(
+                        '提交资料表示您同意该用户',
+                        style: TextStyle(
+                            fontSize: 26 * factor, color: Colors.grey),
+                      ),
+                      new InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(new PageRouteBuilder(
+                                opaque: false,
+                                pageBuilder: (BuildContext context, _, __) {
+                                  // return new NewLoginPage();
+                                },
+                                transitionsBuilder: (_,
+                                    Animation<double> animation,
+                                    __,
+                                    Widget child) {
+                                  return new FadeTransition(
+                                    opacity: animation,
+                                    child: new SlideTransition(
+                                        position: new Tween<Offset>(
+                                          begin: const Offset(0.0, 1.0),
+                                          end: Offset.zero,
+                                        ).animate(animation),
+                                        child: child),
+                                  );
+                                }));
+                          },
+                          child: new Text('协议',
+                              style: TextStyle(
+                                  fontSize: 26.0 * factor, color: Colors.blue)))
+                    ]),
+                    Container(
+                      height: 30 * factor,
+                    ),
+                    new Builder(builder: (ctx) {
+                      return new CommonButton(
+                          text: "提交",
+                          color: Theme.of(context).primaryColor,
+                          onTap: () async {
+                            if (isRequesting) return;
+                            setState(() {
+                              isRequesting = true;
+                            });
+                            try {
+                              List<int> willing = [];
+                              for (var i = 0; i < willings.length; i++) {
+                                if (willings[i]) {
+                                  willing.add(i + 1);
+                                }
+                              }
+                              company.willing = willing.join(",");
+                              Response response = await Api().verification(
+                                  company.corporator,
+                                  company.idCard,
+                                  company.idFront,
+                                  company.idBack,
+                                  company.license,
+                                  company.willing,
+                                  company.id);
+
+                              setState(() {
+                                isRequesting = false;
+                              });
+                              if (response.data['code'] != 1) {
+                                ScaffoldMessenger.of(ctx)
+                                    .showSnackBar(new SnackBar(
+                                  content: new Text(response.data['msg'] != null
+                                      ? response.data['msg']
+                                      : "保存失败！"),
+                                ));
+                                return;
+                              }
+                              StoreProvider.of<AppState>(context)
+                                  .dispatch(SetCompanyAction(company));
+                              Navigator.pop(context, response.data['info']);
+                            } catch (e) {
+                              setState(() {
+                                isRequesting = false;
+                              });
+                              print(e);
+                            }
+                          });
+                    }),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 30 * factor),
+                      child: Center(
+                        child: Text(
+                          '提交认证后请耐心等待审核, 刷新"我的"页面获取最新状态',
+                          style: TextStyle(
+                              fontSize: 24 * factor, color: Colors.grey),
+                        ),
+                      ),
+                    ),
+                    Container(height: 30 * factor)
+                  ],
+                ),
+              )));
+        });
   }
 }

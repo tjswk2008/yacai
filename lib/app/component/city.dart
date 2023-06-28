@@ -22,7 +22,7 @@ class CityPicker {
             selectProvince: selectProvince,
             selectCity: selectCity,
             selectArea: selectArea,
-            theme: Theme.of(context, shadowThemeOnly: true),
+            theme: Theme.of(context),
             barrierLabel:
                 MaterialLocalizations.of(context).modalBarrierDismissLabel),
       );
@@ -114,9 +114,9 @@ class _CityPickerState extends State<_CityPickerWidget> {
   FixedExtentScrollController cityController;
   FixedExtentScrollController areaController;
   int provinceIndex = 0, cityIndex = 0, areaIndex = 0;
-  List province = new List();
-  List city = new List();
-  List area = new List();
+  List province = [];
+  List city = [];
+  List area = [];
 
   @override
   void initState() {
@@ -133,160 +133,156 @@ class _CityPickerState extends State<_CityPickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
+    double factor = MediaQuery.of(context).size.width / 750;
     return new GestureDetector(
       child: new AnimatedBuilder(
         animation: widget.route.animation,
         builder: (BuildContext context, Widget child) {
           return new ClipRect(
             child: new CustomSingleChildLayout(
-              delegate: new _BottomPickerLayout(widget.route.animation.value, factor),
+              delegate:
+                  new _BottomPickerLayout(widget.route.animation.value, factor),
               child: new GestureDetector(
                 child: new Material(
                   color: Colors.transparent,
                   child: new Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 520.0*factor,
+                    height: 520.0 * factor,
                     child: new Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.white,
-                      child: new Column(
-                        children: <Widget>[
-                          new Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              FlatButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: new Text(
-                                  '取消',
-                                  style: new TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 24*factor
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.white,
+                        child: new Column(
+                          children: <Widget>[
+                            new Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: new Text(
+                                    '取消',
+                                    style: new TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 24 * factor),
                                   ),
                                 ),
-                              ),
-                              FlatButton(
-                                onPressed: () {
-                                  Map<String, dynamic> provinceMap = {
-                                    "code": province[provinceIndex]['code'],
-                                    "name": province[provinceIndex]['name']
-                                  };
-                                  Map<String, dynamic> cityMap = {
-                                    "code": province[provinceIndex]['sub'][cityIndex]
-                                        ['code'],
-                                    "name": province[provinceIndex]['sub'][cityIndex]
-                                        ['name']
-                                  };
-                                  Map<String, dynamic> areaMap = {
-                                    "code": province[provinceIndex]['sub'][cityIndex]['sub']
-                                        [areaIndex]['code'],
-                                    "name": province[provinceIndex]['sub'][cityIndex]['sub']
-                                        [areaIndex]['name']
-                                  };
-                                  if (widget.selectProvince != null) {
-                                    widget.selectProvince(provinceMap);
-                                  }
-                                  if (widget.selectCity != null) {
-                                    widget.selectCity(cityMap);
-                                  }
-                                  if (widget.selectArea != null) {
-                                    widget.selectArea(areaMap);
-                                  }
-                                  Navigator.pop(context);
-                                },
-                                child: new Text(
-                                  '确定',
-                                  style: new TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 24*factor
+                                TextButton(
+                                  onPressed: () {
+                                    Map<String, dynamic> provinceMap = {
+                                      "code": province[provinceIndex]['code'],
+                                      "name": province[provinceIndex]['name']
+                                    };
+                                    Map<String, dynamic> cityMap = {
+                                      "code": province[provinceIndex]['sub']
+                                          [cityIndex]['code'],
+                                      "name": province[provinceIndex]['sub']
+                                          [cityIndex]['name']
+                                    };
+                                    Map<String, dynamic> areaMap = {
+                                      "code": province[provinceIndex]['sub']
+                                          [cityIndex]['sub'][areaIndex]['code'],
+                                      "name": province[provinceIndex]['sub']
+                                          [cityIndex]['sub'][areaIndex]['name']
+                                    };
+                                    if (widget.selectProvince != null) {
+                                      widget.selectProvince(provinceMap);
+                                    }
+                                    if (widget.selectCity != null) {
+                                      widget.selectCity(cityMap);
+                                    }
+                                    if (widget.selectArea != null) {
+                                      widget.selectArea(areaMap);
+                                    }
+                                    Navigator.pop(context);
+                                  },
+                                  child: new Text(
+                                    '确定',
+                                    style: new TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 24 * factor),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          new Row(
-                            children: <Widget>[
-                              new _MyCityPicker(
-                                key: Key('province'),
-                                controller: provinceController,
-                                createWidgetList: () {
-                                  return province.map((v) {
-                                    return new Align(
-                                      child: new Text(
-                                        v['name'],
-                                        overflow: TextOverflow.ellipsis,
-                                        style:TextStyle(fontSize: 22*factor)
-                                      ),
-                                      alignment: Alignment.centerLeft,
-                                    );
-                                  }).toList();
-                                },
-                                changed: (index) {
-                                  setState(() {
-                                    provinceIndex = index;
-                                    cityIndex = 0;
-                                    areaIndex = 0;
-                                    cityController.jumpToItem(0);
-                                    areaController.jumpToItem(0);
-                                    city = widget.data[provinceIndex]['sub'];
-                                    area =
-                                        widget.data[provinceIndex]['sub'][cityIndex]['sub'];
-                                  });
-                                },
-                              ),
-                              new _MyCityPicker(
-                                key: Key('city'),
-                                controller: cityController,
-                                createWidgetList: () {
-                                  return city.map((v) {
-                                    return new Align(
-                                      child: new Text(
-                                        v['name'],
-                                        overflow: TextOverflow.ellipsis,
-                                        style:TextStyle(fontSize: 22*factor)
-                                      ),
-                                      alignment: Alignment.centerLeft,
-                                    );
-                                  }).toList();
-                                },
-                                changed: (index) {
-                                  setState(() {
-                                    cityIndex = index;
-                                    areaIndex = 0;
-                                    areaController.jumpToItem(0);
-                                    area =
-                                        widget.data[provinceIndex]['sub'][cityIndex]['sub'];
-                                  });
-                                },
-                              ),
-                              new _MyCityPicker(
-                                key: Key('area'),
-                                controller: areaController,
-                                createWidgetList: () {
-                                  return area.map((v) {
-                                    return new Align(
-                                      child: new Text(
-                                        v['name'],
-                                        overflow: TextOverflow.ellipsis,
-                                        style:TextStyle(fontSize: 22*factor)
-                                      ),
-                                      alignment: Alignment.centerLeft,
-                                    );
-                                  }).toList();
-                                },
-                                changed: (index) {
-                                  setState(() {
-                                    areaIndex = index;
-                                  });
-                                },
-                              ),
-                            ],
-                          )
-                        ],
-                      )),
+                              ],
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                new _MyCityPicker(
+                                  key: Key('province'),
+                                  controller: provinceController,
+                                  createWidgetList: () {
+                                    return province.map((v) {
+                                      return new Align(
+                                        child: new Text(v['name'],
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize: 22 * factor)),
+                                        alignment: Alignment.centerLeft,
+                                      );
+                                    }).toList();
+                                  },
+                                  changed: (index) {
+                                    setState(() {
+                                      provinceIndex = index;
+                                      cityIndex = 0;
+                                      areaIndex = 0;
+                                      cityController.jumpToItem(0);
+                                      areaController.jumpToItem(0);
+                                      city = widget.data[provinceIndex]['sub'];
+                                      area = widget.data[provinceIndex]['sub']
+                                          [cityIndex]['sub'];
+                                    });
+                                  },
+                                ),
+                                new _MyCityPicker(
+                                  key: Key('city'),
+                                  controller: cityController,
+                                  createWidgetList: () {
+                                    return city.map((v) {
+                                      return new Align(
+                                        child: new Text(v['name'],
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize: 22 * factor)),
+                                        alignment: Alignment.centerLeft,
+                                      );
+                                    }).toList();
+                                  },
+                                  changed: (index) {
+                                    setState(() {
+                                      cityIndex = index;
+                                      areaIndex = 0;
+                                      areaController.jumpToItem(0);
+                                      area = widget.data[provinceIndex]['sub']
+                                          [cityIndex]['sub'];
+                                    });
+                                  },
+                                ),
+                                new _MyCityPicker(
+                                  key: Key('area'),
+                                  controller: areaController,
+                                  createWidgetList: () {
+                                    return area.map((v) {
+                                      return new Align(
+                                        child: new Text(v['name'],
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize: 22 * factor)),
+                                        alignment: Alignment.centerLeft,
+                                      );
+                                    }).toList();
+                                  },
+                                  changed: (index) {
+                                    setState(() {
+                                      areaIndex = index;
+                                    });
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        )),
                   ),
                 ),
               ),
@@ -318,22 +314,22 @@ class _MyCityPickerState extends State<_MyCityPicker> {
 
   @override
   Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
+    double factor = MediaQuery.of(context).size.width / 750;
     return new Expanded(
       child: new Container(
         padding: EdgeInsets.only(
-          left: 20.0*factor,
-          right: 20.0*factor,
-          top: 10.0*factor,
-          bottom: 10.0*factor,
+          left: 20.0 * factor,
+          right: 20.0 * factor,
+          top: 10.0 * factor,
+          bottom: 10.0 * factor,
         ),
         alignment: Alignment.center,
-        height: 430.0*factor,
+        height: 430.0 * factor,
         child: CupertinoPicker(
           backgroundColor: Colors.white,
           scrollController: widget.controller,
           key: widget.key,
-          itemExtent: 50.0*factor,
+          itemExtent: 50.0 * factor,
           onSelectedItemChanged: (index) {
             if (widget.changed != null) {
               widget.changed(index);
@@ -349,7 +345,8 @@ class _MyCityPickerState extends State<_MyCityPicker> {
 }
 
 class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, this.factor, {this.itemCount, this.showTitleActions});
+  _BottomPickerLayout(this.progress, this.factor,
+      {this.itemCount, this.showTitleActions});
 
   final double progress;
   final double factor;
@@ -364,7 +361,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
       minWidth: constraints.maxWidth,
       maxWidth: constraints.maxWidth,
       minHeight: 0.0,
-      maxHeight: maxHeight*factor,
+      maxHeight: maxHeight * factor,
     );
   }
 

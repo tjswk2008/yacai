@@ -35,65 +35,61 @@ class PubJobListState extends State<PubJobList> {
 
   @override
   Widget build(BuildContext context) {
-    double factor = MediaQuery.of(context).size.width/750;
+    double factor = MediaQuery.of(context).size.width / 750;
     return StoreConnector<AppState, AppState>(
-      converter: (store) => store.state,
-      builder: (context, state) {
-        return new Scaffold(
-          backgroundColor: new Color.fromARGB(255, 242, 242, 245),
-          appBar: new AppBar(
-            elevation: 0.0,
-            leading: IconButton(
-              icon: const BackButtonIcon(),
-              iconSize: 40*factor,
-              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-              onPressed: () {
-                Navigator.maybePop(context);
-              }
-            ),
-            title: Text(
-              '投递记录',
-              style: TextStyle(fontSize: 30.0*factor, color: Colors.white)
-            )
-          ),
-          body: _jobs != null && _jobs.length != 0 ? new ListView.builder(
-            itemCount: _jobs.length,
-            itemBuilder: buildJobItem
-          ) : Center(
-            child: Text('暂无投递记录', style: TextStyle(fontSize: 28*factor),),
-          )
-        );
-      }
-    );
+        converter: (store) => store.state,
+        builder: (context, state) {
+          return new Scaffold(
+              backgroundColor: new Color.fromARGB(255, 242, 242, 245),
+              appBar: new AppBar(
+                  elevation: 0.0,
+                  leading: IconButton(
+                      icon: const BackButtonIcon(),
+                      iconSize: 40 * factor,
+                      tooltip:
+                          MaterialLocalizations.of(context).backButtonTooltip,
+                      onPressed: () {
+                        Navigator.maybePop(context);
+                      }),
+                  title: Text('投递记录',
+                      style: TextStyle(
+                          fontSize: 30.0 * factor, color: Colors.white))),
+              body: _jobs != null && _jobs.length != 0
+                  ? new ListView.builder(
+                      itemCount: _jobs.length, itemBuilder: buildJobItem)
+                  : Center(
+                      child: Text(
+                        '暂无投递记录',
+                        style: TextStyle(fontSize: 28 * factor),
+                      ),
+                    ));
+        });
   }
 
   Widget buildJobItem(BuildContext context, int index) {
     Job job = _jobs[index];
 
     var jobItem = new InkWell(
-        onTap: () => navToResumeList(job),
-        child: new JobListItem(job, true));
+        onTap: () => navToResumeList(job), child: new JobListItem(job, true));
 
     return jobItem;
   }
 
   void getJobList() async {
     if (userName == null) return;
-    Api().getRecruitJobList(userName)
-      .then((Response response) {
-        if(response.data['code'] != 1) {
-          Scaffold.of(context).showSnackBar(new SnackBar(
-            content: new Text("获取列表失败，请稍后重试~"),
-          ));
-          return;
-        }
-        setState(() {
-          _jobs = Job.fromJson(response.data['list']);
-        });
-      })
-     .catchError((e) {
-       print(e);
-     });
+    Api().getRecruitJobList(userName).then((Response response) {
+      if (response.data['code'] != 1) {
+        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+          content: new Text("获取列表失败，请稍后重试~"),
+        ));
+        return;
+      }
+      setState(() {
+        _jobs = Job.fromJson(response.data['list']);
+      });
+    }).catchError((e) {
+      print(e);
+    });
   }
 
   navToResumeList(Job job) {
@@ -105,12 +101,13 @@ class PubJobListState extends State<PubJobList> {
         transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
           return new FadeTransition(
             opacity: animation,
-            child: new SlideTransition(position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation), child: child),
+            child: new SlideTransition(
+                position: new Tween<Offset>(
+                  begin: const Offset(0.0, 1.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child),
           );
-        }
-    ));
+        }));
   }
 }

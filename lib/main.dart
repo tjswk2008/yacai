@@ -9,25 +9,19 @@ import 'package:flutter_app/util/app_config.dart';
 
 void main() {
   // debugPaintSizeEnabled=true;
-  AppConfig.getInstance().init('http://47.101.177.244:3000');
-  final store = Store<AppState>(
-    appReducer,
-    initialState: AppState(userName: '')
-  );
-  runApp(
-    StoreProvider(
+  AppConfig.getInstance().init('http://111.229.101.3:3000');
+  final store =
+      Store<AppState>(appReducer, initialState: AppState(userName: ''));
+  runApp(StoreProvider(
       store: store,
       child: new MaterialApp(
-        title: "丫财",
-        theme: new ThemeData(
-          fontFamily: "fangzheng",
-          primaryIconTheme: const IconThemeData(color: Colors.white),
-          brightness: Brightness.light,
-          primaryColor: new Color.fromRGBO(90, 169, 226, 1),
-          accentColor: Colors.cyan[300],
-        ),
-        home: new SplashPage()
-      )
-    )
-  );
+          title: "丫财",
+          theme: new ThemeData(
+            fontFamily: "fangzheng",
+            primaryIconTheme: const IconThemeData(color: Colors.white),
+            brightness: Brightness.light,
+            primaryColor: new Color.fromRGBO(90, 169, 226, 1),
+            accentColor: Colors.cyan[300],
+          ),
+          home: new SplashPage())));
 }
